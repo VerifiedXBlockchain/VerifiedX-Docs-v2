@@ -2,6 +2,7 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
+import starlightAutoSidebar from 'starlight-auto-sidebar';
 import starlightLinksValidator from 'starlight-links-validator';
 import starlightLlmsTxt from 'starlight-llms-txt';
 import starlightPageActions from 'starlight-page-actions';
@@ -75,29 +76,25 @@ export default defineConfig({
 				Banner: './src/components/Banner.astro',
 			},
 			routeMiddleware: './src/route-middleware.ts',
+			// One group per top-level section; folders inside a section get their label and order from _meta.yml.
 			sidebar: [
-				{ label: 'Learn', translations: { es: 'Aprende' }, items: [{ autogenerate: { directory: 'learn' } }] },
-				{
-					label: 'Build',
-					translations: { es: 'Desarrolla' },
-					items: [
-						{
-							label: 'JavaScript SDK',
-							translations: { es: 'SDK de JavaScript' },
-							items: [{ autogenerate: { directory: 'build/sdk' } }],
-						},
-						{
-							label: 'Smart contracts',
-							translations: { es: 'Contratos inteligentes' },
-							items: [{ autogenerate: { directory: 'build/smart-contracts' } }],
-						},
-					],
-				},
+				{ label: 'Learn', translations: { es: 'Aprende' }, collapsed: true, items: [{ autogenerate: { directory: 'learn', collapsed: true } }] },
+				{ label: 'Use the Wallet', translations: { es: 'Usa la billetera' }, collapsed: true, items: [{ autogenerate: { directory: 'wallet', collapsed: true } }] },
+				{ label: 'Build', translations: { es: 'Desarrolla' }, collapsed: true, items: [{ autogenerate: { directory: 'build', collapsed: true } }] },
+				{ label: 'Run a Node', translations: { es: 'Ejecuta un nodo' }, collapsed: true, items: [{ autogenerate: { directory: 'node', collapsed: true } }] },
+				{ label: 'Resources', translations: { es: 'Recursos' }, collapsed: true, items: [{ autogenerate: { directory: 'resources', collapsed: true } }] },
 			],
 			plugins: [
+				starlightAutoSidebar(),
 				starlightPageActions({ actions: { markdown: true, claude: true, chatgpt: true } }),
 				starlightLlmsTxt({ projectName: 'VerifiedX' }),
-				starlightLinksValidator({ exclude: isPendingLink }),
+				starlightLinksValidator({
+					exclude: isPendingLink,
+					// Node API docs link to http://localhost:7292, the API of a node running on the reader's machine.
+					errorOnLocalLinks: false,
+					// Spanish pages may link to pages not translated yet; those serve the English page with a notice.
+					errorOnFallbackPages: false,
+				}),
 			],
 		}),
 	],
