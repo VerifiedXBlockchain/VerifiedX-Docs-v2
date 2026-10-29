@@ -10,7 +10,8 @@
     "preview": "astro preview",
     "astro": "astro",
     "translations:check": "node scripts/translations.mjs check",
-    "translations:stamp": "node scripts/translations.mjs stamp"
+    "translations:stamp": "node scripts/translations.mjs stamp",
+    "redirects": "node scripts/v1-redirects.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "3.7.4",
