@@ -1,0 +1,55 @@
+---
+// "← verifiedx.io" back to the main website, in the same tab, as a BTC-orange outline pill. Smaller on phones to fit the header.
+import { Icon } from '@astrojs/starlight/components';
+---
+
+<a class="main-site-link" href="https://verifiedx.io" aria-label="Back to verifiedx.io">
+	<Icon name="left-arrow" class="arrow" />
+	<span class="label">verifiedx.io</span>
+</a>
+
+<style>
+	.main-site-link {
+		display: inline-flex;
+		flex-shrink: 0;
+		align-items: center;
+		gap: 0.3125rem;
+		padding: 0.3125rem 0.75rem 0.3125rem 0.625rem;
+		border: 1px solid rgb(247 147 26 / 0.55);
+		border-radius: 999px;
+		color: var(--vfx-btc-orange);
+		font-size: var(--sl-text-sm);
+		font-weight: 500;
+		line-height: 1;
+		text-decoration: none;
+		white-space: nowrap;
+		transition: background 120ms, border-color 120ms;
+	}
+	.main-site-link:hover {
+		border-color: var(--vfx-btc-orange);
+		background: rgb(247 147 26 / 0.1);
+		color: var(--vfx-btc-orange);
+	}
+	.main-site-link :global(.arrow) {
+		font-size: 0.875rem;
+	}
+	@media (max-width: 49.99rem) {
+		.main-site-link {
+			gap: 0.1875rem;
+			padding: 0.25rem 0.5rem 0.25rem 0.375rem;
+			font-size: 0.75rem;
+		}
+		.main-site-link :global(.arrow) {
+			font-size: 0.75rem;
+		}
+	}
+	/* Very narrow phones (under 340px): arrow only. */
+	@media (max-width: 21.24rem) {
+		.label {
+			display: none;
+		}
+		.main-site-link {
+			padding: 0.3125rem 0.4375rem;
+		}
+	}
+</style>

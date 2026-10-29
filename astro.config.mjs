@@ -105,7 +105,7 @@ export default defineConfig({
 				ThemeProvider: './src/components/ThemeProvider.astro',
 				SiteTitle: './src/components/SiteTitle.astro',
 				ThemeSelect: './src/components/NetworkToggle.astro',
-				SocialIcons: './src/components/SocialIcons.astro',
+				Header: './src/components/Header.astro',
 				Banner: './src/components/Banner.astro',
 			},
 			routeMiddleware: ['./src/route-middleware.ts', './src/seo-middleware.ts'],
