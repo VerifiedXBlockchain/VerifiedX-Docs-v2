@@ -11,6 +11,10 @@ const slugMap = JSON.parse(readFileSync(new URL('migration/slug-map.json', root)
 const targets = new Map([
 	['/docs', '/'],
 	['/markdown-page', '/'],
+	// Pages verifiedx.io still links to that v1 had already dropped.
+	['/docs/documents/vbtc-institutional', '/learn/institutional/overview/'],
+	['/docs/documents/vbtc-defi', '/learn/vbtc-defi-vaults/'],
+	['/docs/tutorials/video-tutorials', '/wallet/overview/'],
 ]);
 for (const [oldId, slug] of Object.entries(slugMap)) {
 	targets.set(`/docs/${oldId}`, `/${slug}/`);
