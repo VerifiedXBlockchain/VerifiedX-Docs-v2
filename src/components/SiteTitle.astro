@@ -33,10 +33,12 @@ const { siteTitle, siteTitleHref } = Astro.locals.starlightRoute;
 		text-decoration: none;
 		white-space: nowrap;
 	}
-	/* The cube fills about 88% of its square as it turns, so the square is a little taller than the wordmark. */
+	/* As it turns, the cube's visible body is about 73–90% of its square (median 80%, measured in the browser at 4x).
+	   A 27.5px square puts the median at 22px, the wordmark's height; 0.5px down centres it on the wordmark. */
 	.cube {
-		width: 1.5625rem;
-		height: 1.5625rem;
+		transform: translateY(0.5px);
+		width: 1.71875rem;
+		height: 1.71875rem;
 		margin-inline-end: -0.125rem;
 		mix-blend-mode: screen;
 		pointer-events: none;
