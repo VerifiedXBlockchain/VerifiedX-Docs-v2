@@ -6,7 +6,7 @@ export type PageNetworkStatus = 'new' | 'changed' | null;
 export const network = buildData.network as Network;
 
 export const siteUrls: Record<Network, string> = {
-	mainnet: import.meta.env.PUBLIC_MAINNET_URL ?? 'https://v2.docs.verifiedx.io',
+	mainnet: import.meta.env.PUBLIC_MAINNET_URL ?? 'https://docs.verifiedx.io',
 	testnet: import.meta.env.PUBLIC_TESTNET_URL ?? 'https://testnet.docs.verifiedx.io',
 };
 
