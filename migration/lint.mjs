@@ -4,6 +4,7 @@
 import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
 import { dirname, join, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { parse as parseYaml } from 'yaml';
 
 const ROOT = fileURLToPath(new URL('..', import.meta.url));
 const CONTENT = join(ROOT, 'src/content/docs');
@@ -29,16 +30,22 @@ for (const file of files) {
 	const fm = text.match(/^---\n([\s\S]*?)\n---\n/);
 	if (!fm) issues.push('no frontmatter');
 	else {
+		try {
+			parseYaml(fm[1]);
+		} catch (error) {
+			issues.push(`frontmatter is not valid YAML (quote values containing ": "): ${error.message.split('\n')[0]}`);
+		}
 		if (!/^title:/m.test(fm[1])) issues.push('frontmatter: no title');
 		if (!/^description:/m.test(fm[1])) issues.push('frontmatter: no description');
 		for (const key of ['sidebar_position', 'sidebar_class_name', 'sidebar_label', 'slug:', 'id:']) if (fm[1].includes(key)) issues.push(`frontmatter: v1 key ${key}`);
 	}
 	const body = fm ? text.slice(fm[0].length) : text;
 	// Strip fenced code and inline code before checking prose.
-	const prose = body.replace(/^(```|~~~)[\s\S]*?^\1/gm, '').replace(/`[^`\n]*`/g, '');
+	const prose = body.replace(/^[ \t]*(```|~~~)[\s\S]*?^[ \t]*\1/gm, '').replace(/`[^`\n]*`/g, '');
 	const isMdx = file.endsWith('.mdx');
 
 	if (/^# /m.test(prose)) issues.push('body has an H1; the title comes from frontmatter');
+	if (/^sidebar_(position|class_name|label):/m.test(body)) issues.push('v1 frontmatter left in the body');
 	if (/@theme\/|require\(/.test(body)) issues.push('Docusaurus import or require()');
 	if (/className=|style=\{\{/.test(body)) issues.push('JSX className/style object');
 	if (/^:::(warning|info)\b/m.test(body)) issues.push(':::warning/:::info (use :::caution/:::note)');

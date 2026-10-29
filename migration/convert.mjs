@@ -16,7 +16,8 @@ if (!newSlug) throw new Error(`${oldId} is not in migration/slug-map.json`);
 
 const sourcePath = ['.md', '.mdx'].map((ext) => join(v1Docs, oldId + ext)).find(existsSync);
 if (!sourcePath) throw new Error(`no source file for ${oldId} in ${v1Docs}`);
-let text = readFileSync(sourcePath, 'utf8');
+// Some v1 files start with a UTF-8 BOM or use CRLF line endings; both hide their frontmatter and H1 from the patterns below.
+let text = readFileSync(sourcePath, 'utf8').replace(/^\uFEFF/, '').replace(/\r\n/g, '\n');
 const report = [];
 
 // --- frontmatter

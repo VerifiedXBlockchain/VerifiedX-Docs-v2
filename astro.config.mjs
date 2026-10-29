@@ -78,17 +78,23 @@ export default defineConfig({
 			routeMiddleware: './src/route-middleware.ts',
 			// One group per top-level section; folders inside a section get their label and order from _meta.yml.
 			sidebar: [
-				{ label: 'Learn', translations: { es: 'Aprende' }, items: [{ autogenerate: { directory: 'learn' } }] },
-				{ label: 'Use the Wallet', translations: { es: 'Usa la billetera' }, items: [{ autogenerate: { directory: 'wallet' } }] },
-				{ label: 'Build', translations: { es: 'Desarrolla' }, items: [{ autogenerate: { directory: 'build' } }] },
-				{ label: 'Run a Node', translations: { es: 'Ejecuta un nodo' }, items: [{ autogenerate: { directory: 'node' } }] },
-				{ label: 'Resources', translations: { es: 'Recursos' }, items: [{ autogenerate: { directory: 'resources' } }] },
+				{ label: 'Learn', translations: { es: 'Aprende' }, collapsed: true, items: [{ autogenerate: { directory: 'learn', collapsed: true } }] },
+				{ label: 'Use the Wallet', translations: { es: 'Usa la billetera' }, collapsed: true, items: [{ autogenerate: { directory: 'wallet', collapsed: true } }] },
+				{ label: 'Build', translations: { es: 'Desarrolla' }, collapsed: true, items: [{ autogenerate: { directory: 'build', collapsed: true } }] },
+				{ label: 'Run a Node', translations: { es: 'Ejecuta un nodo' }, collapsed: true, items: [{ autogenerate: { directory: 'node', collapsed: true } }] },
+				{ label: 'Resources', translations: { es: 'Recursos' }, collapsed: true, items: [{ autogenerate: { directory: 'resources', collapsed: true } }] },
 			],
 			plugins: [
 				starlightAutoSidebar(),
 				starlightPageActions({ actions: { markdown: true, claude: true, chatgpt: true } }),
 				starlightLlmsTxt({ projectName: 'VerifiedX' }),
-				starlightLinksValidator({ exclude: isPendingLink }),
+				starlightLinksValidator({
+					exclude: isPendingLink,
+					// Node API docs link to http://localhost:7292, the API of a node running on the reader's machine.
+					errorOnLocalLinks: false,
+					// Spanish pages may link to pages not translated yet; those serve the English page with a notice.
+					errorOnFallbackPages: false,
+				}),
 			],
 		}),
 	],
