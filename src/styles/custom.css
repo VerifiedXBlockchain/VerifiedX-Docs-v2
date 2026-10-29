@@ -48,7 +48,7 @@
 	--sl-line-height: 1.7;
 
 	/* Fine grain laid over gradients so they don't band. */
-	--vfx-noise: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.5 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+	--vfx-noise: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n' color-interpolation-filters='sRGB'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0.33 0.33 0.33 0 0 0.33 0.33 0.33 0 0 0.33 0.33 0.33 0 0 0 0 0 0 1'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 
 	color-scheme: dark;
 }
@@ -141,18 +141,18 @@ body {
 	text-transform: lowercase;
 }
 
-/* Splash page: full-width glow in the brand colors, with grain so the gradients don't band. */
+/* Splash page: faint glow in the brand colors. The grain is mid-grey noise in overlay mode, so it textures the gradients without lifting the base colour. */
 :root[data-has-hero] body {
 	background:
 		var(--vfx-noise),
-		radial-gradient(56rem 34rem at 8% -8rem, rgb(115 196 250 / 0.16), transparent 70%),
-		radial-gradient(50rem 32rem at 92% -2rem, rgb(179 157 219 / 0.18), transparent 70%),
-		radial-gradient(44rem 26rem at 60% 34rem, rgb(247 147 26 / 0.06), transparent 70%),
-		radial-gradient(36rem 22rem at 20% 40rem, rgb(52 211 153 / 0.04), transparent 70%),
+		radial-gradient(56rem 34rem at 8% -8rem, rgb(115 196 250 / 0.08), transparent 70%),
+		radial-gradient(50rem 32rem at 92% -2rem, rgb(179 157 219 / 0.09), transparent 70%),
+		radial-gradient(44rem 26rem at 60% 34rem, rgb(247 147 26 / 0.03), transparent 70%),
+		radial-gradient(36rem 22rem at 20% 40rem, rgb(52 211 153 / 0.02), transparent 70%),
 		var(--vfx-bg);
 	background-repeat: repeat, no-repeat, no-repeat, no-repeat, no-repeat;
 	background-size: 220px 220px, auto, auto, auto, auto;
-	background-blend-mode: soft-light, normal, normal, normal, normal;
+	background-blend-mode: overlay, normal, normal, normal, normal;
 }
 :root[data-has-hero] .page > .header,
 :root[data-has-hero] .page {
