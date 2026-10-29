@@ -14,35 +14,52 @@ const mainnetHref = new URL(Astro.url.pathname, siteUrls.mainnet).href;
 
 <Default />
 {
-	status && (
-		<aside class="vfx-notice testnet" data-pagefind-ignore>
-			<strong>{t('vfx.network.testnet')}</strong>
-			<span>
-				{status === 'new' ? t('vfx.network.calloutNew') : t('vfx.network.calloutChanged')}
-				{status === 'changed' && (
-					<>
-						{' '}
-						<a href={mainnetHref}>{t('vfx.network.viewMainnet')}</a>
-					</>
+	(status || stale) && (
+		<div class="vfx-notices" data-pagefind-ignore>
+			<div class="vfx-notices-inner">
+				{status && (
+					<aside class="vfx-notice testnet">
+						<strong>{t('vfx.network.testnet')}</strong>
+						<span>
+							{status === 'new' ? t('vfx.network.calloutNew') : t('vfx.network.calloutChanged')}
+							{status === 'changed' && (
+								<>
+									{' '}
+									<a href={mainnetHref}>{t('vfx.network.viewMainnet')}</a>
+								</>
+							)}
+						</span>
+					</aside>
 				)}
-			</span>
-		</aside>
-	)
-}
-{
-	stale && (
-		<aside class="vfx-notice stale" data-pagefind-ignore>
-			<span>{t('vfx.translation.stale')}</span>
-		</aside>
+				{stale && (
+					<aside class="vfx-notice stale">
+						<span>{t('vfx.translation.stale')}</span>
+					</aside>
+				)}
+			</div>
+		</div>
 	)
 }
 
 <style>
+	/* Same box as Starlight's ContentPanel, so the notices line up with the page text. */
+	.vfx-notices {
+		padding: 1.5rem var(--sl-content-pad-x) 0;
+	}
+	.vfx-notices-inner {
+		display: grid;
+		gap: 0.75rem;
+		max-width: var(--sl-content-width);
+	}
+	@media (min-width: 72rem) {
+		.vfx-notices-inner {
+			margin-inline: var(--sl-content-margin-inline, auto);
+		}
+	}
 	.vfx-notice {
 		display: flex;
 		gap: 0.75rem;
 		align-items: baseline;
-		margin: 1rem var(--sl-content-pad-x, 1.5rem) 0;
 		padding: 0.75rem 1rem;
 		border: 1px solid;
 		border-radius: 0.5rem;
