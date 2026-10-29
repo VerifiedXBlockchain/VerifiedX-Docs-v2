@@ -35,6 +35,11 @@ const isUntranslated = (/** @type {string} */ page) => {
 export default defineConfig({
 	site,
 	server: { port: 3310 },
+	// Renamed pages, so links shared before the rename still land.
+	redirects: {
+		'/learn/butterfly-and-pulsexai/': '/learn/bfly-and-pulsexai/',
+		'/es/learn/butterfly-and-pulsexai/': '/es/learn/bfly-and-pulsexai/',
+	},
 	integrations: [
 		// Declared here (Starlight would add it otherwise) so the filter applies; i18n matches the Starlight locales.
 		sitemap({
@@ -100,6 +105,7 @@ export default defineConfig({
 				ThemeProvider: './src/components/ThemeProvider.astro',
 				SiteTitle: './src/components/SiteTitle.astro',
 				ThemeSelect: './src/components/NetworkToggle.astro',
+				SocialIcons: './src/components/SocialIcons.astro',
 				Banner: './src/components/Banner.astro',
 			},
 			routeMiddleware: ['./src/route-middleware.ts', './src/seo-middleware.ts'],

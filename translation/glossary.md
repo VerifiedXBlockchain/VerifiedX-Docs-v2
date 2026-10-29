@@ -13,7 +13,7 @@ Every translation agent and reviewer follows this file. Manuel reviews Spanish p
 
 Keep these exactly as written in English:
 
-- Product and network names: VerifiedX, VFX, vBTC, vBTC.b, Trillium, Prism, SwitchBlade, Spyglass, Butterfly, PulseXAI, Tanto, Pocket, Sharp
+- Product and network names: VerifiedX, VFX, vBTC, vBTC.b, Trillium, Prism, SwitchBlade, Spyglass, Bfly (always "Bfly", never "Butterfly"), PulseXAI, Tanto, Pocket, Sharp
 - Protocol names and acronyms: SEN (Self-Executing Node), FROST, DKG, S3C, ADNR, VFX10, VFX20, MPC, HSM, KMS, DeFi, NFT, L1, L2
 - "Mainnet" and "testnet", "signet"
 - Code of any kind: code blocks, inline code, API paths, CLI commands, method names, field names, JSON keys, environment variables, file names
