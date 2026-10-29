@@ -58,12 +58,13 @@ body {
 	font-feature-settings: 'cv11', 'ss01';
 }
 
-/* Header: wordmark exactly as tall as the search box, search box fills the free space. */
+/* Header: search box fills the free space. The wordmark's letters fill its whole image, so it is set
+   smaller than the 2.25rem search box to look the same size. */
 .header {
 	backdrop-filter: blur(14px) saturate(140%);
 }
 .site-title img {
-	height: 2.25rem;
+	height: 1.625rem;
 	width: auto;
 }
 @media (min-width: 50rem) {
@@ -166,7 +167,7 @@ body {
 [data-has-hero] .hero h1 {
 	max-width: 52rem;
 	font-size: clamp(2.25rem, 4.2vw, 3.25rem);
-	line-height: 1.1;
+	line-height: 1.22;
 	letter-spacing: -0.035em;
 }
 [data-has-hero] .hero .tagline {

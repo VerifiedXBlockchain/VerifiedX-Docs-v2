@@ -70,6 +70,7 @@ export default defineConfig({
 			},
 			components: {
 				ThemeProvider: './src/components/ThemeProvider.astro',
+				SiteTitle: './src/components/SiteTitle.astro',
 				ThemeSelect: './src/components/NetworkToggle.astro',
 				Banner: './src/components/Banner.astro',
 			},

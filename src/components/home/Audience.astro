@@ -53,7 +53,8 @@ const { title, description, color, links } = Astro.props;
 		position: absolute;
 		inset: 0 0 auto;
 		height: 2px;
-		background: linear-gradient(90deg, var(--c), transparent 80%);
+		/* Fades in from the left so the line never meets the rounded corner with a hard end. */
+		background: linear-gradient(90deg, transparent, var(--c) 14%, transparent 85%);
 	}
 	h3 {
 		margin: 0;
