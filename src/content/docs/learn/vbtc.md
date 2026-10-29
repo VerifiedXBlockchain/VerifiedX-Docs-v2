@@ -3,6 +3,8 @@ title: About vBTC
 description: vBTC is trustless, non-synthetic, programmable ownership of Bitcoin, verified by VerifiedX consensus.
 sidebar:
   order: 2
+  attrs:
+    class: sidebar-btc
 ---
 
 vBTC transforms Bitcoin from a passive store of value into a trustless, programmable, institutional-grade settlement and yield-enabled asset, without wrapped tokens, custody risk, or synthetic exposure. VerifiedX consensus verifies the Bitcoin behind every vault and fixes every redemption, so vBTC follows its Bitcoin exactly.

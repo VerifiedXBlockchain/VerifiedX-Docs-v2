@@ -203,3 +203,28 @@ body {
 .sl-markdown-content .home-grid > * {
 	margin-top: 0;
 }
+
+/* Sidebar topic colors, carried over from v1. Pages opt in with frontmatter `sidebar: { attrs: { class: sidebar-btc } }`:
+   sidebar-btc for Bitcoin pages (orange is reserved for Bitcoin), sidebar-prism for Prism, sidebar-green for Butterfly/PulseXAI. */
+.sidebar-content a.sidebar-btc {
+	color: #f4b066;
+}
+.sidebar-content a.sidebar-prism {
+	color: var(--vfx-vault-purple);
+}
+.sidebar-content a.sidebar-green {
+	color: var(--vfx-green);
+}
+.sidebar-content a.sidebar-btc[aria-current='page'] {
+	color: var(--vfx-btc-orange);
+	background: linear-gradient(90deg, rgb(247 147 26 / 0.14), rgb(247 147 26 / 0.03));
+	box-shadow: inset 2px 0 0 var(--vfx-btc-orange);
+}
+.sidebar-content a.sidebar-prism[aria-current='page'] {
+	background: linear-gradient(90deg, rgb(179 157 219 / 0.14), rgb(179 157 219 / 0.03));
+	box-shadow: inset 2px 0 0 var(--vfx-vault-purple);
+}
+.sidebar-content a.sidebar-green[aria-current='page'] {
+	background: linear-gradient(90deg, rgb(52 211 153 / 0.14), rgb(52 211 153 / 0.03));
+	box-shadow: inset 2px 0 0 var(--vfx-green);
+}

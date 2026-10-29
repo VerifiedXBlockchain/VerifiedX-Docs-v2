@@ -1,0 +1,79 @@
+---
+// A downloadable document (PDF) shown as its cover image with a download button.
+// Usage in .mdx:
+//   import DocumentDownload from '../../../components/DocumentDownload.astro';
+//   import cover from '../../../assets/media/documents/vbtc-onesheet.png';
+//   <DocumentDownload href="/documents/vBTC_OneSheet.pdf" cover={cover} title="vBTC One Sheet" />
+import { Image } from 'astro:assets';
+import { Icon } from '@astrojs/starlight/components';
+import type { ImageMetadata } from 'astro';
+
+interface Props {
+	href: string;
+	cover: ImageMetadata;
+	title: string;
+}
+
+const { href, cover, title } = Astro.props;
+const fileName = href.split('/').pop();
+---
+
+<a class="document-download not-content" href={href} download={fileName} target="_blank" rel="noopener">
+	<Image src={cover} alt={`${title} cover`} width={300} class="cover" />
+	<span class="meta">
+		<span class="title">{title}</span>
+		<span class="file">{fileName}</span>
+		<span class="button"><Icon name="download" size="1rem" /> Download PDF</span>
+	</span>
+</a>
+
+<style>
+	.document-download {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 1.25rem;
+		align-items: center;
+		padding: 1rem;
+		border: 1px solid var(--sl-color-hairline-light);
+		border-radius: 0.875rem;
+		background: var(--vfx-surface);
+		text-decoration: none;
+		transition: border-color 150ms;
+	}
+	.document-download:hover {
+		border-color: rgb(115 196 250 / 0.45);
+	}
+	.cover {
+		width: 180px;
+		height: auto;
+		border-radius: 0.375rem;
+		box-shadow: 0 8px 24px rgb(0 0 0 / 0.4);
+	}
+	.meta {
+		display: grid;
+		gap: 0.25rem;
+		justify-items: start;
+	}
+	.title {
+		color: var(--sl-color-white);
+		font-weight: 600;
+		font-size: var(--sl-text-lg);
+	}
+	.file {
+		color: var(--sl-color-gray-3);
+		font-family: var(--sl-font-mono);
+		font-size: var(--sl-text-xs);
+	}
+	.button {
+		display: inline-flex;
+		gap: 0.375rem;
+		align-items: center;
+		margin-top: 0.5rem;
+		padding: 0.375rem 0.875rem;
+		border-radius: 999px;
+		background: var(--vfx-ice-blue);
+		color: var(--sl-color-black);
+		font-size: var(--sl-text-sm);
+		font-weight: 600;
+	}
+</style>
