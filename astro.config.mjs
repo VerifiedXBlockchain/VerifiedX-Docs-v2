@@ -2,6 +2,7 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
+import starlightAutoSidebar from 'starlight-auto-sidebar';
 import starlightLinksValidator from 'starlight-links-validator';
 import starlightLlmsTxt from 'starlight-llms-txt';
 import starlightPageActions from 'starlight-page-actions';
@@ -75,26 +76,16 @@ export default defineConfig({
 				Banner: './src/components/Banner.astro',
 			},
 			routeMiddleware: './src/route-middleware.ts',
+			// One group per top-level section; folders inside a section get their label and order from _meta.yml.
 			sidebar: [
 				{ label: 'Learn', translations: { es: 'Aprende' }, items: [{ autogenerate: { directory: 'learn' } }] },
-				{
-					label: 'Build',
-					translations: { es: 'Desarrolla' },
-					items: [
-						{
-							label: 'JavaScript SDK',
-							translations: { es: 'SDK de JavaScript' },
-							items: [{ autogenerate: { directory: 'build/sdk' } }],
-						},
-						{
-							label: 'Smart contracts',
-							translations: { es: 'Contratos inteligentes' },
-							items: [{ autogenerate: { directory: 'build/smart-contracts' } }],
-						},
-					],
-				},
+				{ label: 'Use the Wallet', translations: { es: 'Usa la billetera' }, items: [{ autogenerate: { directory: 'wallet' } }] },
+				{ label: 'Build', translations: { es: 'Desarrolla' }, items: [{ autogenerate: { directory: 'build' } }] },
+				{ label: 'Run a Node', translations: { es: 'Ejecuta un nodo' }, items: [{ autogenerate: { directory: 'node' } }] },
+				{ label: 'Resources', translations: { es: 'Recursos' }, items: [{ autogenerate: { directory: 'resources' } }] },
 			],
 			plugins: [
+				starlightAutoSidebar(),
 				starlightPageActions({ actions: { markdown: true, claude: true, chatgpt: true } }),
 				starlightLlmsTxt({ projectName: 'VerifiedX' }),
 				starlightLinksValidator({ exclude: isPendingLink }),

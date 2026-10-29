@@ -1,9 +1,11 @@
 ---
-sourceHash: 266ccf818e70
+sourceHash: 6a4d398e9dd5
 title: Acerca de vBTC
 description: vBTC es la propiedad programable, no sintética y sin necesidad de confianza de Bitcoin, verificada por el consenso de VerifiedX.
 sidebar:
   order: 2
+  attrs:
+    class: sidebar-btc
 ---
 
 vBTC transforma Bitcoin de una reserva de valor pasiva en un activo de liquidación sin necesidad de confianza, programable, de nivel institucional y capaz de generar rendimiento, sin tokens envueltos, sin riesgo de custodia y sin exposición sintética. El consenso de VerifiedX verifica el Bitcoin detrás de cada bóveda (vault) y fija cada redención, de modo que vBTC sigue a su Bitcoin con exactitud.
