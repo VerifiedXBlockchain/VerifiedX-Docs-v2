@@ -60,11 +60,13 @@ body {
 
 /* Header: search box fills the free space. The wordmark's letters fill its whole image, so it is set
    smaller than the 2.25rem search box to look the same size. */
-.header {
+/* Outer <header> only: on Starlight's inner div.header a backdrop-filter would start a transparent stacking context,
+   and the cube's mix-blend-mode would have nothing to blend with. */
+header.header {
 	backdrop-filter: blur(14px) saturate(140%);
 }
 .site-title img {
-	height: 1.625rem;
+	height: 1.375rem;
 	width: auto;
 }
 @media (min-width: 50rem) {
@@ -154,10 +156,10 @@ body {
 	background-size: 220px 220px, auto, auto, auto, auto;
 	background-blend-mode: overlay, normal, normal, normal, normal;
 }
-:root[data-has-hero] .page > .header,
 :root[data-has-hero] .page {
 	background: transparent;
 }
+/* The header keeps its translucent nav background here too: the cube's mix-blend-mode needs something to blend with. */
 @media (min-width: 50rem) {
 	[data-has-hero] .hero {
 		grid-template-columns: 100%;
@@ -205,7 +207,7 @@ body {
 }
 
 /* Sidebar topic colors, carried over from v1. Pages opt in with frontmatter `sidebar: { attrs: { class: sidebar-btc } }`:
-   sidebar-btc for Bitcoin pages (orange is reserved for Bitcoin), sidebar-prism for Prism, sidebar-green for Butterfly/PulseXAI. */
+   sidebar-btc for Bitcoin pages (orange is reserved for Bitcoin), sidebar-prism for Prism, sidebar-green for Bfly/PulseXAI. */
 .sidebar-content a.sidebar-btc {
 	color: #f4b066;
 }
