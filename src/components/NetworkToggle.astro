@@ -1,0 +1,84 @@
+---
+// Replaces Starlight's theme picker (the docs are dark-only) with a mainnet/testnet switch.
+// Each option opens the same path on the other network's site.
+import { network, pageNetworkStatus, siteUrls, type Network } from '../lib/network';
+
+const { t } = Astro.locals;
+const slug = Astro.locals.starlightRoute.id;
+const notOnMainnet = pageNetworkStatus(slug) === 'new';
+const options: Network[] = ['mainnet', 'testnet'];
+const path = Astro.url.pathname;
+---
+
+<nav class="network-toggle" aria-label={t('vfx.network.label')}>
+	{
+		options.map((option) => {
+			const label = t(`vfx.network.${option}`);
+			if (option === network) {
+				return (
+					<span class="option current" data-network={option} aria-current="page">
+						{label}
+					</span>
+				);
+			}
+			if (option === 'mainnet' && notOnMainnet) {
+				return (
+					<span class="option disabled" data-network={option} title={t('vfx.network.notOnMainnet')}>
+						{label}
+					</span>
+				);
+			}
+			return (
+				<a class="option" data-network={option} href={new URL(path, siteUrls[option]).href} data-keep-hash>
+					{label}
+				</a>
+			);
+		})
+	}
+</nav>
+
+<script>
+	// Keep the section anchor when switching networks.
+	document.querySelectorAll<HTMLAnchorElement>('.network-toggle a[data-keep-hash]').forEach((link) => {
+		link.addEventListener('click', () => {
+			if (location.hash) link.hash = location.hash;
+		});
+	});
+</script>
+
+<style>
+	.network-toggle {
+		display: inline-flex;
+		padding: 0.1875rem;
+		gap: 0.125rem;
+		border: 1px solid var(--sl-color-hairline);
+		border-radius: 999px;
+		background: var(--sl-color-gray-6);
+		font-size: var(--sl-text-xs);
+		font-weight: 600;
+		white-space: nowrap;
+	}
+	.option {
+		padding: 0.25rem 0.75rem;
+		border-radius: 999px;
+		color: var(--sl-color-gray-3);
+		text-decoration: none;
+		line-height: 1.4;
+	}
+	a.option:hover {
+		color: var(--sl-color-white);
+		background: var(--sl-color-gray-5);
+	}
+	.current[data-network='mainnet'] {
+		color: var(--sl-color-black);
+		background: var(--sl-color-accent);
+	}
+	.current[data-network='testnet'] {
+		color: var(--sl-color-black);
+		background: var(--vfx-btc-orange);
+	}
+	.disabled {
+		opacity: 0.4;
+		cursor: not-allowed;
+	}
+</style>

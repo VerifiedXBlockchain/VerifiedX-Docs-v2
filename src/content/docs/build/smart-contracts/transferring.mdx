@@ -1,0 +1,70 @@
+---
+title: Transferring NFTs
+description: Transfer an NFT smart contract to another VFX address through the Core CLI API.
+sidebar:
+  order: 2
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+API Endpoints:
+
+Transfer without media backup URL:
+
+```
+GET http://localhost:7292/scapi/scv1/TransferNFT/{id}/{address}
+```
+
+Transfer with media backup URL:
+
+```
+GET http://localhost:7292/scapi/scv1/TransferNFT/{id}/{address}/{backupUrl}
+```
+
+#### URL Params:
+
+`id`: The smart contract identifier
+
+`address`: The recipient's VFX address
+
+`backupUrl`: URL to an off-network backup url of the media (optional)
+
+#### Response:
+
+```json
+{
+  "Result": "Success",
+  "Message": "NFT Transfer has been started."
+}
+```
+
+#### Code Example
+
+<Tabs syncKey="lang">
+<TabItem label="NodeJS">
+
+```js
+const transferNft = async (smartContractUid, address) => {
+  const url = `${CLI_BASE_URL}/scapi/scv1/TransferNFT/${smartContractUid}/${address}`;
+  const request = await fetch(url);
+
+  const data = await request.json();
+  return data["Result"] == "Success";
+};
+```
+
+</TabItem>
+
+<TabItem label="Python">
+
+```python
+def transfer_nft(smart_contract_uid, address):
+    url = f"{CLI_BASE_URL}/scapi/scv1/TransferNFT/{smart_contract_uid}/{address}"
+    response = requests.get(url)
+    data = response.json()
+
+    return data["Result"] == "Success"
+```
+
+</TabItem>
+</Tabs>

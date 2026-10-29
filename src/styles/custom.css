@@ -1,0 +1,97 @@
+/* VFX brand on Starlight. Palette: vfx-brand-toolkit/brand/colors.md (dark theme). The site is dark-only. */
+:root {
+	--vfx-ice-blue: #73c4fa;
+	--vfx-blue-light: #a5d5fb;
+	--vfx-vault-purple: #b39ddb;
+	--vfx-btc-orange: #f7931a;
+	--vfx-green: #34d399;
+	--vfx-bg: #0f1923;
+	--vfx-card: #1a2332;
+	--vfx-card-hover: #1f2b3d;
+
+	--sl-color-accent-low: #12324a;
+	--sl-color-accent: var(--vfx-ice-blue);
+	--sl-color-accent-high: var(--vfx-blue-light);
+
+	--sl-color-white: #f7f8f8;
+	--sl-color-gray-1: #e5ecf6;
+	--sl-color-gray-2: #c3cdda;
+	--sl-color-gray-3: #8d9aad;
+	--sl-color-gray-4: #56657b;
+	--sl-color-gray-5: #2a3749;
+	--sl-color-gray-6: var(--vfx-card);
+	--sl-color-black: var(--vfx-bg);
+
+	--sl-color-bg-nav: rgb(15 25 35 / 0.92);
+	--sl-color-bg-sidebar: var(--vfx-bg);
+	--sl-color-hairline: rgb(255 255 255 / 0.08);
+	--sl-color-hairline-light: rgb(255 255 255 / 0.12);
+	--sl-color-hairline-shade: rgb(0 0 0 / 0.4);
+
+	--sl-font: 'Inter Variable', 'Inter', system-ui, sans-serif;
+	--sl-font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+	--sl-line-height: 1.7;
+
+	color-scheme: dark;
+}
+
+body {
+	background: var(--vfx-bg);
+	font-feature-settings: 'cv11', 'ss01';
+}
+
+.header {
+	backdrop-filter: blur(12px);
+}
+
+/* Headings: tighter tracking, brand white. */
+.sl-markdown-content :is(h1, h2, h3, h4) {
+	letter-spacing: -0.015em;
+}
+
+/* Inline code reads as a soft chip, not a hard box. */
+.sl-markdown-content :not(pre) > code {
+	padding: 0.1em 0.35em;
+	border: 1px solid var(--sl-color-hairline);
+	border-radius: 0.3rem;
+	background: var(--vfx-card);
+	color: var(--vfx-blue-light);
+}
+
+.sl-markdown-content hr {
+	border-color: var(--sl-color-hairline);
+}
+
+/* Cards on the home page. */
+.card,
+.sl-link-card {
+	border-color: var(--sl-color-hairline-light) !important;
+	background: var(--vfx-card);
+	transition: background 120ms, border-color 120ms;
+}
+.sl-link-card:hover {
+	background: var(--vfx-card-hover);
+	border-color: rgb(115 196 250 / 0.5) !important;
+}
+
+/* Splash hero: subtle ice-blue glow behind the title. */
+[data-has-hero] .hero {
+	position: relative;
+}
+[data-has-hero] .hero::before {
+	content: '';
+	position: absolute;
+	inset: -6rem -20% auto;
+	height: 26rem;
+	background: radial-gradient(ellipse at center, rgb(115 196 250 / 0.14), transparent 65%);
+	pointer-events: none;
+	z-index: -1;
+}
+[data-has-hero] .hero h1 {
+	letter-spacing: -0.03em;
+}
+
+/* Selection in brand blue. */
+::selection {
+	background: rgb(115 196 250 / 0.3);
+}

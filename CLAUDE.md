@@ -1,0 +1,9 @@
+# VerifiedX Docs v2
+
+Starlight (Astro 7) docs site replacing VerifiedX-Docs (Docusaurus). Node 24 (`.nvmrc`). Dev server port **3310** (`astro.config.mjs` `server.port`).
+
+- Branches: `main` = mainnet site (v2.docs.verifiedx.io), `testnet` = testnet site (testnet.docs.verifiedx.io). PRs target `testnet`.
+- `scripts/build-data.mjs` runs before dev/build and writes `src/generated/build-data.json` (gitignored): network, pages new/changed vs `main`, stale translations. Any branch other than `main` builds as testnet; `DOCS_NETWORK` overrides.
+- Overrides: `ThemeSelect` → `NetworkToggle` (dark-only site), `ThemeProvider` forces dark, `Banner` adds the testnet and stale-translation notices. `PageTitle` belongs to starlight-page-actions; don't override it.
+- Spanish: locale `es` (tag `es`, not `es-419`: Starlight and plugins only ship `es` UI strings). Glossary in `translation/glossary.md`. Every `es/` page carries `sourceHash`; restamp after retranslating.
+- Migration: `migration/slug-map.json` maps every v1 page id (VerifiedX-Docs `docs/`, origin/main) to its v2 slug. Links to mapped-but-unported pages are allowed by the link validator until the page exists.

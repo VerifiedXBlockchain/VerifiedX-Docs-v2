@@ -1,0 +1,75 @@
+---
+// Starlight's page banner, plus two automatic notices:
+//   - on the testnet site, pages that are new or changed compared with mainnet
+//   - translated pages whose English source changed after they were translated
+import Default from '@astrojs/starlight/components/Banner.astro';
+import { isStaleTranslation, pageNetworkStatus, siteUrls } from '../lib/network';
+
+const { t } = Astro.locals;
+const { id, entry } = Astro.locals.starlightRoute;
+const status = entry.data.template === 'splash' ? null : pageNetworkStatus(id);
+const stale = isStaleTranslation(id);
+const mainnetHref = new URL(Astro.url.pathname, siteUrls.mainnet).href;
+---
+
+<Default />
+{
+	status && (
+		<aside class="vfx-notice testnet" data-pagefind-ignore>
+			<strong>{t('vfx.network.testnet')}</strong>
+			<span>
+				{status === 'new' ? t('vfx.network.calloutNew') : t('vfx.network.calloutChanged')}
+				{status === 'changed' && (
+					<>
+						{' '}
+						<a href={mainnetHref}>{t('vfx.network.viewMainnet')}</a>
+					</>
+				)}
+			</span>
+		</aside>
+	)
+}
+{
+	stale && (
+		<aside class="vfx-notice stale" data-pagefind-ignore>
+			<span>{t('vfx.translation.stale')}</span>
+		</aside>
+	)
+}
+
+<style>
+	.vfx-notice {
+		display: flex;
+		gap: 0.75rem;
+		align-items: baseline;
+		margin: 1rem var(--sl-content-pad-x, 1.5rem) 0;
+		padding: 0.75rem 1rem;
+		border: 1px solid;
+		border-radius: 0.5rem;
+		font-size: var(--sl-text-sm);
+		line-height: 1.5;
+	}
+	.testnet {
+		border-color: rgb(247 147 26 / 0.45);
+		background: rgb(247 147 26 / 0.08);
+		color: var(--sl-color-gray-1);
+	}
+	.testnet strong {
+		flex-shrink: 0;
+		padding: 0.0625rem 0.5rem;
+		border-radius: 999px;
+		background: var(--vfx-btc-orange);
+		color: var(--sl-color-black);
+		font-size: var(--sl-text-xs);
+		text-transform: uppercase;
+		letter-spacing: 0.04em;
+	}
+	.testnet a {
+		color: var(--vfx-btc-orange);
+	}
+	.stale {
+		border-color: var(--sl-color-hairline);
+		background: var(--sl-color-gray-6);
+		color: var(--sl-color-gray-2);
+	}
+</style>

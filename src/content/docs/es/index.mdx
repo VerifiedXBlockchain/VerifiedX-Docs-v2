@@ -1,0 +1,55 @@
+---
+sourceHash: 050dc7cf6d55
+title: Documentación de VerifiedX
+description: Documentación de VerifiedX (VFX), la cadena de alivio de Bitcoin. Aprende cómo funciona vBTC, desarrolla con los SDK y las API, ejecuta un nodo y usa la billetera.
+template: splash
+hero:
+  title: Desarrolla sobre la cadena de alivio de Bitcoin
+  tagline: VerifiedX extiende Bitcoin con programabilidad autocustodiada y no sintética. vBTC, contratos Trillium sin gas y finalidad en 10 segundos, todo documentado aquí.
+  actions:
+    - text: Empieza a desarrollar
+      link: /es/build/sdk/vfx-basics/
+      icon: right-arrow
+    - text: ¿Qué es vBTC?
+      link: /es/learn/vbtc/
+      variant: minimal
+---
+
+import { CardGrid, LinkCard, Card } from '@astrojs/starlight/components';
+
+## Elige tu camino
+
+<CardGrid>
+	<LinkCard title="Aprende" description="Qué son VerifiedX y vBTC, Prueba de Garantía (Proof of Assurance), coinomics y seguridad." href="/es/learn/about-verifiedx/" />
+	<LinkCard title="Desarrolla" description="El SDK de JavaScript, la API del nodo, la Web API, los contratos inteligentes Trillium y testnet." href="/es/build/overview/" />
+	<LinkCard title="Ejecuta un nodo" description="Compila y configura VerifiedX Core, y ejecuta un validador." href="/es/node/overview/" />
+	<LinkCard title="Usa la billetera" description="SwitchBlade en escritorio y web: cuentas, vBTC, tokens y NFTs." href="/es/wallet/overview/" />
+	<LinkCard title="Recursos" description="Whitepapers, especificaciones técnicas, auditorías, recursos de marca y la hoja de ruta." href="/es/resources/documents/overview/" />
+</CardGrid>
+
+## Inicio rápido
+
+<CardGrid>
+	<Card title="1. Instala el SDK" icon="seti:npm">
+		```bash
+		npm install vfx-web-sdk
+		```
+	</Card>
+	<Card title="2. Crea una billetera de testnet" icon="seti:typescript">
+		```ts
+		const client = new VfxClient(Network.Testnet);
+		const key = client.generatePrivateKey();
+		```
+	</Card>
+	<Card title="3. Envía tu primera transacción" icon="rocket">
+		Fondea la dirección con el faucet de testnet y luego sigue los [conceptos básicos de VFX](/es/build/sdk/vfx-basics/).
+	</Card>
+</CardGrid>
+
+## Enlaces de la red
+
+<CardGrid>
+	<LinkCard title="Explorador Spyglass" description="Bloques, transacciones y bóvedas vBTC de mainnet." href="https://spyglass.verifiedx.io" />
+	<LinkCard title="Spyglass testnet" description="Explorador y faucet de testnet." href="https://spyglass-testnet.verifiedx.io" />
+	<LinkCard title="GitHub" description="Core, los SDK, la billetera y esta documentación." href="https://github.com/VerifiedXBlockchain" />
+</CardGrid>
