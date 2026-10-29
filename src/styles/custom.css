@@ -37,7 +37,8 @@
 	--sl-color-green: var(--vfx-green);
 	--sl-color-green-high: #9ae9cb;
 
-	--sl-color-bg-nav: rgb(11 16 22 / 0.8);
+	/* Opaque: the header cube blends with mix-blend-mode: screen, and any transparency lets its black background show. */
+	--sl-color-bg-nav: var(--vfx-bg);
 	--sl-color-bg-sidebar: var(--vfx-bg);
 	--sl-color-hairline: rgb(255 255 255 / 0.07);
 	--sl-color-hairline-light: rgb(255 255 255 / 0.1);
@@ -60,11 +61,6 @@ body {
 
 /* Header: search box fills the free space. The wordmark's letters fill its whole image, so it is set
    smaller than the 2.25rem search box to look the same size. */
-/* Outer <header> only: on Starlight's inner div.header a backdrop-filter would start a transparent stacking context,
-   and the cube's mix-blend-mode would have nothing to blend with. */
-header.header {
-	backdrop-filter: blur(14px) saturate(140%);
-}
 .site-title img {
 	height: 1.375rem;
 	width: auto;
@@ -159,7 +155,7 @@ header.header {
 :root[data-has-hero] .page {
 	background: transparent;
 }
-/* The header keeps its translucent nav background here too: the cube's mix-blend-mode needs something to blend with. */
+/* The header keeps its opaque nav background here too, for the cube's blend. */
 @media (min-width: 50rem) {
 	[data-has-hero] .hero {
 		grid-template-columns: 100%;
