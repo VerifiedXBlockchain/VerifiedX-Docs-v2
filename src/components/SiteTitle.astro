@@ -15,9 +15,15 @@ const { siteTitle, siteTitleHref } = Astro.locals.starlightRoute;
 </a>
 
 <script>
-	if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
-		document.querySelectorAll<HTMLVideoElement>('.site-title .cube').forEach((video) => video.pause());
-	}
+	const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+	const applyMotionPreference = () => {
+		document.querySelectorAll<HTMLVideoElement>('.site-title .cube').forEach((video) => {
+			if (reducedMotion.matches) video.pause();
+			else video.play().catch(() => {});
+		});
+	};
+	applyMotionPreference();
+	reducedMotion.addEventListener('change', applyMotionPreference);
 </script>
 
 <style>
