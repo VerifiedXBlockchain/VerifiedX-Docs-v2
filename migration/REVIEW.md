@@ -10,7 +10,7 @@ The migration kept v1's wording. These are the problems the migrating agents fou
 - **"Sidechain":** build/sdk/cross-chain calls VerifiedX "a Bitcoin sidechain" (positioning is a Layer 1 reliever chain).
 - **SEN:** build/trillium/overview expands SEN as "Self-Executing NFTs"; elsewhere it is "Self-Executing Nodes".
 - **Bitcoin test network:** build/sdk/bitcoin-basics says Mempool.space and "Testnet" with `tb1` prefixes; build/sdk/reference/btc-client and the page's own troubleshooting say the VerifiedX signet.
-- **Butterfly:** learn/applications calls it a "decentralized marketplace"; learn/butterfly-and-pulsexai calls it a payments and financial access app.
+- **Bfly:** learn/applications calls it a "decentralized marketplace"; learn/bfly-and-pulsexai calls it a payments and financial access app.
 - **API counts:** build/setup says "five total API endpoints"; build/node-api/overview lists 13 namespaces. build/node-api/details ends "covers all 14 API controllers" but has 16 sections.
 - **Trillium IDE URL:** build/trillium/overview links https://trillium.VFX.network; build/trillium/web-ide uses https://trillium.verifiedx.io.
 - **Fees:** build/trillium/web-ide says "Gasless Deployment … without any transaction fees", which may conflict with how fees (burned) are described elsewhere.
@@ -30,9 +30,8 @@ The migration kept v1's wording. These are the problems the migrating agents fou
 
 - learn/vbtc-defi-vaults and build/sdk/examples/applications only say "Activating Soon"; four SDK pages link to the latter as "Complete Applications".
 - learn/security is generic boilerplate with nothing specific to VFX.
-- resources/network-assets keeps a "What is VerifiedX Video" heading and embed code after the YouTube embed was removed: drop the section or link the video.
 - resources/documents/whitepaper: the PDF is on S3 (opens instead of downloading); the local public/documents/ has only the old RBX whitepapers.
-- Unlinked files in public/: Privacy Matrix, Prism Architecture/Explainer/FAQ, Privacy Layer paper, RBX/ReserveBlock whitepapers and LitePaper; network-assets vfx-banner.png, vfx-cube.png, vfx-cube-black-bg.jpg, vfx-wordmark-short.svg (actually the Butterfly mark), vbtc-ecosystem.jpg, ecosystem-console.png, website.png.
+- Unlinked files in public/: Privacy Matrix, Prism Architecture/Explainer/FAQ, Privacy Layer paper, RBX/ReserveBlock whitepapers and LitePaper; network-assets vfx-banner.png, vfx-cube.png, vfx-cube-black-bg.jpg, vfx-wordmark-short.svg (actually the Bfly mark), vbtc-ecosystem.jpg, ecosystem-console.png, website.png.
 - learn/institutional/overview ends with a button to the VFX Ecosystem Console page, which looks like a leftover.
 - node/beacons ends "Link is above on the first page", pointing at nothing.
 - build/sdk/overview: "Next Steps" numbers two items "4."; "Issues" and "Discussions" have no links; no link to vBTC V2.

@@ -92,7 +92,7 @@
   "integration/web-api/web-api": "build/web-api/overview",
   "introduction/about-vbtc": "learn/vbtc",
   "introduction/applications": "learn/applications",
-  "introduction/butterfly-and-pulsexai": "learn/butterfly-and-pulsexai",
+  "introduction/butterfly-and-pulsexai": "learn/bfly-and-pulsexai",
   "introduction/custody-integration": "learn/institutional/custody-integration",
   "introduction/institutional": "learn/institutional/overview",
   "introduction/introduction": "learn/about-verifiedx",
