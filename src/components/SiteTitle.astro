@@ -56,6 +56,22 @@ const { siteTitle, siteTitleHref } = Astro.locals.starlightRoute;
 		text-transform: uppercase;
 		transition: background 120ms, border-color 120ms;
 	}
+	/* Narrow phones: cube and wordmark scale down together (the cube keeps its 27.5 : 22 ratio to the wordmark). */
+	@media (max-width: 23.99rem) {
+		.cube {
+			width: 1.5625rem;
+			height: 1.5625rem;
+		}
+		.site-title :global(img) {
+			height: 1.25rem;
+		}
+	}
+	/* Phones: the header also holds the "← Site" link, search and menu, and there is no room for the pill. */
+	@media (max-width: 29.99rem) {
+		.docs-label {
+			display: none;
+		}
+	}
 	.site-title:hover .docs-label {
 		border-color: rgb(115 196 250 / 0.6);
 		background: rgb(115 196 250 / 0.16);
