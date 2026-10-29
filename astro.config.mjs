@@ -9,7 +9,7 @@ import starlightLlmsTxt from 'starlight-llms-txt';
 import starlightPageActions from 'starlight-page-actions';
 
 const buildData = JSON.parse(readFileSync(new URL('./src/generated/build-data.json', import.meta.url), 'utf8'));
-const site = buildData.network === 'testnet' ? 'https://testnet.docs.verifiedx.io' : 'https://v2.docs.verifiedx.io';
+const site = buildData.network === 'testnet' ? 'https://testnet.docs.verifiedx.io' : 'https://docs.verifiedx.io';
 const repo = 'https://github.com/VerifiedXBlockchain/VerifiedX-Docs-v2';
 const editBranch = buildData.network === 'testnet' ? 'testnet' : 'main';
 

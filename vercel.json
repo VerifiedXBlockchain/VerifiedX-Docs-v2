@@ -1,0 +1,1166 @@
+{
+	"$schema": "https://openapi.vercel.sh/vercel.json",
+	"redirects": [
+		{
+			"source": "/:path*",
+			"has": [
+				{
+					"type": "host",
+					"value": "v2.docs.verifiedx.io"
+				}
+			],
+			"destination": "https://docs.verifiedx.io/:path*",
+			"permanent": true
+		},
+		{
+			"source": "/docs",
+			"destination": "/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/",
+			"destination": "/",
+			"permanent": true
+		},
+		{
+			"source": "/markdown-page",
+			"destination": "/",
+			"permanent": true
+		},
+		{
+			"source": "/markdown-page/",
+			"destination": "/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/core/beacons",
+			"destination": "/node/beacons/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/core/beacons/",
+			"destination": "/node/beacons/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/core/bitcoin",
+			"destination": "/learn/bitcoin-integration/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/core/bitcoin/",
+			"destination": "/learn/bitcoin-integration/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/core/build-instructions",
+			"destination": "/node/build-from-source/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/core/build-instructions/",
+			"destination": "/node/build-from-source/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/core/coinomics",
+			"destination": "/learn/coinomics/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/core/coinomics/",
+			"destination": "/learn/coinomics/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/core/config",
+			"destination": "/node/configuration/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/core/config/",
+			"destination": "/node/configuration/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/core/core",
+			"destination": "/node/overview/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/core/core/",
+			"destination": "/node/overview/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/core",
+			"destination": "/node/overview/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/core/",
+			"destination": "/node/overview/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/core/domains",
+			"destination": "/learn/domains/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/core/domains/",
+			"destination": "/learn/domains/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/core/s3c-institutional",
+			"destination": "/learn/institutional/s3c-signing/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/core/s3c-institutional/",
+			"destination": "/learn/institutional/s3c-signing/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/core/security",
+			"destination": "/learn/security/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/core/security/",
+			"destination": "/learn/security/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/core/smart-contracts",
+			"destination": "/learn/smart-contracts-and-trillium/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/core/smart-contracts/",
+			"destination": "/learn/smart-contracts-and-trillium/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/core/tokens",
+			"destination": "/learn/tokens/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/core/tokens/",
+			"destination": "/learn/tokens/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/core/trillium-web-ide",
+			"destination": "/build/trillium/web-ide/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/core/trillium-web-ide/",
+			"destination": "/build/trillium/web-ide/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/core/validator-guide",
+			"destination": "/node/validator/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/core/validator-guide/",
+			"destination": "/node/validator/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/core/vbtc",
+			"destination": "/learn/vbtc-protocol/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/core/vbtc/",
+			"destination": "/learn/vbtc-protocol/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/documents/documents",
+			"destination": "/resources/documents/overview/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/documents/documents/",
+			"destination": "/resources/documents/overview/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/documents",
+			"destination": "/resources/documents/overview/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/documents/",
+			"destination": "/resources/documents/overview/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/documents/halborn-audit",
+			"destination": "/resources/documents/halborn-audit/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/documents/halborn-audit/",
+			"destination": "/resources/documents/halborn-audit/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/documents/mica-whitepaper",
+			"destination": "/resources/documents/mica-whitepaper/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/documents/mica-whitepaper/",
+			"destination": "/resources/documents/mica-whitepaper/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/documents/one-sheet",
+			"destination": "/resources/documents/one-sheet/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/documents/one-sheet/",
+			"destination": "/resources/documents/one-sheet/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/documents/slide-deck",
+			"destination": "/resources/documents/slide-deck/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/documents/slide-deck/",
+			"destination": "/resources/documents/slide-deck/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/documents/vbtc-flow",
+			"destination": "/resources/documents/vbtc-flow/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/documents/vbtc-flow/",
+			"destination": "/resources/documents/vbtc-flow/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/documents/vbtc-hero-doc",
+			"destination": "/resources/documents/vbtc-hero-doc/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/documents/vbtc-hero-doc/",
+			"destination": "/resources/documents/vbtc-hero-doc/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/documents/vbtc-one-sheet",
+			"destination": "/resources/documents/vbtc-one-sheet/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/documents/vbtc-one-sheet/",
+			"destination": "/resources/documents/vbtc-one-sheet/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/documents/vbtc-technical",
+			"destination": "/resources/documents/vbtc-technical/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/documents/vbtc-technical/",
+			"destination": "/resources/documents/vbtc-technical/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/documents/whitepaper",
+			"destination": "/resources/documents/whitepaper/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/documents/whitepaper/",
+			"destination": "/resources/documents/whitepaper/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/gui/gui",
+			"destination": "/wallet/overview/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/gui/gui/",
+			"destination": "/wallet/overview/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/gui",
+			"destination": "/wallet/overview/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/gui/",
+			"destination": "/wallet/overview/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/gui/gui-domains",
+			"destination": "/wallet/domains/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/gui/gui-domains/",
+			"destination": "/wallet/domains/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/gui/gui-first-launch",
+			"destination": "/wallet/first-launch/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/gui/gui-first-launch/",
+			"destination": "/wallet/first-launch/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/gui/gui-fungible-tokens",
+			"destination": "/wallet/fungible-tokens/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/gui/gui-fungible-tokens/",
+			"destination": "/wallet/fungible-tokens/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/gui/gui-hd-accounts",
+			"destination": "/wallet/hd-accounts/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/gui/gui-hd-accounts/",
+			"destination": "/wallet/hd-accounts/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/gui/gui-installation",
+			"destination": "/wallet/installation/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/gui/gui-installation/",
+			"destination": "/wallet/installation/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/gui/gui-p2p-auctions",
+			"destination": "/wallet/p2p-auctions/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/gui/gui-p2p-auctions/",
+			"destination": "/wallet/p2p-auctions/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/gui/gui-sending-receiving",
+			"destination": "/wallet/sending-receiving/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/gui/gui-sending-receiving/",
+			"destination": "/wallet/sending-receiving/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/gui/gui-smart-contracts",
+			"destination": "/wallet/smart-contracts/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/gui/gui-smart-contracts/",
+			"destination": "/wallet/smart-contracts/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/gui/gui-system-operations",
+			"destination": "/wallet/system-operations/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/gui/gui-system-operations/",
+			"destination": "/wallet/system-operations/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/gui/gui-transactions",
+			"destination": "/wallet/transactions/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/gui/gui-transactions/",
+			"destination": "/wallet/transactions/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/gui/gui-trouble-shooting",
+			"destination": "/wallet/troubleshooting/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/gui/gui-trouble-shooting/",
+			"destination": "/wallet/troubleshooting/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/gui/gui-validating",
+			"destination": "/wallet/validating/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/gui/gui-validating/",
+			"destination": "/wallet/validating/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/gui/gui-vault-accounts",
+			"destination": "/wallet/vault-accounts/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/gui/gui-vault-accounts/",
+			"destination": "/wallet/vault-accounts/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/gui/gui-vbtc",
+			"destination": "/wallet/vbtc/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/gui/gui-vbtc/",
+			"destination": "/wallet/vbtc/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/gui/gui-web-wallet",
+			"destination": "/wallet/web-wallet/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/gui/gui-web-wallet/",
+			"destination": "/wallet/web-wallet/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/address-creation",
+			"destination": "/build/node-api/address-creation/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/address-creation/",
+			"destination": "/build/node-api/address-creation/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/cli-api-details",
+			"destination": "/build/node-api/details/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/cli-api-details/",
+			"destination": "/build/node-api/details/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/cli-api-overview",
+			"destination": "/build/node-api/overview/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/cli-api-overview/",
+			"destination": "/build/node-api/overview/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/example-transactions",
+			"destination": "/build/node-api/example-transactions/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/example-transactions/",
+			"destination": "/build/node-api/example-transactions/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/fungible-tokens",
+			"destination": "/build/node-api/fungible-tokens/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/fungible-tokens/",
+			"destination": "/build/node-api/fungible-tokens/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/integration",
+			"destination": "/build/overview/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/integration/",
+			"destination": "/build/overview/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration",
+			"destination": "/build/overview/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/",
+			"destination": "/build/overview/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/js-sdk/api/btc-client",
+			"destination": "/build/sdk/reference/btc-client/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/js-sdk/api/btc-client/",
+			"destination": "/build/sdk/reference/btc-client/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/js-sdk/api/types",
+			"destination": "/build/sdk/reference/types/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/js-sdk/api/types/",
+			"destination": "/build/sdk/reference/types/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/js-sdk/api/vfx-client",
+			"destination": "/build/sdk/reference/vfx-client/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/js-sdk/api/vfx-client/",
+			"destination": "/build/sdk/reference/vfx-client/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/js-sdk/examples/applications",
+			"destination": "/build/sdk/examples/applications/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/js-sdk/examples/applications/",
+			"destination": "/build/sdk/examples/applications/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/js-sdk/examples/snippets",
+			"destination": "/build/sdk/examples/snippets/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/js-sdk/examples/snippets/",
+			"destination": "/build/sdk/examples/snippets/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/js-sdk/getting-started/bitcoin-basics",
+			"destination": "/build/sdk/bitcoin-basics/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/js-sdk/getting-started/bitcoin-basics/",
+			"destination": "/build/sdk/bitcoin-basics/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/js-sdk/getting-started/cross-chain",
+			"destination": "/build/sdk/cross-chain/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/js-sdk/getting-started/cross-chain/",
+			"destination": "/build/sdk/cross-chain/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/js-sdk/getting-started/external-signing",
+			"destination": "/build/sdk/external-signing/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/js-sdk/getting-started/external-signing/",
+			"destination": "/build/sdk/external-signing/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/js-sdk/getting-started/fungible-tokens",
+			"destination": "/build/sdk/fungible-tokens/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/js-sdk/getting-started/fungible-tokens/",
+			"destination": "/build/sdk/fungible-tokens/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/js-sdk/getting-started/reserve-accounts",
+			"destination": "/build/sdk/reserve-accounts/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/js-sdk/getting-started/reserve-accounts/",
+			"destination": "/build/sdk/reserve-accounts/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/js-sdk/getting-started/vfx-basics",
+			"destination": "/build/sdk/vfx-basics/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/js-sdk/getting-started/vfx-basics/",
+			"destination": "/build/sdk/vfx-basics/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/js-sdk/js-sdk",
+			"destination": "/build/sdk/overview/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/js-sdk/js-sdk/",
+			"destination": "/build/sdk/overview/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/js-sdk",
+			"destination": "/build/sdk/overview/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/js-sdk/",
+			"destination": "/build/sdk/overview/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/setup",
+			"destination": "/build/setup/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/setup/",
+			"destination": "/build/setup/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/signet",
+			"destination": "/build/signet/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/signet/",
+			"destination": "/build/signet/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/smart-contracts/auction-house",
+			"destination": "/build/smart-contracts/auction-house/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/smart-contracts/auction-house/",
+			"destination": "/build/smart-contracts/auction-house/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/smart-contracts/burning",
+			"destination": "/build/smart-contracts/burning/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/smart-contracts/burning/",
+			"destination": "/build/smart-contracts/burning/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/smart-contracts/collections",
+			"destination": "/build/smart-contracts/collections/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/smart-contracts/collections/",
+			"destination": "/build/smart-contracts/collections/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/smart-contracts/compiling-and-minting",
+			"destination": "/build/smart-contracts/compiling-and-minting/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/smart-contracts/compiling-and-minting/",
+			"destination": "/build/smart-contracts/compiling-and-minting/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/smart-contracts/evolving",
+			"destination": "/build/smart-contracts/evolving/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/smart-contracts/evolving/",
+			"destination": "/build/smart-contracts/evolving/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/smart-contracts/listings",
+			"destination": "/build/smart-contracts/listings/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/smart-contracts/listings/",
+			"destination": "/build/smart-contracts/listings/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/smart-contracts/smart-contracts",
+			"destination": "/build/smart-contracts/overview/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/smart-contracts/smart-contracts/",
+			"destination": "/build/smart-contracts/overview/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/smart-contracts",
+			"destination": "/build/smart-contracts/overview/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/smart-contracts/",
+			"destination": "/build/smart-contracts/overview/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/smart-contracts/transferring",
+			"destination": "/build/smart-contracts/transferring/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/smart-contracts/transferring/",
+			"destination": "/build/smart-contracts/transferring/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/swagger",
+			"destination": "/build/node-api/swagger/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/swagger/",
+			"destination": "/build/node-api/swagger/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/testnet",
+			"destination": "/build/testnet/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/testnet/",
+			"destination": "/build/testnet/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/transaction-creation",
+			"destination": "/build/node-api/transaction-creation/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/transaction-creation/",
+			"destination": "/build/node-api/transaction-creation/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/trillium",
+			"destination": "/build/trillium/overview/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/trillium/",
+			"destination": "/build/trillium/overview/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/vbtc",
+			"destination": "/build/vbtc/integration/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/vbtc/",
+			"destination": "/build/vbtc/integration/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/vbtc-raw",
+			"destination": "/build/vbtc/raw-integration/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/vbtc-raw/",
+			"destination": "/build/vbtc/raw-integration/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/web-api/addresses",
+			"destination": "/build/web-api/addresses/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/web-api/addresses/",
+			"destination": "/build/web-api/addresses/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/web-api/adnr",
+			"destination": "/build/web-api/adnr/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/web-api/adnr/",
+			"destination": "/build/web-api/adnr/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/web-api/block",
+			"destination": "/build/web-api/block/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/web-api/block/",
+			"destination": "/build/web-api/block/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/web-api/btc",
+			"destination": "/build/web-api/btc/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/web-api/btc/",
+			"destination": "/build/web-api/btc/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/web-api/chat",
+			"destination": "/build/web-api/chat/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/web-api/chat/",
+			"destination": "/build/web-api/chat/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/web-api/cmc-price",
+			"destination": "/build/web-api/cmc-price/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/web-api/cmc-price/",
+			"destination": "/build/web-api/cmc-price/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/web-api/faucet",
+			"destination": "/build/web-api/faucet/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/web-api/faucet/",
+			"destination": "/build/web-api/faucet/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/web-api/fungible-token",
+			"destination": "/build/web-api/fungible-token/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/web-api/fungible-token/",
+			"destination": "/build/web-api/fungible-token/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/web-api/master-node",
+			"destination": "/build/web-api/master-node/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/web-api/master-node/",
+			"destination": "/build/web-api/master-node/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/web-api/media",
+			"destination": "/build/web-api/media/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/web-api/media/",
+			"destination": "/build/web-api/media/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/web-api/metrics",
+			"destination": "/build/web-api/metrics/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/web-api/metrics/",
+			"destination": "/build/web-api/metrics/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/web-api/nft",
+			"destination": "/build/web-api/nft/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/web-api/nft/",
+			"destination": "/build/web-api/nft/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/web-api/price",
+			"destination": "/build/web-api/price/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/web-api/price/",
+			"destination": "/build/web-api/price/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/web-api/raw",
+			"destination": "/build/web-api/raw/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/web-api/raw/",
+			"destination": "/build/web-api/raw/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/web-api/shop",
+			"destination": "/build/web-api/shop/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/web-api/shop/",
+			"destination": "/build/web-api/shop/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/web-api/transaction",
+			"destination": "/build/web-api/transaction/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/web-api/transaction/",
+			"destination": "/build/web-api/transaction/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/web-api/web-api",
+			"destination": "/build/web-api/overview/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/web-api/web-api/",
+			"destination": "/build/web-api/overview/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/web-api",
+			"destination": "/build/web-api/overview/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/integration/web-api/",
+			"destination": "/build/web-api/overview/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/introduction/about-vbtc",
+			"destination": "/learn/vbtc/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/introduction/about-vbtc/",
+			"destination": "/learn/vbtc/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/introduction/applications",
+			"destination": "/learn/applications/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/introduction/applications/",
+			"destination": "/learn/applications/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/introduction/butterfly-and-pulsexai",
+			"destination": "/learn/bfly-and-pulsexai/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/introduction/butterfly-and-pulsexai/",
+			"destination": "/learn/bfly-and-pulsexai/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/introduction/custody-integration",
+			"destination": "/learn/institutional/custody-integration/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/introduction/custody-integration/",
+			"destination": "/learn/institutional/custody-integration/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/introduction/institutional",
+			"destination": "/learn/institutional/overview/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/introduction/institutional/",
+			"destination": "/learn/institutional/overview/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/introduction/introduction",
+			"destination": "/learn/about-verifiedx/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/introduction/introduction/",
+			"destination": "/learn/about-verifiedx/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/introduction",
+			"destination": "/learn/about-verifiedx/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/introduction/",
+			"destination": "/learn/about-verifiedx/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/introduction/prism-privacy",
+			"destination": "/learn/prism-privacy/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/introduction/prism-privacy/",
+			"destination": "/learn/prism-privacy/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/introduction/vbtc-defi-vaults",
+			"destination": "/learn/vbtc-defi-vaults/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/introduction/vbtc-defi-vaults/",
+			"destination": "/learn/vbtc-defi-vaults/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/introduction/vbtc-ecosystem",
+			"destination": "/learn/vbtc-ecosystem/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/introduction/vbtc-ecosystem/",
+			"destination": "/learn/vbtc-ecosystem/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/introduction/vfx-ecosystem",
+			"destination": "/learn/vfx-ecosystem/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/introduction/vfx-ecosystem/",
+			"destination": "/learn/vfx-ecosystem/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/network-assets/network-assets",
+			"destination": "/resources/network-assets/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/network-assets/network-assets/",
+			"destination": "/resources/network-assets/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/network-assets",
+			"destination": "/resources/network-assets/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/network-assets/",
+			"destination": "/resources/network-assets/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/roadmap/roadmap",
+			"destination": "/resources/roadmap/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/roadmap/roadmap/",
+			"destination": "/resources/roadmap/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/roadmap",
+			"destination": "/resources/roadmap/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/roadmap/",
+			"destination": "/resources/roadmap/",
+			"permanent": true
+		}
+	]
+}

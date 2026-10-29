@@ -4,7 +4,7 @@ Source for the VerifiedX documentation, built with [Starlight](https://starlight
 
 | Branch | Site |
 |---|---|
-| `main` | https://v2.docs.verifiedx.io (mainnet docs) |
+| `main` | https://docs.verifiedx.io (mainnet docs) |
 | `testnet` | https://testnet.docs.verifiedx.io (what is live on testnet ahead of mainnet) |
 
 ## Editing
