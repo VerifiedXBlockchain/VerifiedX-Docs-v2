@@ -1,6 +1,6 @@
 ---
 title: "Applications"
-description: Where to download the SwitchBlade wallet and the Core CLI, open the web wallet and Butterfly, and get the latest blockchain snapshot.
+description: Where to download the SwitchBlade wallet and the Core CLI, open the web wallet and Bfly, and get the latest blockchain snapshot.
 sidebar:
   order: 14
 ---
@@ -45,8 +45,8 @@ Sync your node quickly using the latest blockchain snapshot.
 
 ---
 
-## Butterfly
+## Bfly
 
-Launch the Butterfly decentralized marketplace.
+Launch the Bfly decentralized marketplace.
 
-- [Open Butterfly](https://www.befree.io)
+- [Open Bfly](https://www.befree.io)

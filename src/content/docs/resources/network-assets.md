@@ -1,6 +1,6 @@
 ---
 title: "Network Assets"
-description: Brand colors, fonts, and downloadable logo files for VerifiedX, vBTC, and Butterfly.
+description: Brand colors, fonts, and downloadable logo files for VerifiedX, vBTC, and Bfly.
 sidebar:
   order: 20
 ---
@@ -56,9 +56,9 @@ Click to download the files.
 <a href="/network-assets/vbtc.jpg" target="_blank" download="vbtc.jpg"><img src="/network-assets/vbtc.jpg" alt="vBTC logo" width="256" /></a>
 
 
-### Butterfly
+### Bfly
 
-<a href="/network-assets/butterfly-wordmark.svg" target="_blank" download="butterfly-wordmark.svg"><img src="/network-assets/butterfly-wordmark.svg" alt="Butterfly wordmark" width="300" /></a>
+<a href="/network-assets/bfly-wordmark.svg" target="_blank" download="bfly-wordmark.svg"><img src="/network-assets/bfly-wordmark.svg" alt="Bfly wordmark" width="200" /></a>
 <br />
 <br />
 
@@ -67,9 +67,3 @@ Click to download the files.
 <br />
 
 <a href="/network-assets/charlie.png" target="_blank" download="charlie.png"><img src="/network-assets/charlie.png" alt="Charlie logo" width="200" /></a>
-
-### What is VerifiedX Video
-
-#### Embed Code:
-```
-```
