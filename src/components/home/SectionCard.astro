@@ -1,0 +1,77 @@
+---
+// A home-page card linking to one top-level docs section, tinted with a brand color.
+import { Icon } from '@astrojs/starlight/components';
+import type { ComponentProps } from 'astro/types';
+
+interface Props {
+	title: string;
+	description: string;
+	href: string;
+	icon: ComponentProps<typeof Icon>['name'];
+	color: 'orange' | 'purple' | 'blue' | 'green' | 'light';
+}
+
+const { title, description, href, icon, color } = Astro.props;
+---
+
+<a class="section-card" href={href} data-color={color}>
+	<span class="icon"><Icon name={icon} size="1.25rem" /></span>
+	<span class="text">
+		<span class="title">{title}</span>
+		<span class="description">{description}</span>
+	</span>
+</a>
+
+<style>
+	.section-card {
+		--c: var(--vfx-ice-blue);
+		display: flex;
+		gap: 0.875rem;
+		align-items: flex-start;
+		padding: 1rem 1.125rem;
+		border: 1px solid var(--sl-color-hairline-light);
+		border-radius: 0.75rem;
+		background: rgb(17 23 30 / 0.7);
+		text-decoration: none;
+		transition: border-color 150ms, background 150ms;
+	}
+	.section-card[data-color='orange'] {
+		--c: var(--vfx-btc-orange);
+	}
+	.section-card[data-color='purple'] {
+		--c: var(--vfx-vault-purple);
+	}
+	.section-card[data-color='green'] {
+		--c: var(--vfx-green);
+	}
+	.section-card[data-color='light'] {
+		--c: var(--vfx-blue-light);
+	}
+	.section-card:hover {
+		border-color: color-mix(in srgb, var(--c) 45%, transparent);
+		background: color-mix(in srgb, var(--c) 6%, rgb(17 23 30 / 0.85));
+	}
+	.icon {
+		display: grid;
+		place-items: center;
+		flex-shrink: 0;
+		width: 2.25rem;
+		height: 2.25rem;
+		border-radius: 0.5rem;
+		background: color-mix(in srgb, var(--c) 14%, transparent);
+		color: var(--c);
+	}
+	.text {
+		display: grid;
+		gap: 0.125rem;
+	}
+	.title {
+		color: var(--sl-color-white);
+		font-weight: 600;
+	}
+	.description {
+		color: var(--sl-color-gray-3);
+		font-size: var(--sl-text-sm);
+		line-height: 1.5;
+	}
+</style>

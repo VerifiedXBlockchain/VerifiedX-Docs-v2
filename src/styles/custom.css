@@ -1,36 +1,54 @@
-/* VFX brand on Starlight. Palette: vfx-brand-toolkit/brand/colors.md (dark theme). The site is dark-only. */
+/* VFX brand on Starlight. Palette: vfx-brand-toolkit/brand/colors.md, on a darker slate base. The site is dark-only. */
 :root {
 	--vfx-ice-blue: #73c4fa;
 	--vfx-blue-light: #a5d5fb;
 	--vfx-vault-purple: #b39ddb;
 	--vfx-btc-orange: #f7931a;
 	--vfx-green: #34d399;
-	--vfx-bg: #0f1923;
-	--vfx-card: #1a2332;
-	--vfx-card-hover: #1f2b3d;
+	--vfx-bg: #0b1016;
+	--vfx-surface: #121920;
+	--vfx-surface-hover: #161e27;
+	--vfx-code-bg: #070a0e;
 
-	--sl-color-accent-low: #12324a;
+	--sl-color-accent-low: #10283a;
 	--sl-color-accent: var(--vfx-ice-blue);
 	--sl-color-accent-high: var(--vfx-blue-light);
 
-	--sl-color-white: #f7f8f8;
-	--sl-color-gray-1: #e5ecf6;
-	--sl-color-gray-2: #c3cdda;
-	--sl-color-gray-3: #8d9aad;
-	--sl-color-gray-4: #56657b;
-	--sl-color-gray-5: #2a3749;
-	--sl-color-gray-6: var(--vfx-card);
+	--sl-color-white: #f5f7f9;
+	--sl-color-gray-1: #e2e8ef;
+	--sl-color-gray-2: #bcc5cf;
+	--sl-color-gray-3: #87929e;
+	--sl-color-gray-4: #545e6a;
+	--sl-color-gray-5: #262e38;
+	--sl-color-gray-6: var(--vfx-surface);
 	--sl-color-black: var(--vfx-bg);
 
-	--sl-color-bg-nav: rgb(15 25 35 / 0.92);
+	/* Aside and badge colors from the brand palette. */
+	--sl-color-blue-low: #10283a;
+	--sl-color-blue: var(--vfx-ice-blue);
+	--sl-color-blue-high: var(--vfx-blue-light);
+	--sl-color-purple-low: #221c33;
+	--sl-color-purple: var(--vfx-vault-purple);
+	--sl-color-purple-high: #d6cbee;
+	--sl-color-orange-low: #33210b;
+	--sl-color-orange: var(--vfx-btc-orange);
+	--sl-color-orange-high: #fbc98b;
+	--sl-color-green-low: #0d2e24;
+	--sl-color-green: var(--vfx-green);
+	--sl-color-green-high: #9ae9cb;
+
+	--sl-color-bg-nav: rgb(11 16 22 / 0.8);
 	--sl-color-bg-sidebar: var(--vfx-bg);
-	--sl-color-hairline: rgb(255 255 255 / 0.08);
-	--sl-color-hairline-light: rgb(255 255 255 / 0.12);
-	--sl-color-hairline-shade: rgb(0 0 0 / 0.4);
+	--sl-color-hairline: rgb(255 255 255 / 0.07);
+	--sl-color-hairline-light: rgb(255 255 255 / 0.1);
+	--sl-color-hairline-shade: rgb(0 0 0 / 0.5);
 
 	--sl-font: 'Inter Variable', 'Inter', system-ui, sans-serif;
 	--sl-font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
 	--sl-line-height: 1.7;
+
+	/* Fine grain laid over gradients so they don't band. */
+	--vfx-noise: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.5 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 
 	color-scheme: dark;
 }
@@ -40,58 +58,147 @@ body {
 	font-feature-settings: 'cv11', 'ss01';
 }
 
+/* Header: wordmark exactly as tall as the search box, search box fills the free space. */
 .header {
-	backdrop-filter: blur(12px);
+	backdrop-filter: blur(14px) saturate(140%);
+}
+.site-title img {
+	height: 2.25rem;
+	width: auto;
+}
+@media (min-width: 50rem) {
+	site-search,
+	site-search button[data-open-modal] {
+		width: 100%;
+		max-width: none;
+	}
+	site-search button[data-open-modal] {
+		box-sizing: border-box;
+		height: 2.25rem;
+		background: var(--vfx-surface);
+		border-color: var(--sl-color-hairline-light);
+	}
+	site-search button[data-open-modal]:hover {
+		border-color: rgb(115 196 250 / 0.45);
+	}
 }
 
-/* Headings: tighter tracking, brand white. */
+/* Headings: tighter tracking. */
 .sl-markdown-content :is(h1, h2, h3, h4) {
 	letter-spacing: -0.015em;
 }
 
-/* Inline code reads as a soft chip, not a hard box. */
+/* Inline code reads as a soft chip in vault purple. */
 .sl-markdown-content :not(pre) > code {
 	padding: 0.1em 0.35em;
-	border: 1px solid var(--sl-color-hairline);
+	border: 1px solid rgb(179 157 219 / 0.18);
 	border-radius: 0.3rem;
-	background: var(--vfx-card);
-	color: var(--vfx-blue-light);
+	background: rgb(179 157 219 / 0.08);
+	color: #cfc2ec;
 }
 
 .sl-markdown-content hr {
 	border-color: var(--sl-color-hairline);
 }
 
-/* Cards on the home page. */
-.card,
-.sl-link-card {
-	border-color: var(--sl-color-hairline-light) !important;
-	background: var(--vfx-card);
-	transition: background 120ms, border-color 120ms;
-}
-.sl-link-card:hover {
-	background: var(--vfx-card-hover);
-	border-color: rgb(115 196 250 / 0.5) !important;
+.sl-markdown-content blockquote {
+	border-inline-start-color: var(--vfx-vault-purple);
+	color: var(--sl-color-gray-2);
 }
 
-/* Splash hero: subtle ice-blue glow behind the title. */
-[data-has-hero] .hero {
-	position: relative;
+/* Current page in the sidebar: a quiet tint with an ice-blue edge instead of a solid fill. */
+.sidebar-content a[aria-current='page'] {
+	background: linear-gradient(90deg, rgb(115 196 250 / 0.14), rgb(115 196 250 / 0.03));
+	color: var(--sl-color-white);
+	box-shadow: inset 2px 0 0 var(--vfx-ice-blue);
+	font-weight: 500;
 }
-[data-has-hero] .hero::before {
-	content: '';
-	position: absolute;
-	inset: -6rem -20% auto;
-	height: 26rem;
-	background: radial-gradient(ellipse at center, rgb(115 196 250 / 0.14), transparent 65%);
-	pointer-events: none;
-	z-index: -1;
+
+/* Testnet sidebar markers: a small green dot for changed pages, a small "new" label for new ones. */
+.sl-badge.vfx-changed,
+.sl-badge.vfx-new {
+	border: 0;
+	background: none;
+	padding: 0;
+	font-family: var(--sl-font);
+	font-weight: 600;
+	letter-spacing: 0.02em;
+	color: var(--vfx-green);
+}
+.sl-badge.vfx-changed {
+	width: 0.4rem;
+	height: 0.4rem;
+	border-radius: 50%;
+	background: var(--vfx-green);
+	box-shadow: 0 0 0 3px rgb(52 211 153 / 0.15);
+	overflow: hidden;
+	color: transparent;
+	vertical-align: middle;
+}
+.sl-badge.vfx-new {
+	font-size: 0.6875rem;
+	text-transform: lowercase;
+}
+
+/* Splash page: full-width glow in the brand colors, with grain so the gradients don't band. */
+:root[data-has-hero] body {
+	background:
+		var(--vfx-noise),
+		radial-gradient(56rem 34rem at 8% -8rem, rgb(115 196 250 / 0.3), transparent 70%),
+		radial-gradient(50rem 32rem at 92% -2rem, rgb(179 157 219 / 0.32), transparent 70%),
+		radial-gradient(44rem 26rem at 60% 34rem, rgb(247 147 26 / 0.09), transparent 70%),
+		radial-gradient(36rem 22rem at 20% 40rem, rgb(52 211 153 / 0.06), transparent 70%),
+		var(--vfx-bg);
+	background-repeat: repeat, no-repeat, no-repeat, no-repeat, no-repeat;
+	background-size: 220px 220px, auto, auto, auto, auto;
+	background-blend-mode: soft-light, normal, normal, normal, normal;
+}
+:root[data-has-hero] .page > .header,
+:root[data-has-hero] .page {
+	background: transparent;
+}
+@media (min-width: 50rem) {
+	[data-has-hero] .hero {
+		grid-template-columns: 100%;
+		padding-block: clamp(2.5rem, calc(1rem + 8vmin), 7rem) clamp(2rem, 6vmin, 4rem);
+	}
 }
 [data-has-hero] .hero h1 {
-	letter-spacing: -0.03em;
+	max-width: 52rem;
+	font-size: clamp(2.25rem, 4.2vw, 3.25rem);
+	line-height: 1.1;
+	letter-spacing: -0.035em;
+}
+[data-has-hero] .hero .tagline {
+	color: var(--sl-color-gray-2);
+	max-width: 44rem;
+}
+.hl-btc {
+	color: var(--vfx-btc-orange);
+}
+.hl-blue {
+	color: var(--vfx-ice-blue);
+}
+.hl-green {
+	color: var(--vfx-green);
 }
 
-/* Selection in brand blue. */
 ::selection {
 	background: rgb(115 196 250 / 0.3);
+}
+
+/* Home page grids. */
+.home-grid {
+	display: grid;
+	gap: 1rem;
+}
+.home-grid-3 {
+	grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+}
+.home-grid-sections {
+	grid-template-columns: repeat(auto-fit, minmax(19rem, 1fr));
+}
+/* Starlight spaces consecutive markdown blocks; inside a grid that staggers the cards. */
+.sl-markdown-content .home-grid > * {
+	margin-top: 0;
 }

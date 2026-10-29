@@ -18,24 +18,18 @@ const mainnetHref = new URL(Astro.url.pathname, siteUrls.mainnet).href;
 		<div class="vfx-notices" data-pagefind-ignore>
 			<div class="vfx-notices-inner">
 				{status && (
-					<aside class="vfx-notice testnet">
-						<strong>{t('vfx.network.testnet')}</strong>
-						<span>
-							{status === 'new' ? t('vfx.network.calloutNew') : t('vfx.network.calloutChanged')}
-							{status === 'changed' && (
-								<>
-									{' '}
-									<a href={mainnetHref}>{t('vfx.network.viewMainnet')}</a>
-								</>
-							)}
-						</span>
-					</aside>
+					<p class="vfx-notice testnet">
+						<span class="dot" aria-hidden="true" />
+						<span class="label">{t('vfx.network.testnet')}</span>
+						<span>{status === 'new' ? t('vfx.network.calloutNew') : t('vfx.network.calloutChanged')}</span>
+						{status === 'changed' && (
+							<a href={mainnetHref}>
+								{t('vfx.network.viewMainnet')} <span aria-hidden="true">→</span>
+							</a>
+						)}
+					</p>
 				)}
-				{stale && (
-					<aside class="vfx-notice stale">
-						<span>{t('vfx.translation.stale')}</span>
-					</aside>
-				)}
+				{stale && <p class="vfx-notice stale">{t('vfx.translation.stale')}</p>}
 			</div>
 		</div>
 	)
@@ -44,11 +38,11 @@ const mainnetHref = new URL(Astro.url.pathname, siteUrls.mainnet).href;
 <style>
 	/* Same box as Starlight's ContentPanel, so the notices line up with the page text. */
 	.vfx-notices {
-		padding: 1.5rem var(--sl-content-pad-x) 0;
+		padding: 1.25rem var(--sl-content-pad-x) 0;
 	}
 	.vfx-notices-inner {
 		display: grid;
-		gap: 0.75rem;
+		gap: 0.5rem;
 		max-width: var(--sl-content-width);
 	}
 	@media (min-width: 72rem) {
@@ -57,36 +51,43 @@ const mainnetHref = new URL(Astro.url.pathname, siteUrls.mainnet).href;
 		}
 	}
 	.vfx-notice {
-		display: flex;
-		gap: 0.75rem;
-		align-items: baseline;
-		padding: 0.75rem 1rem;
-		border: 1px solid;
-		border-radius: 0.5rem;
+		margin: 0;
 		font-size: var(--sl-text-sm);
 		line-height: 1.5;
+		color: var(--sl-color-gray-3);
 	}
 	.testnet {
-		border-color: rgb(247 147 26 / 0.45);
-		background: rgb(247 147 26 / 0.08);
-		color: var(--sl-color-gray-1);
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 0.25rem 0.625rem;
+		padding: 0.5rem 0.875rem;
+		border: 1px solid rgb(52 211 153 / 0.18);
+		border-radius: 0.625rem;
+		background: linear-gradient(90deg, rgb(52 211 153 / 0.09), rgb(52 211 153 / 0) 70%);
 	}
-	.testnet strong {
-		flex-shrink: 0;
-		padding: 0.0625rem 0.5rem;
-		border-radius: 999px;
-		background: var(--vfx-btc-orange);
-		color: var(--sl-color-black);
-		font-size: var(--sl-text-xs);
-		text-transform: uppercase;
-		letter-spacing: 0.04em;
+	.dot {
+		width: 0.4rem;
+		height: 0.4rem;
+		border-radius: 50%;
+		background: var(--vfx-green);
+		box-shadow: 0 0 0 3px rgb(52 211 153 / 0.18), 0 0 10px rgb(52 211 153 / 0.6);
+	}
+	.label {
+		color: var(--vfx-green);
+		font-weight: 600;
 	}
 	.testnet a {
-		color: var(--vfx-btc-orange);
+		margin-inline-start: auto;
+		color: var(--sl-color-gray-2);
+		text-decoration: none;
+		font-weight: 500;
+	}
+	.testnet a:hover {
+		color: var(--vfx-green);
 	}
 	.stale {
-		border-color: var(--sl-color-hairline);
-		background: var(--sl-color-gray-6);
-		color: var(--sl-color-gray-2);
+		padding-inline-start: 0.875rem;
+		border-inline-start: 2px solid var(--vfx-vault-purple);
 	}
 </style>

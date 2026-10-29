@@ -3,10 +3,10 @@
 	"vfx.network.testnet": "Testnet",
 	"vfx.network.label": "Docs for network",
 	"vfx.network.notOnMainnet": "This page is not on mainnet yet",
-	"vfx.network.badgeNew": "Testnet",
-	"vfx.network.badgeChanged": "Changed",
-	"vfx.network.calloutNew": "This page is new on testnet and is not live on mainnet yet.",
-	"vfx.network.calloutChanged": "This page differs from mainnet. It describes behavior that is live on testnet and has not reached mainnet yet.",
-	"vfx.network.viewMainnet": "View the mainnet version",
+	"vfx.network.badgeNew": "new",
+	"vfx.network.badgeChanged": "Changed on testnet",
+	"vfx.network.calloutNew": "New on testnet. Not on mainnet yet.",
+	"vfx.network.calloutChanged": "This page differs from mainnet.",
+	"vfx.network.viewMainnet": "View mainnet version",
 	"vfx.translation.stale": "The English version of this page was updated after this translation. Check the English page for the latest details."
 }

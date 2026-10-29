@@ -1,55 +1,65 @@
 ---
-sourceHash: 050dc7cf6d55
+sourceHash: 8f2e8011dc1f
 title: Documentación de VerifiedX
-description: Documentación de VerifiedX (VFX), la cadena de alivio de Bitcoin. Aprende cómo funciona vBTC, desarrolla con los SDK y las API, ejecuta un nodo y usa la billetera.
+description: Documentación de VerifiedX (VFX), el sistema operativo financiero para Bitcoin. Usa la billetera, aprende cómo funciona vBTC, desarrolla con los SDK y las API, y ejecuta un nodo.
 template: splash
+editUrl: false
+lastUpdated: false
 hero:
-  title: Desarrolla sobre la cadena de alivio de Bitcoin
-  tagline: VerifiedX extiende Bitcoin con programabilidad autocustodiada y no sintética. vBTC, contratos Trillium sin gas y finalidad en 10 segundos, todo documentado aquí.
+  title: El sistema operativo financiero para <span class="hl-btc">Bitcoin</span>, <span class="hl-blue">activos inteligentes</span> y la <span class="hl-green">emergente economía de agentes</span>
+  tagline: VerifiedX es el sistema operativo financiero que convierte a Bitcoin en capital financiero programable y habilita activos inteligentes tokenizados para la emergente economía de agentes.
   actions:
-    - text: Empieza a desarrollar
-      link: /es/build/sdk/vfx-basics/
+    - text: Empieza aquí
+      link: /es/learn/about-verifiedx/
       icon: right-arrow
-    - text: ¿Qué es vBTC?
-      link: /es/learn/vbtc/
+    - text: Descarga la billetera
+      link: /es/wallet/installation/
       variant: minimal
 ---
 
-import { CardGrid, LinkCard, Card } from '@astrojs/starlight/components';
+import Audience from '../../../components/home/Audience.astro';
+import SectionCard from '../../../components/home/SectionCard.astro';
 
-## Elige tu camino
+<div class="home-grid home-grid-3">
+	<Audience
+		title="Personas"
+		description="Envía pagos, guarda vBTC y conserva tus claves."
+		color="orange"
+		links={[
+			{ label: 'Obtén la billetera SwitchBlade', href: '/es/wallet/installation/' },
+			{ label: 'Envía y recibe', href: '/es/wallet/sending-receiving/' },
+			{ label: 'Butterfly y PulseXAI', href: '/es/learn/butterfly-and-pulsexai/' },
+		]}
+	/>
+	<Audience
+		title="Instituciones"
+		description="Liquidación nativa en Bitcoin con autocustodia y cumplimiento."
+		color="purple"
+		links={[
+			{ label: 'Panorama institucional', href: '/es/learn/institutional/overview/' },
+			{ label: 'Acerca de vBTC', href: '/es/learn/vbtc/' },
+			{ label: 'Integración con custodios', href: '/es/learn/institutional/custody-integration/' },
+		]}
+	/>
+	<Audience
+		title="Desarrolladores"
+		description="Integra VFX y vBTC con el SDK y las API, o ejecuta un nodo."
+		color="blue"
+		links={[
+			{ label: 'Inicio rápido del SDK de JavaScript', href: '/es/build/sdk/vfx-basics/' },
+			{ label: 'Configuración de testnet', href: '/es/build/testnet/' },
+			{ label: 'Ejecuta un validador', href: '/es/node/validator/' },
+		]}
+	/>
+</div>
 
-<CardGrid>
-	<LinkCard title="Aprende" description="Qué son VerifiedX y vBTC, Prueba de Garantía (Proof of Assurance), coinomics y seguridad." href="/es/learn/about-verifiedx/" />
-	<LinkCard title="Desarrolla" description="El SDK de JavaScript, la API del nodo, la Web API, los contratos inteligentes Trillium y testnet." href="/es/build/overview/" />
-	<LinkCard title="Ejecuta un nodo" description="Compila y configura VerifiedX Core, y ejecuta un validador." href="/es/node/overview/" />
-	<LinkCard title="Usa la billetera" description="SwitchBlade en escritorio y web: cuentas, vBTC, tokens y NFTs." href="/es/wallet/overview/" />
-	<LinkCard title="Recursos" description="Whitepapers, especificaciones técnicas, auditorías, recursos de marca y la hoja de ruta." href="/es/resources/documents/overview/" />
-</CardGrid>
+## Explora la documentación
 
-## Inicio rápido
-
-<CardGrid>
-	<Card title="1. Instala el SDK" icon="seti:npm">
-		```bash
-		npm install vfx-web-sdk
-		```
-	</Card>
-	<Card title="2. Crea una billetera de testnet" icon="seti:typescript">
-		```ts
-		const client = new VfxClient(Network.Testnet);
-		const key = client.generatePrivateKey();
-		```
-	</Card>
-	<Card title="3. Envía tu primera transacción" icon="rocket">
-		Fondea la dirección con el faucet de testnet y luego sigue los [conceptos básicos de VFX](/es/build/sdk/vfx-basics/).
-	</Card>
-</CardGrid>
-
-## Enlaces de la red
-
-<CardGrid>
-	<LinkCard title="Explorador Spyglass" description="Bloques, transacciones y bóvedas vBTC de mainnet." href="https://spyglass.verifiedx.io" />
-	<LinkCard title="Spyglass testnet" description="Explorador y faucet de testnet." href="https://spyglass-testnet.verifiedx.io" />
-	<LinkCard title="GitHub" description="Core, los SDK, la billetera y esta documentación." href="https://github.com/VerifiedXBlockchain" />
-</CardGrid>
+<div class="home-grid home-grid-sections">
+	<SectionCard title="Aprende" description="Qué son VerifiedX y vBTC, Prueba de Garantía (Proof of Assurance), coinomics y seguridad." href="/es/learn/about-verifiedx/" icon="open-book" color="purple" />
+	<SectionCard title="Usa la billetera" description="SwitchBlade en escritorio y web: cuentas, vBTC, tokens y NFTs." href="/es/wallet/overview/" icon="laptop" color="orange" />
+	<SectionCard title="Desarrolla" description="El SDK de JavaScript, la API del nodo, la Web API, los contratos inteligentes Trillium y testnet." href="/es/build/overview/" icon="seti:json" color="blue" />
+	<SectionCard title="Ejecuta un nodo" description="Compila y configura VerifiedX Core, y ejecuta un validador." href="/es/node/overview/" icon="setting" color="green" />
+	<SectionCard title="Recursos" description="Whitepapers, especificaciones técnicas, auditorías, recursos de marca y la hoja de ruta." href="/es/resources/documents/overview/" icon="document" color="light" />
+	<SectionCard title="Explorador Spyglass" description="Bloques, transacciones y bóvedas vBTC en mainnet y testnet." href="https://spyglass.verifiedx.io" icon="magnifier" color="blue" />
+</div>

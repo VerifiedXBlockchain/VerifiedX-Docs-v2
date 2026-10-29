@@ -3,10 +3,10 @@
 	"vfx.network.testnet": "Testnet",
 	"vfx.network.label": "Documentación por red",
 	"vfx.network.notOnMainnet": "Esta página todavía no está en mainnet",
-	"vfx.network.badgeNew": "Testnet",
-	"vfx.network.badgeChanged": "Cambió",
-	"vfx.network.calloutNew": "Esta página es nueva en testnet y todavía no está activa en mainnet.",
-	"vfx.network.calloutChanged": "Esta página difiere de la versión de mainnet. Describe un comportamiento que ya está activo en testnet y que todavía no llega a mainnet.",
+	"vfx.network.badgeNew": "nuevo",
+	"vfx.network.badgeChanged": "Cambió en testnet",
+	"vfx.network.calloutNew": "Nueva en testnet. Todavía no está en mainnet.",
+	"vfx.network.calloutChanged": "Esta página difiere de la versión de mainnet.",
 	"vfx.network.viewMainnet": "Ver la versión de mainnet",
 	"vfx.translation.stale": "La versión en inglés de esta página se actualizó después de esta traducción. Revisa la página en inglés para ver los detalles más recientes."
 }

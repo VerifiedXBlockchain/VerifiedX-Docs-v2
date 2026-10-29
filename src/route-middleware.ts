@@ -13,8 +13,8 @@ export const onRequest = defineRouteMiddleware((context) => {
 			return;
 		}
 		const status = pageNetworkStatus(slugFromHref(entry.href));
-		if (status === 'new') entry.badge = { text: t('vfx.network.badgeNew'), variant: 'caution' };
-		else if (status === 'changed') entry.badge = { text: t('vfx.network.badgeChanged'), variant: 'note' };
+		if (status === 'new') entry.badge = { text: t('vfx.network.badgeNew'), variant: 'default', class: 'vfx-new' };
+		else if (status === 'changed') entry.badge = { text: t('vfx.network.badgeChanged'), variant: 'default', class: 'vfx-changed' };
 	};
 	sidebar.forEach(badge);
 });
