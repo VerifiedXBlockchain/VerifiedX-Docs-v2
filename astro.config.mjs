@@ -1,6 +1,7 @@
 // @ts-check
 import { existsSync, readFileSync } from 'node:fs';
 import { defineConfig } from 'astro/config';
+import sitemap from '@astrojs/sitemap';
 import starlight from '@astrojs/starlight';
 import starlightAutoSidebar from 'starlight-auto-sidebar';
 import starlightLinksValidator from 'starlight-links-validator';
@@ -23,15 +24,41 @@ const pendingSlugs = new Set(
 const isPendingLink = (/** @type {{ link: string }} */ { link }) =>
 	pendingSlugs.has(link.replace(/^\/(es\/)?/, '').replace(/[#?].*$/, '').replace(/\/$/, ''));
 
+// The sitemap lists Spanish pages only once they are translated; until then /es/ serves English fallbacks.
+const isUntranslated = (/** @type {string} */ page) => {
+	const match = new URL(page).pathname.match(/^\/es\/(.*?)\/?$/);
+	if (!match) return false;
+	const base = match[1] ? `./src/content/docs/es/${match[1]}` : './src/content/docs/es/index';
+	return !['.md', '.mdx'].some((ext) => existsSync(new URL(base + ext, import.meta.url)));
+};
+
 export default defineConfig({
 	site,
 	server: { port: 3310 },
 	integrations: [
+		// Declared here (Starlight would add it otherwise) so the filter applies; i18n matches the Starlight locales.
+		sitemap({
+			i18n: { defaultLocale: 'root', locales: { root: 'en', es: 'es' } },
+			filter: (page) => !isUntranslated(page),
+		}),
 		starlight({
 			title: 'VerifiedX Docs',
-			description: 'Documentation for VerifiedX (VFX): the Bitcoin reliever chain, vBTC, Trillium, and the VFX SDKs.',
+			description:
+				'Documentation for VerifiedX (VFX), the financial operating system for Bitcoin. Use the wallet, learn how vBTC works, build with the SDKs and APIs, and run a node.',
 			logo: { src: './src/assets/vfx-wordmark-light.svg', replacesTitle: true, alt: 'VerifiedX' },
-			favicon: '/favicon.ico',
+			// Same cube icons and share card as verifiedx.io.
+			favicon: '/favicon.png',
+			head: [
+				{ tag: 'link', attrs: { rel: 'apple-touch-icon', sizes: '180x180', href: '/apple-touch-icon.png' } },
+				{ tag: 'meta', attrs: { name: 'theme-color', content: '#0b1016' } },
+				{ tag: 'meta', attrs: { property: 'og:image', content: `${site}/og.jpg` } },
+				{ tag: 'meta', attrs: { property: 'og:image:width', content: '1200' } },
+				{ tag: 'meta', attrs: { property: 'og:image:height', content: '630' } },
+				{ tag: 'meta', attrs: { property: 'og:image:alt', content: 'VerifiedX: The Financial Operating System for Bitcoin' } },
+				{ tag: 'meta', attrs: { name: 'twitter:image', content: `${site}/og.jpg` } },
+				// The testnet site and PR previews document the same pages as mainnet; keep them out of search results.
+				...(buildData.network === 'testnet' ? [{ tag: 'meta', attrs: { name: 'robots', content: 'noindex, nofollow' } }] : []),
+			],
 			defaultLocale: 'root',
 			locales: {
 				root: { label: 'English', lang: 'en' },
@@ -75,7 +102,7 @@ export default defineConfig({
 				ThemeSelect: './src/components/NetworkToggle.astro',
 				Banner: './src/components/Banner.astro',
 			},
-			routeMiddleware: './src/route-middleware.ts',
+			routeMiddleware: ['./src/route-middleware.ts', './src/seo-middleware.ts'],
 			// One group per top-level section; folders inside a section get their label and order from _meta.yml.
 			sidebar: [
 				{ label: 'Learn', translations: { es: 'Aprende' }, collapsed: true, items: [{ autogenerate: { directory: 'learn', collapsed: true } }] },
