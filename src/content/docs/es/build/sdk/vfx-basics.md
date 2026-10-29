@@ -1,7 +1,7 @@
 ---
 sourceHash: cf19192509fa
 title: "Conceptos básicos de VFX: primeros pasos con VerifiedX"
-description: Crea billeteras, consulta saldos, envía VFX y trabaja con dominios usando el VerifiedX Web SDK.
+description: Crea billeteras, consulta saldos, envía VFX y trabaja con dominios con el VerifiedX Web SDK.
 sidebar:
   label: Conceptos básicos de VFX
   order: 1
@@ -59,9 +59,9 @@ console.log('Public Key:', publicKey);
 console.log('Address:', address);
 ```
 
-### Método 2: usa una frase mnemotécnica
+### Método 2: usa una frase de recuperación
 
-Las frases mnemotécnicas son más fáciles de usar y sirven para recuperar billeteras:
+Las frases de recuperación (mnemónicos) son más fáciles de usar y sirven para recuperar billeteras:
 
 ```typescript
 // Generate a 12-word mnemonic
@@ -143,7 +143,7 @@ await sendVfx(keypair, recipientAddress, 100); // Send 100 VFX
 
 ## Paso 5: trabaja con los dominios de VFX
 
-VerifiedX admite nombres de dominio legibles para las direcciones:
+VerifiedX admite nombres de dominio legibles por personas para las direcciones:
 
 ### Verifica si un dominio está disponible
 
@@ -275,7 +275,7 @@ main().catch(console.error);
 
 ### Seguridad
 - **Nunca expongas las claves privadas**: guárdalas de forma segura y nunca las registres en los logs de producción
-- **Usa frases mnemotécnicas para las billeteras de los usuarios**: son más fáciles de usar y más seguras
+- **Usa frases de recuperación para las billeteras de los usuarios**: son más fáciles de usar y más seguras
 - **Valida las direcciones**: valida siempre la dirección del destinatario antes de enviar una transacción
 
 ### Manejo de errores
@@ -293,7 +293,7 @@ main().catch(console.error);
 Ahora que conoces los conceptos básicos de VFX, puedes:
 
 1. **Explorar la integración con Bitcoin**: aprende sobre los [conceptos básicos de Bitcoin](/es/build/sdk/bitcoin-basics/)
-2. **Crear apps cross-chain**: revisa la [guía cross-chain](/es/build/sdk/cross-chain/)
+2. **Crear apps multicadena**: revisa la [guía multicadena](/es/build/sdk/cross-chain/)
 3. **Ver ejemplos**: explora las [aplicaciones completas](/es/build/sdk/examples/applications/)
 
 ## Problemas comunes
