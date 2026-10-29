@@ -33,6 +33,36 @@
 			"permanent": true
 		},
 		{
+			"source": "/docs/documents/vbtc-institutional",
+			"destination": "/learn/institutional/overview/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/documents/vbtc-institutional/",
+			"destination": "/learn/institutional/overview/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/documents/vbtc-defi",
+			"destination": "/learn/vbtc-defi-vaults/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/documents/vbtc-defi/",
+			"destination": "/learn/vbtc-defi-vaults/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/tutorials/video-tutorials",
+			"destination": "/wallet/overview/",
+			"permanent": true
+		},
+		{
+			"source": "/docs/tutorials/video-tutorials/",
+			"destination": "/wallet/overview/",
+			"permanent": true
+		},
+		{
 			"source": "/docs/core/beacons",
 			"destination": "/node/beacons/",
 			"permanent": true
