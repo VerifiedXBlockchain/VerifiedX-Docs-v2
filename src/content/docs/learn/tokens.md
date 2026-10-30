@@ -100,3 +100,4 @@ function GetTokenFunctions() : any
 {
    return "TokenTransfer()" + "|->""TokenDeploy()" + "|->" + "TokenVote()" + "|->" + "TokenCreateVote()" + "|->" + "TokenBurn()" + "|->" + "TokenMint()"
 }
+```

@@ -1,0 +1,2812 @@
+# SwitchBlade wallet UI strings, English<TAB>Spanish, from VerifiedX-GUI lib/l10n/app_{en,es}.arb (strings up to 90 characters). Regenerate with: node scripts/wallet-terms.mjs <path to VerifiedX-GUI>
+'{value}' Copied to clipboard	'{value}' copiado al portapapeles
+(MAX: {amount} vBTC)	(MÁX: {amount} vBTC)
+(Optional)	(Opcional)
+[Buy Now]	[Comprar ya]
+[ME]	[YO]
+[My Shop]	[Mi tienda]
+[Private]	[Privado]
+[Restore Hidden]	[Restaurar ocultas]
+{address} copied to clipboard	{address} copiado al portapapeles
+{address} does NOT own {scId}	{address} NO es propietario de {scId}
+{address} OWNS {scId}	{address} ES PROPIETARIO DE {scId}
+{amount} {currency} sent to {address}	{amount} {currency} enviados a {address}
+{amount} BTC	{amount} BTC
+{amount} BTC has been sent to {address}.	Se han enviado {amount} BTC a {address}.
+{amount} ETH	{amount} ETH
+{amount} SATS	{amount} SATS
+{amount} to {address}	{amount} a {address}
+{amount} vBTC	{amount} vBTC
+{amount} vBTC → {address}	{amount} vBTC → {address}
+{amount} vBTC → {dest}	{amount} vBTC → {dest}
+{amount} vBTC has been sent to {address}.	Se enviaron {amount} vBTC a {address}.
+{amount} vBTC.b	{amount} vBTC.b
+{amount} vBTC.b minted on Base.	Se acuñaron {amount} vBTC.b en Base.
+{amount} VFX	{amount} VFX
+{amount} VFX from {fromAddress}	{amount} VFX de {fromAddress}
+{amount} VFX has been sent to {address}. See dashboard for TX ID.	Se han enviado {amount} VFX a {address}. Consulta el panel para ver el ID de la transacción.
+{amount} VFX sent to {address}	{amount} VFX enviados a {address}
+{amount} VFX to {toAddress}	{amount} VFX para {toAddress}
+{amountVfx} VFX for ${amountUsd} USD Would you like to continue?	{amountVfx} VFX por ${amountUsd} USD ¿Te gustaría continuar?
+{assetType} Transfer sent successfully to {address}!	¡Transferencia de {assetType} enviada con éxito a {address}!
+{collected} / {required} signatures collected	{collected} / {required} firmas recopiladas
+{cost} VFX Required	Se requieren {cost} VFX
+{count, plural, =1{{count} note} other{{count} notes}}	{count, plural, =1{{count} nota} other{{count} notas}}
+{count, plural, =1{1 keypair} other{{count} keypairs}}	{count, plural, =1{1 par de claves} other{{count} pares de claves}}
+{count} Account	{count} cuenta
+{count} Accounts	{count} cuentas
+{count} Address	{count} dirección
+{count} Addresses	{count} direcciones
+{count} Tokens	{count} Tokens
+{count} Vault Address	{count} dirección de bóveda
+{count} Vault Addresses	{count} direcciones de bóveda
+{currency} amounts can have at most {decimals} decimal places.	Los montos de {currency} pueden tener como máximo {decimals} decimales.
+{days}d ago	hace {days} d
+{fee} fee deducted from shielded balance.	Se deduce una comisión de {fee} del saldo blindado.
+{hours}h ago	hace {hours} h
+{label} can not validate.	{label} no puede validar.
+{label} copied to clipboard	{label} copiado al portapapeles
+{label} has stopped validating.	{label} ha dejado de validar.
+{label} imported!	¡{label} importado!
+{label} is Adjudicating...	{label} está adjudicando...
+{label} is NOT Validating...	{label} NO está validando...
+{label} is required.	{label} es requerido.
+{minutes}m ago	hace {minutes} min
+{months}mo ago	hace {months} meses
+{name} [{label}] is now validating.	{name} [{label}] ahora está validando.
+{name} could not be resolved to an address. Check the name, or send to the address itself.	No se pudo resolver {name} a una dirección. Revisa el nombre o envía a la dirección directamente.
+{network} Contract Address	Dirección del contrato de {network}
+{percent}% complete	{percent}% completado
+{reason}	Mensaje del nodo: {reason}
+{reason} Replace the transaction anyway?	{reason} ¿Reemplazar la transacción de todos modos?
+{seconds} seconds	{seconds} segundos
+{text} [{amount} VFX from {address}]	{text} [{amount} VFX de {address}]
+{value} copied to clipboard	{value} copiado al portapapeles
+{vfx} VFX for ${usd} USD	{vfx} VFX por ${usd} USD
+* Must be the name exactly	* El nombre debe coincidir exactamente
+# of Txs	N.º de TX
+🚨 Make sure to backup your RESTORE CODE somewhere safe. 🚨	🚨 Asegúrate de respaldar tu CÓDIGO DE RESTAURACIÓN en un lugar seguro. 🚨
+0 for unlimited	0 para ilimitado
+1 vBTC = 1 BTC	1 vBTC = 1 BTC
+1,600 character limit including provided links	Límite de 1600 caracteres incluidos los enlaces proporcionados
+12 Words	12 palabras
+128 character limit	Límite de 128 caracteres
+180 Days	180 días
+24 Words	24 palabras
+30 Days	30 días
+5 VFX sent to {address}	Se enviaron 5 VFX a {address}
+60 Days	60 días
+90 Days	90 días
+A balance is required	Se requiere un saldo
+A balance of {balance} VFX was found in this account. Skipping to step 3.	Se encontró un saldo de {balance} VFX en esta cuenta. Saltando al paso 3.
+A balance on your Vault account is required to broadcast this transaction	Se requiere saldo en tu cuenta de bóveda para transmitir esta transacción
+A balance on your VFX account is required to broadcast this transaction	Se requiere saldo en tu cuenta VFX para transmitir esta transacción
+A CLI restart is required for this change to take effect. Would you like to restart now?	Se requiere reiniciar la CLI para aplicar este cambio. ¿Quieres reiniciar ahora?
+A CLI restart is required for this to take effect. Restart Now?	Se requiere reiniciar el CLI para que esto tenga efecto. ¿Reiniciar ahora?
+A CLI update is available. Download and install now?	Hay una actualización de CLI disponible. ¿Descargar e instalar ahora?
+A copy of your account and key databases was saved to: {path}	Se guardó una copia de tus bases de datos de cuentas y claves en: {path}
+A DNR may only contain letters and numbers.	Un DNR solo puede tener letras y números.
+A fee of {fee} will be deducted from your shielded VFX balance.	Se deducirá una comisión de {fee} de tu saldo de VFX blindado.
+A GUI update is available. Download now?	Hay una actualización de GUI disponible. ¿Descargar ahora?
+A minimum balance of 5 VFX is required to activate.	Se requiere un saldo mínimo de 5 VFX para activar.
+A network fee of ~0.000028 VFX is required.	Se requiere una comisión de red de ~0,000028 VFX.
+A problem occurred	Ocurrió un problema
+A problem occurred compiling or minting this smart contract: {error}	Ocurrió un problema al compilar o emitir este contrato inteligente: {error}
+A problem occurred compiling this smart contract.	Ocurrió un problema al compilar este contrato inteligente.
+A problem occurred minting this smart contract.	Ocurrió un problema al emitir este contrato inteligente.
+A problem occurred presigning the sale transaction. Please try again	Ocurrió un problema al prefirmar la transacción de venta. Inténtalo de nuevo
+A problem occurred.	Ocurrió un problema.
+A restart of the CLI is required. Restart Now?	Es necesario reiniciar la CLI. ¿Reiniciar ahora?
+A Vault must keep {minimum} VFX. Available to send: {available} VFX	Una Bóveda debe conservar {minimum} VFX. Disponible para enviar: {available} VFX
+A VFX account is required to proceed.	Se requiere una cuenta VFX para continuar.
+A VFX account with a balance is required to proceed.	Se requiere una cuenta VFX con saldo para continuar.
+A VFX account with a balance is required.	Se requiere una cuenta VFX con saldo.
+A VFX address is required	Se requiere una dirección VFX
+A VFX address with a balance is required to proceed.	Se requiere una dirección VFX con saldo para continuar.
+A VFX address with a balance is required to proceed. Would you like to set this up now?	Se requiere una dirección VFX con saldo para continuar. ¿Quieres configurarla ahora?
+ABC	ABC
+Accept a BTC Domain Transfer	Aceptar una transferencia de dominio BTC
+Accept Transfer	Aceptar transferencia
+Acceptance Code	Código de aceptación
+Acceptance code copied to clipboard	Código de aceptación copiado al portapapeles
+Acceptance code is required	El código de aceptación es obligatorio
+Accepted	Aceptada
+Account {id}	Cuenta {id}
+Account Balance	Saldo de la cuenta
+Account Created	Cuenta creada
+Account Name	Nombre de la cuenta
+Account Password	Contraseña de la cuenta
+Account Security	Seguridad de la cuenta
+Account Unlock Time	Tiempo de desbloqueo de la cuenta
+Account unlocked for 10 minutes.	Cuenta desbloqueada por 10 minutos.
+Account unlocked!	¡Cuenta desbloqueada!
+Account unlocked.	Cuenta desbloqueada.
+Action Not Available Yet.	Acción aún no disponible.
+Activate	Activar
+Activate Account	Activar Cuenta
+Activate Now	Activar ahora
+Activate on Network?	¿Activar en la red?
+Activate Privacy Wallet	Activar billetera privada
+Activate Vault Account?	¿Activar cuenta de bóveda?
+Activated	Activada
+Activating soon!	¡Próximamente!
+Activating soon.	Activación próxima.
+Activating soon...	Activándose pronto...
+Activating...	Activando...
+Activation Pending	Activación pendiente
+Activation transaction broadcasted	Transacción de activación transmitida
+Active	Activo
+Active Validators: {count}	Validadores activos: {count}
+Active Validators: {value}	Validadores activos: {value}
+Active:	Activo:
+Activity	Actividad
+Activity found	Se encontró actividad
+Activity Log	Registro de actividad
+Add	Agregar
+Add a Feature	Agregar una función
+Add a feature to your smart contract such as royalties or evolving functionality.	Agrega una función a tu contrato inteligente, como regalías o funcionalidad evolutiva.
+Add Account	Agregar cuenta
+Add additional asset	Agregar archivo adicional
+Add Another Feature	Agregar otra función
+Add Beacon	Agregar beacon
+Add BTC Account	Agregar cuenta BTC
+Add BTC Account (Segwit)	Agregar cuenta BTC (Segwit)
+Add Creator Name	Agregar nombre del creador
+Add Description	Agregar descripción
+Add Developer	Agregar desarrollador
+Add evolving phase	Agregar fase de evolución
+Add Feature	Agregar función
+Add Host	Agregar host
+Add Name	Agregar nombre
+Add New Account	Agregar nueva cuenta
+Add property	Agregar propiedad
+Add Rarity	Agregar rareza
+Add Remote Beacon	Agregar beacon remoto
+Add Reserve Price	Agregar precio de reserva
+Add Royalty	Agregar regalía
+Add Stat	Agregar estadística
+Add VFX Account	Agregar cuenta VFX
+Additional Asset	Archivo adicional
+Additional Assets	Archivos adicionales
+Additional Assets:	Recursos adicionales:
+Additional Link(s) (Optional)	Enlaces adicionales (opcional)
+Additional Links:	Enlaces adicionales:
+Additional Owners	Propietarios adicionales
+Address	Dirección
+Address {address} copied to clipboard	Dirección {address} copiada al portapapeles
+Address copied	Dirección copiada
+Address copied to clipboard	Dirección copiada al portapapeles
+Address copied to clipboard ({address})	Dirección copiada al portapapeles ({address})
+Address copied to clipboard!	¡Dirección copiada al portapapeles!
+Address copied to clipboard.	Dirección copiada al portapapeles.
+Address or VFX domain required	Dirección o dominio VFX requerido
+Address required	Dirección requerida
+Address Required.	Dirección obligatoria.
+Address to Ban	Dirección a banear
+Address:	Dirección:
+Address: {address}	Dirección: {address}
+Address: {label}	Dirección: {label}
+Addresses	Direcciones
+Adj Vote In	Voto a favor de Adj
+Adj Vote In Details	Detalles del voto de adj.
+Adj Vote Out	Voto en contra de Adj
+Adjudicator	Adjudicator
+Adjudicator to be Ip Address:	Dirección IP del adjudicador propuesto:
+Adjudicator to be VFX Address:	Dirección VFX del adjudicador propuesto:
+ADNR	ADNR
+ADNR Create	Crear ADNR
+ADNR create transaction broadcasted. Tx Hash: {hash}	Transacción de creación de ADNR transmitida. Hash de TX: {hash}
+ADNR Delete	Eliminar ADNR
+ADNR Transfer	Transferir ADNR
+Agree	Aceptar
+Agree and Close	Aceptar y cerrar
+All	Todas
+All Addresses	Todas las direcciones
+All done!	¡Todo listo!
+All My Tokens	Todos mis tokens
+All Transactions	Todas las transacciones
+All unsaved changes will be lost.	Se perderán todos los cambios sin guardar.
+Allow multiple assets to be compiled into the smart contract	Permite compilar varios archivos en el contrato inteligente
+Allow the smart contract to evolve based on time or network variables	Permite que el contrato evolucione según el tiempo o variables de red
+Allow Voting	Permitir votación
+Allow Voting:	Permitir votación:
+Allowed Asset Extension Types	Tipos de extensión de archivo permitidos
+Allowed Extension Types	Tipos de extensión permitidos
+Alternatively, you can send the BTC manually to your token's deposit address.	Como alternativa, puedes enviar el BTC manualmente a la dirección de depósito de tu token.
+Amount	Monto
+Amount (Balance: {balance} BTC)	Monto (saldo: {balance} BTC)
+Amount (vBTC)	Monto (vBTC)
+Amount (VFX)	Monto (VFX)
+Amount & Address	Monto y dirección
+Amount can have at most 8 decimal places	El monto puede tener como máximo 8 decimales
+Amount copied	Monto copiado
+Amount is required	Se requiere el monto
+Amount must be greater than 0.0 BTC	El monto debe ser mayor que 0.0 BTC
+Amount of {currency} to send	Monto de {currency} a enviar
+Amount of BTC to Send	Monto de BTC a enviar
+Amount of vBTC to {action}	Monto de vBTC para {action}
+Amount required	Monto requerido
+Amount to bridge	Monto a transferir
+Amount to Burn	Monto a quemar
+Amount to Mint	Monto a emitir
+Amount to request	Monto a solicitar
+Amount to Send	Monto a enviar
+Amount to Send (BTC)	Monto a enviar (BTC)
+Amount to Transfer	Monto a transferir
+Amount:	Monto:
+Amount: {amount}	Monto: {amount}
+Amount: {amount} VFX	Monto: {amount} VFX
+An account is required to access this section.	Se requiere una cuenta para acceder a esta sección.
+An error has occurred	Ocurrió un error
+An error occurred	Ocurrió un error
+An error occurred during withdrawal.	Ocurrió un error durante el retiro.
+An error occurred.	Ocurrió un error.
+An error occurred. Please restart and try again.	Ocurrió un error. Reinicia e inténtalo de nuevo.
+An unshield amount has at most {places} decimal places.	Un monto a desblindar tiene como máximo {places} decimales.
+An VFX wallet is required for this functionality.	Se requiere una billetera VFX para esta funcionalidad.
+and	y la
+And error occurred	Ocurrió un error
+Api Call Url	URL de la API
+Api Port	Puerto de la API
+Are you sure you have copied your recovery phrase to a secure location?	¿Seguro que copiaste tu frase de recuperación en un lugar seguro?
+Are you sure you want resume transactions with this token?	¿Seguro que quieres reanudar las transacciones de este token?
+Are you sure you want to burn {name}	¿Seguro que quieres quemar {name}?
+Are you sure you want to buy now for {price} VFX?	¿Seguro que quieres comprar ahora por {price} VFX?
+Are you sure you want to callback this transaction?	¿Seguro que quieres revertir esta transacción?
+Are you sure you want to cancel setting up your account with Tokenized Bitcoin?	¿Seguro que quieres cancelar la configuración de tu cuenta con Bitcoin Tokenizado?
+Are you sure you want to cancel this withdrawal request?	¿Seguro que deseas cancelar esta solicitud de retiro?
+Are you sure you want to close the collection {action} screen?	¿Seguro que quieres cerrar la pantalla de {action} de la colección?
+Are you sure you want to close the collection {mode} screen?	¿Seguro que quieres cerrar la pantalla de {mode} de la colección?
+Are you sure you want to close the collection creation screen?	¿Seguro que quieres cerrar la pantalla de creación de la colección?
+Are you sure you want to close the collection editing screen?	¿Seguro que quieres cerrar la pantalla de edición de la colección?
+Are you sure you want to close the configuration screen?	¿Cerrar la pantalla de configuración?
+Are you sure you want to close the listing {mode} screen?	¿Seguro que quieres cerrar la pantalla de {mode} del listado?
+Are you sure you want to close the listing creation screen?	¿Seguro que quieres cerrar la pantalla de creación de la publicación?
+Are you sure you want to close the listing editing screen?	¿Seguro que quieres cerrar la pantalla de edición de la publicación?
+Are you sure you want to close the NFT collection Wizard?	¿Seguro que deseas cerrar el asistente de colección NFT?
+Are you sure you want to close the shop {action} screen?	¿Seguro que quieres cerrar la pantalla de {action} de la tienda?
+Are you sure you want to close the shop {mode} screen?	¿Seguro que quieres cerrar la pantalla de {mode} de la tienda?
+Are you sure you want to close the shop creation screen?	¿Seguro que quieres cerrar la pantalla de creación de la tienda?
+Are you sure you want to close the shop editing screen?	¿Seguro que quieres cerrar la pantalla de edición de la tienda?
+Are you sure you want to close the smart contract creator?	¿Seguro que deseas cerrar el creador de contratos?
+Are you sure you want to close the store {action} screen?	¿Seguro que quieres cerrar la pantalla de {action} de la tienda?
+Are you sure you want to close the store {mode} screen?	¿Seguro que quieres cerrar la pantalla de {mode} de la tienda?
+Are you sure you want to close the store creation screen?	¿Seguro que quieres cerrar la pantalla de creación de la tienda?
+Are you sure you want to close the store editing screen?	¿Seguro que quieres cerrar la pantalla de edición de la tienda?
+Are you sure you want to complete the sale of {scId} for {amount} VFX?	¿Seguro que quieres completar la venta de {scId} por {amount} VFX?
+Are you sure you want to create a Mnemonic account?	¿Seguro que quieres crear una cuenta con mnemónico?
+Are you sure you want to create this token topic?	¿Seguro que quieres crear este tema del token?
+Are you sure you want to delete the primary asset?	¿Estás seguro de que quieres eliminar el archivo principal?
+Are you sure you want to delete this chat thread locally?	¿Seguro que quieres eliminar este hilo de chat localmente?
+Are you sure you want to delete this chat thread?	¿Seguro que quieres eliminar este hilo de chat?
+Are you sure you want to delete this collection?	¿Seguro que quieres eliminar esta colección?
+Are you sure you want to delete this instance?	¿Seguro que deseas eliminar esta instancia?
+Are you sure you want to delete this listing?	¿Seguro que quieres eliminar esta publicación?
+Are you sure you want to delete this shop?	¿Seguro que quieres eliminar esta tienda?
+Are you sure you want to delete this smart contract draft?	¿Seguro que deseas eliminar este borrador de contrato inteligente?
+Are you sure you want to delete this stage?	¿Seguro que deseas eliminar esta etapa?
+Are you sure you want to delete this store?	¿Seguro que quieres eliminar esta tienda?
+Are you sure you want to delete this?	¿Seguro que deseas eliminar esto?
+Are you sure you want to delete your unpublished shop?	¿Seguro que quieres eliminar tu tienda sin publicar?
+Are you sure you want to discard the listing?	¿Seguro que quieres descartar el listado?
+Are you sure you want to discard this new topic?	¿Seguro que quieres descartar este nuevo tema?
+Are you sure you want to evolve to stage {index}?	¿Seguro que quieres evolucionar a la etapa {index}?
+Are you sure you want to generate this token's BTC address?	¿Seguro que quieres generar la dirección BTC de este token?
+Are you sure you want to hide this account?	¿Seguro que quieres ocultar esta cuenta?
+Are you sure you want to logout of the VFX Web Wallet?	¿Seguro que quieres cerrar sesión en la VFX Web Wallet?
+Are you sure you want to pause all transactions with this token?	¿Seguro que quieres pausar todas las transacciones de este token?
+Are you sure you want to place a bid of {amount} VFX?	¿Seguro que quieres hacer una oferta de {amount} VFX?
+Are you sure you want to place a bid of {amount} VFX{maxSuffix}?	¿Seguro que quieres ofertar {amount} VFX{maxSuffix}?
+Are you sure you want to rebroadcast this transaction?	¿Seguro que deseas retransmitir esta transacción?
+Are you sure you want to remove {url} from your saved shops?	¿Seguro que quieres quitar {url} de tus tiendas guardadas?
+Are you sure you want to remove everything?	¿Seguro que deseas eliminar todo?
+Are you sure you want to remove the royalty?	¿Estás seguro de que quieres eliminar la regalía?
+Are you sure you want to remove this account from your wallet?	¿Seguro que quieres eliminar esta cuenta de tu billetera?
+Are you sure you want to remove this additional asset?	¿Estás seguro de que quieres quitar este archivo adicional?
+Are you sure you want to remove this beacon?	¿Seguro que quieres eliminar este beacon?
+Are you sure you want to remove this beacon? A CLI restart is required.	¿Seguro que quieres eliminar este beacon? Se requiere reiniciar el CLI.
+Are you sure you want to remove this evolution phase?	¿Estás seguro de que quieres eliminar esta fase de evolución?
+Are you sure you want to remove this node as a REMOTE? A CLI restart will be required.	¿Seguro que quieres eliminar este nodo como REMOTE? Se requerirá reiniciar el CLI.
+Are you sure you want to remove this property?	¿Estás seguro de que quieres eliminar esta propiedad?
+Are you sure you want to restart the CLI?	¿Seguro que quieres reiniciar la CLI?
+Are you sure you want to resume token transactions?	¿Seguro que quieres reanudar las transacciones del token?
+Are you sure you want to reveal your private key for this account?	¿Seguro que quieres revelar tu clave privada de esta cuenta?
+Are you sure you want to reveal your private key?	¿Seguro que quieres revelar tu clave privada?
+Are you sure you want to set this store offline?	¿Seguro que quieres poner esta tienda fuera de línea?
+Are you sure you want to set this store online?	¿Seguro que quieres poner esta tienda en línea?
+Are you sure you want to stop running this wallet as a MOTHER host?	¿Seguro que quieres detener esta billetera como host de MOTHER?
+Are you sure you want to stop validating?	¿Seguro que quieres detener la validación?
+Are you sure you want to transfer {amount} vBTC to {address}?	¿Seguro que quieres transferir {amount} vBTC a {address}?
+Are you sure you want to transfer ownership of this vBTC token to {address}?	¿Seguro que quieres transferir la propiedad de este token vBTC a {address}?
+Are you sure you want to vote NO on this token topic?	¿Seguro que quieres votar NO en este tema del token?
+Are you sure you want to vote NO on this topic?	¿Seguro que quieres votar NO en este tema?
+Are you sure you want to vote YES on this token topic?	¿Seguro que quieres votar SÍ en este tema del token?
+Are you sure you want to vote YES on this topic?	¿Seguro que quieres votar SÍ en este tema?
+Are you sure you want to withdraw {amount} BTC to {address}?	¿Seguro que quieres retirar {amount} BTC a {address}?
+As the token owner, you can create topics for other holders to vote on.	Como propietario del token, puedes crear temas para que otros holders voten.
+Asset	Archivo
+Asset Cache	Caché de archivos
+Asset is required	Se requiere un archivo
+Assets	Archivos
+Assets Request failed.	Falló la solicitud de archivos.
+Associate	Asociar
+Associate Local File	Asociar archivo local
+Associate Media	Asociar recurso
+at {dest}	en {dest}
+At least {minimum} sat/vB	Al menos {minimum} sat/vB
+At least 2 unspent notes are required to consolidate.	Se requieren al menos 2 notas no gastadas para consolidar.
+At most {maximum} sat/vB	Como máximo {maximum} sat/vB
+Attempting to send sale complete TX.	Enviando TX de cierre de venta.
+Auction	Subasta
+Auction Activity	Actividad de la subasta
+Auction Activity for {name}	Actividad de subasta de {name}
+Auction Details	Detalles de la subasta
+Auction Ends	La subasta termina
+Auction Floor Price	Precio base de la subasta
+Auction Has Ended	La subasta terminó
+Auction has started so the dates & times can't be updated.	La subasta ya comenzó, por lo que no se pueden actualizar las fechas ni las horas.
+Auction has started so the pricing can't be updated.	La subasta ya comenzó, por lo que no se pueden actualizar los precios.
+Auction Houses	Casas de subastas
+Auction is not live	La subasta no está activa
+Auction is over	La subasta ha terminado
+Auction Reserve Price	Precio de reserva de la subasta
+Auction Starts	Inicio de subasta
+Auction Upcoming	Subasta próxima
+Authorize Now	Autorizar ahora
+Auto activate queued.	Activación automática en cola.
+Auto Activate?	¿Activar automáticamente?
+Auto Delete After Download	Eliminar automáticamente tras la descarga
+Auto Delete Assets	Autoeliminar archivos
+Auto Download NFT Asset	Autodescargar archivo NFT
+Auto Download NFT Assets	Autodescargar archivos NFT
+Automated/Application Controlled	Automático/por la app
+Automatically Activate?	¿Activar automáticamente?
+Available	Disponible
+Available across your vBTC tokens:	Disponible en tus tokens vBTC:
+Available Balance:	Saldo disponible:
+Available: {amount} vBTC	Disponible: {amount} vBTC
+Available: {amount} VFX	Disponible: {amount} VFX
+Available: {available} VFX Locked: {locked} VFX Total: {total} RBX	Disponible: {available} VFX Bloqueado: {locked} VFX Total: {total} RBX
+Available: {balance} VFX	Disponible: {balance} VFX
+Awaiting Funds	Esperando fondos
+Awaiting Payment	Esperando pago
+Awaiting signatures	Esperando firmas
+Back	Atrás
+Backed up?	¿Respaldado?
+Backup	Respaldo
+Backup Keys	Respaldar claves
+Backup Media	Respaldar contenido
+Backup URL (Optional)	URL de respaldo (opcional)
+Backup URL {optional}	URL de respaldo {optional}
+Backup URL required	URL de respaldo requerida
+Balance	Saldo
+Balance Correction	Corrección de saldo
+Balance Found!	¡Saldo encontrado!
+Balance not currently sufficient to validate. {amount} VFX required.	Saldo insuficiente para validar. Se requieren {amount} VFX.
+Balance: {balance}	Saldo: {balance}
+Ban Address	Bloquear dirección
+Bandwidth (in TB)	Ancho de banda (en TB)
+Bandwidth (TB):	Ancho de banda (TB):
+Banned Addresses	Direcciones bloqueadas
+Base (EVM) Address	Dirección de Base (EVM)
+Base address is required	La dirección de Base es obligatoria
+Baseline Asset	Archivo base
+Baseline Smart Contract	Contrato inteligente base
+Beacon Created	Beacon creado
+Beacon Name	Nombre del beacon
+Beacon upload failed	Falló la carga del beacon
+Beacons	Beacons
+Begins: {date} {time}	Comienza: {date} {time}
+Being Claimed	Reclamándose
+Being released	Liberándose
+Beneficiary Address (Optional)	Dirección del beneficiario (opcional)
+Bid Amount	Monto de oferta
+Bid Amount (VFX)	Monto de la oferta (VFX)
+Bid History	Historial de ofertas
+Bid Now	Ofertar ahora
+Bid Resent!	¡Oferta reenviada!
+Bid sent. Please check the Bid History to see if it's been accepted or rejected.	Oferta enviada. Revisa el historial de ofertas para ver si fue aceptada o rechazada.
+Bid Submitted	Oferta enviada
+Bitcoin (vBTC)	Bitcoin (vBTC)
+Bitcoin Private Key / WIF Key	Clave privada de Bitcoin / Clave WIF
+Bitcoin Reorg	Reorganización de Bitcoin
+Bitcoin Report	Informe de Bitcoin
+Bitcoin transaction fixed, waiting for Bitcoin to confirm it	Transacción de Bitcoin fijada, esperando a que Bitcoin la confirme
+Bitcoin: {address}	Bitcoin: {address}
+Block {block}	Bloque {block}
+Block {height}	Bloque {height}
+Block Diff Avg: {value}	Dif. media de bloques: {value}
+Block Height	Altura del bloque
+Block height must be greater than {currentBh}.	La altura de bloque debe ser mayor que {currentBh}.
+Block Height Value	Valor de altura de bloque
+Block Height Variable	Variable de altura de bloque
+Block height: {height}	Altura del bloque: {height}
+Block Height: {value}	Altura de bloque: {value}
+Block Last Delay: {value}	Retraso del último bloque: {value}
+Block Last Received: {value}	Último bloque recibido: {value}
+Block Modify	Modificar bloque
+Block Number	Número de bloque
+Block Time	Hora del bloque
+Block: {block}	Bloque: {block}
+Blockchain Version	Versión de blockchain
+Blocks Averaged: {value}	Bloques promediados: {value}
+Blocks Validated ({count})	Bloques validados ({count})
+Blocks: {count}	Bloques: {count}
+Borrow/Lend	Pedir/Prestar
+Bridge complete	Puente completado
+Bridge details	Detalles del puente
+Bridge failed	El puente falló
+Bridge failed.	El puente falló.
+Bridge History	Historial del puente
+Bridge history is unavailable.	El historial del puente no está disponible.
+Bridge state lost. Close and try again.	Se perdió el estado del puente. Cierra e inténtalo de nuevo.
+Bridge to Base	Puentear a Base
+Bridge vBTC to Base (vBTC.b)	Puentear vBTC a Base (vBTC.b)
+Bridged to Base	Transferido a Base
+Bridging is currently unavailable. The CLI is not configured to talk to Base.	El puente no está disponible actualmente. La CLI no está configurada para comunicarse con Base.
+Bridging…	Transfiriendo…
+Broadcasting Request	Transmitiendo solicitud
+Broadcasting withdrawal request...	Transmitiendo la solicitud de retiro...
+BTC	BTC
+BTC Account Created	Cuenta BTC creada
+BTC account has no balance	La cuenta BTC no tiene saldo
+BTC Account Imported	Cuenta BTC importada
+BTC Address	Dirección BTC
+BTC Address copied to clipboard	Dirección BTC copiada al portapapeles
+BTC Address generated ({address})	Dirección BTC generada ({address})
+BTC Address Pending	Dirección BTC pendiente
+BTC Address required	Se requiere una dirección de BTC
+BTC ADNR Create	Crear ADNR BTC
+BTC ADNR Delete	Eliminar ADNR BTC
+BTC ADNR Transfer	Transferir ADNR BTC
+BTC Amount	Monto de BTC
+BTC Deposit Address	Dirección de depósito BTC
+BTC Domain	Dominio BTC
+BTC Domain created for {name}.btc	Dominio BTC creado para {name}.btc
+BTC Domain Delete Pending	Eliminación de dominio BTC pendiente
+BTC Domain deleted for {name}	Dominio BTC eliminado para {name}
+BTC Domain Name Created	Nombre de dominio BTC creado
+BTC Domain Name Deleted	Nombre de dominio BTC eliminado
+BTC Domain Name Transferred	Nombre de dominio BTC transferido
+BTC Domain Pending	Dominio BTC pendiente
+BTC Domain Transaction has been broadcasted. See log for hash.	Transacción de dominio BTC transmitida. Revisa el registro para ver el hash.
+BTC Domain Transfer Pending	Transferencia de dominio BTC pendiente
+BTC Domain transferred to {address}	Dominio BTC transferido a {address}
+BTC Domains	Dominios BTC
+BTC domains cost {cost} VFX plus the transaction fee.	Los dominios BTC cuestan {cost} VFX más la comisión de la transacción.
+BTC Domains cost {cost} VFX.	Los dominios BTC cuestan {cost} VFX.
+BTC Explorer	Explorador BTC
+BTC Funds Received!	¡Fondos BTC recibidos!
+BTC Inactive	BTC inactivo
+BTC Loading	Cargando BTC
+BTC Offline	BTC sin conexión
+BTC Online	BTC en línea
+BTC Price History	Historial de precios BTC
+BTC sent — tap to finish settling on VFX	BTC enviado: toca para terminar de liquidar en VFX
+BTC Tokenization	Tokenización de BTC
+BTC Transaction:	Transacción BTC:
+BTC Transactions	Transacciones BTC
+BTC Transfer TX Broadcasted successfully.	TX de transferencia de BTC transmitida con éxito.
+BTC Withdrawl TX Broadcasted successfully. Hash: {hash}	TX de retiro de BTC transmitida con éxito. Hash: {hash}
+Bulk Account Importer	Importador masivo de cuentas
+Bulk Import	Importación masiva
+Bulk vBTC Transfer	Transferencia masiva de vBTC
+Burn	Quemar
+Burn (destroy) this NFT permanently.	Quema (destruye) este NFT de forma permanente.
+Burn NFT	Quemar NFT
+Burn NFT?	¿Quemar NFT?
+Burn transaction sent successfully!	¡Transacción de quema enviada con éxito!
+Burnable	Quemable
+Burned	Quemado
+Buy BTC (On-Ramp)	Comprar BTC (On-Ramp)
+Buy Now	Comprar ahora
+Buy Now Price	Precio de compra inmediata
+Buy Now transaction sent successfully. Please wait for confirmation.	Transacción de compra enviada con éxito. Espera la confirmación.
+Buy Now TX broadcasted.	TX de compra inmediata transmitida.
+Buy Now TX broadcasted. Please wait for it to be accepted by the shop owner	Transacción de compra inmediata transmitida. Espera a que el dueño de la tienda la acepte
+Buy Now: {price} VFX	Compra directa: {price} VFX
+Buyer: {address}	Comprador: {address}
+Call Media	Solicitar recurso
+Call Media from Beacon	Solicitar recurso desde el Beacon
+Call to beacon process has started.	El proceso de solicitud al Beacon ha comenzado.
+Callback	Devolver
+Callback Transaction	Devolver transacción
+Callback TX broadcasted	TX de devolución transmitida
+Callback TX sent with hash of {hash}	TX de devolución enviada con hash {hash}
+Called Back	Retornado
+Camera access required to scan QR codes	Se requiere acceso a la cámara para escanear códigos QR
+Camera Error	Error de cámara
+Can not be more than 100%	No puede superar 100%
+Can't add Evolve	No se puede agregar evolución
+Can't add Multi Asset	No se puede agregar Multiarchivo
+Can't add Royalty	No se puede agregar regalía
+Can't add Soul Bound	No se puede agregar Soul Bound
+Can't find private key	No se encuentra la clave privada
+Can't find public key	No se encuentra la clave pública
+Cancel	Cancelar
+Cancel Withdrawal	Cancelar retiro
+Cancel Withdrawal?	¿Cancelar retiro?
+Cancellation failed: {error}	Falló la cancelación: {error}
+Cancellation request submitted. Awaiting validator votes.	Solicitud de cancelación enviada. Esperando los votos de los validadores.
+Cancelled	Cancelado
+Cast Your Vote	Emite tu voto
+Category	Categoría
+Ceremony Completed	Ceremonia completada
+Ceremony Failed	Ceremonia fallida
+Ceremony failed. Please try again.	La ceremonia falló. Inténtalo de nuevo.
+Ceremony timed out on the network. Please try again.	La ceremonia agotó el tiempo de espera en la red. Inténtalo de nuevo.
+Ceremony timed out. Please try again.	La ceremonia agotó el tiempo de espera. Inténtalo de nuevo.
+Chain	Cadena
+Change Account:	Cambiar cuenta:
+Change Ownership	Cambiar propiedad
+Chat	Chat
+Chat with {address}	Chat con {address}
+Chats	Chats
+Chatting with {name}	Chateando con {name}
+Check Again	Verificar de nuevo
+Checking privacy layer status...	Comprobando el estado de la capa de privacidad...
+Checking Withdrawal Status	Comprobando el estado del retiro
+Checking your accounts…	Comprobando tus cuentas…
+Children: {count}	Hijos: {count}
+Choose	Elegir
+Choose a File	Elegir un archivo
+Choose a Smart Contract & Add Features	Elige un contrato inteligente y agrega características
+Choose accounts to restore	Elige las cuentas que quieres restaurar
+Choose an Address	Elige una dirección
+Choose BTC Account to Send From	Elige la cuenta BTC desde la cual enviar
+Choose Coin Type	Elige el tipo de moneda
+Choose File	Elegir archivo
+Choose NFT	Elegir NFT
+Choose Payment Gateway	Elige la pasarela de pago
+Choose Vault Account	Elige una Cuenta de bóveda
+Choose which vBTC contract to resync.	Elige qué contrato de vBTC resincronizar.
+Circulating Supply	Suministro circulante
+Claimed	Reclamado
+Clear	Limpiar
+Clear Filters	Limpiar filtros
+Clear NFT Collection Wizard?	¿Vaciar el asistente de colección NFT?
+CLI Configuration	Configuración del CLI
+CLI Inactive	CLI inactivo
+CLI restart is required for changes to propagate.	Se requiere reiniciar el CLI para aplicar los cambios.
+CLI Restart Required	Se requiere reiniciar el CLI
+CLI restart required for changes to take effect.	Se requiere reiniciar el CLI para aplicar los cambios.
+CLI Update Available	Actualización de CLI disponible
+CLI Updated	CLI actualizada
+CLI Version	Versión del CLI
+Clipboard text is invalid	El texto del portapapeles no es válido
+Close	Cerrar
+Close Recovery Phrase?	¿Cerrar la frase de recuperación?
+Close Wallet	Cerrar billetera
+Code Change	Cambio de código
+Coin Prices	Precios de monedas
+Collapse	Contraer
+Collapse navigation	Contraer navegación
+Collecting validator signatures…	Recopilando firmas de los validadores…
+Collection Created	Colección creada
+Collection deleted.	Colección eliminada.
+Collection Description	Descripción de la colección
+Collection Error	Error de colección
+Collection Name	Nombre de la colección
+Collection Thumbnail	Miniatura de la colección
+Collection Updated!	¡Colección actualizada!
+Collection Wizard	Asistente de colección
+Collections	Colecciones
+Color	Color
+Color Property	Propiedad de color
+Compile	Compilar
+Compile & Mint	Compilar y emitir
+Compile & Mint Smart Contract?	¿Compilar y emitir el contrato inteligente?
+Compile & Mint Token Smart Contract?	¿Compilar y emitir contrato inteligente del token?
+Compiled	Compilados
+Compiled!	¡Compilado!
+Compiling & Minting	Compilando y emitiendo
+Compiling & Minting…	Compilando y emitiendo…
+Complete	Completado
+Complete MoonPay Deposit	Completar depósito de MoonPay
+Complete Sale	Completar venta
+Completed	Completada
+Configuration	Configuración
+Configure the parameters of your smart contract then compile and mint it.	Configura los parámetros de tu contrato inteligente y luego compílalo y emítelo.
+Confirm	Confirmar
+Confirm & Bridge	Confirmar y transferir
+Confirm Address	Confirmar dirección
+Confirm Bulk Tx	Confirmar TX masiva
+Confirm Details	Confirmar detalles
+Confirm Import	Confirmar importación
+Confirm Password	Confirmar contraseña
+Confirm Sale Start	Confirmar inicio de venta
+Confirm Send	Confirmar envío
+Confirm Transaction	Confirmar transacción
+Confirm Transfer	Confirmar transferencia
+Confirm Vote [NO]	Confirmar voto [NO]
+Confirm Vote [YES]	Confirmar voto [SÍ]
+Confirm Withdrawal Request	Confirmar solicitud de retiro
+Confirmed	Confirmada
+Confirmed on VFX	Confirmado en VFX
+Confirming Balance...	Confirmando saldo...
+Connect	Conectar
+Connect to a remote auction house to trade NFTs.	Conéctate a una casa de subastas remota para intercambiar NFTs.
+Connect to a Shop	Conectar a una tienda
+Connect to Auction House	Conectar a casa de subastas
+Connect to Auction House?	¿Conectar a la casa de subastas?
+Connected to {url}. Fetching data...	Conectado a {url}. Obteniendo datos...
+Connected: {date}	Conectado: {date}
+Connecting to shop...	Conectando a la tienda...
+Connection Date: {date}	Fecha de conexión: {date}
+Consolidate	Consolidar
+Consolidate Notes	Consolidar notas
+Consolidate vBTC Notes	Consolidar notas de vBTC
+Consolidation broadcast successfully	Consolidación transmitida correctamente
+Consolidation failed: {error}	La consolidación falló: {error}
+Consumable	Consumible
+Continue	Continuar
+Continue?	¿Continuar?
+Contract	Contrato
+Contract Created	Contrato creado
+Contract: {name}	Contrato: {name}
+Controlled by: {address}	Controlado por: {address}
+Copied to clipboard	Copiado al portapapeles
+Copy	Copiar
+Copy address	Copiar dirección
+Copy All	Copiar todo
+Copy amount	Copiar monto
+Copy BTC Address	Copiar dirección BTC
+Copy Code	Copiar código
+Copy Deposit Address	Copiar dirección de depósito
+Copy domain	Copiar dominio
+Copy Link	Copiar enlace
+Copy Message	Copiar mensaje
+Copy mnemonic	Copiar mnemónico
+Copy private key	Copiar clave privada
+Copy recovery address	Copiar dirección de recuperación
+Copy recovery private key	Copiar clave privada de recuperación
+Copy restore code	Copiar código de restauración
+Copy shop URL	Copiar URL de la tienda
+Copy signature	Copiar firma
+Copy smart contract ID	Copiar identificador del contrato inteligente
+Copy to Clipboard	Copiar al portapapeles
+Copy transaction hash	Copiar hash de la transacción
+Copy URL	Copiar URL
+Copy VFX Address	Copiar dirección VFX
+Copy viewing key	Copiar clave de visualización
+Copy WIF private key	Copiar clave privada WIF
+Copy your recovery phrase to a secure location.	Copia tu frase de recuperación en un lugar seguro.
+Could not check activity	No se pudo comprobar la actividad
+Could not connect to arbiter. Try again later	No se pudo conectar con el árbitro. Inténtalo más tarde
+Could not connect to shop because it's offline.	No se pudo conectar a la tienda porque está desconectada.
+Could not create beacon upload request.	No se pudo crear la solicitud de subida al beacon.
+Could not create or get thread	No se pudo crear u obtener el chat
+Could not determine latest snapshot state	No se pudo determinar el estado del último snapshot
+Could not find auction house with url of {url}	No se encontró la casa de subastas con la URL {url}
+Could not generate hash	No se pudo generar el hash
+Could not generate keypair	No se pudo generar el par de claves
+Could not generate signature	No se pudo generar la firma
+Could not get fee	No se pudo obtener la comisión
+Could not get nonce	No se pudo obtener el nonce
+Could not get owner of token	No se pudo obtener el propietario del token
+Could not get timestamp	No se pudo obtener la marca de tiempo
+Could not import media	No se pudo importar el multimedia
+Could not load this Vault's status from the network. Retrying automatically.	No se pudo cargar el estado de esta bóveda desde la red. Reintentando automáticamente.
+Could not locate vault keypair for address {address}.	No se encontró el par de claves de bóveda para {address}.
+Could not login	No se pudo iniciar sesión
+Could not open the log file: {path}	No se pudo abrir el archivo de registro: {path}
+Could not parse encrypted message	No se pudo procesar el mensaje cifrado
+Could not produce signature	No se pudo generar la firma
+Could not reach the server. Check your connection and try again.	No se pudo conectar con el servidor. Revisa tu conexión e inténtalo de nuevo.
+Could not read the latest block height. Please try again.	No se pudo leer la altura del último bloque. Inténtalo de nuevo.
+Could not resolve nft from {id}	No se pudo resolver el NFT desde {id}
+Could not sign the acceptance.	No se pudo firmar la aceptación.
+Could not verify transaction	No se pudo verificar la transacción
+Could not verify transaction.	No se pudo verificar la transacción.
+Couldn't back up your account and key databases, so nothing was deleted: {error}	No se pudo respaldar tus bases de datos de cuentas y claves, así que no se eliminó nada: {error}
+Couldn't load bridge history. Check your connection and try again.	No se pudo cargar el historial del puente. Comprueba tu conexión e inténtalo de nuevo.
+Couldn't load bridge info.	No se pudo cargar la información del puente.
+Couldn't produce beacon upload signature	No se pudo generar la firma de subida al beacon
+Couldn't reach the bridge service.	No se pudo conectar al servicio del puente.
+Couldn't reach the bridge service. Check your connection and try again.	No se pudo contactar con el servicio de puente. Comprueba tu conexión e inténtalo de nuevo.
+Couldn't read your vBTC balance: {error}	No se pudo leer tu saldo de vBTC: {error}
+Couldn't save the example file.	No se pudo guardar el archivo de ejemplo.
+Couldn't sync media. Please try again.	No se pudieron sincronizar los medios. Inténtalo de nuevo.
+Couldn't upload {fileName}. Media was not synced.	No se pudo subir {fileName}. Los medios no se sincronizaron.
+CPU	CPU
+CPU Cores	Núcleos de CPU
+CPU Cores:	Núcleos de CPU:
+CPU Threads	Hilos de CPU
+CPU Threads:	Hilos de CPU:
+CPU:	CPU:
+Craft Time	Tiempo de creación
+Create	Crear
+Create / Host Beacon	Crear / Hospedar beacon
+Create a baseline smart contract with an asset and metadata and mint it to the chain	Crea un contrato inteligente base con un recurso y metadatos y emítelo en la cadena
+Create a BTC Domain as an alias to your account's address for receiving funds.	Crea un dominio BTC como alias de la dirección de tu cuenta para recibir fondos.
+Create a BTC domain as an alias to your BTC address for receiving funds.	Crea un dominio BTC como alias de tu dirección BTC para recibir fondos.
+Create a domain as an alias to your address for receiving funds.	Crea un dominio como alias de tu dirección para recibir fondos.
+Create a new BTC account	Crea una nueva cuenta BTC
+Create a new VFX account	Crea una nueva cuenta VFX
+Create a non-transferrable smart contract bound to a perminent address	Crea un contrato no transferible ligado a una dirección permanente
+Create a Smart Contract & Mint	Crear un contrato inteligente y emitir
+Create a smart contract that includes a royalty that is enforced on-chain upon any trade	Crea un contrato inteligente con una regalía aplicada en cadena en cada intercambio
+Create a VFX Domain as an alias to your account's address for receiving funds.	Crea un dominio VFX como alias de la dirección de tu cuenta para recibir fondos.
+Create a VFX domain as an alias to your address for receiving funds.	Crea un dominio VFX como alias de tu dirección para recibir fondos.
+Create Account	Crear cuenta
+Create Auction House	Crear casa de subastas
+Create Beacon	Crear beacon
+Create Blueprint	Crear plantilla
+Create BTC Domain	Crear dominio BTC
+Create Butterfly Password	Crear contraseña de Butterfly
+Create Collection	Crear colección
+Create Collection Blueprint	Crear plantilla de colección
+Create Domain	Crear dominio
+Create Domain for {address}	Crear dominio para {address}
+Create First Instance	Crear primera instancia
+Create First Listing	Crear primera publicación
+Create Fungible Token	Crear token fungible
+Create HD Account	Crear cuenta HD
+Create Instance	Crear instancia
+Create label & value pairs. For example: Label: Color Value: Blue	Crea pares de etiqueta y valor. Por ejemplo: Etiqueta: Color Valor: Azul
+Create Link	Crear enlace
+Create Listing	Crear listado
+Create New	Crear nueva
+Create New Collection	Crear colección nueva
+Create New Instance	Crear nueva instancia
+Create New Mnemonic	Crear mnemónico nuevo
+Create New Phase	Crear nueva fase
+Create New Token	Crear token nuevo
+Create New Voting Topic	Crear nuevo tema de votación
+Create Password	Crear contraseña
+Create Payment Link	Crear enlace de pago
+Create Privacy Password	Crear contraseña de privacidad
+Create Rarity	Crear rareza
+Create Smart Contract	Crear contrato inteligente
+Create Token	Crear token
+Create Token Topic	Crear tema del token
+Create Topic	Crear tema
+Create vBTC Token	Crear token vBTC
+Create vBTC Token?	¿Crear token vBTC?
+Create Verified BTC Token	Crear token Verified BTC
+Create VFX Account	Crear cuenta VFX
+Create Wallet	Crear billetera
+Creating Contract	Creando contrato
+Creating vBTC contract on-chain...	Creando el contrato vBTC en la cadena...
+creation	creación
+Creation Pending	Creación pendiente
+Creator Name	Nombre del creador
+Creator Retained Ownership	Propiedad retenida por creador
+Creator: {name}	Creador: {name}
+Creator’s Retained Ownership	Propiedad retenida del creador
+Crypto.com	Crypto.com
+Crypto.com On-Ramp	On-Ramp de Crypto.com
+Current balance	Saldo actual
+Current Bid Price:	Precio de oferta actual:
+Current Bids	Ofertas actuales
+Current fee rate: {feeRate} sat/vB	Comisión actual: {feeRate} sat/vB
+Current notes: {count}	Notas actuales: {count}
+Current Stage: {name}	Etapa actual: {name}
+Custom	Personalizada
+Dashboard	Panel
+Data	Datos
+Database Snapshot Imported.	Snapshot de la base de datos importado.
+Datanode	Datanode
+Date	Fecha
+Date must be in the future.	La fecha debe ser futura.
+Date:	Fecha:
+Date: {date}	Fecha: {date}
+Date/Time	Fecha/Hora
+Date/Time Variable	Variable de fecha/hora
+Dates	Fechas
+Day	día
+Days	días
+Days to retain files (0 for unlimited)	Días para retener archivos (0 para ilimitado)
+Debug Data	Datos de depuración
+Debug data copied to clipboard	Datos de depuración copiados al portapapeles
+Decimal Places:	Decimales:
+Decrease decimal places	Reducir decimales
+Decrypt	Descifrar
+Decrypted	Descifrado
+Decryption failed. Check your password.	Falló el descifrado. Revisa tu contraseña.
+DecShop TX	TX de DecShop
+DecShop TX Complete	TX de DecShop completada
+Default Account	Cuenta predeterminada
+Delete	Eliminar
+Delete BTC Domain?	¿Eliminar dominio BTC?
+Delete Chat Thread	Eliminar hilo de chat
+Delete Collection	Eliminar colección
+Delete Draft	Eliminar borrador
+Delete Instance?	¿Eliminar instancia?
+Delete Listing	Eliminar publicación
+Delete Pending	Eliminación pendiente
+Delete primary asset	Eliminar archivo principal
+Delete Primary Asset?	¿Eliminar archivo principal?
+Delete Shop	Eliminar tienda
+Delete shop?	¿Eliminar tienda?
+Delete Stage	Eliminar etapa
+Delete TX broadcasted.	TX de eliminación transmitida.
+Delete VFX Domain?	¿Eliminar dominio VFX?
+Delete your smart contract	Elimina tu contrato inteligente
+Delete?	¿Eliminar?
+Deposit Address	Dirección de depósito
+Deposit Address (MoonPay)	Dirección de depósito (MoonPay)
+Deposit address copied to clipboard	Dirección de depósito copiada al portapapeles
+Deposit Address:	Dirección de depósito:
+Deposit amount	Monto del depósito
+Description	Descripción
+Description (Optional):	Descripción (opcional):
+Description is required	La descripción es obligatoria
+Description of Physical/Digital Good	Descripción del bien físico/digital
+Description:	Descripción:
+Details	Detalles
+Diagnose	Diagnóstico
+Discard	Descartar
+Discard Changes	Descartar cambios
+Disclaimer	Aviso legal
+Dismiss	Descartar
+Docs	Documentación
+does NOT own	NO posee
+Domain must be less than {max} characters.	El dominio debe tener menos de {max} caracteres.
+Domain Name	Nombre del dominio
+Domain Name Created	Nombre de dominio creado
+Domain Name Deleted	Nombre de dominio eliminado
+Domain Name Required	Nombre de dominio obligatorio
+Domain Name Transferred	Nombre de dominio transferido
+Domains	Dominios
+Domains cost {cost} VFX plus the transaction fee.	Los dominios cuestan {cost} VFX más la comisión de la transacción.
+Done	Listo
+Done!	¡Listo!
+Download Asset	Descargar recurso
+Download Example CSV	Descargar CSV de ejemplo
+Download Example JSON	Descargar JSON de ejemplo
+Downloading: {file}	Descargando: {file}
+Downloading: {file} ({done}/{total})	Descargando: {file} ({done}/{total})
+Downloading...	Descargando...
+Draft deleted	Borrador eliminado
+Draft saved!	¡Borrador guardado!
+Drafts	Borradores
+Drawn from:	Tomado de:
+DST Registration	Registro DST
+Duplicate	Duplicar
+Earlier key form	Forma anterior de la clave
+Earn yield via Base DeFi	Generar rendimiento mediante DeFi en Base
+Economy	Económica
+Edit	Editar
+Edit Auction House	Editar casa de subastas
+Edit Collection	Editar colección
+Edit Creator Name	Editar nombre del creador
+Edit Description	Editar descripción
+Edit Details	Editar detalles
+Edit Instance	Editar instancia
+Edit Listing	Editar publicación
+Edit Name	Editar nombre
+Edit Rarity	Editar rareza
+editing	edición
+Email & Password	Correo y contraseña
+Email Address	Correo electrónico
+Email required.	Correo requerido.
+Enable at least one of the options (Gallery, Buy Now, or Auction)	Activa al menos una opción (Galería, Comprar ya o Subasta)
+Enable Auction?	¿Habilitar subasta?
+Enable Buy Now?	¿Habilitar compra inmediata?
+Encrypt Account Keys	Cifrar claves de la cuenta
+Encrypt Wallet	Cifrar billetera
+Encryption Password Required to continue validating.	Se requiere contraseña de cifrado para seguir validando.
+End Date	Fecha de fin
+End date must be after start date	La fecha de fin debe ser posterior a la de inicio
+End date must be after the start date	La fecha de fin debe ser posterior a la de inicio
+End Time	Hora de fin
+Ends in	Termina en
+English	English
+Enter a fee rate in sat/vB	Introduce una comisión en sat/vB
+Enter a password to encrypt this account's private keys.	Ingresa una contraseña para cifrar las claves privadas de esta cuenta.
+Enter a positive amount	Ingresa un monto positivo
+Enter Account Password	Ingresa la contraseña de la cuenta
+Enter amount	Ingresa el monto
+Enter Password	Ingresa la contraseña
+Enter the BTC domain being transferred to {btcAddress}.	Introduce el dominio BTC que se transfiere a {btcAddress}.
+Enter the password for this account to decrypt and view its private keys.	Ingresa la contraseña de esta cuenta para descifrar y ver sus claves privadas.
+Enter the password for this account to decrypt its private keys.	Ingresa la contraseña de esta cuenta para descifrar sus claves privadas.
+Enter the password you used in the VFX Extension to decrypt your private key.	Ingresa la contraseña que usaste en la extensión VFX para descifrar tu clave privada.
+Enter this account's password to back up its keys.	Ingresa la contraseña de esta cuenta para respaldar sus claves.
+Enter this account's password to decrypt its stored keys.	Ingresa la contraseña de esta cuenta para descifrar sus claves almacenadas.
+Enter this account's password to reveal its private keys.	Ingresa la contraseña de esta cuenta para revelar sus claves privadas.
+Enter this account's password to reveal its Vault account private keys.	Ingresa la contraseña de esta cuenta para revelar las claves privadas de su cuenta de bóveda.
+Enter verification code sent to {phone}	Ingresa el código de verificación enviado a {phone}
+Enter VFX address	Ingresa la dirección VFX
+Enter Wallet Password	Ingresa la contraseña de la billetera
+Enter your BTC address	Ingresa tu dirección BTC
+Enter your BTC Private Key or WIF Key:	Ingresa tu clave privada BTC o clave WIF:
+Enter your password to continue with this sensitive operation.	Ingresa tu contraseña para continuar con esta operación sensible.
+Enter your privacy password to unlock spending operations.	Ingresa tu contraseña de privacidad para desbloquear las operaciones de gasto.
+Enter your privacy wallet password to enable spending.	Ingresa la contraseña de tu billetera privada para habilitar el gasto.
+Enter your private key	Ingresa tu clave privada
+Error	Error
+Error activating privacy wallet: {error}	Error al activar la billetera privada: {error}
+Error banning address	Error al banear la dirección
+Error burning token	Error al quemar el token
+Error changing ownership	Error al cambiar la propiedad
+Error creating topic	Error al crear el tema
+Error generating smart contract data	Error al generar los datos del contrato inteligente
+Error Loading Data	Error al cargar los datos
+Error minting token	Error al emitir el token
+Error pausing/unpausing token	Error al pausar/reanudar el token
+Error transferring token	Error al transferir el token
+Error: {msg}	Error: {msg}
+Error: Bid not found.	Error: oferta no encontrada.
+Español	Español
+Estimated Fee	Comisión estimada
+Estimated time: 2–5 minutes once submitted.	Tiempo estimado: de 2 a 5 minutos una vez enviada.
+ETH for gas	ETH para gas
+Event Address	Dirección del evento
+Event Code	Código del evento
+Event Date	Fecha del evento
+Event Description	Descripción del evento
+Event Name	Nombre del evento
+Event Time	Hora del evento
+Event URL	URL del evento
+Evolution	Evolución
+Evolution Date	Fecha de evolución
+Evolution Mode	Modo de evolución
+Evolution Stages	Etapas de evolución
+Evolution Time ({timezone})	Hora de evolución ({timezone})
+Evolution Time ({tz})	Hora de evolución ({tz})
+Evolution Type	Tipo de evolución
+Evolve	Evolucionar
+Evolve ({type})	Evolución ({type})
+Evolve Block Height: {blockHeight} {description}	Altura de bloque de evolución: {blockHeight} {description}
+Evolve Date: {date} {time} {tz} {description}	Fecha de evolución: {date} {time} {tz} {description}
+Evolve on Redeem?	¿Evolucionar al canjear?
+Evolve Phase	Fase de evolución
+Evolve Phases	Fases de evolución
+Evolve Stage {number}	Etapa de evolución {number}
+Evolve Stage Asset	Archivo de la etapa de evolución
+Evolve Stage Description	Descripción de la etapa de evolución
+Evolve Stage Name	Nombre de la etapa
+Evolve stage(s) in the past	Etapas de evolución en el pasado
+Evolve transaction sent successfully	Transacción de evolución enviada exitosamente
+Evolve transaction sent successfully!	¡Transacción de evolución enviada exitosamente!
+Evolve Type	Tipo de evolución
+Evolve?	¿Evolucionar?
+Evolving	Evolutivo
+Evolving Mode	Modo de evolución
+Evolving phase	Fase de evolución
+Evolving Smart Contract	Contrato inteligente evolutivo
+Exceeds available ({amount} vBTC)	Supera lo disponible ({amount} vBTC)
+Existing Accounts	Cuentas existentes
+Exit vBTC Onboarding?	¿Salir del onboarding de vBTC?
+Exiting	Saliendo
+Expand navigation	Expandir navegación
+Expire Date	Fecha de expiración
+Expire Time	Hora de expiración
+Expired	Expirado
+Export and save all your VFX{vaultSuffix} and BTC private keys & addresses to a text file.	Exporta y guarda todas las claves privadas y direcciones de tu VFX{vaultSuffix} y BTC en un archivo de texto.
+Export NFT Media	Exportar multimedia del NFT
+Export Viewing Key	Exportar clave de visualización
+Fail	Fallido
+Failed	Fallida
+Failed to broadcast BTC transaction	No se pudo transmitir la transacción de BTC
+Failed to broadcast withdrawal request.	No se pudo transmitir la solicitud de retiro.
+Failed to cancel withdrawal.	No se pudo cancelar el retiro.
+Failed to complete withdrawal.	No se pudo completar el retiro.
+Failed to create contract.	No se pudo crear el contrato.
+Failed to create contract. Please try again.	No se pudo crear el contrato. Inténtalo de nuevo.
+Failed to create payment link. Please try again.	No se pudo crear el enlace de pago. Inténtalo de nuevo.
+Failed to decrypt account keys. Check your password.	No se pudieron descifrar las claves de la cuenta. Revisa tu contraseña.
+Failed to decrypt message. Invalid key or corrupted data.	No se pudo descifrar el mensaje. Clave inválida o datos corruptos.
+Failed to download {filename} after {attempts} attempts	No se pudo descargar {filename} tras {attempts} intentos
+Failed to execute MPC ceremony.	No se pudo ejecutar la ceremonia MPC.
+Failed to export viewing key: {error}	No se pudo exportar la clave de visualización: {error}
+Failed to generate login URL: {error}	Error al generar la URL de inicio de sesión: {error}
+Failed to generate shielded address	No se pudo generar la dirección blindada
+Failed to get ceremony status.	No se pudo obtener el estado de la ceremonia.
+Failed to import viewing key	No se pudo importar la clave de visualización
+Failed to initiate ceremony.	No se pudo iniciar la ceremonia.
+Failed to initiate MPC ceremony.	No se pudo iniciar la ceremonia MPC.
+Failed to parse fee	No se pudo procesar la comisión
+Failed to parse hash	No se pudo procesar el hash
+Failed to prepare cancellation	No se pudo preparar la cancelación
+Failed to prepare contract creation.	No se pudo preparar la creación del contrato.
+Failed to prepare FROST signing	No se pudo preparar la firma FROST
+Failed to prepare MPC ceremony.	No se pudo preparar la ceremonia MPC.
+Failed to prepare ownership transfer	No se pudo preparar la transferencia de propiedad
+Failed to prepare transfer	No se pudo preparar la transferencia
+Failed to prepare withdrawal request	No se pudo preparar la solicitud de retiro
+Failed to request withdrawal.	No se pudo solicitar el retiro.
+Failed to retrieve fee	No se pudo obtener la comisión
+Failed to retrieve nonce	No se pudo obtener el nonce
+Failed to retrieve timestamp	No se pudo obtener la marca de tiempo
+Failed to send VFX to escrow. Please try again.	No se pudo enviar VFX al depósito en garantía. Inténtalo de nuevo.
+Failed to sign beacon upload	No se pudo firmar la carga del beacon
+Failed to sign ceremony messages.	No se pudieron firmar los mensajes de la ceremonia.
+Failed to sign contract creation transaction.	No se pudo firmar la transacción de creación del contrato.
+Failed to sign FROST messages	No se pudieron firmar los mensajes FROST
+Failed to sign ownership proof.	No se pudo firmar la prueba de propiedad.
+Failed to sign transaction	No se pudo firmar la transacción
+Failed to start bridge. Please try again.	No se pudo iniciar el puente. Inténtalo de nuevo.
+Failed to start FROST signing	No se pudo iniciar la firma FROST
+Failed to transfer ownership.	No se pudo transferir la propiedad.
+Failed to transfer vBTC.	No se pudo transferir vBTC.
+Fastest	Más rápida
+Features	Funciones
+Features:	Características:
+Fee	Comisión
+Fee Rate	Comisión
+Fee Rate (SATS /byte)	Comisión (SATS/byte)
+Fee rate in satoshis	Tarifa en satoshis
+Fee Rate Required	Se requiere la tarifa
+Fee Rate:	Comisión:
+Fee Rate: {sats} SATS per byte ({btc} BTC per byte)	Tarifa: {sats} SATS por byte ({btc} BTC por byte)
+Fee: {fee} (deducted from shielded balance)	Comisión: {fee} (deducida del saldo blindado)
+Fee: {fee} (deducted from shielded VFX balance)	Comisión: {fee} (deducida del saldo de VFX blindado)
+File Name: {name}	Nombre del archivo: {name}
+File not found for preview. Likely this means this NFT no longer exists on this machine.	No se encontró el archivo para la vista previa. Probablemente esto significa que este NFT ya no existe en esta máquina.
+File Size	Tamaño del archivo
+File Type	Tipo de archivo
+Filename: {filename} | Creator: {creator}	Nombre del archivo: {filename} | Creador: {creator}
+First you'll need a VFX Wallet. You can either import an existing one or create one now.	Primero necesitarás una billetera VFX. Puedes importar una existente o crear una ahora.
+Fixed	Fijo
+Fixed Supply	Suministro fijo
+Floor Price	Precio mínimo
+Floor: {price} VFX	Base: {price} VFX
+for	por
+Forget	Olvidar
+Forget & Logout	Olvidar y cerrar sesión
+Forget Account {id}	Olvidar cuenta {id}
+Fractional Interest	Interés fraccionario
+Fractionalization	Fraccionamiento
+From	De
+from VFX	desde VFX
+From:	De:
+From: {address}	De: {address}
+From: {from} To: {to}	De: {from} Para: {to}
+FROST Group Key	Clave de grupo FROST
+FROST Signing	Firma FROST
+FROST signing failed	La firma FROST falló
+FROST signing failed or timed out. The withdrawal may still complete — check back shortly.	La firma FROST falló o agotó el tiempo de espera. Es posible que el retiro aún se complete: vuelve a verificar en breve.
+FROST signing failed: {error}	La firma FROST falló: {error}
+FROST signing in progress...	Firma FROST en progreso...
+FROST signing job not found	No se encontró el trabajo de firma FROST
+FROST signing timed out. The withdrawal may still complete — check back shortly.	La firma FROST agotó el tiempo de espera. Es posible que el retiro aún se complete: vuelve a verificar en breve.
+Full Description	Descripción completa
+Fund	Financiar
+Fund Account	Financiar cuenta
+Fund Token	Financiar token
+Fund vBTC Token	Financiar token vBTC
+Fund via Manual Send	Financiar mediante envío manual
+Fund Your Vault Account	Financia tu cuenta de bóveda
+Funds Received	Fondos recibidos
+Funds Sent	Fondos enviados
+Fungible Token	Token fungible
+Fungible Token ({balance} {ticker})	Token fungible ({balance} {ticker})
+Fungible Token Ban Address	Vetar dirección token
+Fungible Token Burn	Quemar token
+Fungible Token Deploy	Desplegar token
+Fungible Token Mint	Emitir token
+Fungible Token Ownership Change	Cambio dueño token
+Fungible Token Pause	Pausar token
+Fungible Token Resume	Reanudar token
+Fungible Token Topic Created	Tema de token creado
+Fungible Token Transfer	Transferir token
+Fungible Token TX	Tx de token
+Fungible Token Vote Cast	Voto de token
+Fungible Tokens	Tokens fungibles
+Gallery Listing	Publicación de galería
+Gallery Only?	¿Solo galería?
+Gas (paid on Base)	Gas (pagado en Base)
+General	General
+Generate	Generar
+Generate a random BTC keypair.	Genera un par de claves BTC aleatorio.
+Generate a smart contract that can evolve based on time or on-chain variables	Genera un contrato inteligente que evoluciona según el tiempo o variables en cadena
+Generate a URL to send to another user.	Genera un enlace para enviar a otro usuario.
+Generate BTC Address	Generar dirección BTC
+Generate Keypair	Generar par de claves
+Generate Link	Generar enlace
+Generate with strength:	Generar con nivel de seguridad:
+Get $BTC Now	Obtén $BTC ahora
+Get $VFX	Obtén $VFX
+Get $VFX Now	Obtén $VFX ahora
+Get $VFX/$BTC Now	Obtén $VFX/$BTC
+Get BTC	Obtener BTC
+Get Help	Obtener Ayuda
+Get Quote	Cotizar
+Get VFX	Obtener VFX
+Getting collections and listings...	Obteniendo colecciones y publicaciones...
+GitHub	GitHub
+Github Link (Optional)	Enlace de Github (opcional)
+Github Link:	Enlace de Github:
+Grid view	Vista de cuadrícula
+GUI Update	Actualización de GUI
+GUI Update Available	Actualización de GUI disponible
+Hack or Exploit Correction	Corrección de hackeo o exploit
+Half Hour	Media hora
+Hash	Hash
+Hash: {hash}	Hash: {hash}
+HD Account	Cuenta HD
+HD Account restored. Keys will now be generated deterministically based on phrase.	Cuenta HD restaurada. Las claves se generarán de forma determinista según la frase.
+HD Size	Tamaño de HD
+HD Size Specifier	Unidad de tamaño HD
+HD Size:	Tamaño del disco:
+Height:	Altura:
+Help	Ayuda
+here	aquí
+Here are your wallet details. Please ensure to back up your private key in a safe place.	Aquí están los detalles de tu billetera. Asegúrate de respaldar tu clave privada en un lugar seguro.
+Hidden	Oculta
+Hide	Ocultar
+Hide Account	Ocultar cuenta
+Hide Collection?	¿Ocultar colección?
+Hide details	Ocultar detalles
+Hide password	Ocultar contraseña
+High Fee	Comisión alta
+Highest Bid	Oferta más alta
+Home Machine	Máquina de hogar
+Host Created	Host creado
+Host Name	Nombre del host
+Hour	Hora
+Hours (24 Minimum)	Horas (mínimo 24)
+How much are you selling this NFT for?	¿Por cuánto vendes este NFT?
+How much BTC do you want to withdraw?	¿Cuánto BTC deseas retirar?
+I don't know	No lo sé
+I have read and agree to the disclaimer.	He leído y acepto el aviso legal.
+I have/will send manually	Ya envié / enviaré manualmente
+I'm Backed Up	Ya tengo respaldo
+I've sent this manually!	¡Lo envié manualmente!
+Icon Image Required	Se requiere imagen del ícono
+Identifier	Identificador
+ie. Intel	ej. Intel
+ie. Server, Desktop, Laptop, etc.	ej. servidor, escritorio, laptop, etc.
+Ignore Incoming NFTs	Ignorar NFTs entrantes
+Image(s)	Imagen(es)
+Import	Importar
+Import & Publish	Importar y publicar
+Import a viewing key to create a view-only wallet. You can see balances but cannot spend.	Importa una clave de visualización para crear una billetera de solo lectura. Puedes ver saldos pero no puedes gastar.
+Import an existing BTC private key	Importa una clave privada BTC existente
+Import an existing VFX private key	Importa una clave privada VFX existente
+Import BTC Account	Importar cuenta BTC
+Import BTC Private Key	Importar clave privada BTC
+Import BTC Private Key or WIF Key	Importar clave privada BTC o clave WIF
+Import BTC Wallet	Importar billetera BTC
+Import BTC WIF Private Key	Importar clave privada BTC WIF
+Import Existing	Importar existente
+Import Failed	Error de importación
+Import Key	Importar Clave
+Import Media	Importar multimedia
+Import NFT	Importar NFT
+Import Shop	Importar tienda
+Import Snapshot	Importar snapshot
+Import Snapshot?	¿Importar snapshot?
+Import Viewing Key	Importar clave de visualización
+Import Wallet	Importar billetera
+Import WIF Private Key	Importar clave privada WIF
+Import your BTC WIF private key	Importa tu clave privada WIF de BTC
+Importing	Importando
+In order for the name to be reflected, a restart of the CLI is required. Restart now?	Para que el nombre se aplique, se requiere reiniciar el CLI. ¿Reiniciar ahora?
+In Progress	En curso
+Inactive	Inactivo
+Include a royalty that is enforced on-chain upon any trade	Incluye una regalía aplicada en cadena en cada intercambio
+Incorrect account decryption password	Contraseña de descifrado de cuenta incorrecta
+Incorrect decryption password.	Contraseña de descifrado incorrecta.
+Incorrect login details for {address}.	Datos de acceso incorrectos para {address}.
+Incorrect password	Contraseña incorrecta
+Increase decimal places	Aumentar decimales
+Increment Amount:	Monto de incremento:
+Infinite	Infinito
+Initialized	Inicializado
+Initializing...	Inicializando...
+Initiate Transfer	Iniciar transferencia
+Initiated	Iniciada
+Initiating MPC ceremony...	Iniciando la ceremonia MPC...
+Input Recover Phrase	Ingresa la frase de recuperación
+Input Recovery Mnemonic	Ingresa el mnemónico de recuperación
+Input Shop Name Only	Ingresa solo el nombre de la tienda
+Input the percentage amount to be paid to the VFX address defined in the next field.	Ingresa el porcentaje a pagar a la dirección VFX definida en el siguiente campo.
+Input your desired fee rate (SATS /byte) for this transaction.	Ingresa la tasa de comisión que deseas (SATS /byte) para esta transacción.
+Inputs	Entradas
+Insufficient Balance	Saldo insuficiente
+Insufficient Balance to cover tx and fee. This account only has {balance} BTC.	Saldo insuficiente para cubrir la tx y la comisión. Esta cuenta solo tiene {balance} BTC.
+Insufficient balance to send	Saldo insuficiente para enviar
+Insufficient balance. Available: {available} vBTC	Saldo insuficiente. Disponible: {available} vBTC
+Insufficient shielded VFX to cover the privacy transaction fee.	VFX blindado insuficiente para cubrir la comisión de la transacción privada.
+Internet Speed Down (in Gbps)	Bajada de internet (Gbps)
+Internet Speed down(Gbps):	Velocidad de bajada (Gbps):
+Internet Speed Up (in Gbps)	Subida de internet (Gbps)
+Internet Speed up(Gbps):	Velocidad de subida (Gbps):
+Invalid	Inválido
+Invalid {label}.	{label} inválido.
+Invalid Address	Dirección inválida
+Invalid Address.	Dirección inválida.
+Invalid Amount	Monto inválido
+Invalid BTC Address	Dirección BTC inválida
+Invalid BTC address.	Dirección de BTC no válida.
+Invalid domain. Must only contain letters and/or numbers.	Dominio inválido. Solo debe contener letras y/o números.
+Invalid email.	Correo inválido.
+Invalid fee rate. Must be a whole number	Tasa de comisión inválida. Debe ser un número entero
+Invalid Fee Rate. Must be at least 1 satoshi.	Tarifa inválida. Debe ser al menos 1 satoshi.
+Invalid hex color	Color hex inválido
+Invalid JSON	JSON no válido
+Invalid ownership verification signature	Firma de verificación de propiedad inválida
+Invalid Phone Number	Número de teléfono inválido
+Invalid Phone Number.	Teléfono inválido.
+Invalid restore code	Código de restauración no válido
+Invalid Smart Contract	Contrato inteligente inválido
+Invalid Supply Amount	Cantidad de suministro inválida
+Invalid transaction data.	Datos de transacción inválidos.
+Invalid value	Valor inválido
+IP Address	Dirección IP
+IP Address of HOST	Dirección IP del HOST
+IP Address Required	Dirección IP requerida
+IP:	IP:
+Is Burnable:	Quemable:
+Is Connected to Mother?	¿Conectado a Mother?
+Is Host: {value}	Es Host: {value}
+Is Remote: {value}	Es Remote: {value}
+Is Validating?	¿Está validando?
+Issuer/Minter Controlled	Por emisor/creador
+Join Discord	Unirse a Discord
+just now	ahora mismo
+Just Take Me There	Solo llévame allí
+Key Generated	Clave generada
+Keys	Claves
+Keys backed up successfully.	Claves respaldadas exitosamente.
+Label	Etiqueta
+Language	Idioma
+Last Checked:	Última verificación:
+Latency:	Latencia:
+Later	Más tarde
+Latest TX:	Última TX:
+Launch BFLY	Abrir BFLY
+Launch Butterfly	Abrir Butterfly
+Launch IDE	Abrir IDE
+Launch IDE on mobile?	¿Iniciar IDE en el móvil?
+Launch MOTHER	Iniciar MOTHER
+Launch Wizard	Iniciar asistente
+Learn More	Más información
+Lifetime Cap	Suministro histórico
+Link copied to clipboard!	¡Enlace copiado al portapapeles!
+Linux	Linux
+List Bans	Listar bloqueos
+List Bans ({count})	Listar bloqueos ({count})
+List view	Vista de lista
+Listed	Listado
+Listing for {name}	Publicación de {name}
+Live	Activa
+Loading	Cargando
+Loading bridge history…	Cargando el historial del puente…
+Loading bridge status…	Cargando el estado del puente…
+Loading...	Cargando...
+Local changes saved!	¡Cambios locales guardados!
+Local Dedicated	Dedicada local
+Locators request failed.	Falló la solicitud de localizadores.
+Lock ID: {id}	ID de bloqueo: {id}
+Lock Now	Bloquear ahora
+Lock Wallet	Bloquear billetera
+Lock your {amount} vBTC on VFX	Bloquear tus {amount} vBTC en VFX
+Locked	Bloqueado
+Locking	Bloqueando
+Logged in successfully	Sesión iniciada con éxito
+Login	Iniciar sesión
+Login / Create Account	Iniciar sesión / Crear cuenta
+Login to Butterfly	Iniciar sesión en Butterfly
+Login with this Account	Iniciar sesión con esta cuenta
+Logout	Cerrar sesión
+Lost connection to ceremony.	Se perdió la conexión con la ceremonia.
+Lost connection while monitoring ceremony. Please try again.	Se perdió la conexión mientras se monitoreaba la ceremonia. Inténtalo de nuevo.
+Low balance — gas costs vary. Top up the address above if the mint fails.	Saldo bajo: los costos de gas varían. Recarga la dirección de arriba si la acuñación falla.
+Mac	Mac
+Machine OS	SO de máquina
+Machine Provider	Proveedor de máquina
+Machine Provider:	Proveedor de la máquina:
+Machine Type	Tipo de máquina
+Machine type:	Tipo de máquina:
+Make Collection Live?	¿Publicar colección?
+Make Live	Publicar
+Make Private	Hacer privado
+Manage	Administrar
+Manage Accounts	Administrar cuentas
+Manage Assets	Administrar activos
+Manage Evolution	Gestionar evolución
+Manage Minted NFTs	Administrar NFTs emitidos
+Manage my Auction House	Administrar mi casa de subastas
+Manage Token	Gestionar token
+Manage Vault Accounts	Administrar cuentas de bóveda
+Manage your account's auction house and trade NFTs.	Administra la casa de subastas de tu cuenta e intercambia NFTs.
+Manage your wallet's auction house and trade NFTs.	Administra la casa de subastas de tu billetera e intercambia NFTs.
+Managing {name}	Gestionando {name}
+Manual Deposit	Depósito manual
+Manual Only	Solo manual
+Manual Send	Envío manual
+Max	Máx.
+Max quantity is 100.	La cantidad máxima es 100.
+Maximum amount is {amount} vBTC	El monto máximo es {amount} vBTC
+Maximum characters for domain is 65	El máximo de caracteres del dominio es 65
+Media (Optional)	Multimedia (opcional)
+Media asset file not found on your machine ({fileName}).	No se encontró el archivo del recurso multimedia en tu máquina ({fileName}).
+Media backed up successfully.	Multimedia respaldada exitosamente.
+Media Backup URL	URL de respaldo de contenido
+Media files not found on this machine.	No se encontraron los archivos de contenido en este equipo.
+Media Imported Successfully	Multimedia importado correctamente
+Media sync failed: {error}	Error al sincronizar los medios: {error}
+Media synced.	Medios sincronizados.
+Media Upload Progress	Progreso de carga de contenido
+Media:	Multimedia:
+Mempool	Mempool
+Mempool is empty.	El mempool está vacío.
+Merge your 2 smallest notes into a single note. This reduces dust and improves privacy.	Combina tus 2 notas más pequeñas en una sola nota. Esto reduce el polvo y mejora la privacidad.
+Message	Mensaje
+Message (Optional)	Mensaje (opcional)
+Message copied to clipboard.	Mensaje copiado al portapapeles.
+Message decrypted successfully!	¡Mensaje descifrado con éxito!
+Metadata	Metadatos
+Metadata URL	URL de metadatos
+Min quantity is 1.	La cantidad mínima es 1.
+Min: {amount}	Mín.: {amount}
+Minimum	Mínima
+Minimum amount is 0.0001 VFX	El monto mínimo es 0.0001 VFX
+Minimum shield amount is {amount} vBTC	El monto mínimo para blindar es de {amount} vBTC
+Minimum shield amount is {amount} VFX	El monto mínimo para blindar es de {amount} VFX
+Minimum Token Requirement	Requisito mínimo de tokens
+Minimum Tokens to Vote: {count}	Tokens mínimos para votar: {count}
+Mint	Emitir
+Mint & Deploy	Emitir y desplegar
+Mint a physical or Real World Asset	Emitir un activo físico o del mundo real
+Mint and deploy the smart contract to the chain.	Emite y despliega el contrato inteligente en la cadena.
+Mint multiple Smart Contracts into a collection	Emite varios contratos inteligentes en una colección
+Mint NFT Collection	Emitir colección de NFTs
+Mint Tokens	Emitir tokens
+Mintable	Emitible
+Minted	Emitido
+Minted By	Emitido por
+Minted By: {name}	Acuñado por: {name}
+Minted on Base	Acuñado en Base
+Minted!	¡Emitido!
+Minter Address	Dirección del emisor
+Minter Address:	Dirección del emisor:
+Minter Name	Nombre del emisor
+Minter name is required	El nombre del emisor es obligatorio
+Minter/Creator Name	Nombre del emisor/creador
+Minting	Emitiendo
+Minting {current}/{total}...	Acuñando {current}/{total}...
+Minting stopped after an error. {minted} of {total} minted.	La emisión se detuvo por un error. {minted} de {total} emitidos.
+Minting...	Acuñando...
+Minting…	Emitiendo…
+Mnemonic	Mnemónico
+Mnemonic (HD account)	Mnemónico (cuenta HD)
+Mnemonic copied to clipboard	Mnemónico copiado al portapapeles
+Monitor Of The Roster	Monitor Of The Roster
+MoonPay transaction marked as manual deposit	Transacción de MoonPay marcada como depósito manual
+Mother Address	Dirección Mother
+MOTHER Dashboard	Panel de MOTHER
+MOTHER is a tool for monitoring the state of your remote validators.	MOTHER es una herramienta para monitorear el estado de tus validadores remotos.
+Mother Password	Contraseña Mother
+Move vBTC from the shielded pool back to a transparent address.	Mueve vBTC del fondo blindado de vuelta a una dirección transparente.
+Move vBTC from your transparent wallet into the shielded pool.	Mueve vBTC desde tu billetera transparente al fondo blindado.
+Move VFX from the shielded pool back to a transparent address.	Mueve VFX del fondo blindado de vuelta a una dirección transparente.
+Move VFX from your transparent wallet into the shielded pool.	Mueve VFX desde tu billetera transparente al fondo blindado.
+MPC Ceremony	Ceremonia MPC
+MPC ceremony and contract creation in progress.	Ceremonia MPC y creación del contrato en progreso.
+MPC ceremony completed successfully.	La ceremonia MPC se completó correctamente.
+MPC ceremony failed.	La ceremonia MPC falló.
+MPC Ceremony in Progress	Ceremonia MPC en progreso
+MPC ceremony timed out.	La ceremonia MPC expiró.
+Multi Asset	Multiarchivo
+Multi-signature	Multifirma
+Music Release	Lanzamiento musical
+Must be a valid 0x Base address (40 hex chars)	Debe ser una dirección Base 0x válida (40 caracteres hexadecimales)
+Must be greater than {minBid} VFX	Debe ser mayor a {minBid} VFX
+Must be greater than {minimum} VFX	Debe ser mayor que {minimum} VFX
+Must be more than 0%	Debe ser mayor a 0%
+Must have an account selected to vote.	Debes seleccionar una cuenta para votar.
+My Accounts	Mis cuentas
+My Auction House	Mi casa de subastas
+My Auction Houses	Mis casas de subastas
+My Balance	Mi saldo
+My Balance: {balance} vBTC	Mi saldo: {balance} vBTC
+My Balance: {balance} vBTC{usd}	Mi saldo: {balance} vBTC{usd}
+My NFTs	Mis NFTs
+My Smart Contracts	Mis contratos inteligentes
+My Topics	Mis temas
+My Total Balance:	Mi saldo total:
+MyToken	MyToken
+Name	Nombre
+Name is required	El nombre es obligatorio
+Name Required	Nombre requerido
+Name your smart contract. This field is required and is publicly visible.	Nombra tu contrato inteligente. Este campo es obligatorio y es visible públicamente.
+Name your validator	Nombra tu validador
+Name: {name}	Nombre: {name}
+Native Moonpay Integration Activating Soon.	La integración nativa de Moonpay se activará pronto.
+Network	Red
+Network Change	Cambio de red
+Network info	Información de la red
+Network Metrics	Métricas de red
+NEW	NUEVO
+New Account	Cuenta Nueva
+New Address	Nueva dirección
+New BTC Account	Cuenta BTC nueva
+New BTC Domain	Nuevo dominio BTC
+New fee rate (sat/vB)	Nueva comisión (sat/vB)
+New Instance	Nueva instancia
+New Owner's Address	Dirección del nuevo dueño
+New Password	Nueva contraseña
+New Validator Name	Nuevo nombre del validador
+New VFX Domain	Nuevo dominio VFX
+New VFX Owner Address	Dirección VFX del nuevo propietario
+Next	Siguiente
+Next Owner	Próximo dueño
+Next Page	Siguiente
+NFT	NFT
+NFT Address	Dirección del NFT
+NFT assets have not been transferred to the VFX Web Account.	Los archivos NFT no se transfirieron a la cuenta web VFX.
+NFT assets have not been transferred to the VFX Web Wallet.	Los recursos del NFT no se han transferido a la billetera web VFX.
+NFT Burn	Quemar NFT
+NFT Burned	NFT quemado
+NFT Collection Wizard	Asistente de colección NFT
+NFT Evolution	Evolución NFT
+NFT Evolved	NFT evolucionado
+NFT evolved to state {state}.	El NFT evolucionó al estado {state}.
+NFT Features:	Características del NFT:
+NFT from {fromAddress}	NFT de {fromAddress}
+NFT Locked	NFT bloqueado
+NFT Mint	Emitir NFT
+NFT Mint (Tokenized)	Emitir NFT (tokenizado)
+NFT Minted	NFT acuñado
+NFT not loaded	NFT no cargado
+NFT Received	NFT recibido
+NFT Sale	Venta NFT
+NFT Sale (Complete)	Venta NFT (completa)
+NFT Sale Complete	Venta NFT completa
+NFT Sale Complete (Manual)	Venta NFT completa (manual)
+NFT Sale Start	Inicio venta NFT
+NFT Sale Start (Manual)	Inicio venta NFT (manual)
+NFT Sent	NFT enviado
+NFT Timeout	Tiempo de espera de NFT
+NFT to {toAddress}	NFT para {toAddress}
+NFT Transfer	Transferir NFT
+NFT Tx	NFT Tx
+NFT:	NFT:
+NFT: {name}	NFT: {name}
+NFTs	NFTs
+No	No
+No account	Sin cuenta
+No account found	No se encontró ninguna cuenta
+No account selected	Ninguna cuenta seleccionada
+No account selected.	No se seleccionó ninguna cuenta.
+No Accounts	Sin cuentas
+No accounts found	No se encontraron cuentas
+No Accounts to Restore	No hay cuentas para restaurar
+No Active Collections	Sin colecciones activas
+No Active Listings	Sin listados activos
+No Active Topics	Sin temas activos
+No activity found	No se encontró actividad
+No address selected	No hay dirección seleccionada
+No address.	No hay dirección.
+No auction	No hay subasta
+No Auction Houses	Sin casas de subastas
+No Balance	Sin saldo
+No Beacons	Sin beacons
+No Bids Yet.	Aún no hay ofertas.
+No bids.	Sin ofertas.
+No bridge operations yet.	Aún no hay operaciones de puente.
+No BTC Account	Sin cuenta de BTC
+No BTC account / Token Found.	No se encontró cuenta BTC ni token.
+No BTC Account Found.	No se encontró cuenta BTC.
+No BTC Account selected	No se seleccionó ninguna cuenta BTC
+No BTC Accounts	Sin cuentas BTC
+No BTC Address	Sin dirección BTC
+No BTC Address Found	No se encontró dirección BTC
+No BTC address in token	El token no tiene dirección BTC
+No BTC Token selected	No se seleccionó ningún token BTC
+No BTC Transactions	Sin transacciones BTC
+No BTC Transactions Found	No se encontraron transacciones de BTC
+No BTC WIF Private Key Found	No se encontró clave privada WIF de BTC
+No Chats	Sin chats
+No Collections	Sin colecciones
+No Domain	Sin dominio
+No encrypted message found	No se encontró ningún mensaje cifrado
+No features	Sin funciones
+No Fungible Tokens	Sin tokens fungibles
+No Inactive Topics	Sin temas inactivos
+No Initial Issuance	Sin emisión inicial
+No keypair found	Par de claves no encontrado
+No keypair found to sign transaction	No se encontró un par de claves para firmar la transacción
+No keypair found.	Par de claves no encontrado.
+No keys to encrypt.	No hay claves para cifrar.
+No messages yet	Aún no hay mensajes
+No minted NFTs with management capabilities.	No hay NFT acuñados con capacidad de gestión.
+No NFTs found.	No se encontraron NFT.
+No payment links yet	Aún no hay enlaces de pago
+No private key.	No hay clave privada.
+No Properties	Sin propiedades
+No public key.	No hay clave pública.
+No request hash returned from withdrawal request.	La solicitud de retiro no devolvió un hash.
+No request hash returned.	No se devolvió ningún hash de solicitud.
+No results found	No se encontraron resultados
+No rows were found in this CSV file. Add at least one NFT below the header row.	No se encontraron filas en este archivo CSV. Agrega al menos un NFT debajo de la fila de encabezados.
+No shielded address found	No se encontró una dirección blindada
+No shop	No hay tienda
+No Smart Contracts Drafts Found	No se encontraron borradores de contratos inteligentes
+No Smart Contracts Found	No se encontraron contratos inteligentes
+No Thanks	No, gracias
+No Thread	No hay hilo
+No Tokenized Bitcoin found in account.	No se encontró Bitcoin tokenizado en la cuenta.
+No tokens in any of your accounts.	No hay tokens en ninguna de tus cuentas.
+No Topics	Sin temas
+No Transactions	Sin transacciones
+No Transactions Found	No se encontraron transacciones
+No Transactions Found [with current filters]	No se encontraron transacciones [con los filtros actuales]
+No Transactions found for {address}.	No se encontraron transacciones para {address}.
+No UTXOs	Sin UTXOs
+No Validated Blocks	Sin bloques validados
+No Vault Account Found	No se encontró cuenta de bóveda
+No Vault Accounts	No hay cuentas de bóveda
+No vBTC available to bridge	No hay vBTC disponible para puentear
+No vBTC tokens found	No se encontraron tokens de vBTC
+No vBTC tokens with a balance	No hay tokens vBTC con saldo
+No VFX account found	No se encontró una cuenta VFX
+No VFX Account Found.	No se encontró cuenta VFX.
+No VFX account selected	No se seleccionó ninguna cuenta VFX
+No VFX Accounts	Sin cuentas VFX
+No VFX Transactions Found	No se encontraron transacciones de VFX
+No Votes	Sin votos
+No votes yet.	Aún no hay votos.
+No Voting Topics	Sin temas de votación
+No Wallet detected.	No se detectó ninguna billetera.
+No wallet selected	Ninguna billetera seleccionada
+No wallet selected. Please create or import a wallet first.	No se seleccionó ninguna billetera. Crea o importa una billetera primero.
+NO you are NOT Validating	NO, no estás validando
+Node	Nodo
+Node name already taken.	Ese nombre de nodo ya está en uso.
+Non-Fungible Token	Token no fungible
+Nonce	Nonce
+None	Ninguna
+None of your addresses are holding {ticker}	Ninguna de tus direcciones posee {ticker}
+Not a valid amount	No es un monto válido
+Not a valid Private Key or WIF Key. Should be 64 or 52 characters	No es una clave privada ni una clave WIF válida. Debe tener 64 o 52 caracteres
+Not a Vault Account	No es una cuenta de bóveda
+Not Activated	No activada
+Not Authorized	No autorizado
+Not authorized (incorrect address).	No autorizado (dirección incorrecta).
+Not authorized (token invalid).	No autorizado (token inválido).
+Not available on this platform	No disponible en esta plataforma
+Not enough balance	Saldo insuficiente
+Not enough balance for transaction	Saldo insuficiente para la transacción
+Not enough balance in account.	Saldo insuficiente en la cuenta.
+Not enough balance in BTC account	Saldo insuficiente en la cuenta de BTC
+Not enough balance in BTC account to send {amount} BTC	No hay suficiente saldo en la cuenta BTC para enviar {amount} BTC
+Not enough balance once pending sends are counted. Available: {available} {unit}	Saldo insuficiente al contar los envíos pendientes. Disponible: {available} {unit}
+Not enough balance since you are validating.	Saldo insuficiente porque estás validando.
+Not enough balance to perform this transaction	Saldo insuficiente para realizar esta transacción
+Not enough balance.	Saldo insuficiente.
+Not enough BTC to cover this transaction + fee	No hay suficiente BTC para cubrir esta transacción + comisión
+Not enough BTC to cover transaction + fee	No hay suficiente BTC para cubrir la transacción + comisión
+Not enough VFX balance to mint a smart contract.	Saldo VFX insuficiente para emitir un contrato inteligente.
+Not enough VFX in this account to create a transaction.	No hay suficiente VFX en esta cuenta para crear una transacción.
+Not enough VFX in this account to create a VFX domain. {cost} VFX required (plus TX fee).	No hay suficiente VFX en esta cuenta para crear un dominio VFX. Se requieren {cost} VFX (más la comisión de TX).
+Not enough VFX in this wallet to delete a VFX domain.	No hay suficiente VFX en esta billetera para eliminar un dominio VFX.
+Not enough VFX in this wallet to transfer a VFX domain. {cost} VFX required (plus TX fee).	No hay suficiente VFX en esta billetera para transferir un dominio VFX. Se requieren {cost} VFX (más la comisión de TX).
+Not enough VFX in your account to create a BTC domain. {cost} VFX required (plus TX fee).	No hay suficiente VFX en tu cuenta para crear un dominio BTC. Se requieren {cost} VFX (más la comisión de TX).
+Not enough VFX in your controlling account to delete a VFX domain. [{address}]	No hay suficiente VFX en tu cuenta controladora para eliminar un dominio VFX. [{address}]
+Not enough VFX to do this action	No tienes suficiente VFX para realizar esta acción
+Not Found.	No encontrado.
+Not Generated	No generado
+Not implemented	No implementado
+Not implemented.	No implementado.
+Not Supported by Vault Account	No compatible con cuenta de bóveda
+Not Validating ❌	Sin validar ❌
+Not Verified	No verificado
+Not Voted	No votados
+Notice	Aviso
+Now you are ready to transfer BTC to your vBTC token. Select the amount and Fee Rate below	Ahora estás listo para transferir BTC a tu token vBTC. Selecciona el monto y la tasa de comisión a continuación
+Now you can create collections and then add listings to them.	Ahora puedes crear colecciones y agregarles publicaciones.
+Now you can create listings for the NFTs you own.	Ahora puedes crear publicaciones para los NFT que tienes.
+Number	Número
+Numerical Property	Propiedad numérica
+Off Ramp BTC	Vender BTC
+Office Machine	Máquina de oficina
+Offline	Desconectada
+Okay	Entendido
+Once the transaction relects on chain, your shop will appear here.	Cuando la transacción se refleje en la cadena, tu tienda aparecerá aquí.
+Online	Conectada
+Online Cloud VPS	VPS en la nube
+Online Dedicated	Dedicada en línea
+Online Event	Evento en línea
+Only {count} of {total} files on disk after download	Solo {count} de {total} archivos en disco tras la descarga
+Only one active topic per address is allowed.	Solo se permite un tema activo por dirección.
+Only one beacon per wallet allowed.	Solo se permite un beacon por billetera.
+Only the account that requested this withdrawal can change it. Switch to {address} first.	Solo la cuenta que solicitó este retiro puede cambiarlo. Cambia primero a {address}.
+Only the owner of this token can perform this action	Solo el propietario de este token puede realizar esta acción
+Only the token owner can view the additional media.	Solo el propietario del token puede ver el contenido adicional.
+Open	Abrir
+Open asset	Abrir archivo
+Open Bridge History for details.	Abre el historial del puente para ver los detalles.
+Open Butterfly	Abrir Butterfly
+Open Config	Abrir config
+Open DB Folder	Abrir carpeta de BD
+Open Explorer	Abrir Explorador
+Open File	Abrir archivo
+Open Folder	Abrir carpeta
+Open in Browser	Abrir en el navegador
+Open in BTC Explorer	Abrir en el explorador BTC
+Open in Explorer	Abrir en el explorador
+Open Log	Abrir registro
+Open menu	Abrir menú
+Open the online IDE to write your own Trillium code for your smart contract	Abre el IDE en línea para escribir tu propio código Trillium para tu contrato inteligente
+Open Withdrawal Form	Abrir formulario de retiro
+Operating System:	Sistema operativo:
+Operations	Operaciones
+Options	Opciones
+or	o
+Or transfer {amount} VFX to {address}.	O transfiere {amount} VFX a {address}.
+Or use one of your existing BTC Accounts:	O usa una de tus cuentas BTC existentes:
+Or use one of your existing VFX Accounts:	O usa una de tus cuentas VFX existentes:
+Original TX	TX original
+Other	Otro
+Other Options	Otras opciones
+Overide the asset when the smart contract evolves to this stage. This field is optional.	Reemplaza el archivo cuando el contrato evolucione a esta etapa. Este campo es opcional.
+Owned by	Propiedad de
+Owned by Me	De mi propiedad
+Owner	Propietario
+Owner Address	Dirección del propietario
+Owner's Address	Dirección del propietario
+Ownership NOT Verified	Propiedad NO verificada
+Ownership transfer failed: {error}	Falló la transferencia de propiedad: {error}
+Ownership transfer initiated.	Transferencia de propiedad iniciada.
+Ownership Verification Signature	Firma de verificación de propiedad
+Ownership Verified	Propiedad verificada
+OWNS	POSEE
+P2P Auction House (Create)	Casa subastas P2P (crear)
+P2P Auction House (Delete)	Casa subastas P2P (eliminar)
+P2P Auction House (Update)	Casa subastas P2P (actualizar)
+P2P Auctions	Subastas P2P
+Pair this smart contract with a physical/digital good	Vincula este contrato con un bien físico/digital
+Pair/Wrap this smart contract with an existing NFT on or off this network	Vincula/envuelve este contrato con un NFT existente dentro o fuera de esta red
+Pair/Wrap with Existing NFT	Emparejar/Envolver con un NFT existente
+Pass	Aprobado
+Password	Contraseña
+Password Clear Time	Tiempo para borrar la contraseña
+Password confirmation failed	La confirmación de la contraseña falló
+Password not strong enough.	Contraseña muy débil.
+Password Required	Contraseña requerida
+Password required.	Contraseña requerida.
+Password set on HOST	Contraseña del HOST
+Passwords do not match	Las contraseñas no coinciden
+Passwords do not match.	Las contraseñas no coinciden.
+Paste	Pegar
+Paste Base64 key here	Pega la clave Base64 aquí
+Paste in a public URL to a hosted zipfile containing the assets.	Pega una URL pública de un zip alojado que contenga los archivos.
+Paste in the signature provided by the owner to validate its ownership.	Pega la firma proporcionada por el propietario para validar su propiedad.
+Paste in the smart contract's unique identifier.	Pega el identificador único del contrato inteligente.
+Paste in your BTC private key to import your account.	Pega tu clave privada BTC para importar tu cuenta.
+Paste in your private keys. Each key should be a separate line.	Pega tus claves privadas. Cada clave debe ir en una línea.
+Paste in your RESTORE CODE to import the recovery account for this Vault Account.	Pega tu CÓDIGO DE RESTAURACIÓN para importar la cuenta de recuperación de esta cuenta de bóveda.
+Paste in your RESTORE CODE to import your existing Vault Account.	Pega tu CÓDIGO DE RESTAURACIÓN para importar tu cuenta de bóveda existente.
+Paste the destination address from your DeFi provider or Base wallet.	Pega la dirección de destino de tu proveedor DeFi o billetera Base.
+Paste your BTC address:	Pega tu dirección BTC:
+Pause	Pausar
+Pause Token Transactions	Pausar transacciones del token
+Pause Transactions	Pausar transacciones
+Pause TXs	Pausar TXs
+Paused	Pausado
+Pay with Credit Card	Pagar con tarjeta de crédito
+Pay with Credit Card / Crypto	Pagar con tarjeta de crédito / cripto
+Pay with Crypto.com	Pagar con Crypto.com
+Payee Address	Dir. beneficiario
+Payment Captured	Pago capturado
+Payment from VFX Wallet	Pago desde billetera VFX
+Payment Link	Enlace de pago
+Payment link created successfully!	¡Enlace de pago creado correctamente!
+Payment Link History	Historial de enlaces de pago
+Payment Link Ready!	¡Enlace de pago listo!
+Payment not available in this environment	Pago no disponible en este entorno
+Payment Processed	Pago procesado
+Peer Info	Información de pares
+Peers (In / Out)	Pares (Entrada / Salida)
+Pending	Pendiente
+Pending — tap to resume	Pendiente: toca para reanudar
+Pending Activation	Activación pendiente
+Pending Deposit	Depósito pendiente
+Pending Pause	Pausa pendiente
+Pending Resume	Reanudación pendiente
+Pending Withdrawal	Retiro pendiente
+Pending Withdrawal Found	Retiro pendiente encontrado
+Percent	Porcentaje
+Percentage	Porcentaje
+Percentage Required for Voting Approval	Porcentaje requerido para aprobar la votación
+Percentages	Porcentajes
+Phase #{number}: {name}	Fase #{number}: {name}
+Phone Number	Número de teléfono
+Phone Number is required	El número de teléfono es obligatorio
+Phone Number required.	Teléfono requerido.
+Physical Event	Evento físico
+Physical/Digital Good Name	Nombre del bien físico/digital
+Pick a color	Elegir un color
+Pick a date	Elegir una fecha
+Pick a time	Elegir una hora
+Place Bid	Hacer oferta
+Play	Reproducir
+Please approve the Sale Start TX for your shop purchase.	Aprueba la transacción de inicio de venta para tu compra en la tienda.
+Please check any other account with the same address for the media.	Revisa cualquier otra cuenta con la misma dirección para encontrar el recurso multimedia.
+Please choose a VFX account to begin creating a smart contract.	Elige una cuenta VFX para comenzar a crear un contrato inteligente.
+Please choose a VFX account to continue	Elige una cuenta VFX para continuar
+Please choose another account:	Elige otra cuenta:
+Please Confirm	Confirma por favor
+Please confirm you have backed up your RESTORE CODE as well as your PASSWORD.	Confirma que has respaldado tu CÓDIGO DE RESTAURACIÓN así como tu CONTRASEÑA.
+Please confirm you want to sell the NFT to "{address}" for {amount} VFX.	Confirma que quieres vender el NFT a "{address}" por {amount} VFX.
+Please confirm you want to send the {assetType} to "{address}".{warning}	Confirma que quieres enviar el {assetType} a "{address}".{warning}
+Please confirm your encryption password.	Confirma tu contraseña de cifrado.
+Please confirm your password.	Por favor confirma tu contraseña.
+Please do not close your wallet.	Por favor no cierres tu billetera.
+Please enter a valid amount	Ingresa un monto válido
+Please enter a valid VFX address	Ingresa una dirección VFX válida
+Please enter a valid zfx_ address	Ingresa una dirección zfx_ válida
+Please enter the viewing key	Ingresa la clave de visualización
+Please note that Reserve/Protected Accounts will not be exported.	Ten en cuenta que las cuentas de reserva/protegidas no se exportarán.
+Please restart and try again.	Por favor reinicia e inténtalo de nuevo.
+Please send funds to {address}	Por favor envía fondos a {address}
+Please unlock your extension wallet first	Primero desbloquea la billetera de tu extensión
+Please wait for the transaction to be finalized.	Espera a que la transacción se finalice.
+Please wait for your balance to arrive before continuing.	Espera a que llegue tu saldo antes de continuar.
+Please wait until your wallet is synced with the network	Espera a que tu billetera se sincronice con la red
+Port (leave blank for default)	Puerto (deja en blanco para usar el predeterminado)
+Port {port} is NOT open. Please configure your firewall.	El puerto {port} NO está abierto. Configura tu firewall.
+Port {port} is open!	¡El puerto {port} está abierto!
+Position QR code within the frame to scan	Coloca el código QR dentro del marco para escanear
+Pre Mint Initial Issuance?	¿Preacuñar la emisión inicial?
+Pre Mint Initial Issuance? (Optional)	¿Preacuñar la emisión inicial? (opcional)
+Prev Page	Anterior
+Previous	Anterior
+Price	Precio
+Price must be greater than zero	El precio debe ser mayor que cero
+Primary Asset	Archivo principal
+Primary Asset is required	El archivo principal es obligatorio
+Primary Asset Override	Reemplazo del archivo principal
+Print Addresses	Imprimir direcciones
+Print Validators	Imprimir validadores
+PRISM Privacy	Privacidad PRISM
+PRISM Privacy Layer	Capa de privacidad PRISM
+Privacy	Privacidad
+Privacy Layer Starting Up	La capa de privacidad se está iniciando
+Privacy Policy	Política de privacidad
+Privacy settings	Configuración de privacidad
+Privacy wallet activated: {address}	Billetera privada activada: {address}
+Privacy wallet password required. Please unlock first.	Se requiere la contraseña de la billetera privada. Desbloquea primero.
+Privacy wallet reset	Billetera privada restablecida
+Privacy wallet unlocked	Billetera privada desbloqueada
+Private Key	Clave privada
+Private key copied to clipboard	Clave privada copiada al portapapeles
+Private Key Imported!	¡Clave privada importada!
+Private Key Imported! Please wait until {nextSync} for the balance to sync.	¡Clave privada importada! Espera hasta {nextSync} para que el saldo se sincronice.
+Private Key Imported! Please wait until {time} for the balance to sync.	¡Clave privada importada! Espera hasta {time} para que se sincronice el saldo.
+Private key not found for recipient address	No se encontró la clave privada para la dirección del destinatario
+Private Key:	Clave privada:
+Private Transfer	Transferencia privada
+Private transfer broadcast successfully	Transferencia privada transmitida correctamente
+Private transfer failed: {error}	La transferencia privada falló: {error}
+Private Transfer vBTC	Transferencia privada de vBTC
+Problem downloading {url}. Skipping.	Problema al descargar {url}. Se omite.
+Problem fetching local block height. Please try again.	Problema al obtener la altura de bloque local. Inténtalo de nuevo.
+Problem fetching snapshot block height. Please try again.	Problema al obtener la altura de bloque del snapshot. Inténtalo de nuevo.
+Problem generating RecoverySigScript	Problema al generar RecoverySigScript
+Proceed	Continuar
+Processing Withdrawal	Procesando retiro
+Progress: {percent}	Progreso: {percent}
+Properties	Propiedades
+Properties (Optional)	Propiedades (opcional)
+Properties:	Propiedades:
+Property	Propiedad
+Property Name	Nombre de la propiedad
+Property Type	Tipo de propiedad
+Property Types	Tipos de propiedad
+Property Value	Valor de la propiedad
+Proposals & Voting	Propuestas y votación
+Prove Ownership	Probar propiedad
+Provenance Files (Optional)	Archivos de procedencia (opcional)
+Provide a description for this evolution stage.	Proporciona una descripción para esta etapa de evolución.
+Provide a name for this evolution stage.	Proporciona un nombre para esta etapa de evolución.
+Provide the VFX public address that the royalty will be paid to upon transaction finality.	Indica la dirección pública VFX a la que se pagará la regalía al finalizar la transacción.
+Public key copied to clipboard	Clave pública copiada al portapapeles
+Publish	Publicar
+Publish Changes	Publicar cambios
+Publish IP Change	Publicar cambio de IP
+Publish Live	Publicar en vivo
+Publish Shop	Publicar tienda
+Publish Shop?	¿Publicar tienda?
+Publish Transaction Sent!	¡Transacción de publicación enviada!
+Publish Updates?	¿Publicar actualizaciones?
+Published	Publicada
+Purchase BTC with fiat and send directly to this token	Compra BTC con moneda fiat y envíalo directamente a este token
+Purchased	Comprado
+Purchased by:	Comprado por:
+QR Code	Código QR
+QR Scanner not available on this platform	Escáner QR no disponible en esta plataforma
+Quantity	Cantidad
+Quantity to Mint	Cantidad a emitir
+Quantity: {quantity}	Cantidad: {quantity}
+Quoted	Cotizado
+Raise Fee	Subir comisión
+RAM (GB):	RAM (GB):
+RAM (in GB)	RAM (en GB)
+Rareness	Rareza
+Rarities	Rarezas
+Read Docs	Ver docs
+Ready to Claim	Listo para reclamar
+Ready to Import	Listo para importar
+Reason	Motivo
+Reason for Pairing/Wrapping	Motivo del emparejamiento/envoltura
+Reason To Become Adjudicator	Motivo para ser adjudicador
+Reasons to be added as adjudicator:	Razones para ser agregado como adjudicador:
+Rebroadcast TX	Retransmitir TX
+Rebroadcasted TX. ({hash})	TX retransmitida. ({hash})
+Rebuilding chain state	Reconstruyendo el estado de la cadena
+Rebuilding…	Reconstruyendo…
+Receive	Recibir
+Receive {currency}	Recibir {currency}
+Receive Assets	Recibir activos
+Receive Coin	Recibir Moneda
+Received	Recibida
+Receiver's Acceptance Code	Código de aceptación del receptor
+Receiving Address	Dirección receptora
+Receiving BTC Address	Dirección BTC receptora
+Recent Transactions	Transacciones recientes
+Recipient (zfx_ address)	Destinatario (dirección zfx_)
+Recipient must be a valid zfx_ address	El destinatario debe ser una dirección zfx_ válida
+Recipient VFX Address	Dirección VFX del destinatario
+Recipient's Account Address	Dirección de la cuenta del destinatario
+Recipient's VFX Account Address	Dirección de la cuenta VFX del destinatario
+Recording Completion	Registrando la finalizacion
+Recording completion on the VFX chain...	Registrando la finalizacion en la cadena VFX...
+Recover	Recuperar
+Recover From Mnemonic	Recuperar desde mnemónico
+Recover Funds & NFTs	Recuperar fondos y NFTs
+Recovered	Recuperado
+Recovered & Deactivated	Recuperada y desactivada
+Recovery Address	Dirección de recuperación
+Recovery Address copied to clipboard	Dirección de recuperación copiada al portapapeles
+Recovery Address:	Dirección de recuperación:
+Recovery In Progress	Recuperación en curso
+Recovery Mnemonic	Mnemónico de recuperación
+Recovery Phrase	Frase de recuperación
+Recovery Phrase Generated	Frase de recuperación generada
+Recovery Private Key	Clave privada de recuperación
+Recovery Private Key copied to clipboard	Clave privada de recuperación copiada al portapapeles
+Recovery Private Key:	Clave privada de recuperación:
+Recovery process has started	El proceso de recuperación ha comenzado
+Recovery transaction broadcasted.	Transacción de recuperación transmitida.
+Refresh	Actualizar
+Refresh Status	Actualizar estado
+Refreshing status...	Actualizando estado...
+Reject Asset Extension Types	Rechazar tipos de extensión de archivo
+Rejected	Rechazada
+Rejected Asset Extension Types	Tipos de extensión de archivo rechazados
+Release	Liberar
+Reload wallet info	Recargar información de la billetera
+Remote	Remoto
+REMOTE node has been removed from MOTHER	El nodo REMOTE se eliminó de MOTHER
+Remove	Eliminar
+Remove & Restart CLI	Eliminar y reiniciar CLI
+Remove asset	Quitar archivo
+Remove Asset?	¿Quitar archivo?
+Remove Beacon	Eliminar beacon
+Remove Developer	Eliminar desarrollador
+Remove phase	Eliminar fase
+Remove Phase?	¿Eliminar fase?
+Remove property	Eliminar propiedad
+Remove Property?	¿Eliminar propiedad?
+Remove royalty	Eliminar regalía
+Remove Royalty?	¿Eliminar regalía?
+Remove shop?	¿Quitar tienda?
+Rename	Renombrar
+Rename {label}	Renombrar {label}
+Rename Account	Renombrar cuenta
+Rename Validator	Renombrar validador
+Replace	Reemplazar
+Replace anyway	Reemplazar de todos modos
+Replace By Fee	Reemplazar por comisión
+Replace NFT	Reemplazar NFT
+Replace Token Icon	Reemplazar ícono del token
+Replaced by fee ({feeRate} SATS /byte) TX sent. Hash: {hash}	TX de reemplazo por comisión ({feeRate} SATS /byte) enviada. Hash: {hash}
+Request cancelled	Solicitud cancelada
+Request Funds	Solicitar fondos
+Request funds link copied to clipboard	Enlace de solicitud copiado al portapapeles
+Request timed out	La solicitud expiró
+Request VFX	Solicitar VFX
+Required	Requerido
+Required for Block Height evolution.	Requerido para evolución por altura de bloque.
+Required for Date/Time evolution.	Requerido para evolución por fecha/hora.
+Rescan Blocks?	¿Reescanear bloques?
+Resend Bid	Reenviar oferta
+Resend Message	Reenviar mensaje
+Reserve Met:	Reserva alcanzada:
+Reserve Price	Precio de reserva
+Reserve: {price} VFX	Reserva: {price} VFX
+Reset	Restablecer
+Reset Privacy Wallet	Restablecer billetera privada
+Response	Respuesta
+Restart	Reiniciar
+Restart CLI	Reiniciar CLI
+Restart Now	Reiniciar ahora
+Restarting CLI...	Reiniciando CLI...
+Restore All	Restaurar todas
+Restore Code	Código de restauración
+Restore Code copied to clipboard	Código de restauración copiado al portapapeles
+Restore Code:	Código de restauración:
+Restore HD Account	Restaurar cuenta HD
+Restore Hidden Accounts	Restaurar cuentas ocultas
+Restore Selected	Restaurar seleccionadas
+Restore Vault Account	Restaurar cuenta de bóveda
+Result	Resultado
+Resume	Reanudar
+Resume Session	Reanudar sesión
+Resume Token Transactions	Reanudar transacciones del token
+Resume Transactions	Reanudar transacciones
+Resume TXs	Reanudar TXs
+Resumed	Reanudado
+Resync	Resincronizar
+Resync complete	Resincronización completa
+Resync failed	La resincronización falló
+Resync Shielded Wallet	Resincronizar billetera blindada
+Resync started...	Resincronización iniciada...
+Resync vBTC Wallet	Resincronizar billetera de vBTC
+Resync Wallet	Resincronizar billetera
+Resyncing...	Resincronizando...
+Retry	Reintentar
+Retry Completion	Reintentar finalizacion
+Retry failed. See history detail for status.	El reintento falló. Consulta el detalle del historial para ver el estado.
+Retry Signing	Reintentar firma
+Retry submitted. Watching for status updates.	Reintento enviado. Vigilando las actualizaciones de estado.
+Returned	Devuelto
+Reveal	Revelar
+Reveal Evolve Stages	Revelar etapas de evolución
+Reveal Keys	Revelar claves
+Reveal Private Key	Revelar clave privada
+Reveal Private Key?	¿Revelar clave privada?
+Review Bridge	Revisar puente
+Round 1	Ronda 1
+Round 2	Ronda 2
+Round 3	Ronda 3
+Royalty	Regalía
+Royalty Fee	Regalía
+Royalty Flat Fee Amount	Regalía fija
+Royalty Percentage Fee Amount	Regalía porcentual
+Royalty Smart Contract	Contrato inteligente con regalías
+Royalty to	Regalía a
+Royalty Type	Tipo de regalía
+Sale Amount	Monto de venta
+Sale Complete TX Failed	Falló la TX de cierre de venta
+Sale Complete TX Sent	TX de venta completa enviada
+Sale Completed	Venta completada
+Sale Completed (Manual)	Venta completada (manual)
+Sale has Completed	Venta completada
+Sale in Progress...	Venta en curso...
+Sale is Pending	Venta pendiente
+Sale Started	Venta iniciada
+Sale Started (Manual)	Venta iniciada (manual)
+Same Account TX	TX misma cuenta
+Save	Guardar
+Save & Close	Guardar y cerrar
+Save and Close	Guardar y cerrar
+Save as Draft	Guardar borrador
+Save as File	Guardar como archivo
+Save Changes	Guardar cambios
+Save your smart contract as a draft locally to come back and work on it later.	Guarda tu contrato inteligente como borrador local para retomarlo más tarde.
+Saved to {data}	Guardado en {data}
+Saved to {path}	Guardado en {path}
+Scan & Pay	Escanear y pagar
+Scanning...	Escaneando...
+Search	Buscar
+Search by validator name...	Busca por nombre del validador...
+Search for auction house...	Busca casas de subastas...
+Search...	Buscar...
+Seating Info	Información de asientos
+Select Account	Seleccionar cuenta
+Select Account(s) to Restore	Selecciona las cuentas a restaurar
+Select an address from the list to be the shop owner.	Selecciona una dirección de la lista para que sea el propietario de la tienda.
+Select from my accounts	Seleccionar de mis cuentas
+Select NFT	Seleccionar NFT
+Select vBTC Contract	Seleccionar contrato de vBTC
+Select VFX Address	Selecciona la dirección VFX
+Select your address type:	Selecciona tu tipo de dirección:
+Selected Address:	Dirección seleccionada:
+Selected BTC Account	Cuenta BTC seleccionada
+Selected VFX account doesn't have enough balance	La cuenta VFX seleccionada no tiene saldo suficiente
+Selected VFX Address	Dirección VFX seleccionada
+Selecting a BTC address is required.	Es obligatorio seleccionar una dirección BTC.
+Selecting a VFX Address is required.	Es obligatorio seleccionar una dirección VFX.
+Self Destructive	Autodestructivo
+Sell	Vender
+Sell NFT	Vender NFT
+Send	Enviar
+Send {currency}	Enviar {currency}
+Send Automatically	Enviar automáticamente
+Send BTC from any exchange or external wallet to the deposit address below.	Envía BTC desde cualquier exchange o billetera externa a la dirección de depósito de abajo.
+Send BTC from any exchange or wallet to this token's deposit address	Envía BTC desde cualquier exchange o billetera a la dirección de depósito de este token
+Send Coin	Enviar Moneda
+Send coin manually to this token's BTC deposit address	Envía la moneda manualmente a la dirección de depósito BTC de este token
+Send Funds	Enviar fondos
+Send funds to {address} (address copied to clipboard)	Envía fondos a {address} (dirección copiada al portapapeles)
+Send Manually	Enviar manualmente
+Send message	Enviar mensaje
+Send message...	Enviar mensaje...
+Send Now	Enviar ahora
+Send Sale Start TX	Enviar TX de inicio de venta
+Send this ownership validation signature to prove you are the owner.	Envía esta firma de validación de propiedad para probar que eres el propietario.
+Send to Your Own Address?	¿Enviar a tu propia dirección?
+Sending {amount} BTC from {from} to {to}. Fee: {fee} BTC	Enviando {amount} BTC desde {from} a {to}. Comisión: {fee} BTC
+Sending VFX	Enviando VFX
+Sending VFX...	Enviando VFX...
+Sending: {amount} BTC To: {toAddress} From: {fromAddress} Fee: {fee} BTC	Enviando: {amount} BTC Para: {toAddress} De: {fromAddress} Comisión: {fee} BTC
+Sending: {amount} BTC To: {toAddress} From: {fromAddress} FeeRate: {feeRate} SATS	Enviando: {amount} BTC Para: {toAddress} De: {fromAddress} Comisión: {feeRate} SATS
+Sending: {amount} VFX To: {toAddress} From: {fromAddress}	Enviando: {amount} VFX Para: {toAddress} De: {fromAddress}
+Sent	Enviada
+Sent {amount} VFX	Se enviaron {amount} VFX
+Separate multiple with commas	Separa varios con comas
+Session Timeout Warning	Aviso de sesión inactiva
+Set Active	Activar
+Set Encryption Password	Establecer contraseña de cifrado
+Set Evolution	Fijar evolución
+Set Offline?	¿Poner fuera de línea?
+Set Online?	¿Poner en línea?
+Set Password	Establecer contraseña
+Set the IP address and password set of your MOTHER HOST.	Configura la dirección IP y la contraseña de tu HOST de MOTHER.
+Set Wallet as Host	Establecer billetera como Host
+Set Wallet as Remote	Establecer billetera como remota
+Settings	Configuración
+Settlement Date: {date}	Fecha de liquidación: {date}
+Setup a Bitcoin account	Configura una cuenta de Bitcoin
+Setup a VerifiedX account	Configura una cuenta de VerifiedX
+Setup Auction House	Configurar casa de subastas
+Setup New Account	Configurar cuenta nueva
+Setup Vault Account	Configurar cuenta de bóveda
+Setup Wallet	Configurar billetera
+Share Collection	Compartir colección
+Share Link	Compartir enlace
+Share Listing	Compartir publicación
+Share ownership between multiple wallets and support voting	Comparte la propiedad entre varias billeteras con votación
+Share Shop	Compartir tienda
+Share this link with the recipient. They can claim the VFX without needing a wallet.	Comparte este enlace con el destinatario. Puede reclamar los VFX sin necesidad de una billetera.
+Share url copied to clipboard	URL copiada al portapapeles
+Shield	Blindar
+Shield failed: {error}	El blindaje falló: {error}
+Shield transaction broadcast successfully	Transacción de blindaje transmitida correctamente
+Shield vBTC	Blindar vBTC
+Shield VFX	Blindar VFX
+Shielded Address	Dirección blindada
+Shielded Balance	Saldo blindado
+Shielded vBTC	vBTC blindado
+Shielded VFX Required	Se requiere VFX blindado
+Shop Delete transaction broadcasted to the network	Transacción de eliminación de tienda enviada a la red
+Shop Deleted	Tienda eliminada
+Shop Description	Descripción de la tienda
+Shop Error	Error de tienda
+Shop Identifier	Identificador de la tienda
+Shop Imported	Tienda importada
+Shop is offline.	La tienda está desconectada.
+Shop Name	Nombre de la tienda
+Shop Not Found	Tienda no encontrada
+Shop Offline	Tienda fuera de línea
+Shop Online	Tienda en línea
+Shop Publish transaction broadcasted to the network	Transacción de publicación de tienda enviada a la red
+Shop Update transaction broadcasted to the network	Transacción de actualización de tienda enviada a la red
+Shop URL	URL de la tienda
+Shop URL copied to clipboard	URL de la tienda copiada
+Shop URL is not available.	La URL de la tienda no está disponible.
+Shop URL required	URL de tienda requerida
+Show Debug Data	Ver datos de depuración
+Show details	Mostrar detalles
+Show History	Mostrar historial
+Show key	Mostrar clave
+Show password	Mostrar contraseña
+Shutting down CLI...	Cerrando el CLI...
+Sign In	Iniciar sesión
+Sign Out	Cerrar Sesión
+Signature	Firma
+Signature generation failed.	Falló la generación de la firma.
+Signature not valid	Firma no válida
+Signature not valid (primary)	Firma no válida (primaria)
+Signature Verification copied to clipboard.	Firma de verificación copiada al portapapeles.
+Signing Threshold	Umbral de firma
+Since this is a Vault Account you'll need to authorize the download.	Como esta es una Cuenta de bóveda, deberás autorizar la descarga.
+Size	Tamaño
+Smart Contract	Contrato inteligente
+Smart Contract Burn	Quemar contrato int.
+Smart Contract ID	ID del contrato inteligente
+Smart Contract ID:	ID del smart contract:
+Smart Contract ID: {id}	ID del contrato inteligente: {id}
+Smart Contract Identifier	Identificador del contrato inteligente
+Smart Contract Identifier copied to clipboard	Identificador del contrato inteligente copiado al portapapeles
+Smart Contract imported from network	Contrato inteligente importado de la red
+Smart Contract Mint	Emitir contrato int.
+Smart Contract minted successfully.	Contrato inteligente emitido con éxito.
+Smart Contract Name	Nombre del contrato inteligente
+Smart Contract Owner	Propietario del contrato inteligente
+Smart Contract TX	Tx contrato int.
+Smart Contract UID	UID del contrato inteligente
+Smart Contract UID: {uid}	UID del contrato inteligente: {uid}
+Smart Contracts	Contratos inteligentes
+Smart Contracts Templates	Plantillas de contratos inteligentes
+SmartContract Owner Address	Dirección del dueño del contrato
+Snapshot has no download URLs	El snapshot no tiene URLs de descarga
+Snapshot import failed.	Falló la importación del snapshot.
+Soul Bound	Soul Bound
+Stand by	Espera un momento
+Standard key form	Forma estándar de la clave
+Start Adjudicating	Iniciar adjudicación
+Start by providing the name, minter, and description of the smart contract.	Comienza dando el nombre, el emisor y la descripción del contrato inteligente.
+Start Date	Fecha de inicio
+Start Over	Comenzar de nuevo
+Start Sale	Iniciar venta
+Start Time	Hora de inicio
+Start Transaction	Iniciar transacción
+Start Validating	Iniciar validación
+Start with a baseline smart contract and add customized features	Comienza con un contrato inteligente base y agrega características personalizadas
+Starting MPC Ceremony	Iniciando la ceremonia MPC
+Starting up CLI now...	Iniciando el CLI ahora...
+Stat	Estadística
+Stat Type	Tipo de estadística
+Stats	Estadísticas
+Stats Override	Anular estadísticas
+Status	Estado
+Status Log	Registro de estado
+Status:	Estado:
+Status: {status}	Estado: {status}
+Status: {value}	Estado: {value}
+Stay Logged In	Seguir conectado
+Stop	Detener
+Stop Adjudicating	Detener adjudicación
+Stop Host	Detener host
+Stop MOTHER Host?	¿Detener host de MOTHER?
+Stop Remote	Detener remoto
+Stop Remote & Restart CLI	Detener Remote y reiniciar CLI
+Stop Validating	Detener validación
+Stripe (Credit Card)	Stripe (Tarjeta de crédito)
+Submit	Enviar
+Submit a mintWithProof transaction on Base (paid from your derived Base address)	Enviar una transacción mintWithProof en Base (pagada desde tu dirección Base derivada)
+Submitting a transaction to the VFX network.	Enviando una transacción a la red VFX.
+Submitting mint on Base	Enviando la acuñación en Base
+Subscribe for updates?	¿Suscribirte para recibir novedades?
+Subscribed	Suscrito
+Success	Éxito
+Success: NFT Sale Transfer has been started.	Listo: se inició la transferencia de venta del NFT.
+Success: NFT Transfer has been started.	Listo: se inició la transferencia del NFT.
+Success! Funds are on their way. TX Hash: {hash}	¡Éxito! Los fondos están en camino. Hash de TX: {hash}
+Success! Funds are on their way. TX Hash: {result}	¡Listo! Los fondos están en camino. Hash de TX: {result}
+Successful	Exitosa
+Supply	Suministro
+Supply Amount	Cantidad de suministro
+Supply must be a whole number from 0 to {max}.	El suministro debe ser un número entero de 0 a {max}.
+Sync Media	Sincronizar medios
+Synced	Sincronizado
+Syncing state treis due to improper shutdown	Sincronizando estado por un cierre incorrecto
+Syncing...	Sincronizando...
+System default	Idioma del sistema
+Technical Background	Experiencia técnica
+Technical background:	Experiencia técnica:
+Terms of Use	Términos de uso
+Testnet Faucet	Faucet de testnet
+Testnet Faucet does not have any terms. Have fun!	El faucet de testnet no tiene términos. ¡Diviértete!
+Text	Texto
+Text Property	Propiedad de texto
+The 'Vote Adjudicator In' submission is too long. Please reduce the content.	El envío 'Voto de adjudicador' es muy largo. Reduce el contenido.
+The amount has to be a positive value	El monto debe ser un valor positivo
+The auction has already started.	La subasta ya comenzó.
+The bridge could not complete.	El puente no se pudo completar.
+The CSV headers are not in the correct format, please check the example file	Los encabezados del CSV no tienen el formato correcto, por favor revisa el archivo de ejemplo
+The current block height is not known yet. Try again in a moment.	Todavía no se conoce la altura de bloque actual. Inténtalo de nuevo en un momento.
+The date and time the smart contract will evolve (UTC).	La fecha y hora en que el contrato evolucionará (UTC).
+The description exceeds the maximum character length	La descripción supera el máximo de caracteres
+The description exceeds the maximum word count	La descripción supera el máximo de palabras
+The description is required	La descripción es requerida
+The fee change could not be sent.	No se pudo enviar el cambio de comisión.
+The floor price must be greater than zero.	El precio base debe ser mayor que cero.
+The IDE is optimized for larger screens. Would you like to proceed?	El IDE está optimizado para pantallas más grandes. ¿Quieres continuar?
+The IP address of the HOST wallet. Default value: (leave blank)	La dirección IP de la billetera HOST. Valor predeterminado: (dejar en blanco)
+The maximum number you can mint at one time is {max}.	El número máximo que puedes emitir a la vez es {max}.
+The minimum token balance required to vote.	El saldo mínimo de tokens necesario para votar.
+The minimum transaction amount is {amount} BTC	El monto mínimo de transacción es {amount} BTC
+The name exceeds the maximum character length	El nombre supera el máximo de caracteres
+The name is required	El nombre es requerido
+The name of this new token.	El nombre de este nuevo token.
+The NFT must be set	Debes definir el NFT
+The node did not return a private key.	El nodo no devolvió una clave privada.
+The number of Smart Contracts / NFTs you want to mint from this template.	La cantidad de contratos inteligentes / NFT que quieres emitir desde esta plantilla.
+The password set in your HOST wallet when configuring MOTHER. Default value: (leave blank)	La contraseña definida en tu billetera HOST al configurar MOTHER. Valor predeterminado: (dejar en blanco)
+The recipient will receive {amount} VFX when they claim the link.	El destinatario recibirá {amount} VFX cuando reclame el enlace.
+The request failed. Please try again.	La solicitud falló. Inténtalo de nuevo.
+The request timed out. Checking whether the withdrawal completed anyway...	La solicitud agoto el tiempo de espera. Comprobando si el retiro se completo de todos modos...
+The reserve price must be greater or equal to the floor price.	El precio de reserva debe ser mayor o igual al precio mínimo.
+The smart contract will evolve when the VFX chain reaches this block height.	El contrato inteligente evolucionará cuando la cadena VFX alcance esta altura de bloque.
+The snapshot lists a file that can't be imported safely, so nothing was changed: {url}	El snapshot incluye un archivo que no se puede importar de forma segura, así que no se cambió nada: {url}
+The start date must be before the end date.	La fecha de inicio debe ser anterior a la de fin.
+The ticker for this new token.	El ticker de este nuevo token.
+The token will appear in your list once indexed (typically a few seconds).	El token aparecerá en tu lista una vez indexado (normalmente unos segundos).
+The VFX account that controls this BTC domain was not found. [{address}]	No se encontró la cuenta VFX que controla este dominio BTC. [{address}]
+There is a cost of {cost} VFX to activate your Vault Account which is burned. Continue?	Hay un costo de {cost} VFX para activar tu cuenta de bóveda, que se quema. ¿Continuar?
+There is a cost of {cost} VFX to create a topic.	Hay un costo de {cost} VFX para crear un tema.
+There is a cost of {cost} VFX to delete a BTC Domain.	Eliminar un dominio BTC cuesta {cost} VFX.
+There is a cost of {cost} VFX to delete a VFX Domain.	Hay un costo de {cost} VFX para eliminar un dominio VFX.
+There is a cost of {cost} VFX to transfer a VFX Domain.	Transferir un dominio VFX cuesta {cost} VFX.
+There is no cost to delete a VFX Domain (aside from the TX fee).	No hay costo por eliminar un dominio VFX (aparte de la comisión de transacción).
+There is no cost to delete and BTC Domain (aside from the TX fee).	No hay costo por eliminar un dominio BTC (aparte de la comisión de la TX).
+There is no cost to delete and VFX Domain (aside from the TX fee).	Eliminar un dominio VFX no tiene costo (aparte de la comisión de TX).
+These features are all on-chain and all peers are aware of their current state.	Todas estas funciones son on-chain y todos los pares conocen su estado actual.
+This {currency} Domain already exists	Este dominio {currency} ya existe
+This acceptance code is for a different domain or VFX owner	Este código de aceptación es para otro dominio u otro propietario VFX
+This account has no assets/NFTS.	Esta cuenta no tiene activos/NFTs.
+This account has no vBTC Tokens	Esta cuenta no tiene tokens vBTC
+This account is validating	Esta cuenta está validando
+This address belongs to another network. Anything sent there could never be spent.	Esta dirección pertenece a otra red. Lo que se envíe allí nunca podría gastarse.
+This address's ({address}) {ticker} balance is insufficient.	El saldo de {ticker} de esta dirección ({address}) es insuficiente.
+This amount would need more than {max} tokens in one transaction. Send a smaller amount.	Este monto necesitaría más de {max} tokens en una sola transacción. Envía un monto menor.
+This BTC account doesn't have a balance	Esta cuenta BTC no tiene saldo
+This file extension (.{extension}) is not permitted.	Esta extensión de archivo (.{extension}) no está permitida.
+This includes your VFX account, Vault account, and Bitcoin account.	Esto incluye tu cuenta VFX, tu cuenta de bóveda y tu cuenta de Bitcoin.
+This is a mainnet BTC address. A testnet address is required.	Esta es una dirección de BTC de mainnet. Se requiere una dirección de testnet.
+This is a Multi-signature transaction so a higher fee rate is recommended.	Esta es una transacción multifirma, por lo que se recomienda una tasa de comisión más alta.
+This is a Multi-signature. The fee rate has been calculated for you.	Esto es una firma múltiple. La tarifa se ha calculado por ti.
+This is a testnet BTC address. A mainnet address is required.	Esta es una dirección de BTC de testnet. Se requiere una dirección de mainnet.
+This is not a valid acceptance code	Este no es un código de aceptación válido
+This is not a valid private key. Paste the hexadecimal key.	Esta no es una clave privada válida. Pega la clave hexadecimal.
+This is not one of your addresses	Esta no es una de tus direcciones
+This is permanent	Esto es permanente
+This is your own shop.	Esta es tu propia tienda.
+This key can spend your shielded funds	Esta clave puede gastar tus fondos blindados
+This may take a minute. Please do not close the application.	Esto puede tardar un minuto. Por favor, no cierres la aplicación.
+This mint would take the supply or the balance past the largest amount the chain can hold.	Esta acuñación llevaría el suministro o el saldo por encima de la cantidad máxima que admite la cadena.
+This NFT is already listed. Please choose another	Este NFT ya está publicado. Elige otro
+This NFT is listed in your auction house. Please remove the listing before burning.	Este NFT está listado en tu casa de subastas. Quita la publicación antes de quemarlo.
+This password will be used to encrypt your keys.	Esta contraseña se usará para cifrar tus claves.
+This password will encrypt your generated mnemonic keys.	Esta contraseña cifrará las claves del mnemónico que generaste.
+This password will encrypt your imported BTC private key.	Esta contraseña cifrará tu clave privada BTC importada.
+This password will encrypt your imported private key.	Esta contraseña cifrará tu clave privada importada.
+This password will encrypt your recovered mnemonic keys.	Esta contraseña cifrará las claves del mnemónico que recuperaste.
+This shop is currently offline.	Esta tienda está desconectada.
+This starts the distributed key generation process.	Esto inicia el proceso de generación de claves distribuidas.
+This token allows at most {places} decimal places.	Este token admite como máximo {places} decimales.
+This token contract is paused, so no tokens can be minted.	Este contrato de token está en pausa, así que no se pueden acuñar tokens.
+This token does not contain any additional media.	Este token no contiene medios adicionales.
+This token doesn't have any voting topics yet.	Este token aún no tiene temas de votación.
+This token is not burnable	Este token no se puede quemar
+This typically takes 10-20 seconds. The withdrawal continues automatically once confirmed.	Esto suele tardar entre 10 y 20 segundos. El retiro continúa automáticamente una vez confirmado.
+This Vault Account has not been activated yet.	Esta cuenta de bóveda aún no ha sido activada.
+This Vault Account is already activated.	Esta cuenta de bóveda ya está activada.
+This wallet doesn't have the minimmun balance send a publish tx	Esta billetera no tiene el saldo mínimo para enviar una TX de publicación
+This wallet doesn't have the minimmun balance send an update tx	Esta billetera no tiene el saldo mínimo para enviar una TX de actualización
+This wallet will control transfer/delete ownership over this new domain.	Esta billetera controlará la propiedad de transferencia/eliminación sobre este nuevo dominio.
+This will be confirmed once indexed by the explorer.	Esto se confirmará una vez que el explorador lo indexe.
+This will be minted by {address}	Esto será emitido por {address}
+This will be minted by {name}	Esto será emitido por {name}
+This will control the clear time for an ecrypted wallets password Default value: 10	Controla el tiempo para borrar la contraseña de una billetera cifrada Valor predeterminado: 10
+This will control the timeout for processing an incoming NFT Default value: 15	Controla el tiempo de espera para procesar un NFT entrante Valor predeterminado: 15
+This will start an MPC ceremony to create your vBTC token.	Esto iniciará una ceremonia MPC para crear tu token vBTC.
+This will:	Esto hará:
+This withdrawal is closed. Its vBTC was returned to you.	Este retiro está cerrado. Su vBTC se te devolvió.
+Thumbnail Override	Anular miniatura
+Ticket	Boleto
+Ticket Type	Tipo de boleto
+Ticketing	Entradas
+Time must be in the future.	La hora debe ser futura.
+Time Since Last Block: {value}s	Tiempo desde el último bloque: {value}s
+Time to tokenize a vBTC token. The following fields are all optional!	Es hora de tokenizar un token vBTC. ¡Todos los siguientes campos son opcionales!
+Timed out waiting for withdrawal request to be confirmed. You can retry later.	Se agotó el tiempo de espera para confirmar la solicitud de retiro. Puedes volver a intentarlo más tarde.
+Timelock Duration	Duración del bloqueo temporal
+To	Para
+to {dest} on Base	a {dest} en Base
+To Address	Dirección destino
+To Address (transparent)	Dirección de destino (transparente)
+To authorize this transaction, you must sign in as	Para autorizar esta transacción, inicia sesión como
+To BTC Address	A la dirección BTC
+To BTC address required.	Dirección BTC de destino obligatoria.
+To complete this off-ramp, send the exact BTC amount to the deposit address below:	Para completar este retiro, envía la cantidad exacta de BTC a la dirección de depósito de abajo:
+To VFX Address	A la dirección VFX
+To VFX address required.	Dirección VFX de destino obligatoria.
+To:	Para:
+To: {address}	Para: {address}
+Token	Token
+Token Accounts	Cuentas del token
+Token address ban transaction broadcasted	Transacción de bloqueo de dirección transmitida
+Token Auto Mint initiated. ({scId}: {amount})	Acuñación automática de token iniciada. ({scId}: {amount})
+Token Balances	Saldos de tokens
+Token Ban Address	Dirección de bloqueo de token
+Token Burn	Quema de token
+Token burn transaction broadcasted	Transacción de quema de tokens transmitida
+Token Change Ownership	Cambio de propiedad del token
+Token Created	Token creado
+Token Deployed	Token desplegado
+Token Deployed!	¡Token desplegado!
+Token Description (Optional)	Descripción del token (opcional)
+Token Details	Detalles del token
+Token Has Fixed Supply:	Token con suministro fijo:
+Token ID (Optional)	ID del token (opcional)
+Token Image (Optional)	Imagen del token (opcional)
+Token Media	Medios del token
+Token mint transaction broadcasted	Transacción de emisión de tokens transmitida
+Token Name	Nombre del token
+Token Name (Optional)	Nombre del token (opcional)
+Token Name:	Nombre del token:
+Token Not Found	Token no encontrado
+Token Owner:	Dueño del token:
+Token ownership change transaction broadcasted	Transacción de cambio de propiedad transmitida
+Token Pause	Pausa de token
+Token pause transaction broadcasted	Transacción de pausa transmitida
+Token Resume	Reanudación de token
+Token resume transaction broadcasted	Transacción de reanudación transmitida
+Token Standard (Optional)	Estándar del token (opcional)
+Token state change is pending. Please wait	El cambio de estado del token está pendiente. Espera
+Token Ticker	Ticker del token
+Token Ticker (Optional)	Ticker del token (opcional)
+Token Ticker:	Ticker del token:
+Token Topic Created	Tema de token creado
+Token Total Balance	Saldo total del token
+Token Total Balance: {balance} vBTC{usd}	Saldo total del token: {balance} vBTC{usd}
+Token Transfer	Transferencia de token
+Token transfer transaction broadcasted	Transacción de transferencia de tokens transmitida
+Token Vote Cast	Voto de token emitido
+Tokenization	Tokenización
+Tokenization Burn	Tokenización: quemar
+Tokenization Mint	Tokenización: emitir
+Tokenization of Physical/Digital Good	Tokenización de bien físico/digital
+Tokenization TX	Tokenización: tx
+Tokenization Withdrawal Complete	Retiro completo
+Tokenization Withdrawal Request	Solicitud de retiro
+Tokenize BTC (vBTC)	Tokenizar BTC (vBTC)
+Tokenize BTC within a smart contract	Tokeniza BTC dentro de un contrato inteligente
+Tokenized Bitcoin (vBTC)	Bitcoin tokenizado (vBTC)
+Tokenized vBTC	vBTC tokenizado
+Tokens	Tokens
+Tokens / NFTs	Tokens / NFTs
+Tokens cannot be transferred to the address that holds them.	Los tokens no se pueden transferir a la misma dirección que los tiene.
+Tokens Minted	Tokens acuñados
+Topic {name} Created.	Tema {name} creado.
+Topic Create	Crear tema
+Topic Created	Tema creado
+Topic Description	Descripción del tema
+Topic Name	Nombre del tema
+Topic Owner: {address}	Propietario del tema: {address}
+Topic Vote	Votar tema
+Total	Total
+Total Amount	Monto total
+Total Reward	Recompensa total
+Total Supply:	Suministro total:
+Total Votes	Votos totales
+Transaction Broadcasted	Transacción transmitida
+Transaction broadcasted!	¡Transacción transmitida!
+Transaction Cancelled	Transacción cancelada
+Transaction completed: {txHash}	Transacción completada: {txHash}
+Transaction Detail	Detalle de transacción
+Transaction failed	La transacción falló
+Transaction failed: {error}	Falló la transacción: {error}
+Transaction Filters	Filtros de transacción
+Transaction Hash	Hash de la transacción
+Transaction Hash copied to clipboard	Hash de la transacción copiado al portapapeles
+Transaction Hash:	Hash de la transacción:
+Transaction Modify	Modificar transacción
+Transaction not valid	Transacción no válida
+Transaction Sent	Transacción enviada
+Transaction Sent.	Transacción enviada.
+Transaction Settled	Transacción liquidada
+Transaction Signature	Firma de la transacción
+Transaction verified. There will be a fee of {fee} VFX. Would you like to proceed?	Transacción verificada. Habrá una comisión de {fee} VFX. ¿Deseas continuar?
+Transactions	Transacciones
+Transactions on this token are currently paused.	Las transacciones de este token están pausadas actualmente.
+Transactions:	Transacciones:
+Transfer	Transferir
+Transfer {amount} vBTC to {address}?	¿Transferir {amount} vBTC a {address}?
+Transfer {assetType}	Transferir {assetType}
+Transfer a specific portion of the vBTC within the token to another VFX address.	Transfiere una porción específica del vBTC dentro del token a otra dirección VFX.
+Transfer BTC	Transferir BTC
+Transfer BTC Domain	Transferir dominio BTC
+Transfer BTC to vBTC Token	Transferir BTC al token vBTC
+Transfer Complete!	¡Transferencia completada!
+Transfer Domain from {address}	Transferir dominio desde {address}
+Transfer failed	Falló la transferencia
+Transfer failed: {error}	Falló la transferencia: {error}
+Transfer in Progress	Transferencia en curso
+Transfer Manually	Transferir manualmente
+Transfer NFT	Transferir NFT
+Transfer Now	Transferir ahora
+Transfer Ownership	Transferir propiedad
+Transfer ownership of this vBTC token to {address}? This cannot be undone.	¿Transferir la propiedad de este token vBTC a {address}? Esto no se puede deshacer.
+Transfer Ownership To Reserve/Protected Account	Transferir la propiedad a una Cuenta de reserva/protegida
+Transfer Pending	Transferencia pendiente
+Transfer request has been broadcasted. Your assets should be available soon.	La solicitud de transferencia se ha transmitido. Tus activos deberían estar disponibles pronto.
+Transfer shielded vBTC to another zfx_ address. Fully private.	Transfiere vBTC blindado a otra dirección zfx_. Totalmente privado.
+Transfer shielded VFX to another zfx_ address. Fully private.	Transfiere VFX blindado a otra dirección zfx_. Totalmente privado.
+Transfer the ownership of this token to another VFX account.	Transfiere la propiedad de este token a otra cuenta VFX.
+Transfer the ownership of this token to your reserve/protected account.	Transfiere la propiedad de este token a tu cuenta de reserva/protegida.
+Transfer this NFT to another account.	Transfiere este NFT a otra cuenta.
+Transfer to	Transferir a
+Transfer To Address	Transferir a dirección
+Transfer to another Base address	Transferir a otra dirección de Base
+Transfer To VFX Address	Transferir a dirección VFX
+Transfer Token	Transferir token
+Transfer Token Ownership	Transferir la propiedad del token
+Transfer vBTC	Transferir vBTC
+Transfer VFX Domain	Transferir dominio VFX
+Transferred	Transferido
+Transferring...	Transfiriendo...
+Transparent network fee will be auto-calculated.	La comisión de red transparente se calculará automáticamente.
+Try again	Intentar de nuevo
+Tutorials	Tutoriales
+Tx	Tx
+TX Broadcasted	Transacción transmitida
+TX broadcasted!	¡TX transmitida!
+TX Fee: {fee} VFX Total: {total} VFX	Comisión de TX: {fee} VFX Total: {total} VFX
+Tx Hash	Hash de Tx
+Tx hash copied	Hash de Tx copiado
+TX ID: {txId} Amount:{amount}	TX ID: {txId} Monto:{amount}
+Tx Type	Tipo de Tx
+Tx Type{suffix}:	Tipo de Tx{suffix}:
+TXs	TXs
+Type:	Tipo:
+Type: String	Tipo: String
+UID: {uid}	UID: {uid}
+Unexpected error: {error}	Error inesperado: {error}
+Unimplemented	No implementado
+Unknown	Desconocido
+Unknown Address	Dirección desconocida
+Unlimited	Ilimitado
+Unlock	Desbloquear
+Unlock Account	Desbloquear cuenta
+Unlock Privacy Wallet	Desbloquear billetera privada
+Unlock Wallet	Desbloquear billetera
+Unlock wallet for:	Desbloquear billetera para:
+Unpublished	Sin publicar
+Unshield	Desblindar
+Unshield failed: {error}	El desblindaje falló: {error}
+Unshield transaction broadcast successfully	Transacción de desblindaje transmitida correctamente
+Unshield vBTC	Desblindar vBTC
+Unshield VFX	Desblindar VFX
+Unsupported File	Archivo no compatible
+Untitled	Sin título
+Unused	Sin usar
+Update	Actualizar
+Update Available	Actualización disponible
+Update Host Info	Actualizar datos del host
+Update Shop?	¿Actualizar tienda?
+Upload CSV	Subir CSV
+Upload JSON	Subir JSON
+Upload JSON / CSV	Subir JSON / CSV
+Upload Token Icon	Subir ícono del token
+URL (Optional)	URL (opcional)
+URL {optional}	URL {optional}
+URL copied to clipboard	URL copiada al portapapeles
+URL: {url}	URL: {url}
+Use 0 for Infinite (allows minting)	Usa 0 para infinito (permite emitir)
+Use Butterfly to create a payment link, claimable by anyone you send the link to.	Usa Butterfly para crear un enlace de pago, reclamable por cualquiera a quien le envíes el enlace.
+Use cmd+v to paste or click	Usa cmd+v para pegar o haz clic
+Use ctrl+v to paste or click	Usa ctrl+v para pegar o haz clic
+Use Faucet	Usar faucet
+Use My Address	Usar mi dirección
+Use Wizard	Usar asistente
+Use your DeFi provider or another Base (EVM) wallet to:	Usa tu proveedor DeFi u otra billetera Base (EVM) para:
+Used	Usado
+Username not valid.	Usuario no válido.
+Username required.	Usuario requerido.
+UTXOs:	UTXOs:
+Valid Transaction	Transacción válida
+Validate Ownership	Validar propiedad
+Validated By	Validado por
+Validating	Validando
+Validating ✅	Validando ✅
+Validating requires {amount} VFX.	Validar requiere {amount} VFX.
+Validating...	Validando...
+Validator	Validador
+Validator Change	Cambio de validador
+Validator Check	Chequeo de validador
+Validator Exit	Salida de validador
+Validator Heartbeat	Latido de validador
+Validator Name	Nombre del validador
+Validator name changed to {name}.	El nombre del validador se cambió a {name}.
+Validator Pool	Pool de validadores
+Validator Registration	Registro de validador
+Validator signatures collected	Firmas de los validadores recopiladas
+Validator Voting Topics	Temas de votación de validadores
+Validators are generating threshold signing keys. This typically takes 30-90 seconds.	Los validadores están generando las claves de firma de umbral. Esto suele tardar entre 30 y 90 segundos.
+Validators are signing the Bitcoin transaction...	Los validadores están firmando la transacción de Bitcoin...
+Validators: {count} (threshold: {threshold})	Validadores: {count} (umbral: {threshold})
+Value	Valor
+Value is required	Se requiere un valor
+Vault	de bóveda
+Vault (Callback)	Bóveda (retorno)
+Vault (Recover)	Bóveda (recuperar)
+Vault (Register)	Bóveda (registro)
+Vault Account	Cuenta de bóveda
+Vault Account activation transaction sent. Please wait for it to reflect as "Activated".	Se envió la transacción de activación de la cuenta de bóveda. Espera a que se refleje como "Activada".
+Vault Account Auto Activation process initiated	Se inició el proceso de activación automática de la cuenta de bóveda
+Vault Account Balance	Saldo de la cuenta de bóveda
+Vault Account Created	Cuenta de bóveda creada
+Vault Account Data copied to clipboard	Datos de la cuenta de bóveda copiados al portapapeles
+Vault Account Details	Detalles de la cuenta de bóveda
+Vault Account owned tokens can not perform this action.	Los tokens que pertenecen a una Cuenta de bóveda no pueden realizar esta acción.
+Vault Account Password	Contraseña de la Cuenta de bóveda
+Vault Account restored	Cuenta de bóveda restaurada
+Vault Accounts	Cuentas de bóveda
+Vault Accounts [	Las cuentas de bóveda [
+Vault Accounts can not sell NFTs.	Las cuentas de bóveda no pueden vender NFTs.
+Vault Accounts can not withdrawl. Please transfer vBTC to a standard VFX address	Las Cuentas de bóveda no pueden retirar. Transfiere vBTC a una dirección VFX estándar
+Vault accounts can't send multi-token vBTC transfers. Send from a single token instead.	Las cuentas de bóveda no pueden enviar transferencias de vBTC de varios tokens. Envía desde un solo token.
+Vault Accounts cannot burn NFTs	Las cuentas de bóveda no pueden quemar NFT
+Vault Accounts cannot mint smart contracts	Las cuentas de bóveda no pueden emitir contratos inteligentes
+Vault Address	Dirección de bóveda
+Vault: {address}	Bóveda: {address}
+Vaulted	En bóveda
+vBTC	vBTC
+vBTC Bridge Exit to BTC	Salida del puente vBTC a BTC
+vBTC Bridge Exit to BTC Complete	Salida del puente vBTC a BTC completada
+vBTC Bridge Exit to BTC Failed	Salida del puente vBTC a BTC fallida
+vBTC Bridge Lock	Bloqueo puente vBTC
+vBTC Bridge Pool Unlock	Desbloqueo del pool del puente vBTC
+vBTC Bridge Unlock	Desbloqueo puente vBTC
+vBTC Bulk Transfer	Transf. masiva vBTC
+vBTC Burn	Quemar vBTC
+vBTC can only be sent to a standard VFX address (not a privacy address).	vBTC solo puede enviarse a una dirección VFX estándar (no a una dirección de privacidad).
+vBTC can only be sent to a standard VFX address (not a Vault account).	vBTC solo puede enviarse a una dirección VFX estándar (no a una cuenta Vault).
+vBTC consolidation broadcast successfully	Consolidación de vBTC transmitida correctamente
+vBTC consolidation failed: {error}	La consolidación de vBTC falló: {error}
+vBTC Contract Create	Crear contrato vBTC
+vBTC contract created successfully!	¡Contrato vBTC creado correctamente!
+vBTC contract created. Hash: {hash}	Contrato vBTC creado. Hash: {hash}
+vBTC Contract Mint	Emitir contrato vBTC
+vBTC Mint	Emitir vBTC
+vBTC Onboard	Onboarding vBTC
+vBTC Private Transfer	Transf. privada vBTC
+vBTC private transfer broadcast successfully	Transferencia privada de vBTC transmitida correctamente
+vBTC private transfer failed: {error}	La transferencia privada de vBTC falló: {error}
+vBTC resync complete	Resincronización de vBTC completa
+vBTC resync failed	La resincronización de vBTC falló
+vBTC resync started...	Resincronización de vBTC iniciada...
+vBTC Sent	vBTC enviado
+vBTC Shield	Blindar vBTC
+vBTC shield failed: {error}	El blindaje de vBTC falló: {error}
+vBTC shield transaction broadcast successfully	Transacción de blindaje de vBTC transmitida correctamente
+vBTC Token	Token vBTC
+vBTC Token ({balance} vBTC)	Token vBTC ({balance} vBTC)
+vBTC token created successfully!	¡Token vBTC creado correctamente!
+vBTC Token Ownership Transfer	Transf. dueño token vBTC
+vBTC Tokenization Mint	Acuñación de tokenización vBTC
+vBTC Tokens	Tokens vBTC
+vBTC tokens with no balance can not be transferred	Los tokens vBTC sin saldo no se pueden transferir
+vBTC tokens with zero balance can not be transferred.	Los tokens vBTC con saldo cero no se pueden transferir.
+vBTC Transfer	Transferir vBTC
+vBTC transfer broadcasted successfully	Transferencia de vBTC transmitida correctamente
+vBTC Transfer Coin	Transf. moneda vBTC
+vBTC TX	Tx vBTC
+vBTC Unshield	Desblindar vBTC
+vBTC unshield failed: {error}	El desblindaje de vBTC falló: {error}
+vBTC unshield transaction broadcast successfully	Transacción de desblindaje de vBTC transmitida correctamente
+vBTC V2 Transfer TX Broadcasted. Hash: {hash}	TX de transferencia vBTC V2 transmitida. Hash: {hash}
+vBTC Validator Exit	Salida validador vBTC
+vBTC Validator Heartbeat	Latido validador vBTC
+vBTC Validator Register	Registrar validador vBTC
+vBTC Vault Rekey	Cambio de clave de bóveda vBTC
+vBTC Withdrawal (Arb)	Retiro vBTC (árb.)
+vBTC Withdrawal (Owner)	Retiro vBTC (dueño)
+vBTC Withdrawal Cancel	Cancelar retiro vBTC
+vBTC Withdrawal Complete	Retiro vBTC completo
+vBTC Withdrawal Fee Raise	Aumento de comisión de retiro vBTC
+vBTC Withdrawal Pin	Fijación de retiro vBTC
+vBTC Withdrawal Release	Liberación de retiro vBTC
+vBTC Withdrawal Request	Solicitud retiro vBTC
+vBTC Withdrawal Vote	Votar retiro vBTC
+vBTC.b balance	Saldo de vBTC.b
+Verification Code	Código de verificación
+Verified	Verificado
+Verify	Verificar
+Verify NFT Ownership	Verificar propiedad de NFT
+Verify Owner	Verificar Propietario
+VFX	VFX
+VFX account Created Successfully	Cuenta VFX creada exitosamente
+VFX Account Imported Successfully	Cuenta VFX importada exitosamente
+VFX Account: {address}	Cuenta VFX: {address}
+VFX Address	Dirección VFX
+VFX Address to Nominate	Dirección VFX a nominar
+VFX Address with Balance Required	Se requiere una dirección VFX con saldo
+VFX Address,	Dirección VFX,
+VFX Address:	Dirección VFX:
+VFX Address: {address}	Dirección VFX: {address}
+VFX Amount	Monto de VFX
+VFX Amount)	Monto VFX)
+VFX CLI Loading	Cargando CLI de VFX
+VFX CLI Offline	CLI de VFX sin conexión
+VFX Domain	Dominio VFX
+VFX Domain created for {name}.vfx	Dominio VFX creado para {name}.vfx
+VFX Domain Delete Pending	Eliminación de dominio VFX pendiente
+VFX domain delete transaction broadcasted. Tx Hash: {hash}	Transacción de eliminación de dominio VFX transmitida. Hash de TX: {hash}
+VFX domain delete transaction has been broadcasted. Check logs for tx hash	Transacción de eliminación de dominio VFX transmitida. Revisa los registros para el hash de tx
+VFX Domain deleted for {name}	Dominio VFX eliminado para {name}
+VFX Domain Pending	Dominio VFX pendiente
+VFX Domain Transaction has been broadcasted. See log for hash.	Transacción de dominio VFX transmitida. Revisa el registro para ver el hash.
+VFX Domain transfer for {name}	Transferencia de dominio VFX para {name}
+VFX Domain Transfer Pending	Transferencia de dominio VFX pendiente
+VFX domain transfer transaction broadcasted. Tx Hash: {hash}	Transacción de transferencia de dominio VFX transmitida. Hash de TX: {hash}
+VFX domain transfer transaction has been broadcasted. Check logs for tx hash	Transacción de transferencia de dominio VFX transmitida. Revisa los registros para el hash de tx
+VFX Domains	Dominios VFX
+VFX domains cost {cost} VFX plus the transaction fee.	Los dominios VFX cuestan {cost} VFX más la comisión de la transacción.
+VFX Domains cost {cost} VFX.	Los dominios VFX cuestan {cost} VFX.
+VFX Explorer	Explorador VFX
+VFX Extension	Extensión VFX
+VFX Extension is only available on web	La extensión VFX solo está disponible en la web
+VFX Extension not detected	No se detectó la extensión VFX
+VFX Faucet	Faucet de VFX
+VFX Funds Received!	¡Fondos VFX recibidos!
+VFX lock submitted	Bloqueo en VFX enviado
+VFX Off Ramp feature coming soon	La función de retiro de VFX estará disponible pronto
+VFX Offline	VFX fuera de línea
+VFX Online	VFX en línea
+VFX Owner	Propietario VFX
+VFX Price History	Historial de precios VFX
+VFX Private Key	Clave privada VFX
+VFX Private Transfer	Transf. privada VFX
+VFX Quote	Cotización de VFX
+VFX Shield	Blindar VFX
+VFX Transaction:	Transacción VFX:
+VFX Transactions	Transacciones VFX
+VFX Unshield	Desblindar VFX
+VFX Wallet	VFX Wallet
+VFX Wallet{envTag} Version {version} ({nickname})	VFX Wallet{envTag} Versión {version} ({nickname})
+VFX/BTC Account Addresses	Direcciones de cuentas VFX/BTC
+View Address	Ver dirección
+View Addresses	Ver direcciones
+View All	Ver todo
+View All Txs	Ver todas las Txs
+View asset	Ver archivo
+View Chart	Ver gráfico
+View Code	Ver código
+View Compiled Smart Contract	Ver contrato inteligente compilado
+View Data	Ver datos
+View Details	Ver detalles
+View Docs	Ver documentación
+View Metrics	Ver métricas
+View NFT	Ver NFT
+View on Basescan	Ver en Basescan
+View on explorer	Ver en el explorador
+VIEW ONLY	SOLO LECTURA
+View Progress	Ver progreso
+View Token	Ver token
+View Topics	Ver temas
+View Txs	Ver TX
+Viewing Key	Clave de visualización
+Viewing Key (Base64)	Clave de visualización (Base64)
+Viewing key copied to clipboard	Clave de visualización copiada al portapapeles
+Viewing key imported successfully	Clave de visualización importada correctamente
+Visit Website	Visitar sitio web
+Vote Casted	Voto emitido
+Vote casted on {topic}	Voto emitido sobre {topic}
+Vote Counts	Conteo de votos
+Vote History	Historial de votos
+Vote NO	Votar NO
+Vote transaction pending.	Transacción de voto pendiente.
+Vote YES	Votar SÍ
+Voted	Votados
+Votes No	Votos en contra
+Votes Yes	Votos a favor
+Voting	Votación
+Voting Description	Descripción de la votación
+Voting Ended on {date}.	La votación terminó el {date}.
+Voting Ends	Finaliza la votación
+Voting ends {date}.	La votación termina el {date}.
+Wait for validator signatures	Esperar las firmas de los validadores
+Waiting for block confirmation...	Esperando la confirmación del bloque...
+Waiting for BTC to vBTC transaction to reflect on-chain.	Esperando a que la transacción de BTC a vBTC se refleje en la cadena.
+Waiting for BTC transfer to reflect on-chain.	Esperando a que la transferencia de BTC se refleje en la cadena.
+Waiting for Confirmation	Esperando confirmación
+Waiting for deposit confirmation... This may take up to 20 seconds.	Esperando la confirmación del depósito... Esto puede tardar hasta 20 segundos.
+Waiting for its Bitcoin transaction	Esperando su transacción de Bitcoin
+Waiting for the withdrawal request to be confirmed in a block...	Esperando a que la solicitud de retiro se confirme en un bloque...
+Waiting for vBTC Tokenization to compile.	Esperando a que se compile la tokenización vBTC.
+Waiting for VFX Transfer to reflect on-chain.	Esperando a que la transferencia de VFX se refleje en la cadena.
+Wallet	Billetera
+Wallet has been unlocked for 10 minutes.	La billetera se ha desbloqueado por 10 minutos.
+Wallet has been unlocked.	La billetera se ha desbloqueado.
+Wallet Not Synced	Billetera no sincronizada
+Wallet Password	Contraseña de la billetera
+Wallet Started	Billetera iniciada
+Wallet Synced	Billetera sincronizada
+Wallet Version: {version}	Versión de billetera: {version}
+Warning	Advertencia
+Warning: These are advanced options. Proceed with caution.	Advertencia: Estas son opciones avanzadas. Procede con precaución.
+Warning: This shop is currently offline so the information may not be up to date.	Aviso: esta tienda está desconectada, así que la información podría no estar actualizada.
+Web Wallet {version}	Web Wallet {version}
+Web Wallet Now Uses Encryption	La billetera web ahora usa cifrado
+Welcome to the VerifiedX Web Wallet!	¡Bienvenido a la Web Wallet de VerifiedX!
+Welcome to true on-chain utility for your BTC!	¡Bienvenido a la verdadera utilidad on-chain para tu BTC!
+What are Vault Accounts?	¿Qué son las cuentas de bóveda?
+What is MOTHER?	¿Qué es MOTHER?
+What is the shop URL you'd like to import?	¿Qué URL de tienda quieres importar?
+What is vBTC?	¿Qué es vBTC?
+What VFX address will manage this BTC domain?	¿Qué dirección VFX administrará este dominio BTC?
+What would you like to name this account?	¿Cómo quieres llamar a esta cuenta?
+What's next?	¿Qué sigue?
+What's this payment for?	¿Para qué es este pago?
+What's vBTC	¿Qué es vBTC?
+WIF Private Key	Clave privada WIF
+WIF private key copied to clipboard	Clave privada WIF copiada al portapapeles
+Windows	Windows
+with a max bid of {max} VFX	con una oferta máxima de {max} VFX
+Withdraw	Retirar
+Withdraw {amount} BTC to {address} Fee rate: {feeRate} sats/byte Proceed?	Retirar {amount} BTC a {address} Tasa de comisión: {feeRate} sats/byte ¿Continuar?
+Withdraw BTC	Retirar BTC
+Withdrawal Amount	Monto del retiro
+Withdrawal Cannot Be Paid	El retiro no se puede pagar
+Withdrawal Complete	Retiro completado
+Withdrawal completed successfully!	¡Retiro completado correctamente!
+Withdrawal Failed	Retiro fallido
+Withdrawal History:	Historial de retiros:
+Withdrawal in Progress	Retiro en curso
+Withdrawal Request Expired	Solicitud de retiro vencida
+Withdrawal request failed	Falló la solicitud de retiro
+Withdrawal request failed: {error}	Falló la solicitud de retiro: {error}
+Withdrawl Amount	Monto del retiro
+Would you like to activate the account automatically once the funding is complete?	¿Quieres activar la cuenta automáticamente cuando se complete el fondeo?
+Would you like to automatically activate this account once the funds are received?	¿Te gustaría activar automáticamente esta cuenta una vez que se reciban los fondos?
+Would you like to connect to {name} ({url})?	¿Quieres conectarte a {name} ({url})?
+Would you like to proceed with importing {label}?	¿Quieres continuar con la importación de {label}?
+Would you like to rescan the chain to include any transactions relevant to these keys?	¿Quieres volver a escanear la cadena para incluir las transacciones relevantes a estas claves?
+Would you like to rescan the chain to include any transactions relevant to this key?	¿Quieres volver a escanear la cadena para incluir las transacciones relevantes a esta clave?
+Would you like to restart now?	¿Quieres reiniciar ahora?
+Would you like to send 5 VFX from {address}?	¿Quieres enviar 5 VFX desde {address}?
+Would you like to send a total of {amount} vBTC to {address}	¿Quieres enviar un total de {amount} vBTC a {address}?
+Wrap	Envolver
+Yes	Sí
+YES you are Validating!	¡SÍ, estás validando!
+yesterday	ayer
+You already have a royalty feature in this smart contract.	Ya tienes una función de regalía en este contrato inteligente.
+You already have a soul bound feature in this smart contract.	Ya tienes una función de Soul Bound en este contrato inteligente.
+You are about to open Butterfly and log in with: {address} Continue?	Estás a punto de abrir Butterfly e iniciar sesión con: {address} ¿Continuar?
+You are already the owner of this NFT.	Ya eres el dueño de este NFT.
+You are not the owner of this NFT.	No eres el propietario de este NFT.
+You are not the owner of this shop. Please login as {address}	No eres el dueño de esta tienda. Inicia sesión como {address}
+You are not the owner or minter of this NFT.	No eres el propietario ni el emisor de este NFT.
+You are the owner of this shop.	Eres el dueño de esta tienda.
+You can dismiss this dialog. The ceremony will continue in the background.	Puedes cerrar este cuadro de diálogo. La ceremonia continuará en segundo plano.
+You can not create an HD account with an encrypted wallet.	No puedes crear una cuenta HD con una billetera cifrada.
+You can not lock your wallet while validating.	No puedes bloquear tu billetera mientras validas.
+You can only validate with one account.	Solo puedes validar con una cuenta.
+You can't delete this listing because the auction has already started.	No puedes eliminar esta publicación porque la subasta ya comenzó.
+You can't hide an account that is validating	No puedes ocultar una cuenta que está validando
+You don't have any Vault Accounts in this wallet	No tienes ninguna Cuenta de bóveda en esta billetera
+You don't have the required funds to buy the domain in this account.	No tienes los fondos necesarios para comprar el dominio en esta cuenta.
+You have a pending withdrawal for this contract. Would you like to complete it?	Tienes un retiro pendiente para este contrato. ¿Quieres completarlo?
+You have no fungible tokens with supply in any of your accounts.	No tienes tokens fungibles con suministro en ninguna de tus cuentas.
+You have no hidden accounts.	No tienes cuentas ocultas.
+You have no vBTC Tokens, Fungible Tokens, or Non-Fungible Tokens	No tienes tokens vBTC, tokens fungibles ni tokens no fungibles
+You have voted on all topics.	Has votado en todos los temas.
+You have voted.	Has votado.
+You haven't created any topics.	No has creado ningún tema.
+You haven't voted on any topics.	No has votado en ningún tema.
+You must activate your Vault Account before proceeding.	Debes activar tu cuenta de bóveda antes de continuar.
+You must agree to the terms before proceeding.	Debes aceptar los términos antes de continuar.
+You must be a validator to vote.	Debes ser un validador para votar.
+You must confirm your password.	Debes confirmar tu contraseña.
+You must have port '{port}' open on the HOST machine.	Debes tener el puerto '{port}' abierto en la máquina HOST.
+You must now fund your Vault Account with a minimum of 5 VFX.	Ahora debes financiar tu cuenta de bóveda con un mínimo de 5 VFX.
+You need at least {count} tokens to vote.	Necesitas al menos {count} tokens para votar.
+You now have {amount} vBTC.b on Base	Ahora tienes {amount} vBTC.b en Base
+You voted {label} on block {block}	Votaste {label} en el bloque {block}
+You voted {label} on block {block}.	Votaste {label} en el bloque {block}.
+You voted {label}. Transaction is pending.	Votaste {label}. La transacción está pendiente.
+You voted {vote} on block {block}	Votaste {vote} en el bloque {block}
+You voted {vote}. Transaction is pending.	Votaste {vote}. Transacción pendiente.
+You're about to bridge	Vas a transferir por el puente
+Your active account must be a validator to create a topic.	Tu cuenta activa debe ser validador para crear un tema.
+Your Address	Tu dirección
+Your available balance of {available} VFX does not cover the {fee} VFX network fee.	Tu saldo disponible de {available} VFX no cubre la comisión de red de {fee} VFX.
+Your Balance: {balance}	Tu saldo: {balance}
+Your Balance: {balance} vBTC{usd}	Tu saldo: {balance} vBTC{usd}
+Your Base address	Tu dirección de Base
+Your bid must be greater than the current highest bid ({price} VFX)	Tu oferta debe ser mayor que la oferta más alta actual ({price} VFX)
+Your Bitcoin was sent, but the withdrawal has not been settled on the VFX chain yet.	Tu Bitcoin fue enviado, pero el retiro aun no se ha liquidado en la cadena VFX.
+Your Domain	Tu dominio
+Your gas address	Tu dirección de gas
+Your local blockheight is further along than the snapshot.	Tu altura de bloque local está más adelantada que el snapshot.
+Your local changes were saved successfully. Would you like to publish this to the network?	Tus cambios locales se guardaron correctamente. ¿Quieres publicarlos en la red?
+Your passwords do not match. Please try again.	Las contraseñas no coinciden. Inténtalo de nuevo.
+Your Phone Number	Tu número de teléfono
+Your Selected BTC Address	Tu dirección BTC seleccionada
+Your Selected VFX{vaultSuffix} Address	Tu dirección VFX{vaultSuffix} seleccionada
+Your Vault Account	Tu cuenta de bóveda
+Your Vault Account has no Fungible Tokens.	Tu cuenta de bóveda no tiene tokens fungibles.
+Your Vault Account has no NFTS.	Tu cuenta de bóveda no tiene NFTs.
+Your Vault Account has no vBTC Tokens.	Tu cuenta de bóveda no tiene tokens vBTC.
+Your vBTC token is ready and funded.	Tu token vBTC está listo y financiado.
+Your VFX Address	Tu dirección VFX
+Your wallet is locked. Unlock it with your password and try again.	Tu billetera está bloqueada. Desbloquéala con tu contraseña e inténtalo de nuevo.
+Your wallet is now encrypted.	Tu billetera ahora está cifrada.
+Your wallet is now locked.	Tu billetera ahora está bloqueada.
+Your withdrawal request is not in a block yet. This updates by itself.	Tu solicitud de retiro aún no está en un bloque. Esto se actualiza solo.
+zfx_ Address	Dirección zfx_
+Zip and export your NFT media assets.	Comprime y exporta los archivos multimedia de tus NFT.

@@ -13,14 +13,14 @@ VerifiedX separates ownership, verification, authorization, and execution. Bitco
 
 Unlike architectures in which application-level smart contracts determine financial state transitions, VerifiedX places critical financial rules and asset protections at the consensus layer. Smart contracts and applications can provide instructions, while consensus determines whether execution is permitted under the network’s rules.
 
-Through products and infrastructure including vBTC, vBTC.b, BFLY, SwitchBlade, and PulseXAI, VerifiedX connects institutions, individuals, applications, and autonomous systems through a unified financial infrastructure designed around verifiable ownership, deterministic execution, and native asset utility.
+Through products and infrastructure including vBTC, vBTC.b, Bfly, SwitchBlade, and PulseXAI, VerifiedX connects institutions, individuals, applications, and autonomous systems through a unified financial infrastructure designed around verifiable ownership, deterministic execution, and native asset utility.
 
 ---
 
 ## VerifiedX Ecosystem
 
 - **vBTC & vBTC.b** — Programmable Bitcoin infrastructure with native Bitcoin redemption and canonical interoperability.
-- **BFLY** — Payments, savings, commerce, and click-to-earn infrastructure for users and intelligent applications.
+- **Bfly** — Payments, savings, commerce, and click-to-earn infrastructure for users and intelligent applications.
 - **SwitchBlade** — Self-custodial wallet and asset-control technology.
 - **PulseXAI** — Generative and tokenized intelligence infrastructure for autonomous financial agents and intelligent assets.
 - **Institutional Bitcoin Infrastructure** — Allocator-controlled signing, settlement, and programmable Bitcoin architecture.

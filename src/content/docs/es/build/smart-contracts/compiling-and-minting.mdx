@@ -1,0 +1,567 @@
+---
+sourceHash: dbf3a0072b3f
+title: "Compilar y emitir"
+description: Compila un contrato inteligente a partir de un payload JSON y emítelo con la API del CLI de Core, agrega funciones de regalía, multiarchivo y evolución, y lista, busca y consulta contratos.
+sidebar:
+  order: 1
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+## Descripción general
+
+Compilar y emitir un contrato inteligente es bastante sencillo. El primer paso es compilar el contrato inteligente a partir de un payload JSON, que devuelve la información necesaria para el segundo paso: emitir el contrato inteligente. Luego llamas a un endpoint para emitirlo, que transmite la transacción.
+
+## Compilación
+
+#### Endpoint de la API:
+
+```
+POST http://localhost:7292/scapi/scv1/CreateSmartContract
+```
+
+Ejemplo de payload básico:
+
+```json
+{
+  "Name": "Smart Contract Name",
+  "MinterName": "Minter's Name",
+  "Description": "Description Goes Here",
+  "SmartContractAsset": {
+    "AssetId": "00000000-0000-0000-0000-000000000000",
+    "Name": "welness.jpg",
+    "AssetAuthorName": "Author's Name",
+    "Location": "/path/to/asset.jpg",
+    "Extension": "jpg",
+    "FileSize": 1024
+  },
+  "IsPublic": false,
+  "SmartContractUID": "00000000-0000-0000-0000-000000000000",
+  "Features": [],
+  "MinterAddress": "Rabc123..."
+}
+```
+
+Ejemplo de respuesta:
+
+```json
+[
+  {
+    "Success": true,
+    "SmartContract": {
+      "Id": 63,
+      "Name": "Test",
+      "Description": "Hello world",
+      "MinterAddress": "Rabc123...",
+      "MinterName": "Minter's Name",
+      "SmartContractAsset": {
+        "AssetId": "00000000-0000-0000-0000-000000000000",
+        "Name": "welness.jpg",
+        "AssetAuthorName": "Author's Name",
+        "Location": "/path/to/asset.jpg",
+        "Extension": "jpg",
+        "FileSize": 1024
+      },
+      "IsPublic": false,
+      "SmartContractUID": "a4a245fba5a282da1bf02a72cf267aab:123456789",
+      "IsMinter": true,
+      "IsPublished": false,
+      "Features": []
+    },
+    "SmartContractCode": "--SMART CONTRACT CODE (string)--",
+    "Transaction": "-- TRANSACTION (dict) --"
+  }
+]
+```
+
+#### Ejemplo de código
+
+<Tabs syncKey="lang">
+<TabItem label="NodeJS">
+
+```js
+const compileNft = async () => {
+  const payload = {
+    Name: "Smart Contract Name",
+    MinterName: "Minter's Name",
+    Description: "Description Goes Here",
+    SmartContractAsset: {
+      AssetId: "00000000-0000-0000-0000-000000000000",
+      Name: "file.jpg",
+      AssetAuthorName: "Author's Name",
+      Location: "/path/to/file.jpg",
+      Extension: "jpg",
+      FileSize: 488734,
+    },
+    IsPublic: false,
+    SmartContractUID: "00000000-0000-0000-0000-000000000000",
+    Features: [],
+    MinterAddress: "xDnL4MCGtgHu85JJHdN1fkXinHzKaqVQ59",
+  };
+
+  const url = `${CLI_BASE_URL}/scapi/scv1/CreateSmartContract`;
+  const request = await fetch(url, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+
+  const data = await request.json();
+
+  if (data[0]["Success"] == true) {
+    return data[0]["SmartContract"]["SmartContractUID"];
+  }
+
+  return null;
+};
+```
+
+</TabItem>
+
+<TabItem label="Python">
+
+```python
+import requests
+import json
+
+def compile_nft():
+    payload = {
+        "Name": "Smart Contract Name",
+        "MinterName": "Minter's Name",
+        "Description": "Description Goes Here",
+        "SmartContractAsset": {
+            "AssetId": "00000000-0000-0000-0000-000000000000",
+            "Name": "file.jpg",
+            "AssetAuthorName": "Author's Name",
+            "Location": "/path/to/file.jpg",
+            "Extension": "jpg",
+            "FileSize": 488734,
+        },
+        "IsPublic": False,
+        "SmartContractUID": "00000000-0000-0000-0000-000000000000",
+        "Features": [],
+        "MinterAddress": "xDnL4MCGtgHu85JJHdN1fkXinHzKaqVQ59"
+    }
+
+    url = f"{CLI_BASE_URL}/scapi/scv1/CreateSmartContract"
+    headers = {"Content-Type": "application/json"}
+    response = await requests.post(url, headers=headers, data=json.dumps(payload))
+
+    data = response.json()
+
+    if data[0]["Success"] == True:
+        return data[0]["SmartContract"]["SmartContractUID"]
+
+    return None
+```
+
+</TabItem>
+</Tabs>
+
+## Emisión
+
+#### Endpoint de la API:
+
+```
+GET http://localhost:7292/scapi/scv1/MintSmartContract/{SMART_CONTRACT_UID}
+```
+
+Ejemplo de respuesta:
+
+```
+"Smart contract has been published to mempool"
+```
+
+#### Ejemplo de código
+
+<Tabs syncKey="lang">
+<TabItem label="NodeJS">
+
+```js
+const mintNft = async (smartContractUid) => {
+  const url = `${CLI_BASE_URL}/scapi/scv1/MintSmartContract/${smartContractUid}`;
+  const request = await fetch(url);
+
+  const data = await request.text();
+  if (data == "Smart contract has been published to mempool") {
+    return true;
+  }
+
+  return false;
+};
+```
+
+</TabItem>
+
+<TabItem label="Python">
+
+```python
+def mint_nft(smart_contract_uid):
+    url = f"{CLI_BASE_URL}/scapi/scv1/MintSmartContract/{smart_contract_uid}"
+    response = requests.get(url)
+    data = response.text
+
+    if data == "Smart contract has been published to mempool":
+        return True
+
+    return False
+
+```
+
+</TabItem>
+</Tabs>
+
+## Agregar funciones
+
+Puedes agregar funciones a tu contrato inteligente con solo incluirlas en el arreglo `Features: []`.
+Actualmente se admiten tres tipos de funciones, cada una con un valor distinto del enum `FeatureName`:
+
+```
+0: Evolving
+1: Royalty
+2: Multi Asset
+```
+
+:::note[Varias funciones]
+Puedes combinar las tres funciones en un solo contrato inteligente, pero no puedes incluir la misma función más de una vez.
+:::
+
+### Regalía
+
+#### Porcentaje
+
+```json
+{
+    ...
+    "Features": [
+        {
+            "FeatureName": 1,
+            "FeatureFeatures":{
+                "RoyaltyAmount": 0.05, // 5%
+                "RoyaltyPayToAddress": "Rabc123...",
+                "RoyaltyType": 1
+            }
+        },
+    ]
+}
+```
+
+#### Monto fijo
+
+```json
+{
+    ...
+    "Features": [
+        {
+            "FeatureName": 1,
+            "FeatureFeatures":{
+                "RoyaltyAmount": 5, // 5 VFX
+                "RoyaltyPayToAddress": "Rabc123...",
+                "RoyaltyType": 0
+            }
+        },
+    ]
+}
+```
+
+### Multiarchivo
+
+```json
+{
+    ...
+    "Features": [
+        {
+            "FeatureName": 2,
+            "FeatureFeatures": [
+                {
+                    "AssetId": "00000000-0000-0000-0000-000000000000",
+                    "AssetAuthorName": "Author's Name",
+                    "Location": "/path/to/asset1.jpg",
+                    "Extension": "jpg",
+                    "FileSize": 1024,
+                    "FileName": "asset1.jpg"
+                },
+                {
+                    "AssetId": "00000000-0000-0000-0000-000000000000",
+                    "AssetAuthorName": "Author's Name",
+                    "Location": "/path/to/asset2.jpg",
+                    "Extension": "jpg",
+                    "FileSize": 1024,
+                    "FileName": "asset2.jpg"
+                }
+            ]
+        }
+    ]
+}
+```
+
+### Evolución
+
+#### Evolución controlada por el emisor
+
+```json
+{
+    ...
+    "Features": [
+        {
+            "FeatureName":0,
+            "FeatureFeatures":[
+                {
+                    "Name": "Phase 1",
+                    "Description": "Description of phase 1",
+                    "IsDynamic": false,
+                    "EvolutionState": 1,
+                    "IsCurrentState": false,
+                    "SmartContractAsset": {
+                        "AssetId": "00000000-0000-0000-0000-000000000000",
+                        "AssetAuthorName": "Author's Name",
+                        "Location": "/path/to/asset1.jpg",
+                        "Extension": "jpg",
+                        "FileSize": 1024,
+                        "FileName": "asset1.jpg"
+                    },
+                    "EvolveDate": null,
+                    "EvolveBlockHeight": null
+                },
+                {
+                    "Name": "Phase 2",
+                    "Description": "Description of phase 2",
+                    "IsDynamic": true,
+                    "EvolutionState": 2,
+                    "IsCurrentState": false,
+                    "SmartContractAsset": {
+                        "AssetId": "00000000-0000-0000-0000-000000000000",
+                        "AssetAuthorName": "Author's Name",
+                        "Location": "/path/to/asset2.jpg",
+                        "Extension": "jpg",
+                        "FileSize": 1024,
+                        "FileName": "asset2.jpg"
+                    },
+                    "EvolveDate": null,
+                    "EvolveBlockHeight": null
+                }
+            ]
+        }
+    ]
+}
+```
+
+#### Evolución por altura de bloque
+
+```json
+{
+    ...
+    "Features": [
+        {
+            "FeatureName":0,
+            "FeatureFeatures":[
+                {
+                    "Name": "Phase 1",
+                    "Description": "Description of phase 1",
+                    "IsDynamic": true,
+                    "EvolutionState": 1,
+                    "IsCurrentState": false,
+                    "SmartContractAsset": {
+                        "AssetId": "00000000-0000-0000-0000-000000000000",
+                        "AssetAuthorName": "Author's Name",
+                        "Location": "/path/to/asset1.jpg",
+                        "Extension": "jpg",
+                        "FileSize": 1024,
+                        "FileName": "asset1.jpg"
+                    },
+                    "EvolveDate": null,
+                    "EvolveBlockHeight": 1000000
+                },
+            ]
+        }
+    ]
+}
+```
+
+#### Evolución por fecha y hora
+
+```json
+{
+    ...
+    "Features": [
+        {
+            "FeatureName":0,
+            "FeatureFeatures":[
+                {
+                    "Name": "Phase 1",
+                    "Description": "Description of phase 1",
+                    "IsDynamic": true,
+                    "EvolutionState": 1,
+                    "IsCurrentState": false,
+                    "SmartContractAsset": {
+                        "AssetId": "00000000-0000-0000-0000-000000000000",
+                        "AssetAuthorName": "Author's Name",
+                        "Location": "/path/to/asset1.jpg",
+                        "Extension": "jpg",
+                        "FileSize": 1024,
+                        "FileName": "asset1.jpg"
+                    },
+                    "EvolveDate": 1679505579,
+                    "EvolveBlockHeight": null
+                },
+            ]
+        }
+    ]
+}
+```
+
+### Consultar los datos
+
+Una vez que el contrato inteligente se compila y se emite, puedes volver a leerlo a través de la API
+
+#### Listar
+
+```
+GET http://localhost:7292/scapi/scv1/GetAllSmartContracts/{PAGE}
+```
+
+#### Ejemplo de código
+
+<Tabs syncKey="lang">
+<TabItem label="NodeJS">
+
+```js
+const listNfts = async (page = 1) => {
+  const url = `${CLI_BASE_URL}/scapi/scv1/GetAllSmartContracts/${page}`;
+  const request = await fetch(url);
+
+  const data = await request.json();
+
+  if (!data) {
+    return null;
+  }
+
+  if (data["Count"] == 0) {
+    console.log("No NFTs found");
+    return [];
+  }
+
+  return data["Results"];
+};
+```
+
+</TabItem>
+
+<TabItem label="Python">
+
+```python
+def list_nfts(page=1):
+    url = f"{CLI_BASE_URL}/scapi/scv1/GetAllSmartContracts/{page}"
+    response = requests.get(url)
+    data = response.json()
+
+    if not data:
+        return None
+
+    if data["Count"] == 0:
+        print("No NFTs found")
+        return []
+
+    return data["Results"]
+
+```
+
+</TabItem>
+</Tabs>
+
+#### Buscar
+
+```
+GET http://localhost:7292/scapi/scv1/GetAllSmartContracts/{PAGE}/{QUERY}
+```
+
+#### Ejemplo de código
+
+<Tabs syncKey="lang">
+<TabItem label="NodeJS">
+
+```js
+const searchNfts = async (query, page = 1) => {
+  const url = `${CLI_BASE_URL}/scapi/scv1/GetAllSmartContracts/${page}/${query}`;
+  const request = await fetch(url);
+
+  const data = await request.json();
+
+  if (!data) {
+    return null;
+  }
+
+  if (data["Count"] == 0) {
+    console.log("No NFTs found");
+    return [];
+  }
+
+  return data["Results"];
+};
+```
+
+</TabItem>
+
+<TabItem label="Python">
+
+```python
+def search_nfts(query, page=1):
+    url = f"{CLI_BASE_URL}/scapi/scv1/GetAllSmartContracts/{page}/{query}"
+    response = requests.get(url)
+    data = response.json()
+
+    if not data:
+        return None
+
+    if data["Count"] == 0:
+        print("No NFTs found")
+        return []
+
+    return data["Results"]
+
+```
+
+</TabItem>
+</Tabs>
+
+#### Consultar
+
+```
+GET http://localhost:7292/scapi/scv1/GetSingleSmartContract/{SMART_CONTRACT_UID}
+```
+
+#### Ejemplo de código
+
+<Tabs syncKey="lang">
+<TabItem label="NodeJS">
+
+```js
+const retrieveNft = async (smartContractUid) => {
+  const url = `${CLI_BASE_URL}/scapi/scv1/GetSingleSmartContract/${smartContractUid}`;
+  const request = await fetch(url);
+
+  const data = await request.json();
+  if (data.length < 1) return null;
+  return data[0];
+};
+```
+
+</TabItem>
+
+<TabItem label="Python">
+
+```python
+def retrieve_nft(smart_contract_uid):
+    url = f"{CLI_BASE_URL}/scapi/scv1/GetSingleSmartContract/{smart_contract_uid}"
+    response = requests.get(url)
+    data = response.json()
+
+    if len(data) < 1:
+        return None
+
+    return data[0]
+
+```
+
+</TabItem>
+</Tabs>

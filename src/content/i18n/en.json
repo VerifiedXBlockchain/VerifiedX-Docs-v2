@@ -8,5 +8,8 @@
 	"vfx.network.calloutNew": "New on testnet. Not on mainnet yet.",
 	"vfx.network.calloutChanged": "This page differs from mainnet.",
 	"vfx.network.viewMainnet": "View mainnet version",
-	"vfx.translation.stale": "The English version of this page was updated after this translation. Check the English page for the latest details."
+	"vfx.translation.stale": "The English version of this page was updated after this translation. Check the English page for the latest details.",
+	"vfx.document.download": "Download PDF",
+	"vfx.document.coverAlt": "{{title}} cover",
+	"vfx.mainSite.label": "Back to verifiedx.io"
 }

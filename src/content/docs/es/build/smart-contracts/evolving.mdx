@@ -1,0 +1,67 @@
+---
+sourceHash: 645512fd3a0b
+title: "Evolucionar NFTs"
+description: Evoluciona a una etapa específica un NFT con evolución controlada por el emisor mediante la API del CLI de Core.
+sidebar:
+  order: 4
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+Los NFTs que tienen habilitada la evolución controlada por el emisor pueden ser evolucionados por quien los emitió, aunque ya no sea el propietario.
+
+#### Endpoint de la API:
+
+```
+GET http://localhost:7292/scapi/scv1/EvolveSpecific/{id}/{address}/{stage}
+```
+
+Parámetros de la URL
+
+`id`: el identificador del contrato inteligente
+
+`address`: la dirección de VFX del propietario actual
+
+`stage`: la etapa a la que evoluciona (la etapa original es `0`)
+
+#### Respuesta:
+
+```json
+{
+  "Result": "Success",
+  "Message": "NFT Evolve transaction has been sent."
+}
+```
+
+#### Ejemplo de código
+
+<Tabs syncKey="lang">
+<TabItem label="NodeJS">
+
+```js
+const evolveNft = async (smartContractUid, address, stage) => {
+  const url = `${CLI_BASE_URL}/scapi/scv1/EvolveSpecific/${smartContractUid}/${address}/${stage}`;
+  const request = await fetch(url);
+
+  const data = await request.json();
+
+  return data["Hash"];
+};
+```
+
+</TabItem>
+
+<TabItem label="Python">
+
+```python
+def evolve_nft(smart_contract_uid, address, stage):
+    url = f"{CLI_BASE_URL}/scapi/scv1/EvolveSpecific/{smart_contract_uid}/{address}/{stage}"
+    response = requests.get(url)
+    data = response.json()
+
+    return data["Hash"]
+
+```
+
+</TabItem>
+</Tabs>

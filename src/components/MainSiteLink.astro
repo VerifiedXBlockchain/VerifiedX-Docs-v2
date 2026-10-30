@@ -1,9 +1,11 @@
 ---
 // "← verifiedx.io" back to the main website, in the same tab, as a BTC-orange outline pill. Smaller on phones to fit the header.
 import { Icon } from '@astrojs/starlight/components';
+
+const { t } = Astro.locals;
 ---
 
-<a class="main-site-link" href="https://verifiedx.io" aria-label="Back to verifiedx.io">
+<a class="main-site-link" href="https://verifiedx.io" aria-label={t('vfx.mainSite.label')}>
 	<Icon name="left-arrow" class="arrow" />
 	<span class="label">verifiedx.io</span>
 </a>
