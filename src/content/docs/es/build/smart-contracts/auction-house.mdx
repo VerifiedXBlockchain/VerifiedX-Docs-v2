@@ -1,0 +1,430 @@
+---
+sourceHash: b411835be76c
+title: "Casas de subastas"
+description: Crea, publica, actualiza, desconecta, elimina y consulta la tienda de una casa de subastas con la API del CLI de Core.
+sidebar:
+  order: 5
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+## Crear una tienda
+
+#### Endpoint de la API:
+
+```
+POST http://localhost:7292/dstapi/DSTV1/SaveDecShop
+```
+
+Parámetros de la solicitud:
+
+```json
+{
+  "Name": "Shop Name",
+  "DecShopURL": "tutorial-shop",
+  "Description": "My shop's description...",
+  "OwnerAddress": "Rabc123...",
+  "DecShopHostingType": 0,
+  "AutoUpdateNetworkDNS": true
+}
+```
+
+#### Respuesta:
+
+```json
+{
+  "Success": true,
+  "Message": "Decentralized Auction Shop has been created with name Shop Name"
+}
+```
+
+#### Ejemplo de código
+
+<Tabs syncKey="lang">
+<TabItem label="NodeJS">
+
+```js
+const createShop = async () => {
+  const payload = {
+    Name: "Shop Name",
+    DecShopURL: "tutorial-shop",
+    Description: "My shop's description...",
+    OwnerAddress: "xDnL4MCGtgHu85JJHdN1fkXinHzKaqVQ59",
+    DecShopHostingType: 0,
+    AutoUpdateNetworkDNS: true,
+  };
+
+  const url = `${CLI_BASE_URL}/dstapi/DSTV1/SaveDecShop`;
+  const request = await fetch(url, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+
+  const data = await request.json();
+
+  return data["Success"];
+};
+```
+
+</TabItem>
+
+<TabItem label="Python">
+
+```python
+def create_shop():
+    payload = {
+        "Name": "Shop Name",
+        "DecShopURL": "tutorial-shop",
+        "Description": "My shop's description...",
+        "OwnerAddress": "xDnL4MCGtgHu85JJHdN1fkXinHzKaqVQ59",
+        "DecShopHostingType": 0,
+        "AutoUpdateNetworkDNS": True
+    }
+
+    url = f"{CLI_BASE_URL}/dstapi/DSTV1/SaveDecShop"
+    headers = {"Content-Type": "application/json"}
+
+    response = await requests.post(url, json=payload, headers=headers)
+    data = await response.json()
+
+    return data["Success"]
+```
+
+</TabItem>
+</Tabs>
+
+## Publicar la tienda en la red
+
+#### Endpoint de la API:
+
+```
+GET http://localhost:7292/dstapi/DSTV1/GetPublishDecShop
+```
+
+#### Respuesta:
+
+```json
+{
+  "Success": true
+}
+```
+
+#### Ejemplo de código
+
+<Tabs syncKey="lang">
+<TabItem label="NodeJS">
+
+```js
+const publishShop = async () => {
+  const url = `${CLI_BASE_URL}/dstapi/DSTV1/GetPublishDecShop`;
+  const request = await fetch(url);
+
+  const data = await request.json();
+
+  console.log(data);
+
+  return data["Success"];
+};
+```
+
+</TabItem>
+
+<TabItem label="Python">
+
+```python
+ def publish_shop():
+    url = f"{CLI_BASE_URL}/dstapi/DSTV1/GetPublishDecShop"
+    response = await requests.get(url)
+    data = await response.json()
+
+    print(data)
+
+    return data["Success"]
+```
+
+</TabItem>
+</Tabs>
+
+## Obtener mi tienda
+
+#### Endpoint de la API:
+
+```
+GET http://localhost:7292/dstapi/DSTV1/GetDecShop
+```
+
+#### Respuesta:
+
+```json
+{
+    "Success": true,
+    "DecShop": {
+        ...
+    }
+}
+```
+
+#### Ejemplo de código
+
+<Tabs syncKey="lang">
+<TabItem label="NodeJS">
+
+```js
+const retrieveShop = async () => {
+  const url = `${CLI_BASE_URL}/dstapi/DSTV1/GetDecShop`;
+  const request = await fetch(url);
+
+  const data = await request.json();
+
+  if (data["Success"] == true) {
+    return data["DecShop"];
+  }
+
+  return null;
+};
+```
+
+</TabItem>
+
+<TabItem label="Python">
+
+```python
+def retrieve_shop():
+    url = f"{CLI_BASE_URL}/dstapi/DSTV1/GetDecShop"
+    response = requests.get(url)
+    data = response.json()
+
+    if data["Success"] == True:
+        return data["DecShop"]
+
+    return None
+```
+
+</TabItem>
+</Tabs>
+
+## Actualizar la tienda
+
+#### Endpoint de la API:
+
+```
+POST http://localhost:7292/dstapi/DSTV1/SaveDecShop
+```
+
+Parámetros de la solicitud:
+
+```json
+{
+  "Name": "Updated Shop Name",
+  "DecShopURL": "tutorial-shop",
+  "Description": "My updated shop's description...",
+  "OwnerAddress": "xDnL4MCGtgHu85JJHdN1fkXinHzKaqVQ59",
+  "DecShopHostingType": 0,
+  "AutoUpdateNetworkDNS": true
+}
+```
+
+#### Respuesta:
+
+```json
+{
+    "Success": true,
+    "DecShop": {
+        ...
+    }
+}
+```
+
+## Alternar entre desconectada y en línea
+
+#### Endpoint de la API:
+
+```
+GET http://localhost:7292/dstapi/DSTV1/GetSetShopStatus
+```
+
+#### Ejemplo de código
+
+<Tabs syncKey="lang">
+<TabItem label="NodeJS">
+
+```js
+const toggleShopOnline = async () => {
+  const url = `${CLI_BASE_URL}/dstapi/DSTV1/GetSetShopStatus`;
+  const request = await fetch(url);
+
+  const data = await request.json();
+
+  console.log(data);
+
+  if (data["Success"] == true) {
+    return data["Message"].replace("Is Offline? ", "") == "True";
+  }
+
+  return null;
+};
+```
+
+</TabItem>
+
+<TabItem label="Python">
+
+```python
+ def toggle_shop_online():
+    url = f"{CLI_BASE_URL}/dstapi/DSTV1/GetSetShopStatus"
+    response = requests.get(url)
+    data = response.json()
+
+    print(data)
+
+    if data["Success"] == True:
+        return data["Message"].replace("Is Offline? ", "") == "True"
+
+    return None
+```
+
+</TabItem>
+</Tabs>
+
+## Eliminar la tienda de la red
+
+#### Endpoint de la API:
+
+```
+GET http://localhost:7292/dstapi/DSTV1/GetDeleteDecShop
+```
+
+#### Ejemplo de código
+
+<Tabs syncKey="lang">
+<TabItem label="NodeJS">
+
+```js
+const deleteNetworkShop = async () => {
+  const url = `${CLI_BASE_URL}/dstapi/DSTV1/GetDeleteDecShop`;
+  const request = await fetch(url);
+
+  const data = await request.json();
+
+  return data["Success"] == true;
+};
+```
+
+</TabItem>
+
+<TabItem label="Python">
+
+```python
+def delete_network_shop():
+    url = f"{CLI_BASE_URL}/dstapi/DSTV1/GetDeleteDecShop"
+    response = requests.get(url)
+    data = response.json()
+
+    return data["Success"] == True
+```
+
+</TabItem>
+</Tabs>
+
+## Eliminar la tienda localmente
+
+#### Endpoint de la API:
+
+```
+GET http://localhost:7292/dstapi/DSTV1/GetDeleteLocalDecShop
+```
+
+#### Ejemplo de código
+
+<Tabs syncKey="lang">
+<TabItem label="NodeJS">
+
+```js
+const deleteShop = async () => {
+  const url = `${CLI_BASE_URL}/dstapi/DSTV1/GetDeleteLocalDecShop`;
+  const request = await fetch(url);
+
+  const data = await request.json();
+
+  return data["Success"] == true;
+};
+```
+
+</TabItem>
+
+<TabItem label="Python">
+
+```python
+def delete_shop():
+    url = f"{CLI_BASE_URL}/dstapi/DSTV1/GetDeleteLocalDecShop"
+    response = requests.get(url)
+    data = response.json()
+
+    return data["Success"] == True
+```
+
+</TabItem>
+</Tabs>
+
+## Consultar una tienda de la red
+
+#### Endpoint de la API:
+
+```
+GET http://localhost:7292/dstapi/DSTV1/GetNetworkDecShopInfo/{url}
+```
+
+#### Ejemplo de código
+
+<Tabs syncKey="lang">
+<TabItem label="NodeJS">
+
+```js
+const retrieveNetworkShop = async (shopUrl) => {
+  const url = `${CLI_BASE_URL}/dstapi/DSTV1/GetNetworkDecShopInfo/${shopUrl}`;
+  const request = await fetch(url);
+
+  const data = await request.json();
+
+  if (data["Success"] == true) {
+    return data["DecShop"];
+  }
+
+  return null;
+};
+```
+
+</TabItem>
+
+<TabItem label="Python">
+
+```python
+def retrieve_network_shop(shop_url):
+    url = f"{CLI_BASE_URL}/dstapi/DSTV1/GetNetworkDecShopInfo/{shop_url}"
+    response = requests.get(url)
+    data = response.json()
+
+    if data["Success"] == True:
+        return data["DecShop"]
+
+    return None
+```
+
+</TabItem>
+</Tabs>
+
+#### Parámetros de la URL:
+
+`url`: URL de la tienda (p. ej., vfx://tutorial-shop)
+
+#### Respuesta:
+
+```json
+{
+    "Success": true,
+    "DecShop": {
+        ...
+    }
+}
+```

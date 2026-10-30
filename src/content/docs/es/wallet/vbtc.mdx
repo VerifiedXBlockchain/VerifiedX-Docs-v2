@@ -1,0 +1,44 @@
+---
+sourceHash: aa31343f8236
+title: "Bitcoin verificado (vBTC)"
+description: Crea, financia, transfiere y retira vBTC en la billetera de VerifiedX, y sigue un retiro hasta que se complete.
+sidebar:
+  order: 8
+  attrs:
+    class: sidebar-btc
+---
+
+import DocumentDownload from '../../../../components/DocumentDownload.astro';
+import flowCover from '../../../../assets/media/documents/vbtc-flow.png';
+
+## Descripción general
+vBTC es Bitcoin en la red de VerifiedX, uno a uno:
+- Cada vBTC está respaldado por Bitcoin guardado en una bóveda (vault) cuya clave está dividida entre validadores (validators) de VerifiedX.
+- vBTC se mueve entre direcciones de VFX en segundos por una pequeña comisión en VFX.
+- Cualquier poseedor puede retirar su vBTC a una dirección de Bitcoin.
+
+Estos pasos describen las versiones 9.0 de la billetera de VerifiedX y de la billetera web. Úsalos con una red Core 9.0: las versiones anteriores de la billetera todavía ofrecen pasos que una bóveda 9.0 ya no necesita.
+
+## Primeros pasos
+1. **Crea un token vBTC (bóveda).** En la sección vBTC, elige crear un token, ponle un nombre y confirma. La billetera inicia una ceremonia de claves entre los validadores (`Ceremonia MPC en progreso`, rondas 1 a 3); se ejecuta en segundo plano y puedes cerrarla. Cuando termina, se crea el contrato y el token aparece en tu lista. Una billetera nueva también puede usar el asistente, que crea el token y lo financia de una sola vez.
+2. **Fináncialo.** Abre el token y elige `Financiar` para enviar BTC desde una de tus cuentas BTC, o copia la `Dirección de depósito BTC` y envía desde cualquier billetera. El vBTC aparece cuando la transacción de Bitcoin queda enterrada bajo 6 bloques de Bitcoin (3 en testnet) y los validadores la han reportado. Entonces `Mi saldo` y `Saldo total del token` lo muestran.
+3. **Transfiere vBTC.** `Transferir` envía parte de tu vBTC a otra dirección de VFX. El propietario también puede transferir la propiedad del token; el nuevo propietario se queda con el vBTC que no tiene ningún poseedor.
+4. **Retira a Bitcoin.** Elige `Retirar`, ingresa la dirección BTC, el monto y una tasa de comisión, y confirma. La comisión de Bitcoin se descuenta del monto, así que la dirección recibe el monto menos la comisión. Eso es todo lo que envías.
+
+## Seguimiento de un retiro
+Cuando la solicitud ya está en un bloque, el diálogo de retiro muestra en qué punto está:
+- **`Retiro en curso`, todavía sin transacción de Bitcoin.** La cadena está esperando a que las monedas de la bóveda puedan pagarlo (por ejemplo, mientras otro retiro las tiene reservadas). Se fija en cuanto lo permitan. Hasta entonces puedes elegir `Cancelar retiro`: cuando la cancelación está en un bloque, el retiro se cierra y tu vBTC vuelve. No se hace ninguna votación.
+- **`Retiro en curso` con una transacción de Bitcoin.** La cadena ya fijó la transacción de Bitcoin que lo paga, y los firmantes de la bóveda la transmiten por su cuenta, normalmente en unos minutos. `Abrir en el explorador BTC` la muestra. Si no se confirma, ingresa una tasa de comisión más alta y elige `Subir comisión` (la comisión más alta se descuenta del retiro), o `Liberar` para renunciar a ella: su Bitcoin vuelve a la bóveda y se te reembolsa el vBTC, menos la comisión de Bitcoin de la liberación. Si la transacción original se confirma primero, el retiro queda pagado por ella.
+- **`Retiro completado`.** Bitcoin confirmó el pago. El diálogo indica la transacción de Bitcoin que lo pagó.
+
+Puedes cerrar el diálogo en cualquier momento y volver a abrir el retiro desde el historial del token. La lista de transacciones de VFX etiqueta estos pasos como `Solicitud retiro vBTC`, `Aumento de comisión de retiro vBTC` y `Liberación de retiro vBTC`, y muestra las transacciones `Informe de Bitcoin` de la red.
+
+## Bóvedas antiguas
+Un token vBTC creado antes de la altura de certificación de Bitcoin de la red es una bóveda antigua. Queda congelada a partir de la altura de aplicación de la red: desde entonces su vBTC no se puede transferir ni retirar, y el Bitcoin que se le envíe no se acredita. Antes de esa altura, mueve tu vBTC a un token nuevo o retíralo. Los detalles del token indican si una bóveda es antigua.
+
+## Cuentas de reserva
+vBTC se puede guardar en una cuenta de reserva (bóveda) por su protección con bloqueo de tiempo y recuperación. Una transferencia desde una cuenta de reserva queda retenida durante 24 horas y se puede devolver hasta entonces. vBTC no se puede retirar a Bitcoin directamente desde una cuenta de reserva: primero muévelo a una dirección de VFX normal.
+
+## Diagrama de flujo de vBTC
+
+<DocumentDownload href="/documents/vBTC-v2-TechAndFlow.pdf" cover={flowCover} title="Diagrama de flujo de vBTC" />
