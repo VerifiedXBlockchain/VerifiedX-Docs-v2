@@ -15,15 +15,16 @@ interface Props {
 }
 
 const { href, cover, title } = Astro.props;
+const { t } = Astro.locals;
 const fileName = href.split('/').pop();
 ---
 
 <a class="document-download not-content" href={href} download={fileName} target="_blank" rel="noopener">
-	<Image src={cover} alt={`${title} cover`} width={300} class="cover" />
+	<Image src={cover} alt={t('vfx.document.coverAlt', { title })} width={300} class="cover" />
 	<span class="meta">
 		<span class="title">{title}</span>
 		<span class="file">{fileName}</span>
-		<span class="button"><Icon name="download" size="1rem" /> Download PDF</span>
+		<span class="button"><Icon name="download" size="1rem" /> {t('vfx.document.download')}</span>
 	</span>
 </a>
 

@@ -1,0 +1,337 @@
+---
+sourceHash: 0276bb35c389
+title: "Panorama institucional"
+description: Cómo VerifiedX lleva a Bitcoin una infraestructura en autocustodia de nivel institucional, y las capas, los flujos, el modelo de seguridad y la gobernanza de su arquitectura institucional.
+sidebar:
+  order: 1
+---
+
+import { LinkButton } from '@astrojs/starlight/components';
+
+VerifiedX es una red blockchain creada con un propósito específico: llevar infraestructura de nivel institucional a Bitcoin y a los mercados de activos digitales, sin comprometer la autocustodia, la transparencia ni la seguridad.
+
+En esencia, VerifiedX habilita la programabilidad nativa y no sintética de Bitcoin, lo que permite a las instituciones desplegar, generar rendimiento, prestar y hacer transacciones con Bitcoin directamente on-chain, manteniendo en todo momento una propiedad verificable y la auditabilidad.
+
+Esto no es una capa de activos envueltos (wrapped).
+Esto es Bitcoin, mejorado para las finanzas modernas.
+
+---
+
+## Capacidades principales
+
+### Bitcoin programable nativo (vBTC)
+
+VerifiedX presenta vBTC, una propiedad 1:1 y no sintética de Bitcoin, protegida mediante un diseño de custodia avanzado y sistemas de prueba verificables.
+
+- Sin rehipotecación
+- Sin exposición sintética
+- Sin pérdida de la propiedad
+- Reservas totalmente auditables
+
+vBTC permite que Bitcoin funcione como colateral productivo y desbloquea casos de uso en préstamos, generación de rendimiento, pagos y liquidación.
+
+### Infraestructura de nivel institucional
+
+VerifiedX está diseñado con una arquitectura que prioriza la seguridad para cumplir los requisitos institucionales:
+
+- Auditorías en varias capas del protocolo principal, la red de validadores (validators) y los sistemas de activos
+- Modelado formal de amenazas y un despliegue en mainnet reforzado
+- Ejecución determinista de las transacciones on-chain
+- Gobernanza de los validadores con umbrales de consenso obligatorios
+- Herramientas de cumplimiento integradas, incluidos el monitoreo de riesgos de AML y la inteligencia de transacciones
+
+La red opera bajo supuestos de confianza cero, lo que garantiza la resiliencia a escala.
+
+### En autocustodia por diseño
+
+VerifiedX garantiza:
+
+- Control directo de los activos para instituciones y usuarios
+- Liquidación on-chain en lugar de asientos en libros internos
+- Propiedad demostrable criptográficamente en todo momento
+
+Esto preserva los principios fundamentales de Bitcoin y, al mismo tiempo, habilita funcionalidades financieras modernas.
+
+### Rendimiento y eficiencia de capital integrados
+
+VerifiedX transforma el Bitcoin inactivo en capital productivo mediante:
+
+- Estrategias de rendimiento denominadas en USDC
+- Mercados para otorgar y tomar préstamos
+- Módulos de liquidez estructurada
+- Vías de integración con ecosistemas DeFi
+
+Todo ello manteniendo la integridad de la exposición no sintética a Bitcoin.
+
+### Pagos y liquidación on-chain
+
+A través de aplicaciones nativas como Bfly y Switchblade, VerifiedX habilita:
+
+- Pagos globales instantáneos y de bajo costo
+- Transferencias por nombre de usuario, correo electrónico o billetera
+- Rampas de entrada y salida integradas y soporte para stablecoins
+- Usabilidad en el mundo real con total transparencia on-chain
+
+### Base para la economía agéntica
+
+VerifiedX va más allá de las primitivas financieras, hacia la inteligencia programable.
+
+Con plataformas como PulseXAI, los usuarios y las instituciones pueden:
+
+- Desplegar agentes autónomos on-chain
+- Ejecutar estrategias financieras de forma programática
+- Tokenizar y gobernar sistemas inteligentes
+- Capturar valor de la actividad económica impulsada por máquinas
+
+---
+
+## Diseñado para instituciones
+
+VerifiedX está construido para dar soporte a:
+
+- Gestores de activos y fondos de cobertura
+- Mesas OTC y proveedores de liquidez
+- Custodios y bancos de activos digitales
+- Proveedores de pagos y plataformas fintech
+
+Con una infraestructura que prioriza:
+
+- Seguridad
+- Cumplimiento
+- Escalabilidad
+- Eficiencia de capital
+
+---
+
+## El cambio
+
+Bitcoin se creó como reserva de valor.
+VerifiedX lo transforma en un sistema financiero totalmente funcional.
+
+De la tenencia pasiva al despliegue activo.
+De los activos estáticos al capital programable.
+De las redes aisladas a la infraestructura financiera integrada.
+
+VerifiedX es donde Bitcoin se vuelve utilizable a escala, sin concesiones. El verde es el nuevo naranja.
+
+---
+
+## Arquitectura institucional
+
+VerifiedX ofrece una arquitectura modular de nivel institucional, diseñada para permitir el despliegue seguro, escalable y conforme a las normas del capital basado en Bitcoin en los sistemas financieros on-chain.
+
+La arquitectura está creada específicamente para admitir:
+
+- Bitcoin nativo y no sintético (vBTC)
+- Control de los activos en autocustodia
+- Ejecución determinista on-chain
+- Generación de rendimiento integrada
+- Acceso a liquidez entre ecosistemas
+
+Cada capa está diseñada para interoperar sin fricciones y, al mismo tiempo, mantener garantías estrictas sobre la propiedad, la auditabilidad y la seguridad.
+
+---
+
+## Capas de la arquitectura
+
+### 1. Capa de verificación y custodia de Bitcoin
+
+Esta capa se encarga de mantener la integridad y la verificabilidad del Bitcoin subyacente.
+
+**Componentes:**
+
+- Consenso que conoce Bitcoin: cada nodo verifica la cadena de encabezados de prueba de trabajo de Bitcoin y la inclusión Merkle de cada depósito y gasto de las bóvedas (vaults) ([Integración con Bitcoin](/es/learn/bitcoin-integration/))
+- Firma por umbral FROST: la clave de Bitcoin de cada bóveda existe solo en partes distribuidas entre validadores
+- Firma controlada por la institución (S3C): la generación de claves y la firma de una bóveda restringidas a los propios validadores del dueño ([Firma institucional](/es/learn/institutional/s3c-signing/))
+- Retiros fijados por consenso: el consenso determina la transacción de Bitcoin que paga un retiro antes de que se firme
+
+**Propiedades clave:**
+
+- Respaldo 1:1 de vBTC en Bitcoin, registrado por la cadena
+- Sin emisión sintética ni rehipotecación
+- Reservas verificables criptográficamente
+- Garantías de redención deterministas
+
+### 2. Capa de emisión de vBTC
+
+Esta capa rige la emisión y la quema de vBTC en correspondencia directa con los depósitos y retiros de Bitcoin.
+
+**Funciones:**
+
+- Depósito de Bitcoin verificado → vBTC acreditado 1:1
+- Retiro de vBTC → pago en Bitcoin fijado por consenso
+- Sincronización de la oferta con el Bitcoin que registra la cadena
+- Validación de transacciones y finalidad de la liquidación
+
+**Propiedades clave:**
+
+- Aplicación estricta de la paridad 1:1
+- Sin fraccionamiento
+- Ciclo de vida de la oferta totalmente auditable
+- Transparencia on-chain de todos los eventos de emisión
+
+### 3. Capa de liquidación de VerifiedX Core
+
+La capa principal de la blockchain, responsable de la ejecución, el consenso y la gestión del estado.
+
+**Componentes:**
+
+- Motor de ejecución de transacciones determinista
+- Arquitectura de libro mayor basada en estados
+- Sistema de consenso de validadores con umbrales obligatorios
+- Tipos de transacción nativos para el movimiento y la verificación de activos
+
+**Propiedades clave:**
+
+- Finalidad de la liquidación on-chain
+- Ejecución de alto rendimiento
+- Transiciones de estado transparentes
+- Reglas de validación aplicadas por la gobernanza
+
+### 4. Capa de cumplimiento y monitoreo de riesgos
+
+Herramientas integradas para dar soporte al cumplimiento institucional y a la supervisión operativa.
+
+**Capacidades:**
+
+- Puntuación y monitoreo de riesgos de AML
+- Inteligencia y rastreo de transacciones
+- Revisión de direcciones y aplicación de políticas
+- Integración con proveedores de cumplimiento externos
+
+**Propiedades clave:**
+
+- Visibilidad de riesgos en tiempo real
+- Marcos de cumplimiento configurables
+- Adaptabilidad entre jurisdicciones
+- Sin comprometer la autocustodia
+
+### 5. Capa de liquidez y rendimiento
+
+Habilita la eficiencia de capital y la generación de rendimiento para vBTC y los activos estables.
+
+**Componentes:**
+
+- Mercados para otorgar y tomar préstamos
+- Estrategias de rendimiento denominadas en USDC
+- Bóvedas de liquidez y productos estructurados
+- Vías de integración con protocolos externos
+
+**Propiedades clave:**
+
+- Uso no sintético de Bitcoin
+- Fuentes de rendimiento transparentes
+- Enrutamiento de liquidez de nivel institucional
+- Despliegue de capital con gestión de riesgos
+
+### 6. Capa de interoperabilidad
+
+Facilita el acceso a ecosistemas externos y preserva la integridad no sintética de vBTC.
+
+**Componentes:**
+
+- Mecanismos de lockbox
+- Sistemas de publicación de pruebas
+- Mensajería y verificación multicadena
+- Marcos de representación canónica de activos
+
+**Propiedades clave:**
+
+- Sin envolver en pagarés sintéticos
+- Estado multicadena verificable
+- Primitivas de puente seguras
+- Acceso componible a la liquidez
+
+### 7. Capa de aplicaciones
+
+Interfaces para usuarios finales e instituciones construidas sobre VerifiedX.
+
+**Ejemplos:**
+
+- Bfly (pagos y acceso financiero)
+- Paneles y API institucionales
+- Interfaces de custodia y herramientas de tesorería
+- Plataformas agénticas como PulseXAI
+
+**Propiedades clave:**
+
+- Experiencia de usuario simplificada
+- Rampas de entrada y salida integradas
+- Flujos de trabajo financieros programables
+- Usabilidad en el mundo real a escala
+
+---
+
+## Flujos de extremo a extremo
+
+### Ciclo de vida de Bitcoin a rendimiento
+
+1. El Bitcoin se deposita en la dirección de Bitcoin de una bóveda
+2. Los validadores reportan el depósito; cada nodo verifica su prueba de trabajo y su prueba Merkle
+3. Cuando el depósito queda enterrado bajo 6 bloques de Bitcoin, se acredita vBTC 1:1 en VerifiedX
+4. El vBTC se despliega en módulos de liquidez o de rendimiento
+5. Se genera rendimiento (por ejemplo, estrategias de retorno en USDC)
+6. El vBTC se puede redimir en cualquier momento: el consenso fija la transacción de Bitcoin, los firmantes de la bóveda la firman y se liquida cuando Bitcoin la confirma
+
+### Flujo de despliegue entre ecosistemas
+
+1. El vBTC se bloquea en el lockbox de VerifiedX
+2. La prueba se publica en la cadena externa
+3. Se emite la representación canónica en la cadena de destino
+4. El capital se despliega en plataformas de liquidez externas
+5. La redención revierte el proceso con verificación completa
+
+---
+
+## Firma controlada por la institución
+
+Las instituciones pueden ejecutar la firma de sus propias bóvedas. Con S3C (Self-Custodial Smart Contracts, contratos inteligentes en autocustodia), la ceremonia de claves de una bóveda y cada firma se restringen a al menos tres validadores que opera la institución, y el conjunto público de validadores nunca tiene una parte. El consenso sigue verificando el Bitcoin de la bóveda y fijando cada retiro, así que la institución conserva el control directo de la autorización y la ejecución sin salirse de las reglas de la red.
+
+Consulta [Firma institucional (S3C)](/es/learn/institutional/s3c-signing/) para ver la configuración.
+
+---
+
+## Modelo de seguridad
+
+VerifiedX está diseñado con un enfoque de defensa en profundidad:
+
+- Estado de Bitcoin verificado en la capa de consenso, no tomado de un informe externo
+- Auditorías en varias capas de todos los componentes
+- Umbrales de consenso de los validadores para las operaciones críticas
+- Sistemas de prueba criptográfica para la verificación de activos
+- Ejecución determinista que evita la ambigüedad del estado
+- Monitoreo y evaluación de riesgos continuos
+
+---
+
+## Marco de gobernanza
+
+- Modelo de consenso basado en validadores
+- Mecanismos de propuesta y votación aplicados on-chain
+- Aprobación basada en umbrales para los cambios del protocolo
+- Vías de actualización transparentes
+
+---
+
+## Beneficios institucionales
+
+- Exposición nativa a Bitcoin sin riesgo sintético
+- Transparencia y auditabilidad on-chain
+- Control en autocustodia con salvaguardas institucionales
+- Herramientas integradas de cumplimiento y riesgos
+- Acceso escalable a rendimiento y liquidez
+
+---
+
+VerifiedX ofrece una arquitectura totalmente integrada que transforma Bitcoin en un activo programable, productivo y listo para las instituciones.
+
+De la custodia a la ejecución y a la generación de rendimiento, cada capa está diseñada para mantener:
+
+- Propiedad
+- Transparencia
+- Seguridad
+- Eficiencia de capital
+
+---
+
+<LinkButton href="/es/learn/vfx-ecosystem/" variant="secondary">Consola del ecosistema VFX</LinkButton>

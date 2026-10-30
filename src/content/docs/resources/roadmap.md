@@ -12,7 +12,7 @@ sidebar:
 - Protocol-enforced revenue vault activated
 - Prism privacy features live
 - Foundation advisory council formation
-- BFLY agentic features and update release
+- Bfly agentic features and update release
 
 ## Q1 2027
 - Stablecoin vaults deployment

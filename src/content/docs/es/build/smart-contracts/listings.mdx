@@ -1,0 +1,315 @@
+---
+sourceHash: c288c1cad5b8
+title: "Publicaciones"
+description: Crea, actualiza, lista, consulta, cancela y elimina publicaciones de la casa de subastas con la API del CLI de Core.
+sidebar:
+  order: 7
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+## Crear o actualizar una publicación
+
+#### Endpoint de la API:
+
+```
+POST http://localhost:7292/dstapi/DSTV1/SaveListing
+```
+
+Parámetros:
+
+```json
+{
+  "Id": 0,
+  "CollectionId": 1,
+  "SmartContractUID": "SC_ID_HERE",
+  "AddressOwner": "Rabc123...",
+  "BuyNowPrice": 10,
+  "IsBuyNowOnly": false,
+  "RequireBalanceCheck": true,
+  "FloorPrice": 25,
+  "ReservePrice": 30,
+  "StartDate": "YYYY-MM-DDTHH:mm:ss.sssZ",
+  "EndDate": "YYYY-MM-DDTHH:mm:ss.sssZ"
+}
+```
+
+> Usa el ID `0` si es una publicación nueva. Para actualizarla, usa el ID existente de esa publicación.
+
+#### Ejemplo de código
+
+<Tabs syncKey="lang">
+<TabItem label="NodeJS">
+
+```js
+const saveListing = async (collectionId, listingId = 0) => {
+  const payload = {
+    Id: listingId,
+    CollectionId: collectionId,
+    SmartContractUID: "a9dda3fd088d4d72a35380957b3a3742:1684502628",
+    AddressOwner: "xDnL4MCGtgHu85JJHdN1fkXinHzKaqVQ59",
+    BuyNowPrice: 10,
+    IsBuyNowOnly: false,
+    RequireBalanceCheck: true,
+    FloorPrice: 25,
+    ReservePrice: 30,
+    StartDate: "2023-05-01T00:00:00.000Z",
+    EndDate: "2023-06-01T00:00:00.000Z",
+  };
+
+  const url = `${CLI_BASE_URL}/dstapi/DSTV1/SaveListing`;
+  const request = await fetch(url, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+
+  const data = await request.json();
+
+  return data["Success"];
+};
+```
+
+</TabItem>
+
+<TabItem label="Python">
+
+```python
+def save_listing(collection_id, listing_id=0):
+    payload = {
+        "Id": listing_id,
+        "CollectionId": collection_id,
+        "SmartContractUID": "a9dda3fd088d4d72a35380957b3a3742:1684502628",
+        "AddressOwner": "xDnL4MCGtgHu85JJHdN1fkXinHzKaqVQ59",
+        "BuyNowPrice": 10,
+        "IsBuyNowOnly": False,
+        "RequireBalanceCheck": True,
+        "FloorPrice": 25,
+        "ReservePrice": 30,
+        "StartDate": "2023-05-01T00:00:00.000Z",
+        "EndDate": "2023-06-01T00:00:00.000Z"
+    }
+
+    url = f"{CLI_BASE_URL}/dstapi/DSTV1/SaveListing"
+    response = requests.post(url, headers={"Content-Type": "application/json"}, json=payload)
+    data = response.json()
+
+    return data["Success"]
+
+```
+
+</TabItem>
+</Tabs>
+
+## Listar publicaciones
+
+#### Endpoint de la API:
+
+```
+GET http://localhost:7292/dstapi/DSTV1/GetCollectionListings/{collectionId}
+```
+
+#### Parámetros de la URL:
+
+`collectionId`: el ID de la colección
+
+#### Respuesta:
+
+```json
+{
+    "Success": true,
+    "Listings": [
+        ...
+    ]
+}
+```
+
+#### Ejemplo de código
+
+<Tabs syncKey="lang">
+<TabItem label="NodeJS">
+
+```js
+const listListings = async (collectionId) => {
+  const url = `${CLI_BASE_URL}/dstapi/DSTV1/GetCollectionListings/${collectionId}`;
+  const request = await fetch(url);
+
+  const data = await request.json();
+
+  if (!data) {
+    return null;
+  }
+
+  if (data["Success"] == true) {
+    return data["Listings"];
+  }
+
+  return null;
+};
+```
+
+</TabItem>
+
+<TabItem label="Python">
+
+```python
+def list_listings(collection_id):
+    url = f"{CLI_BASE_URL}/dstapi/DSTV1/GetCollectionListings/{collection_id}"
+    response = requests.get(url)
+    data = response.json()
+
+    if not data:
+        return None
+
+    if data["Success"] == True:
+        return data["Listings"]
+
+    return None
+
+```
+
+</TabItem>
+</Tabs>
+
+## Consultar una publicación
+
+#### Endpoint de la API:
+
+```
+GET http://localhost:7292/dstapi/DSTV1/GetListing/{id}
+```
+
+#### Parámetros de la URL:
+
+`id`: el ID de la publicación
+
+#### Respuesta:
+
+```json
+{
+    "Success": true,
+    "Listing": {
+        ...
+    }
+}
+```
+
+#### Ejemplo de código
+
+<Tabs syncKey="lang">
+<TabItem label="NodeJS">
+
+```js
+const retrieveListing = async (listingId) => {
+  const url = `${CLI_BASE_URL}/dstapi/DSTV1/GetListing/${listingId}`;
+  const request = await fetch(url);
+
+  const data = await request.json();
+
+  if (!data) {
+    return null;
+  }
+
+  if (data["Success"] == true) {
+    return data["Listing"];
+  }
+
+  return null;
+};
+```
+
+</TabItem>
+
+<TabItem label="Python">
+
+```python
+def retrieve_listing(listing_id):
+    url = f"{CLI_BASE_URL}/dstapi/DSTV1/GetListing/{listing_id}"
+    response = requests.get(url)
+    data = response.json()
+
+    if not data:
+        return None
+
+    if data["Success"] == True:
+        return data["Listing"]
+
+    return None
+
+```
+
+</TabItem>
+</Tabs>
+
+## Cancelar una publicación
+
+#### Endpoint de la API:
+
+```
+GET http://localhost:7292/dstapi/DSTV1/CancelListing/{id}
+```
+
+#### Parámetros de la URL:
+
+`id`: el ID de la publicación
+
+#### Respuesta:
+
+```json
+{
+  "Success": true
+}
+```
+
+## Eliminar una publicación
+
+#### Endpoint de la API:
+
+```
+GET http://localhost:7292/dstapi/DSTV1/DeleteListing/{id}
+```
+
+#### Parámetros de la URL:
+
+`id`: el ID de la publicación
+
+#### Respuesta:
+
+```json
+{
+  "Success": true
+}
+```
+
+#### Ejemplo de código
+
+<Tabs syncKey="lang">
+<TabItem label="NodeJS">
+
+```js
+const deleteListing = async (listingId) => {
+  const url = `${CLI_BASE_URL}/dstapi/DSTV1/DeleteListing/${listingId}`;
+  const request = await fetch(url);
+
+  const data = await request.json();
+
+  return data["Success"] == true;
+};
+```
+
+</TabItem>
+
+<TabItem label="Python">
+
+```python
+def delete_listing(listing_id):
+    url = f"{CLI_BASE_URL}/dstapi/DSTV1/DeleteListing/{listing_id}"
+    response = requests.get(url)
+    data = response.json()
+
+    return data["Success"] == True
+
+```
+
+</TabItem>
+</Tabs>
