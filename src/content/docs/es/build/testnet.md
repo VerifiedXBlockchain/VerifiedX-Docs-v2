@@ -1,5 +1,5 @@
 ---
-sourceHash: a5c8b7f448e6
+sourceHash: b7026e727f62
 title: "Testnet"
 description: "Ejecuta el CLI y la GUI en testnet: sus puertos y direcciones, el signet de VerifiedX y cómo obtener fondos de prueba."
 sidebar:
@@ -8,11 +8,19 @@ sidebar:
 
 ## CLI
 
-Puedes acceder a testnet ejecutando el CLI con la opción `testnet`.
+Puedes acceder a testnet ejecutando el CLI con la opción `testnet`, por ejemplo `dotnet VerifiedXCore.dll testnet enableapi`. La opción es la única forma de seleccionar testnet: un inicio en mainnet cuyo `config.txt` define `TestNet=true` termina con un error.
 
-Los archivos de base de datos de testnet se guardan junto a tus archivos de base de datos de mainnet, con el sufijo `test`.
+Los datos de testnet están en su propia carpeta, junto a la de mainnet, con el sufijo `Test` o `TestNet`. `RBX` es un nombre de carpeta heredado que el código todavía usa.
 
-Todos los puertos tienen un dígito más, con un `1` como prefijo:
+| Sistema operativo | Datos de mainnet | Datos de testnet |
+|---|---|---|
+| Linux | `~/.local/share/RBX/` | `~/.local/share/RBXTest/` |
+| macOS | `~/rbx/` | `~/rbxtest/` |
+| Windows | `%LOCALAPPDATA%\RBX\` | `%LOCALAPPDATA%\RBXTest\` |
+
+Dentro de ella, las bases de datos están en `DatabasesTestNet` y el archivo de configuración es `ConfigTestNet/config.txt`.
+
+La mayoría de los puertos tienen un dígito más, con un `1` como prefijo:
 
 | | Mainnet | Testnet |
 |---|---|---|
@@ -21,17 +29,18 @@ Todos los puertos tienen un dígito más, con un `1` como prefijo:
 | Validador (FROST) | `7295` | `17295` |
 | Validador (FROST) sobre TLS | `7296` | `17296` |
 | API de la billetera | `7292` | `17292` |
+| Beacon (HTTP) | `23339` | `33339` |
 
-Así, accederías a Swagger con este enlace: `http://localhost:17292/swagger`.
+Así, accederías a Swagger con este enlace: `http://localhost:17292/swagger`. Un nodo iniciado con `openapi` solo lo sirve a quienes envían su encabezado `apitoken`.
 
 
 ## GUI
 
 Puedes iniciar la GUI en modo testnet agregando la opción `--testnet` por línea de comandos al iniciarla.
 
-### MacOS
+### macOS
 
-En MacOS, usa este comando de terminal para iniciar en testnet:
+En macOS, usa este comando de terminal para iniciar en testnet:
 ```shell
 /Applications/VFXWallet.app/Contents/MacOS/VFX\ Switchblade --testnet
 ```
@@ -74,7 +83,7 @@ El [faucet de testnet](https://spyglass-testnet.verifiedx.io/faucet) paga tanto 
 2. Ingresa tu dirección (una dirección de VFX que empieza con `x`, o una dirección de signet que empieza con `tb1`), el monto y tu número de teléfono.
 3. Ingresa el código que recibes por SMS. El faucet envía los fondos y muestra la transacción.
 
-Cada número de teléfono puede recibir hasta los límites que muestra la página del faucet (actualmente 1,000 VFX y 0.01 BTC en total). El BTC de signet se confirma en el siguiente bloque del signet, en unos 10 minutos. Si necesitas más, pide en el canal `Testnet Faucet` de Discord.
+Cada número de teléfono puede recibir hasta los límites que muestra la página del faucet (actualmente 1,000 VFX y 0.01 BTC en total). El BTC de signet se confirma en el siguiente bloque del signet, en unos 10 minutos. Si necesitas más, pide en el canal `Testnet Faucet` de [Discord](https://discord.gg/7cd5ebDQCj).
 
 El mismo faucet está disponible como API: consulta [Web API: Faucet](/es/build/web-api/faucet/).
 
@@ -89,4 +98,4 @@ Ambos vienen con el [acceso a la API de socios (Partner API)](/es/build/signet/#
 
 ---
 
-Los desarrolladores recibirán con gusto tus preguntas en Discord.
+Los desarrolladores recibirán con gusto tus preguntas en [Discord](https://discord.gg/7cd5ebDQCj).

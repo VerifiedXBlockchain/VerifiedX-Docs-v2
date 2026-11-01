@@ -1,5 +1,5 @@
 ---
-sourceHash: c6c87bd45e97
+sourceHash: 736375f0a3fe
 title: "SDK de JavaScript"
 description: Descripción general del VerifiedX Web SDK, una interfaz unificada para la blockchain de VerifiedX y la red de Bitcoin, con instalación, uso básico y un mapa de las guías.
 sidebar:
@@ -8,6 +8,8 @@ sidebar:
 ---
 
 Te damos la bienvenida a la documentación del VerifiedX Web SDK. Este SDK ofrece una interfaz unificada para interactuar tanto con la blockchain de VerifiedX como con la red de Bitcoin, lo que permite crear potentes aplicaciones multicadena.
+
+El SDK se comunica con la API de datos de Spyglass (`https://data.verifiedx.io/api` en mainnet, `https://data-testnet.verifiedx.io/api` en testnet), no directamente con un nodo. Las lecturas y transmisiones de Bitcoin van a una API al estilo de mempool.space. La testnet de VerifiedX vigila el signet de VerifiedX, así que apunta el cliente de Bitcoin a `https://signet.verifiedx.io/api` cuando trabajes en testnet.
 
 ## Descripción general del SDK
 
@@ -19,8 +21,8 @@ import { VfxClient, btc, Network } from 'vfx-web-sdk';
 // VerifiedX operations
 const vfxClient = new VfxClient(Network.Testnet);
 
-// Bitcoin operations
-const btcClient = new btc.BtcClient('testnet');
+// Bitcoin operations on the VerifiedX signet (tb1 addresses)
+const btcClient = new btc.BtcClient('testnet', { apiBaseUrl: 'https://signet.verifiedx.io/api' });
 ```
 
 ## Funciones clave
@@ -58,7 +60,7 @@ import { VfxClient, btc, Network } from 'vfx-web-sdk';
 function quickStart() {
   // Initialize clients
   const vfxClient = new VfxClient(Network.Testnet);
-  const btcClient = new btc.BtcClient('testnet');
+  const btcClient = new btc.BtcClient('testnet', { apiBaseUrl: 'https://signet.verifiedx.io/api' });
 
   // Generate VFX wallet
   const vfxPrivateKey = vfxClient.generatePrivateKey();
@@ -96,8 +98,9 @@ Esta documentación se organiza en varias secciones:
 ## Comunidad y soporte
 
 - **GitHub**: [repositorio de VerifiedX WebSDK](https://github.com/VerifiedXBlockchain/VerifiedX-WebSdk)
-- **Issues**: reporta errores y solicita funciones
-- **Discusiones**: únete a las discusiones de la comunidad
+- **Ejemplos**: [ejemplos de VerifiedX WebSDK](https://github.com/VerifiedXBlockchain/VerifiedX-WebSdkExamples)
+- **Issues**: [reporta errores y solicita funciones](https://github.com/VerifiedXBlockchain/VerifiedX-WebSdk/issues)
+- **Discord**: [únete a la comunidad](https://discord.gg/7cd5ebDQCj)
 
 ## Próximos pasos
 
@@ -107,6 +110,6 @@ Esta documentación se organiza en varias secciones:
 2. **¿Desarrollas con Bitcoin?** Ve directo a los [conceptos básicos de Bitcoin](/es/build/sdk/bitcoin-basics/)
 3. **¿Creas apps multicadena?** Explora la [guía multicadena](/es/build/sdk/cross-chain/)
 4. **¿Vas a emitir un token?** Lee [Tokens fungibles](/es/build/sdk/fungible-tokens/) y [Firma externa](/es/build/sdk/external-signing/)
-4. **¿Necesitas ejemplos?** Explora las [aplicaciones completas](/es/build/sdk/examples/applications/)
+5. **¿Necesitas ejemplos?** Explora los [fragmentos de código](/es/build/sdk/examples/snippets/)
 
-¡Construyamos juntos el futuro de las aplicaciones multicadena!
+Empieza a crear aplicaciones multicadena en VerifiedX.

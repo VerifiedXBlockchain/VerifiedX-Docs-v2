@@ -1,5 +1,5 @@
 ---
-sourceHash: d9e129937608
+sourceHash: 5484fc54551c
 title: "Tokens fungibles"
 description: "Despliega un contrato inteligente de token fungible y emite, transfiere, quema, pausa, transfiere la propiedad de sus tokens y vota con ellos a través de la API de Core."
 sidebar:
@@ -10,9 +10,9 @@ sidebar:
 
 Desplegar un contrato inteligente de token fungible sigue el mismo proceso que cualquier contrato inteligente. Revisa esta [documentación](/es/build/smart-contracts/compiling-and-minting/).
 
-Agrega al payload un tipo de función (feature) con los detalles del token.
+Agrega al payload un tipo de función (feature) con los detalles del token. `FeatureName` 13 es la función `Token`.
 
-```json
+```jsonc
 
 {
     ...
@@ -37,7 +37,7 @@ Agrega al payload un tipo de función (feature) con los detalles del token.
 
 Después de compilarlo, el contrato inteligente del token todavía debe emitirse, con el mismo método que cualquier contrato inteligente.
 
-```
+```text
 GET http://localhost:7292/scapi/scv1/MintSmartContract/{SMART_CONTRACT_UID}
 ```
 
@@ -47,12 +47,12 @@ Nota: el contrato inteligente del token base debe tener un suministro infinito p
 
 ### Endpoint de la API
 
-```
-GET http://localhost:7292/tkapi/TKV2/TokenMint/{id}/{fromAddress}/{amount}
+```text
+GET http://localhost:7292/tkapi/TKV2/TokenMint/{scUID}/{fromAddress}/{amount}
 ```
 
 ### Parámetros de URL:
-`id`: el identificador del contrato inteligente del token.
+`scUID`: el identificador del contrato inteligente del token.
 
 `fromAddress`: la dirección del propietario del contrato inteligente.
 
@@ -62,22 +62,22 @@ GET http://localhost:7292/tkapi/TKV2/TokenMint/{id}/{fromAddress}/{amount}
 ```json
 {
     "Success": true,
-    "Message": "TX Success. SCUID: ..."
+    "Message": "Result: TX Success. SCUID: ..."
 }
 ```
-> Nota: todos los métodos de acciones de tokens devuelven una estructura de respuesta similar. Si `Success` es `false`, el parámetro `Message` incluirá los detalles.
+> Nota: todos los métodos de acciones de tokens devuelven una estructura de respuesta similar. Si `Success` es `false`, el parámetro `Message` incluirá los detalles. Cada acción se envía desde una cuenta que guarda la billetera del nodo, y una billetera cifrada debe desbloquearse primero.
 
 ## Transferencia de tokens
 
 ### Endpoint de la API
 
-```
-GET http://localhost:7292/tkapi/TKV2/TransferToken/{id}/{fromAddress}/{toAddress}/{amount}
+```text
+GET http://localhost:7292/tkapi/TKV2/TransferToken/{scUID}/{fromAddress}/{toAddress}/{amount}
 ```
 
 ### Parámetros de URL:
 
-`id`: el identificador del contrato inteligente del token.
+`scUID`: el identificador del contrato inteligente del token.
 
 `fromAddress`: la dirección del remitente
 
@@ -89,13 +89,13 @@ GET http://localhost:7292/tkapi/TKV2/TransferToken/{id}/{fromAddress}/{toAddress
 
 ### Endpoint de la API
 
-```
-GET http://localhost:7292/tkapi/TKV2/BurnToken/{id}/{fromAddress}/{amount}
+```text
+GET http://localhost:7292/tkapi/TKV2/BurnToken/{scUID}/{fromAddress}/{amount}
 ```
 
 ### Parámetros de URL:
 
-`id`: el identificador del contrato inteligente del token.
+`scUID`: el identificador del contrato inteligente del token.
 
 `fromAddress`: la dirección del propietario de los tokens desde la que se quemarán.
 
@@ -105,68 +105,96 @@ GET http://localhost:7292/tkapi/TKV2/BurnToken/{id}/{fromAddress}/{amount}
 
 ### Endpoint de la API
 
-```
-GET http://localhost:7292/tkapi/TKV2/PauseTokenContract/{id}/{fromAddress}
+```text
+GET http://localhost:7292/tkapi/TKV2/PauseTokenContract/{scUID}/{fromAddress}
 ```
 
 ### Parámetros de URL:
 
-`id`: el identificador del contrato inteligente del token.
+`scUID`: el identificador del contrato inteligente del token.
 
 `fromAddress`: la dirección del propietario del token.
+
+La misma llamada alterna: en un contrato pausado, lo reanuda.
+
+## Bloqueo de una dirección
+
+### Endpoint de la API
+
+```text
+GET http://localhost:7292/tkapi/TKV2/BanAddress/{scUID}/{fromAddress}/{banAddress}
+```
+
+### Parámetros de URL:
+
+`scUID`: el identificador del contrato inteligente del token.
+
+`fromAddress`: la dirección del propietario del token.
+
+`banAddress`: la dirección que se bloqueará en el token.
 
 ## Cambio de propiedad
 
 ### Endpoint de la API
 
-```
-GET http://localhost:7292/tkapi/TKV2/ChangeTokenContractOwnership/{id}/{fromAddress}/{toAddress}
+```text
+GET http://localhost:7292/tkapi/TKV2/ChangeTokenContractOwnership/{scUID}/{fromAddress}/{toAddress}
 ```
 
 ### Parámetros de URL:
 
-`id`: el identificador del contrato inteligente del token.
+`scUID`: el identificador del contrato inteligente del token.
 
 `fromAddress`: la dirección del remitente
 
 `toAddress`: la dirección del destinatario
 
-## Creación de la propiedad de un tema de votación
+## Creación de un tema de votación
 
 ### Endpoint de la API
 
-```
+```text
 POST http://localhost:7292/tkapi/TKV2/CreateTokenTopic
 ```
 
 ### Parámetros de datos POST:
 
 ```json
-    {
-        "TopicName": "",
-        "TopicDescription": "",
-        "SmartContractUID": "",
-        "MinimumVoteRequirement": "",
-        "FromAddress": "",
-        "VotingEndDays": "",
-    }
-
+{
+    "TopicName": "Raise the supply",
+    "TopicDescription": "Mint 1,000 more tokens for the community fund.",
+    "SmartContractUID": "<token smart contract UID>",
+    "MinimumVoteRequirement": 10,
+    "FromAddress": "<token owner address>",
+    "VotingEndDays": 30
+}
 ```
+
+`TopicName` tiene como máximo 128 caracteres y `TopicDescription` como máximo 1,600. `MinimumVoteRequirement` es un número entero. `VotingEndDays` es uno de `30`, `60`, `90` o `180`. `FromAddress` debe ser el propietario del contrato del token.
 
 ## Emisión de un voto
 
 ### Endpoint de la API
 
-```
-GET http://localhost:7292/tkapi/TKV2/CastTokenTopicVote/{id}/{fromAddress}/{topicUid}/{vote}
+```text
+GET http://localhost:7292/tkapi/TKV2/CastTokenTopicVote/{scUID}/{fromAddress}/{topicUID}/{voteType}
 ```
 
 ### Parámetros de URL:
 
-`id`: el identificador del contrato inteligente del token.
+`scUID`: el identificador del contrato inteligente del token.
 
 `fromAddress`: la dirección del votante
 
-`topicUid`: el identificador único del tema
+`topicUID`: el identificador único del tema
 
-`vote`: `1` == SÍ; `0` == NO
+`voteType`: `1` == SÍ; `0` == NO
+
+## Lectura de tokens y votos
+
+- `GET /tkapi/TKV2/GetTokens/{scUID}/{getAll}`: los tokens que tienen las cuentas de la billetera (`getAll=true`), o los detalles de un token.
+- `GET /tkapi/TKV2/GetTokensUpdate`: reconstruye la lista de tokens en memoria de la billetera.
+- `GET /tkapi/TKV2/GetVoteBySmartContractUID/{scUID}`: los votos de la billetera en los temas de un token.
+- `GET /tkapi/TKV2/GetVoteByTopic/{topicUID}`: los votos registrados para un tema.
+- `GET /tkapi/TKV2/GetVotesByAddress/{fromAddress}`: todos los votos de tokens emitidos por una dirección.
+- `GET /tkapi/TKV2/GetTokenOwnerVoteList/{tUID}`: la lista de votos que ve el propietario del token para un tema.
