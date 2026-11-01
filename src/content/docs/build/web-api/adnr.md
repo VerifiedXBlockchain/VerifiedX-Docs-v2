@@ -20,27 +20,34 @@ The ADNR (Address Domain Name Resolution) API provides endpoints for managing an
 GET /api/adnr/
 ```
 
-Returns a paginated list of all ADNR domains, ordered by creation height (newest first).
+Returns a paginated list of all active ADNR domains (deleted domains are excluded), ordered by creation height (newest first).
 
 **Query Parameters:**
 - `search`: Search by domain name or address
-- `ordering`: Order results (e.g., `-create_transaction__height`)
+- `ordering`: Order by a response field, for example `domain` or `-domain`
+- `page` (integer): Page number
+- `limit` (integer): Results per page (default 30, max 500)
 
 **Response:**
 ```json
 {
   "count": 500,
-  "next": "http://localhost:8000/api/adnr/?page=2",
-  "previous": null,
+  "page": 1,
+  "num_pages": 17,
   "results": [
     {
-      "domain": "example",
+      "domain": "example.vfx",
       "address": "R9Ng1rDS2YgB7R2bJMU3RKzVXSriXLRsBR",
       "is_btc": false,
       "btc_address": null,
       "create_transaction": {
-        "hash": "tx123...",
-        "height": 12345
+        "hash": "14fd35ecae8705c1f3e699bb6fc6f40546e8a28a2b0175e8ac9dc76d936c3ac2",
+        "height": 7587359,
+        "type": 6,
+        "to_address": "Adnr_Base",
+        "from_address": "R9Ng1rDS2YgB7R2bJMU3RKzVXSriXLRsBR",
+        "total_amount": 5.0,
+        "data": "{\"Function\":\"AdnrCreate()\",\"Name\":\"example\"}"
       }
     }
   ]
@@ -55,18 +62,23 @@ GET /api/adnr/{domain}/
 Returns detailed information for a specific ADNR domain.
 
 **Parameters:**
-- `domain` (string): The domain name (without .rbx suffix)
+- `domain` (string): The full domain name including its suffix, for example `example.vfx` or `example.btc`
 
 **Response:**
 ```json
 {
-  "domain": "example",
+  "domain": "example.vfx",
   "address": "R9Ng1rDS2YgB7R2bJMU3RKzVXSriXLRsBR",
   "is_btc": false,
   "btc_address": null,
   "create_transaction": {
-    "hash": "tx123...",
-    "height": 12345
+    "hash": "14fd35ecae8705c1f3e699bb6fc6f40546e8a28a2b0175e8ac9dc76d936c3ac2",
+    "height": 7587359,
+    "type": 6,
+    "to_address": "Adnr_Base",
+    "from_address": "R9Ng1rDS2YgB7R2bJMU3RKzVXSriXLRsBR",
+    "total_amount": 5.0,
+    "data": "{\"Function\":\"AdnrCreate()\",\"Name\":\"example\"}"
   }
 }
 ```
@@ -89,7 +101,7 @@ Returns the ADNR domain associated with a Bitcoin address (for Bitcoin-linked do
 ```json
 {
   "btc_address": "1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa",
-  "domain": "satoshi"
+  "domain": "satoshi.btc"
 }
 ```
 
@@ -107,12 +119,12 @@ If no domain is found:
 - `address`: The associated VFX blockchain address
 - `is_btc`: Whether this domain is linked to a Bitcoin address
 - `btc_address`: The associated Bitcoin address (if `is_btc` is true)
-- `create_transaction`: Information about the transaction that created this domain
+- `create_transaction`: The transaction that created this domain, in the full format described on the [Transaction](/build/web-api/transaction/) page (abbreviated above)
 
 ## Notes
 
-- ADNR domains provide human-readable names for VFX addresses (e.g., "example.rbx" instead of "R9Ng1rDS2YgB7R2bJMU3RKzVXSriXLRsBR")
-- Some domains can be linked to Bitcoin addresses for cross-chain functionality
-- Domain names are case-insensitive
-- The `.rbx` suffix is implied and not stored in the domain field
+- ADNR domains provide human-readable names for VFX addresses (e.g., "example.vfx" instead of "R9Ng1rDS2YgB7R2bJMU3RKzVXSriXLRsBR")
+- Some domains can be linked to Bitcoin addresses for cross-chain functionality; those end in `.btc`
+- Domain names are lowercase and the lookup is an exact match: `Example.vfx` returns `404`
+- The suffix is stored in the `domain` field (`.vfx` or `.btc`) and must be included in lookups
 - Results are cached for performance

@@ -6,7 +6,7 @@ sidebar:
   order: 7
 ---
 
-The CMC Price API provides endpoints for retrieving cryptocurrency price data from CoinMarketCap integration, including current prices and historical data.
+The CMC Price API provides the latest and recent CoinMarketCap USD price data for BTC and VFX. The explorer records a CoinMarketCap quote for each coin every five minutes.
 
 ## Base URL
 ```
@@ -20,26 +20,33 @@ The CMC Price API provides endpoints for retrieving cryptocurrency price data fr
 GET /api/cmc-price/{coin_type}/
 ```
 
-Returns the latest price information for a specific cryptocurrency.
+Returns the latest recorded price for a coin.
 
 **Parameters:**
-- `coin_type` (string): The coin identifier (e.g., "bitcoin", "ethereum", "vfx")
+- `coin_type` (string): `btc` or `vfx` (case-insensitive)
 
 **Response:**
 ```json
 {
-  "coin_type": "bitcoin",
-  "symbol": "BTC",
-  "name": "Bitcoin",
-  "price_usd": "45000.123456",
-  "price_btc": "1.0",
-  "market_cap": "850000000000.0",
-  "volume_24h": "25000000000.0",
-  "percent_change_1h": "0.5",
-  "percent_change_24h": "2.3",
-  "percent_change_7d": "-1.2",
-  "last_updated": "2024-01-01T12:00:00Z",
-  "rank": 1
+  "success": true,
+  "message": "success",
+  "data": {
+    "coin_type": "btc",
+    "usdt_price": 77831.54028038826,
+    "volume_24h": 12365223751.733767,
+    "percent_change_24h": 0.43023492,
+    "last_updated": "2026-11-01T11:54:00Z",
+    "percent_change_1h": -0.09301457640333757
+  }
+}
+```
+
+Any other `coin_type` answers `400`:
+
+```json
+{
+  "success": false,
+  "message": "Not a valid coin type, Must be `btc` or `vfx`"
 }
 ```
 
@@ -48,75 +55,38 @@ Returns the latest price information for a specific cryptocurrency.
 GET /api/cmc-price/{coin_type}/history/
 ```
 
-Returns historical price data for a specific cryptocurrency.
+Returns up to the 1,000 most recent recorded prices for a coin, newest first. It takes no query parameters.
 
 **Parameters:**
-- `coin_type` (string): The coin identifier
-
-**Query Parameters:**
-- `days` (integer): Number of days of history to return (default: 30)
-- `interval` (string): Data interval - "1h", "24h" (default: "24h")
+- `coin_type` (string): `btc` or `vfx`
 
 **Response:**
 ```json
 {
-  "coin_type": "bitcoin",
-  "symbol": "BTC",
-  "name": "Bitcoin",
-  "history": [
-    {
-      "timestamp": "2024-01-01T00:00:00Z",
-      "price_usd": "44500.0",
-      "market_cap": "845000000000.0",
-      "volume_24h": "24000000000.0"
-    },
-    {
-      "timestamp": "2024-01-02T00:00:00Z", 
-      "price_usd": "45000.123456",
-      "market_cap": "850000000000.0",
-      "volume_24h": "25000000000.0"
-    }
-  ],
-  "count": 30
+  "success": true,
+  "message": "success",
+  "data": [
+    [77831.54028038826, 1793534040.0],
+    [77837.80384232599, 1793533743.0]
+  ]
 }
 ```
+
+Each entry is `[usd_price, unix_timestamp_seconds]`.
 
 ## Field Descriptions
 
 ### Price Data
-- `coin_type`: Internal identifier for the cryptocurrency
-- `symbol`: Trading symbol (e.g., BTC, ETH)
-- `name`: Full name of the cryptocurrency
-- `price_usd`: Current price in USD
-- `price_btc`: Current price in BTC (Bitcoin equivalent)
-- `market_cap`: Total market capitalization in USD
+- `coin_type`: `btc` or `vfx`
+- `usdt_price`: Price in USD
 - `volume_24h`: 24-hour trading volume in USD
-- `percent_change_1h`: Price change percentage in the last hour
 - `percent_change_24h`: Price change percentage in the last 24 hours
-- `percent_change_7d`: Price change percentage in the last 7 days
-- `last_updated`: Timestamp of the last price update
-- `rank`: CoinMarketCap ranking position
-
-### Historical Data
-- `timestamp`: Date and time of the price snapshot
-- `price_usd`: Historical price in USD at that time
-- `market_cap`: Historical market cap at that time
-- `volume_24h`: 24-hour volume at that time
-
-## Supported Coin Types
-
-Common coin types supported:
-- `bitcoin` - Bitcoin (BTC)
-- `ethereum` - Ethereum (ETH)
-- `vfx` - VFX Token
-- `litecoin` - Litecoin (LTC)
-- `bitcoin-cash` - Bitcoin Cash (BCH)
+- `percent_change_1h`: Price change percentage in the last hour (may be 0 when not recorded)
+- `last_updated`: CoinMarketCap's timestamp for the quote (ISO 8601, UTC)
 
 ## Notes
 
-- Price data is sourced from CoinMarketCap API
-- All price values are returned as strings to preserve decimal precision
-- Data is cached for performance - cache duration varies by endpoint
-- Historical data availability depends on CoinMarketCap's data retention
-- Rate limiting may apply based on CoinMarketCap API limits
-- Timestamps are in UTC format (ISO 8601)
+- Price data is sourced from the CoinMarketCap API
+- Prices are JSON numbers
+- When CoinMarketCap quotes no market price for a coin, no new row is recorded and the API keeps serving the last quote that had one; check `last_updated` before relying on a price
+- Responses are cached for a short time

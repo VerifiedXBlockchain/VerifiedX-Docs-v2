@@ -108,7 +108,7 @@ The BTC payment is in the signet mempool at once and confirms in the next signet
 
 ## Errors
 
-All refusals are HTTP 400 with a `message`:
+All refusals are HTTP 400. A malformed field (for example a phone number that is not valid) answers with that field's errors, such as `{"phone": ["Enter a valid phone number."]}`. Every other refusal carries a `message`:
 
 | Message | Cause |
 |---------|-------|
