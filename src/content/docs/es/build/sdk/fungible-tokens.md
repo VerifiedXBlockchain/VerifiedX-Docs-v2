@@ -1,5 +1,5 @@
 ---
-sourceHash: 298e6f3a29f9
+sourceHash: b8b35e845dee
 title: "Tokens fungibles: emite y administra tokens VFX20"
 description: Despliega un token VFX20 con el VerifiedX Web SDK, emite y transfiere el suministro, y usa los controles del propietario para pausar, bloquear, transferir la propiedad y abrir votaciones de los tenedores.
 sidebar:
@@ -12,7 +12,7 @@ Esta guía recorre la vida completa de un token fungible (VFX20) con el Verified
 ## Requisitos previos
 
 - `vfx-web-sdk` 3.4.0 o posterior
-- Una dirección de VFX con fondos. Las operaciones con tokens pagan solo la comisión normal de la red en VFX (unas milésimas de VFX cada una); no hay ningún cargo de despliegue aparte de eso.
+- Una dirección de VFX con fondos. Las operaciones con tokens pagan solo la comisión normal de la red en VFX, que depende del tamaño y se quema (muy por debajo de una milésima de VFX cada una: en testnet un despliegue pagó unos 0.00025 VFX y una transferencia unos 0.00001 VFX); no hay ningún cargo de despliegue aparte de eso.
 - Te recomendamos usar testnet mientras aprendes: un bloqueo no se puede deshacer y un token no se puede eliminar.
 
 ## Cómo funcionan los tokens en VerifiedX
@@ -65,7 +65,7 @@ Sin una `image`, la red asigna una imagen de token predeterminada.
 
 ## Paso 3: espera la confirmación
 
-Los métodos que modifican el estado devuelven el hash de la transacción en cuanto el nodo la acepta. Los bloques llegan más o menos cada 10 segundos y Spyglass los indexa poco después. Antes de actuar sobre un resultado, confírmalo leyendo el estado:
+Los métodos que modifican el estado devuelven el hash de la transacción en cuanto el nodo la acepta. Los bloques llegan más o menos cada 12 segundos y Spyglass los indexa poco después (en testnet, un token nuevo apareció unos 30 segundos después del despliegue). Antes de actuar sobre un resultado, confírmalo leyendo el estado:
 
 ```typescript
 async function waitForToken(scIdentifier: string) {
@@ -156,12 +156,15 @@ await client.createTokenVoteTopic(owner, {
   name: 'Distribute Q3',
   description: 'Pay out the Q3 distribution',
   votingDays: 7,
-  minimumVoteRequirement: 51,
+  minimumVoteRequirement: 100, // minimum token balance a holder needs to vote
 });
 
 const topics = await client.listTokenVotingTopics(scIdentifier);
+// holder: the keypair (or Signer) of an address that holds the token
 await client.castTokenVote(holder, { scIdentifier, topicUid: topics.results[0].topic_id, vote: true });
 ```
+
+`minimumVoteRequirement` es un saldo de tokens, no un porcentaje: la red rechaza el voto de un tenedor cuyo saldo del token esté por debajo de ese valor ("Insufficient Balance to cast a vote.") y cada tenedor vota una sola vez por tema. Lee el recuento con `getTokenVotingTopic(topicId)`, cuyo `vote_data` lista los votos y los conteos de sí y de no.
 
 ## Ejecuciones de prueba
 
@@ -172,6 +175,8 @@ const dry = new VfxClient(Network.Mainnet, true);
 const check = await dry.deployToken(owner, { name: 'Acme Fund', ticker: 'ACME', initialSupply: 1_000_000 });
 // check.scIdentifier and check.transactionHash are returned; nothing is broadcast
 ```
+
+El nodo verifica la transacción contra el saldo real del propietario, así que la ejecución de prueba necesita una dirección con fondos en esa red; para una dirección sin VFX se resuelve como `null`.
 
 ## Cuentas de reserva y tokens
 

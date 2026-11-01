@@ -1,5 +1,5 @@
 ---
-sourceHash: b411835be76c
+sourceHash: 21e52ca4b6ed
 title: "Casas de subastas"
 description: Crea, publica, actualiza, desconecta, elimina y consulta la tienda de una casa de subastas con la API del CLI de Core.
 sidebar:
@@ -12,7 +12,7 @@ import { Tabs, TabItem } from '@astrojs/starlight/components';
 
 #### Endpoint de la API:
 
-```
+```text
 POST http://localhost:7292/dstapi/DSTV1/SaveDecShop
 ```
 
@@ -24,10 +24,12 @@ Parámetros de la solicitud:
   "DecShopURL": "tutorial-shop",
   "Description": "My shop's description...",
   "OwnerAddress": "Rabc123...",
-  "DecShopHostingType": 0,
+  "HostingType": 0,
   "AutoUpdateNetworkDNS": true
 }
 ```
+
+`DecShopURL` es solo el nombre: el nodo agrega `vfx://` y rechaza una URL que ya lo contenga. `HostingType` es `0` (Network), `1` (SelfHosted; envía también `IP` y `Port`) o `2` (ThirdParty). La descripción tiene un límite de 200 palabras y 1,200 caracteres. Esta llamada guarda la tienda solo en el nodo; publícala con la siguiente llamada.
 
 #### Respuesta:
 
@@ -50,7 +52,7 @@ const createShop = async () => {
     DecShopURL: "tutorial-shop",
     Description: "My shop's description...",
     OwnerAddress: "xDnL4MCGtgHu85JJHdN1fkXinHzKaqVQ59",
-    DecShopHostingType: 0,
+    HostingType: 0,
     AutoUpdateNetworkDNS: true,
   };
 
@@ -78,15 +80,15 @@ def create_shop():
         "DecShopURL": "tutorial-shop",
         "Description": "My shop's description...",
         "OwnerAddress": "xDnL4MCGtgHu85JJHdN1fkXinHzKaqVQ59",
-        "DecShopHostingType": 0,
+        "HostingType": 0,
         "AutoUpdateNetworkDNS": True
     }
 
     url = f"{CLI_BASE_URL}/dstapi/DSTV1/SaveDecShop"
     headers = {"Content-Type": "application/json"}
 
-    response = await requests.post(url, json=payload, headers=headers)
-    data = await response.json()
+    response = requests.post(url, json=payload, headers=headers)
+    data = response.json()
 
     return data["Success"]
 ```
@@ -98,15 +100,19 @@ def create_shop():
 
 #### Endpoint de la API:
 
-```
+```text
 GET http://localhost:7292/dstapi/DSTV1/GetPublishDecShop
 ```
+
+Publicar envía una transacción de registro de la tienda desde la dirección del propietario. Cuesta 10 VFX más la comisión normal de la red.
 
 #### Respuesta:
 
 ```json
 {
-  "Success": true
+  "Success": true,
+  "Message": "Success! TX ID: abcdfg...",
+  "Hash": "abcdfg..."
 }
 ```
 
@@ -133,10 +139,10 @@ const publishShop = async () => {
 <TabItem label="Python">
 
 ```python
- def publish_shop():
+def publish_shop():
     url = f"{CLI_BASE_URL}/dstapi/DSTV1/GetPublishDecShop"
-    response = await requests.get(url)
-    data = await response.json()
+    response = requests.get(url)
+    data = response.json()
 
     print(data)
 
@@ -150,7 +156,7 @@ const publishShop = async () => {
 
 #### Endpoint de la API:
 
-```
+```text
 GET http://localhost:7292/dstapi/DSTV1/GetDecShop
 ```
 
@@ -159,6 +165,7 @@ GET http://localhost:7292/dstapi/DSTV1/GetDecShop
 ```json
 {
     "Success": true,
+    "Message": "DecShop Found",
     "DecShop": {
         ...
     }
@@ -208,7 +215,7 @@ def retrieve_shop():
 
 #### Endpoint de la API:
 
-```
+```text
 POST http://localhost:7292/dstapi/DSTV1/SaveDecShop
 ```
 
@@ -220,7 +227,7 @@ Parámetros de la solicitud:
   "DecShopURL": "tutorial-shop",
   "Description": "My updated shop's description...",
   "OwnerAddress": "xDnL4MCGtgHu85JJHdN1fkXinHzKaqVQ59",
-  "DecShopHostingType": 0,
+  "HostingType": 0,
   "AutoUpdateNetworkDNS": true
 }
 ```
@@ -229,18 +236,31 @@ Parámetros de la solicitud:
 
 ```json
 {
-    "Success": true,
-    "DecShop": {
-        ...
-    }
+  "Success": true,
+  "Message": "Decentralized Auction Shop has been updated with name Updated Shop Name"
 }
 ```
+
+`SaveDecShop` cambia solo la copia local. Publica el cambio en la red con `GetUpdateDecShop`, que envía una transacción de actualización que cuesta 1 VFX más la comisión normal de la red:
+
+```text
+GET http://localhost:7292/dstapi/DSTV1/GetUpdateDecShop
+```
+
+```json
+{
+  "Success": true,
+  "Message": "Success! TX ID: abcdfg..."
+}
+```
+
+Cuando nada cambió desde la última publicación, responde `{"Success": false, "Message": "No update is pending."}`.
 
 ## Alternar entre desconectada y en línea
 
 #### Endpoint de la API:
 
-```
+```text
 GET http://localhost:7292/dstapi/DSTV1/GetSetShopStatus
 ```
 
@@ -271,7 +291,7 @@ const toggleShopOnline = async () => {
 <TabItem label="Python">
 
 ```python
- def toggle_shop_online():
+def toggle_shop_online():
     url = f"{CLI_BASE_URL}/dstapi/DSTV1/GetSetShopStatus"
     response = requests.get(url)
     data = response.json()
@@ -291,9 +311,11 @@ const toggleShopOnline = async () => {
 
 #### Endpoint de la API:
 
-```
+```text
 GET http://localhost:7292/dstapi/DSTV1/GetDeleteDecShop
 ```
+
+Eliminar envía una transacción de eliminación de la tienda que cuesta 1 VFX más la comisión normal de la red.
 
 #### Ejemplo de código
 
@@ -331,7 +353,7 @@ def delete_network_shop():
 
 #### Endpoint de la API:
 
-```
+```text
 GET http://localhost:7292/dstapi/DSTV1/GetDeleteLocalDecShop
 ```
 
@@ -371,7 +393,7 @@ def delete_shop():
 
 #### Endpoint de la API:
 
-```
+```text
 GET http://localhost:7292/dstapi/DSTV1/GetNetworkDecShopInfo/{url}
 ```
 
@@ -416,13 +438,14 @@ def retrieve_network_shop(shop_url):
 
 #### Parámetros de la URL:
 
-`url`: URL de la tienda (p. ej., vfx://tutorial-shop)
+`url`: URL de la tienda (por ejemplo, vfx://tutorial-shop)
 
 #### Respuesta:
 
 ```json
 {
     "Success": true,
+    "Message": "Shop Found",
     "DecShop": {
         ...
     }

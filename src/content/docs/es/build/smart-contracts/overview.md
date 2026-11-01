@@ -1,5 +1,5 @@
 ---
-sourceHash: 82fdfb946ad0
+sourceHash: cf7944efbd4a
 title: "Contratos inteligentes"
 description: Integra los contratos inteligentes de VFX con aplicaciones de terceros mediante la API del CLI de Core, con notas de configuración y un índice de las operaciones.
 sidebar:
@@ -10,7 +10,7 @@ Esta sección explica cómo integrar los contratos inteligentes de VFX con aplic
 
 ## Código de ejemplo
 
-Revisa este repositorio, que incluye ejemplos completos de todas las integraciones de contratos inteligentes en node/javascript:
+Revisa este repositorio, que incluye ejemplos completos de las integraciones de contratos inteligentes en Node.js. Es anterior al cambio de marca a VerifiedX y sigue alojado en la organización heredada ReserveBlockIO:
 <a href="https://github.com/ReserveBlockIO/rbx-integration-js-examples" target="_blank">https://github.com/ReserveBlockIO/rbx-integration-js-examples</a>
 
 <p></p>
@@ -29,12 +29,12 @@ Los fragmentos de este repositorio también aparecen en las siguientes páginas,
     - `./VerifiedXCore enableapi openapi`
     - Esto te permite comunicarte con la API del CLI desde fuera de localhost
 
-3. Si planeas ejecutarlo con openapi, se recomienda definir un `apitoken` para bloquear el acceso no autenticado.
+3. Si lo ejecutas con `openapi`, también tienes que definir un `apitoken`. Sin un `apitoken` (o un `APIPassword` con `AlwaysRequireAPIPassword=true`), el nodo rechaza `openapi` y mantiene la API en localhost.
     - `./VerifiedXCore enableapi openapi apitoken=random_lowercase_string`
     - Luego, en todas las solicitudes tienes que agregar este par clave/valor a los encabezados: `{"apitoken": "random_lowercase_string"}`
     - Si no lo incluyes o el token no es correcto, la API devuelve un error 403
 
-4. Hay muchos más endpoints de la API disponibles. Visita http://localhost:7292/swagger en la máquina que ejecuta el CLI+API para revisar todo lo disponible e interactuar con ello.
+4. Hay muchos más endpoints de la API disponibles. Visita http://localhost:7292/swagger en la máquina que ejecuta el CLI+API para revisar todo lo disponible e interactuar con ello. Con `openapi`, Swagger solo responde a las solicitudes que llevan el encabezado `apitoken`.
 
 5. Verás una referencia a `CLI_BASE_URL` en todos los ejemplos. En la mayoría de los casos debe ser `http://localhost:7292`.
 

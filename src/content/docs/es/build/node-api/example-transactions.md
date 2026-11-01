@@ -1,5 +1,5 @@
 ---
-sourceHash: e2cc40b024f7
+sourceHash: f3cb70e3ffde
 title: "Transacciones de ejemplo"
 description: "Ejemplos reales de transacciones de mainnet por tipo, cada uno con su hash, su enlace de Spyglass y su payload de datos."
 sidebar:
@@ -8,13 +8,15 @@ sidebar:
 
 A continuación encontrarás ejemplos reales de transacciones de mainnet, organizados por tipo. Cada transacción incluye el payload de datos completo para simplificar las pruebas de integración. Para ver más detalles de la transacción (comisiones, altura del bloque, marcas de tiempo, etc.), usa las URL de Spyglass que se proporcionan o consulta el hash de la transacción con el Core CLI o la Web API.
 
-Para ver una lista completa de todos los tipos de transacción, visita la [documentación de creación de transacciones](/es/build/node-api/transaction-creation/).
+Para ver una lista exhaustiva de todos los tipos de transacción, visita la [documentación de creación de transacciones](/es/build/node-api/transaction-creation/).
 
 ## Básicas
 
 ### Transferencia de VFX
 
 **Hash de la transacción:** `c2d57fb7ded81ffd0b3ecb95567dd4fc0e46e71fa253d9304b03b02150070513`
+
+**Tipo:** 0 (`TX`)
 
 **URL de Spyglass:** https://spyglass.verifiedx.io/transaction/c2d57fb7ded81ffd0b3ecb95567dd4fc0e46e71fa253d9304b03b02150070513
 
@@ -28,6 +30,8 @@ null
 ### Emisión de un contrato inteligente
 
 **Hash de la transacción:** `46b0e70e963aad1f4344c811169bed8f0378541355bc48a751f4bd882342e86f`
+
+**Tipo:** 2 (`NFT_MINT`)
 
 **URL de Spyglass:** https://spyglass.verifiedx.io/transaction/46b0e70e963aad1f4344c811169bed8f0378541355bc48a751f4bd882342e86f
 
@@ -45,6 +49,8 @@ null
 
 **Hash de la transacción:** `6ebcd32f0b6bd020f8ca3cd930dcc79cd38fbfd5b7c8ea8458306f8a1964d29f`
 
+**Tipo:** 3 (`NFT_TX`)
+
 **URL de Spyglass:** https://spyglass.verifiedx.io/transaction/6ebcd32f0b6bd020f8ca3cd930dcc79cd38fbfd5b7c8ea8458306f8a1964d29f
 
 **Datos de la transacción:**
@@ -53,7 +59,7 @@ null
   "Function": "Transfer()",
   "ContractUID": "9f8b025c76aa480fa45dd3c2310f86b6:1754578265",
   "ToAddress": "RTAmbi8R11vbDQcnaqbaWNpDHcNc63pfhk",
-  "Data": "H4sIAAAAAAAAA6VW007bQBCdZ77C4qUgQsS1UCQqpVAKbUEtoUVIfTGOEwxJnNrh1pZ/75mz67WdbAsIWbbXu7MzZ85c1n2JZSyBHEkoA4wD2cY9K2189/j9UZp47ksCuRwyoQyxPiN9u3MX71wiySAxwkwiKSQKPR+s1BlmryETyCE0ZJRTTU1aSPGle8ZyQZvHeJ7j7uMy+pryA0+9dzAXYnYAuXunNcI7x/6U8yH3xdSZSIejMT2450zVVhuoQ+zX8SmeMeQD+QaZRG7wlUGvri1SbwA7uvITb53tYNyjZrWpOFKijjFSi+ccG2shmehBY0g8ufMgsAgzh089KTF+kc+yR+5SYhpY+UDmsBY7/J/tegDpPsa3Fr8ivyL6E6cxw/qlxak7EzKeEWURwz1KqaX5SgRMLF9hTTUN8aUaLm0EAlhVHREsqSe9ih8mQsZL5bFLtjqW3fuaXpWNEZuR01Lyonw3Ga+EuquZUM+vYmWLyH25ZrSq5yNm1pAZG1qUGbM7IRpdU56NJn8eGh2R01zaiREZ9fbG+TOklYLxG6dZc0+jFyFmuu8Ooz7ZTWx0B8Qb0fOBXYkY5SHZHBBxbuOYW73fGSndb6J7hXERiXqud5gXyZSGfdbkCKMuK2xUi23ZAwoLxdoRPY2YiYaVNqwmtgYK1F2yrfLvbQwv7Kyp6sjmYkYei2w8YZ4ZzbmNWNWXQ9cH9PnOxucKGVHiq+eMwZS5uo1ZtSmuDkfXYC13HcFgr+duyizSd9fpGFQqqMzCIatUc/kA4wt2kZh5VFR1k3zcVdbqPBitp4xMRKYM7mr/yDz9tNrDDytV0II/HZv3uevjx+D5k/xCBuwCRwt6N9Hb1+QrbJ7Byzvs2AE3a0B+KavyRl6DE9XSwnqIa/+fFqfPnqd05Kq2Ns8ljeCO4yZkZ/sGXned5jdAugkmlmRF1rG+AZSKbQ2zS1jT0Tr9X8XqCp7LnN+E3DnuLXxvQEKlNjC7grn1GpI9xm3MbhBX+Kuj3UEtGj+qp+VyTU/CcRvvXxVuVmFvGfZf04dZz45JNnN7ki8iLouslfIcX4SuTeTCJRjv1bS1GH0dt+CL5lH6okh12WWiytlyhLkxK08zYQ47Q/bYgJWZM4amU8575mbkN+6Add1lxyp2b1tsQ+ov5metdOD2lVdGPzViisv8sRyBzxPmuu6ec5435F9/PI3/1tG8s/pgR1qNuT0n/B70iMT4Ebp4vMyjMq6lb5OZ0/DkX+PRnJj2sI5iFpKp7cdmb0fK/84OJQJZqDGxYGdv6X/A/4VrdlzTvx68meWP4NDl7mQuNcSceDnPUN/qwMa1iOnzMnSSiRKJ8e8P6vBtxfsCiW91EslTOPDFvDvVLXx+d6e6kE8q9ObFc+t4kiUfRh8j0xh9Un6M80/i7wBMzz0T/WMn0lPsTp4lz8Uwud/Y/AuLWC1N8g0AAA==",
+  "Data": "H4sIAAAAAAAAA6VW207bQBCdZ77C4qUgQsS1UCQqpVAKbUEtoUVIfTGOEwxJnNrh1pZ/75mz67WdbAsIWbbXu7MzZ85c1n2JZSyBHEkoA4wD2cY9K2189/j9UZp47ksCuRwyoQyxPiN9u3MX71wiySAxwkwiKSQKPR+s1BlmryETyCE0ZJRTTU1aSPGle8ZyQZvHeJ7j7uMy+pryA0+9dzAXYnYAuXunNcI7x/6U8yH3xdSZSIejMT2450zVVhuoQ+zX8SmeMeQD+QaZRG7wlUGvri1SbwA7uvITb53tYNyjZrWpOFKijjFSi+ccG2shmehBY0g8ufMgsAgzh089KTF+kc+yR+5SYhpY+UDmsBY7/J/tegDpPsa3Fr8ivyL6E6cxw/qlxak7EzKeEWURwz1KqaX5SgRMLF9hTTUN8aUaLm0EAlhVHREsqSe9ih8mQsZL5bFLtjqW3fuaXpWNEZuR01Lyonw3Ga+EuquZUM+vYmWLyH25ZrSq5yNm1pAZG1qUGbM7IRpdU56NJn8eGh2R01zaiREZ9fbG+TOklYLxG6dZc0+jFyFmuu8Ooz7ZTWx0B8Qb0fOBXYkY5SHZHBBxbuOYW73fGSndb6J7hXERiXqud5gXyZSGfdbkCKMuK2xUi23ZAwoLxdoRPY2YiYaVNqwmtgYK1F2yrfLvbQwv7Kyp6sjmYkYei2w8YZ4ZzbmNWNWXQ9cH9PnOxucKGVHiq+eMwZS5uo1ZtSmuDkfXYC13HcFgr+duyizSd9fpGFQqqMzCIatUc/kA4wt2kZh5VFR1k3zcVdbqPBitp4xMRKYM7mr/yDz9tNrDDytV0II/HZv3uevjx+D5k/xCBuwCRwt6N9Hb1+QrbJ7Byzvs2AE3a0B+KavyRl6DE9XSwnqIa/+fFqfPnqd05Kq2Ns8ljeCO4yZkZ/sGXned5jdAugkmlmRF1rG+AZSKbQ2zS1jT0Tr9X8XqCp7LnN+E3DnuLXxvQEKlNjC7grn1GpI9xm3MbhBX+Kuj3UEtGj+qp+VyTU/CcRvvXxVuVmFvGfZf04dZz45JNnN7ki8iLouslfIcX4SuTeTCJRjv1bS1GH0dt+CL5lH6okh12WWiytlyhLkxK08zYQ47Q/bYgJWZM4amU8575mbkN+6Add1lxyp2b1tsQ+ov5metdOD2lVdGPzViisv8sRyBzxPmuu6ec5435F9/PI3/1tG8s/pgR1qNuT0n/B70iMT4Ebp4vMyjMq6lb5OZ0/DkX+PRnJj2sI5iFpKp7cdmb0fK/84OJQJZqDGxYGdv6X/A/4VrdlzTvx68meWP4NDl7mQuNcSceDnPUN/qwMa1iOnzMnSSiRKJ8e8P6vBtxfsCiW91EslTOPDFvDvVLXx+d6e6kE8q9ObFc+t4kiUfRh8j0xh9Un6M80/i7wBMzz0T/WMn0lPsTp4lz8Uwud/Y/AuLWC1N8g0AAA==",
   "Locators": "eyJJUEFkZHJlc3MiOiIxNDQuMTI2LjE1Ni4xNzYiLCJQb3J0IjoyMzMzOSwiTmFtZSI6Ildpc3RlcmlhIEJlYWNvbiBWMiIsIkJlYWNvblVJRCI6Ildpc3RlcmlhQmVhY29uVjIifQ==",
   "MD5List": "sage-j-hitsman-18.jpg::6087a76e47bda60bf33eb4005429ddfa"
 }]
@@ -62,6 +68,8 @@ null
 ### Quema de un contrato inteligente
 
 **Hash de la transacción:** `3d674fa4054c56583e6e68d111233771214d7affd350b47b05d7c23aa5b1f694`
+
+**Tipo:** 4 (`NFT_BURN`)
 
 **URL de Spyglass:** https://spyglass.verifiedx.io/transaction/3d674fa4054c56583e6e68d111233771214d7affd350b47b05d7c23aa5b1f694
 
@@ -79,9 +87,11 @@ null
 
 ## Dominios
 
-### Compra de un dominio
+### Compra de un dominio BTC (`.btc`)
 
 **Hash de la transacción:** `4577381c227eba9baf18670118b6b810856fdb9def8c4026a1628a6852eabac9`
+
+**Tipo:** 6 (`ADNR`)
 
 **URL de Spyglass:** https://spyglass.verifiedx.io/transaction/4577381c227eba9baf18670118b6b810856fdb9def8c4026a1628a6852eabac9
 
@@ -96,9 +106,15 @@ null
 }
 ```
 
+:::note
+Este nombre se creó antes de Core 9.0.1, cuando `Message` era solo una marca de tiempo. Desde el bloque 7,575,250 (testnet 7,400), el mensaje firmado es `<unix seconds>:<VFX owner>:<name>.btc`; consulta las [reglas del libro mayor de Core 9.0.1](/es/build/node-api/transaction-creation/#reglas-del-libro-mayor-de-core-901).
+:::
+
 ### Creación de una tienda
 
 **Hash de la transacción:** `474035236ed106930f14d9ffb0b7cc8cc5d17b9e86debad7c8105a2faa592cbd`
+
+**Tipo:** 7 (`DSTR`)
 
 **URL de Spyglass:** https://spyglass.verifiedx.io/transaction/474035236ed106930f14d9ffb0b7cc8cc5d17b9e86debad7c8105a2faa592cbd
 
@@ -140,6 +156,8 @@ null
 
 **Hash de la transacción:** `558b39d79df72033ce67344a3051f1a21a304b1450cecfcc552ffdc66848adc3`
 
+**Tipo:** 5 (`NFT_SALE`)
+
 **URL de Spyglass:** https://spyglass.verifiedx.io/transaction/558b39d79df72033ce67344a3051f1a21a304b1450cecfcc552ffdc66848adc3
 
 **Datos de la transacción:**
@@ -176,6 +194,8 @@ null
 
 **Hash de la transacción:** `2673d456a12827f9ee7b37b93ca22ee87c943385281ad1ea98aa8d063ccb0013`
 
+**Tipo:** 10 (`RESERVE`)
+
 **URL de Spyglass:** https://spyglass.verifiedx.io/transaction/2673d456a12827f9ee7b37b93ca22ee87c943385281ad1ea98aa8d063ccb0013
 
 **Datos de la transacción:**
@@ -192,6 +212,8 @@ null
 ### Despliegue de un token fungible
 
 **Hash de la transacción:** `fea007bd641a77189f7d7eaab66f26f4d3a1f3c5b9a2cc3a17924f6cb260d841`
+
+**Tipo:** 17 (`TKNZ_MINT`; los despliegues de tokens fungibles usan este tipo)
 
 **URL de Spyglass:** https://spyglass.verifiedx.io/transaction/fea007bd641a77189f7d7eaab66f26f4d3a1f3c5b9a2cc3a17924f6cb260d841
 
@@ -210,6 +232,8 @@ null
 ### Transferencia de un token fungible
 
 **Hash de la transacción:** `33e67878f96ed012ad3485a25240511ee938ec25c8d4b953729665890c15b1a8`
+
+**Tipo:** 15 (`FTKN_TX`)
 
 **URL de Spyglass:** https://spyglass.verifiedx.io/transaction/33e67878f96ed012ad3485a25240511ee938ec25c8d4b953729665890c15b1a8
 
@@ -230,6 +254,8 @@ null
 
 **Hash de la transacción:** `b30ad8d63651edd823cd1d21e7ee0a202cc6a4bc017f125ba69d05e77ae42378`
 
+**Tipo:** 16 (`FTKN_BURN`)
+
 **URL de Spyglass:** https://spyglass.verifiedx.io/transaction/b30ad8d63651edd823cd1d21e7ee0a202cc6a4bc017f125ba69d05e77ae42378
 
 **Datos de la transacción:**
@@ -246,83 +272,93 @@ null
 
 ## VBTC
 
-Estas son transacciones de vBTC V1 (tipos 17 a 21), minadas antes de que vBTC V1 se retirara en el bloque 7,400,500. La red ya no las acepta; se conservan para ayudar a decodificar el historial.
+Estas son transacciones de vBTC V2 en mainnet desde una bóveda vigilada (watched vault) (Core 9.0).
 
-### Despliegue de VBTC
+### Creación de un contrato vBTC V2
 
-**Hash de la transacción:** `e6a91c9ff6267bc63b449c34a10e4c75230187597efd0bcc489331f682f9f574`
+**Hash de la transacción:** `ede9ff7c1a45974e3cae32faafaa4fa8163e0bcb3abe884a1b76e82047a2bcaf`
 
-**URL de Spyglass:** https://spyglass.verifiedx.io/transaction/e6a91c9ff6267bc63b449c34a10e4c75230187597efd0bcc489331f682f9f574
+**Tipo:** 25 (`VBTC_V2_CONTRACT_CREATE`)
 
-**Datos de la transacción:**
+**URL de Spyglass:** https://spyglass.verifiedx.io/transaction/ede9ff7c1a45974e3cae32faafaa4fa8163e0bcb3abe884a1b76e82047a2bcaf
+
+**Datos de la transacción** (el contrato comprimido en `Data` aparece acortado aquí; tiene 121,746 caracteres):
 ```json
 [
   {
     "Function": "Mint()",
-    "ContractUID": "320c5271fc04465cb24c4f1cd48affd4:1736625395",
-    "Data": "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",
+    "ContractUID": "438b3416cb6849fc91ac436bd87362c1:1793428067",
+    "Data": "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…",
     "MD5List": "defaultvBTC.png::150b90aa9d06f7e4fc5703ca6d7f01db"
   }
 ]
 ```
 
+### Transferencia de vBTC V2
 
-### Transferencia de VBTC
+**Hash de la transacción:** `42ae512e722389757f06a093c5c0fddb7081ecc96e8ce4228c66dd1259ac49b3`
 
-**Hash de la transacción:** `9ac768584dd74ff251670f3b1edbf255a57489cf9ef7b345cd7cbf9e85db293c`
+**Tipo:** 26 (`VBTC_V2_TRANSFER`)
 
-**URL de Spyglass:** https://spyglass.verifiedx.io/transaction/9ac768584dd74ff251670f3b1edbf255a57489cf9ef7b345cd7cbf9e85db293c
-
-**Datos de la transacción:**
-```json
-[
-  {
-    "Function": "Transfer()",
-    "ContractUID": "d7c08f7bab2941ca95dddd59b63e0f2f:1736961214",
-    "ToAddress": "xRBXapXc1PGevze59V7Wc4Gb5pK32ShvT9",
-    "Data": "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",
-    "Locators": "eyJJUEFkZHJlc3MiOiI2Ni43Ni4yNS4xNSIsIlBvcnQiOjIzMzM5LCJOYW1lIjoiQmFjb24iLCJCZWFjb25VSUQiOiJiZmJmOGQ4ZTE5NToxNzQ5NzY4NDEwIn0=",
-    "MD5List": "defaultvBTC.png::150b90aa9d06f7e4fc5703ca6d7f01db"
-  }
-]
-```
-
-### Transferencia múltiple de VBTC
-
-**Hash de la transacción:** `2e635d5430d610b128b8ca99c81f032c3aa88f2915261827a0c41d5a6543814c`
-
-**URL de Spyglass:** https://spyglass.verifiedx.io/transaction/2e635d5430d610b128b8ca99c81f032c3aa88f2915261827a0c41d5a6543814c
+**URL de Spyglass:** https://spyglass.verifiedx.io/transaction/42ae512e722389757f06a093c5c0fddb7081ecc96e8ce4228c66dd1259ac49b3
 
 **Datos de la transacción:**
 ```json
 {
-  "Function": "TransferCoinMulti()",
-  "Inputs": [
-    {
-      "SCUID": "d7c08f7bab2941ca95dddd59b63e0f2f:1736961214",
-      "FromAddress": "RJSVaUXjkTysZSVVaRZmkXUwVbNDenavs2",
-      "Amount": 0.00000001,
-      "Signature": "MEQCIL+vV88N7Thwj1fQb1sI5R23v1oi/VHcJoA9IyaRzh7nAiAmFifvFByKLPD6z0G7IdkZcMOUdUvamUkdzhvw3DLPdQ==.2DQVUCUe8B8HgfrcWmJRvKaM1NhyhhretxfGL7h1jK7zDvnVvBA2teAXf4GKRR1VGeYeoAwtmRqvJmpQ9eRcU4T9"
-    }
-  ],
-  "Amount": 0.00000001,
-  "SignatureInput": "hbkKy7z2Xwjn"
+  "Function": "TransferVBTCV2()",
+  "ContractUID": "9344ffaded944166b2992957f133c8df:1793028387",
+  "FromAddress": "RU3XgUWc8M9vCVFzAw1ae9hjzYhgFmbGnj",
+  "ToAddress": "RVDy2D9aCxUXujgE1oxZgJMEqzwnkAt8SF",
+  "Amount": 0.00001248
 }
 ```
 
+### Solicitud de retiro de vBTC V2
 
-### Retiro de VBTC completado
+**Hash de la transacción:** `9a644175629c5c7cd4f95a6626d6f7392b65dcfa03d45eeaa64d03510739113f`
 
-**Hash de la transacción:** `0316516d0739239c01b613b8b5df2010ba4637fbc2e6f17d6702e6fc732bf7e2`
+**Tipo:** 27 (`VBTC_V2_WITHDRAWAL_REQUEST`)
 
-**URL de Spyglass:** https://spyglass.verifiedx.io/transaction/0316516d0739239c01b613b8b5df2010ba4637fbc2e6f17d6702e6fc732bf7e2
+**URL de Spyglass:** https://spyglass.verifiedx.io/transaction/9a644175629c5c7cd4f95a6626d6f7392b65dcfa03d45eeaa64d03510739113f
 
 **Datos de la transacción:**
 ```json
 {
-  "Function": "TokenizedWithdrawalComplete()",
-  "ContractUID": "aa314a95ce474cffa8448b0af1efabbd:1736752601",
-  "UniqueId": "QiSqdTuVUasVgjKd",
-  "TransactionHash": "a8c2a9e55d0b85f435afd994783c6d387cf678115f094f69a416435f686304c4"
+  "Function": "VBTCWithdrawalRequest()",
+  "ContractUID": "9344ffaded944166b2992957f133c8df:1793028387",
+  "RequestorAddress": "RVDy2D9aCxUXujgE1oxZgJMEqzwnkAt8SF",
+  "BTCAddress": "bc1pqjh96q5dqvjysmxqcjrqxmz5n7ukr6nsu3yljz788x5luygmvmgsdlluyd",
+  "Amount": 0.00027636,
+  "FeeRate": 20,
+  "UniqueId": null
+}
+```
+
+### Reporte de Bitcoin de vBTC V2 (retiro completado)
+
+En una bóveda vigilada, el retiro anterior se completa cuando los validadores (validators) reportan el bloque de Bitcoin que contiene su transacción de Bitcoin. Ese reporte es una transacción de tipo 43 sin remitente (`From` y `To` son `BTC_Attestation`); los clientes solo la leen.
+
+**Hash de la transacción:** `170d6dac76c72d153dcafaa66742297880d753fc61ac06db944fc103a270c182`
+
+**Tipo:** 43 (`VBTC_V2_BTC_REPORT`)
+
+**URL de Spyglass:** https://spyglass.verifiedx.io/transaction/170d6dac76c72d153dcafaa66742297880d753fc61ac06db944fc103a270c182
+
+**Datos de la transacción** (campos de nivel superior; los arreglos y las cadenas largas aparecen acortados aquí):
+```json
+{
+  "V": 1,
+  "Scope": "all",
+  "BlockHeight": 973263,
+  "ReplaceAbove": 0,
+  "Headers": ["00c00520461a90a33c2157565f9745ffa3c1943d331eaa28b91001000000000000000000f3b3703a22504c11f9e2ebae82b467a8942f2c344f609d9f608860a31865212d2a86df6a9300021744b1f72d", "…"],
+  "CoinbaseTxHex": "…",
+  "CoinbaseBranch": ["…"],
+  "Events": ["…"],
+  "Part": 1,
+  "Final": true,
+  "SignerEpoch": 29,
+  "Signatures": ["…"],
+  "BlockHash": "00000000000000000000012368a0228acdad7797e27d4beac544842c7ad4b830"
 }
 ```
