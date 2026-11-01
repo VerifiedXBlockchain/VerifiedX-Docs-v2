@@ -5,7 +5,7 @@ sidebar:
   order: 2
 ---
 
-This document provides comprehensive documentation for all API endpoints in the VFX Core Kestrel API with Swagger integration.
+This document provides comprehensive documentation for all API endpoints in the VFX Core Kestrel API with Swagger integration. The API listens on port 7292 on mainnet and 17292 on testnet; see [Authentication](/build/node-api/overview/#authentication) for the `apitoken` header, the API password and the locked-wallet rule. Routes are case-insensitive. Sections end with one-line entries for the remaining routes of each controller.
 
 ## Table of Contents
 
@@ -25,6 +25,8 @@ This document provides comprehensive documentation for all API endpoints in the 
 14. [Integrations API](#14-integrations-api) - `/iapi/IntegrationsV1`
 15. [vBTC V2 API (9.0 additions)](#15-vbtc-v2-api-90-additions) - `/vbtcapi/VBTC`
 16. [Privacy API: raw shielded VFX (9.0 additions)](#16-privacy-api-raw-shielded-vfx-90-additions) - `/privacyapi/PrivacyV1`
+17. [Explorer API](#17-explorer-api) - `/explorer`
+18. [Browser Wallet API](#18-browser-wallet-api) - `/wallet`
 
 ## 1. Main API (V1)
 **Base Routes:** `api/V1`, `api/V1/{somePassword?}`  
@@ -89,10 +91,10 @@ This document provides comprehensive documentation for all API endpoints in the 
 - `id` (string, path) - Wallet address  
 **Returns:** Address details including balance and validation status
 
-#### GET `/GetChainBalance/{rbxAddress}`
+#### GET `/GetChainBalance/{vfxAddress}`
 **Summary:** Get balance from blockchain state  
 **Parameters:**
-- `rbxAddress` (string, path) - VFX address  
+- `vfxAddress` (string, path) - VFX address  
 **Returns:** Current balance from chain state
 
 #### GET `/ImportPrivateKey/{id}/{scan?}`
@@ -136,7 +138,7 @@ This document provides comprehensive documentation for all API endpoints in the 
 - `taddr` (string, path) - To address  
 - `amt` (decimal, path) - Amount  
 **Returns:** Transaction result
-**Note:** Deprecated - use V2 API methods
+**Note:** Deprecated - use the [Transactions API](#6-transactions-api) (`txapi/TXV1`)
 
 ### Utility Endpoints
 
@@ -169,11 +171,15 @@ This document provides comprehensive documentation for all API endpoints in the 
 
 #### GET `/GetBlockByHeight`
 **Summary:** Get block by height number  
-**Returns:** Block information
+**Parameters:**
+- `height` (long, query) - Block height, for example `GetBlockByHeight?height=100`  
+**Returns:** Block information, or an empty body when the block is not found
 
 #### GET `/GetBlockByHash`
 **Summary:** Get block by hash  
-**Returns:** Block information
+**Parameters:**
+- `hash` (string, query) - Block hash, for example `GetBlockByHash?hash=<hash>`  
+**Returns:** Block information, or an empty body when the block is not found
 
 ### Network Endpoints
 
@@ -191,7 +197,53 @@ This document provides comprehensive documentation for all API endpoints in the 
 **Summary:** Check if address is blacklisted  
 **Parameters:**
 - `addr` (string, path) - Address to check  
-**Returns:** Blacklist status
+**Returns:** Blacklist status (`True` or `False`)
+
+### Other V1 endpoints
+
+- `GET /processabl`: reprocesses the anti-blacklist.
+- `GET /GetIsWalletEncrypted`: whether the wallet is encrypted.
+- `GET /GetIsEncryptedPasswordStored`: whether the encryption password has been entered this session.
+- `GET /GetEncryptedPassword/{**password}`: enters the wallet encryption password so encrypted-wallet actions can run.
+- `GET /GetEncryptWallet/{password}`: encrypts the wallet with a password. This cannot be undone.
+- `GET /GetEncryptLock`: erases the encryption password from memory.
+- `GET /GetDecryptWallet/{**password}`: decrypts the wallet so its functions work.
+- `GET /CheckStatus`: simple status check (`Online`); answers without the API token.
+- `GET /Health`: trimmed node health for scripts and orchestration.
+- `GET /GetHDWallet/{strength}`: converts the wallet to an HD wallet with a 12 or 24 word phrase.
+- `GET /GetRestoreHDWallet/{mnemonic}`: restores an HD wallet from its phrase.
+- `GET /GetLatestRelease/{runUpdate}/{**fileName}`: downloads the latest CLI release and installs it if `runUpdate` is true.
+- `GET /GetLatestReleaseFiles`: lists the files of the latest CLI release.
+- `GET /NetworkMetrics`: block timing metrics; answers without the API token.
+- `GET /GetValidatorInfo/{id}`: the validator's unique name for an address.
+- `GET /GetPrivateKey/{address}`: exports the private key of one local address (the operator's backup path).
+- `GET /RescanForTx/{walletAddr}`: rescans the chain for an address's transactions.
+- `GET /SyncBalances`: resyncs local account balances; answers without the API token.
+- `GET /SendBlock/{id}`: returns the block at a height.
+- `GET /GetLastBlock`: the last block stored by the node.
+- `GET /GetRollbackBlocks/{id}`: deprecated; do not use.
+- `GET /GetAllTransactions`: deprecated; use the Transactions API.
+- `GET /ChangeValidatorName/{uname}`: changes the validator name (restart required).
+- `GET /ResetValidator`: resets the validator setup.
+- `GET /CreateSignatureFromPrivateKey/{privKey}/{**message}`: signs a message with a supplied private key.
+- `GET /GetMemBlockCluster`: dumps the in-memory block cluster (can be very large).
+- `GET /GetMasternodes`: the full validator (Fortis) pool.
+- `GET /GetMasternodesSent`: the validator list this node sends.
+- `GET /GetBeaconPool`: the beacon pool.
+- `GET /GetValidatorPoolInfo`: validator pool information.
+- `POST /StartMother`, `GET /StopMother`, `GET /GetMother`, `POST /JoinMother`, `GET /GetMotherURL`, `GET /MothersKids`, `GET /Mother`: the Mother dashboard, which monitors a group of validators.
+- `GET /GetPeerInfo`: connected peers.
+- `GET /ListActiveVals`: validators active in the past 30 days.
+- `GET /ListBannedPeers`, `GET /BanPeer/{**ipAddress}`, `GET /UnbanPeer/{**ipAddress}`, `GET /UnbanAllPeers/{unbanPerma?}`: peer bans.
+- `GET /GetDebugInfo`, `GET /Debug`: debug dumps of the node's settings and state.
+- `GET /GetConnectionHistory`: connection history.
+- `GET /GetClientInfo`: client information.
+- `GET /GetCLIVersion`: the CLI version, for example `9.0.1.1757-beta`; answers without the API token.
+- `GET /ReadRBXLog`, `GET /ClearRBXLog`: read or clear the node log.
+- `GET /ReadValLog`, `GET /ClearValLog`: read or clear the validator log.
+- `GET /SendExit`: stops the node.
+- `GET /SetRestartAndExit`: stops the node and flags it to restart.
+- `GET /SendExitComplete`: reports whether the exit finished.
 
 ## 2. Main API (V2)
 **Base Routes:** `api/V2`, `api/V2/{somePassword?}`  
@@ -415,52 +467,16 @@ From the BTC-name signer height (`BtcNameSignerOwnsAddressHeight`: block 7,575,2
 - `btcFromAddress` (string, path) - Bitcoin address  
 **Returns:** Deletion result
 
-### vBTC (Tokenized Bitcoin)
+### vBTC
 
-:::caution[V1 vBTC is retired]
-These are the V1 vBTC routes. V1 was retired at block 7,400,500 on mainnet (block 1 on the testnet since its October 2026 restart): the network accepts no new V1 token, transfer or withdrawal, and V1 balances are frozen. vBTC V2 is under [`vbtcapi/VBTC`](#15-vbtc-v2-api-90-additions); see [vBTC](/build/vbtc/integration/).
-:::
-
-#### POST `/TokenizeBitcoin`
-**Summary:** Create vBTC tokens from Bitcoin  
-**Request Body:** Tokenization parameters  
-**Returns:** Tokenization result
-
-#### GET `/GetTokenizationDetails/{vfxAddress}`
-**Summary:** Get tokenization details for address  
-**Parameters:**
-- `vfxAddress` (string, path) - VFX address  
-**Returns:** Tokenization information
-
-#### GET `/GetvBTCBalance/{address}/{scUID}`
-**Summary:** Get vBTC balance for specific smart contract  
-**Parameters:**
-- `address` (string, path) - VFX address  
-- `scUID` (string, path) - Smart contract UID  
-**Returns:** vBTC balance
-
-#### GET `/GetAllvBTCBalances/{address}`
-**Summary:** Get all vBTC balances for address  
-**Parameters:**
-- `address` (string, path) - VFX address  
-**Returns:** All vBTC balances
-
-#### POST `/TransferCoin`
-**Summary:** Transfer vBTC to VFX network  
-**Request Body:** Transfer parameters  
-**Returns:** Transfer result
-
-#### POST `/WithdrawalCoin`
-**Summary:** Withdraw vBTC back to Bitcoin  
-**Request Body:** Withdrawal parameters  
-**Returns:** Withdrawal result
+vBTC routes are in the [vBTC V2 API](#15-vbtc-v2-api-90-additions) (`vbtcapi/VBTC`).
 
 ### Broadcasting
 
 #### GET `/Broadcast/{txHash}`
 **Summary:** Broadcast Bitcoin transaction  
 **Parameters:**
-- `txHash` (string, path) - Transaction hash  
+- `txHash` (string, path) - The signed raw transaction hex (despite the name, not a hash)  
 **Returns:** Broadcast result
 
 #### GET `/Rebroadcast/{txid}`
@@ -468,6 +484,14 @@ These are the V1 vBTC routes. V1 was retired at block 7,400,500 on mainnet (bloc
 **Parameters:**
 - `txid` (string, path) - Transaction ID  
 **Returns:** Rebroadcast result
+
+### Other Bitcoin endpoints
+
+- `GET /GetBitcoinTXList/{includeTokens?}`: the wallet's Bitcoin transactions.
+- `GET /GetLastAccounySync`: when the Bitcoin accounts last synced (the route name is spelled this way).
+- `GET /GetElectrumXState`: the node's Electrum server connection state.
+- `GET /ReplaceByFee/{txid}/{feeRate}/{allowHighFee?}`: replaces an unconfirmed Bitcoin transaction at a higher fee rate (sat/vB).
+- `GET /SyncStatus`: whether the Bitcoin accounts are syncing.
 
 ## 4. Smart Contracts API
 **Base Routes:** `scapi/SCV1`, `scapi/SCV1/{somePassword?}`  
@@ -500,13 +524,13 @@ These are the V1 vBTC routes. V1 was retired at block 7,400,500 on mainnet (bloc
 ### Smart Contract Queries
 
 #### GET `/GetCurrentSCOwner/{scUID}`
-**Summary:** Get current smart contract owner  
+**Summary:** Get current smart contract owner (deprecated)  
 **Parameters:**
 - `scUID` (string, path) - Smart contract unique identifier  
 **Returns:** Current owner address
 
 #### GET `/GetAllSmartContracts/{pageNumber}`
-**Summary:** Get paginated list of all smart contracts  
+**Summary:** Get paginated list of the smart contracts in this wallet  
 **Parameters:**
 - `pageNumber` (int, path) - Page number for pagination  
 **Returns:** Paginated smart contract list
@@ -516,7 +540,8 @@ These are the V1 vBTC routes. V1 was retired at block 7,400,500 on mainnet (bloc
 **Parameters:**
 - `pageNumber` (int, path) - Page number  
 - `search` (string, path, catch-all) - Search terms  
-**Returns:** Filtered smart contract list
+**Returns:** Filtered smart contract list  
+**Note:** This two-segment form collides with the `{excludeToken?}` route below, so the node reads the search text as `excludeToken` and answers `400`. To search, use `GetAllSmartContracts/{pageNumber}/false/false/{search}`.
 
 #### GET `/GetAllSmartContracts/{pageNumber}/{excludeToken?}`
 **Summary:** Get smart contracts excluding tokens  
@@ -595,6 +620,27 @@ These are the V1 vBTC routes. V1 was retired at block 7,400,500 on mainnet (bloc
 - `backupURL` (string, path, catch-all) - Backup URL  
 **Returns:** Sale transfer result
 
+### Other smart contract endpoints
+
+- `POST /CreateSmartContract`: compiles a smart contract (SEN) for minting. See [Compiling and minting](/build/smart-contracts/compiling-and-minting/).
+- `GET /MintSmartContract/{id}`: mints a contract made with `CreateSmartContract`.
+- `GET /Burn/{id}`: burns an NFT.
+- `GET /Evolve/{id}/{toAddress}`, `GET /Devolve/{id}/{toAddress}`, `GET /EvolveSpecific/{id}/{toAddress}/{evolveState}`: evolve, devolve or set the evolve state of an NFT with the Evolving feature.
+- `GET /CompleteTransferSale/{keySign}/{**scUID}`: completes an NFT purchase.
+- `GET /CancelSale/{scUID}`: cancels a sale.
+- `GET /ProveOwnership/{scUID}`, `GET /ProveOwnership/{scUID}/{password?}`: creates an ownership script (reserve accounts take the password).
+- `GET /VerifyOwnership/{**ownershipScript}`: verifies an ownership script.
+- `GET /GetSmartContractsByAddress/{address}`: the contract UIDs an address owns.
+- `GET /GetSmartContractsState/{**scUID}`: a contract's on-chain state.
+- `GET /GetSmartContractData/{id}`: the contract data rebuilt from on-chain information.
+- `GET /GetLastKnownLocators/{scUID}`: the beacon locators for a contract's assets.
+- `GET /AssociateNFTAsset/{scUID}/{**assetPath}`: re-associates a lost asset file with an NFT (the MD5 must match).
+- `GET /AddNFTDataFromNetwork/{scUID}`: adds an NFT you own from the network to this wallet.
+- `GET /ChangeNFTPublicState/{id}`: makes an NFT public for a Decentralized Shop.
+- `GET /CallMediaFromBeacon/{scUID}`: fetches an NFT's media from its beacon.
+- `GET /CreateThumbnails/{scUID}`: creates thumbnails for known image types.
+- `GET /GetNFTAssetLocation/{scUID}/{**fileName}`: the local path of an NFT asset.
+
 ## 5. Tokens API V2
 **Base Routes:** `tkapi/TKV2`, `tkapi/TKV2/{somePassword?}`  
 **Controller:** TKV2Controller  
@@ -670,6 +716,14 @@ These are the V1 vBTC routes. V1 was retired at block 7,400,500 on mainnet (bloc
 - `toAddress` (string, path) - New owner  
 **Returns:** Ownership transfer result
 
+### Other token endpoints
+
+See [Fungible Tokens](/build/node-api/fungible-tokens/) for parameters.
+
+- `POST /CreateTokenTopic`: creates a token holders' vote topic.
+- `GET /CastTokenTopicVote/{scUID}/{fromAddress}/{topicUID}/{voteType}`: votes on a token topic (`1` yes, `0` no).
+- `GET /GetVoteBySmartContractUID/{scUID}`, `GET /GetVoteByTopic/{topicUID}`, `GET /GetVotesByAddress/{fromAddress}`, `GET /GetTokenOwnerVoteList/{tUID}`: token vote reads.
+
 ## 6. Transactions API
 **Base Routes:** `txapi/TXV1`, `txapi/TXV1/{somePassword?}`  
 **Controller:** TXV1Controller  
@@ -693,6 +747,31 @@ These are the V1 vBTC routes. V1 was retired at block 7,400,500 on mainnet (bloc
 #### GET `/GetMinedLocalTX`
 **Summary:** Get mined reward transactions  
 **Returns:** Mining reward transaction list
+
+### Other transaction endpoints
+
+The raw transaction flow (`GetAddressNonce`, `GetRawTxFee`, `GetTxHash`, `VerifyRawTransaction`, `SendRawTransaction`) is walked through on [Transaction creation](/build/node-api/transaction-creation/).
+
+- `GET /GetAllLocalTX`, `GET /GetPendingLocalTX`, `GET /GetFailedLocalTX`: the wallet's transactions, all, pending or failed.
+- `GET /GetLocalTxByHash/{hash}`, `GET /GetLocalTxByBlock/{height}`: one local transaction by hash, or those in a block.
+- `GET /GetLocalTxBeforeBlock/{height}`, `GET /GetLocalTxAfterBlock/{height}`, `GET /GetLocalTxBeforeTimestamp/{timestamp}`, `GET /GetLocalTxAfterTimestamp/{timestamp}`: local transactions before or after a height or time.
+- `GET /GetLocalTxByAddress/{address}`, `GET /GetLocalTxByAddressLimit/{address}/{limit?}`, `GET /GetLocalTxPaginated/{page}/{amountPerPage}/{address?}`: local transactions for an address, limited or paged.
+- `GET /GetLocalADNRTX`: the wallet's ADNR transactions.
+- `GET /GetAddressNonce/{address}`: the next nonce for an address.
+- `GET /GetNetworkTXByHash/{txHash}/{startAtBlock?}/{startAtBeginning?}`: searches the whole chain for a transaction (parallel, heavy); `GetNetworkTXByHashSafe` is the slower single-threaded version.
+- `POST /GetNFTMintData` (deprecated), `POST /GetSCMintDeployData`: build mint transaction data for an external signer.
+- `GET /CreateBeaconUploadRequest/{scUID}/{toAddress}/{**signature}`: builds a beacon upload request.
+- `GET /GetNFTTransferData/{scUID}/{toAddress}/{**locator}`, `GET /GetNFTEvolveData/{scUID}/{toAddress}/{evoState}`, `GET /GetNFTBurnData/{scUID}/{fromAddress}`: build NFT transfer, evolve or burn data for an external signer.
+- `POST /GetRawTxFee`: the fee for a raw transaction.
+- `POST /GetTxHash`: the hash of a raw transaction.
+- `GET /ValidateSignature/{message}/{address}/{**sigScript}`: checks a signature.
+- `POST /VerifyRawTransaction`: verifies a signed raw transaction without broadcasting it.
+- `POST /SendRawTransaction`: verifies and broadcasts a signed raw transaction.
+- `GET /TestMempool`, `POST /TestRawTransaction`: test helpers (mempool dump; echo of a posted transaction).
+- `GET /CreateAdnr/{address}/{name}`, `GET /TransferAdnr/{fromAddress}/{toAddress}`, `GET /DeleteAdnr/{address}`: `.vfx` name create, transfer and delete; each sends 5 VFX. See [VFX Domain Services](/learn/domains/).
+- `GET /GetFortisBroadcastTx`: the validator pool broadcast list.
+- `GET /ReplaceTransactionByFee/{txHash}/{newFee}`: replaces a pending transaction with a higher fee.
+- `GET /SendTransaction/{faddr}/{taddr}/{amt}`: sends VFX from an account held by this wallet.
 
 ## 7. DecShop Trading API
 **Base Routes:** `dstapi/DSTV1`, `dstapi/DSTV1/{somePassword?}`  
@@ -787,7 +866,7 @@ These are the V1 vBTC routes. V1 was retired at block 7,400,500 on mainnet (bloc
 #### GET `/GetBids/{sendReceive}`
 **Summary:** Get bid information  
 **Parameters:**
-- `sendReceive` (string, path) - Filter: "sent" or "received"  
+- `sendReceive` (enum, path) - Filter: `Sent` (`0`) or `Received` (`1`)  
 **Returns:** Bid list based on filter
 
 ### Purchase Completion
@@ -798,6 +877,33 @@ These are the V1 vBTC routes. V1 was retired at block 7,400,500 on mainnet (bloc
 - `keySign` (string, path) - Transaction signature  
 - `scUID` (string, path, catch-all) - Smart contract UID  
 **Returns:** Purchase completion result
+
+### Other DecShop endpoints
+
+- `GET /GetDefaultCollection`, `GET /GetDefaultCollectionChange/{collectionId}`: read or change the default collection.
+- `GET /GetNFTAssets/{scUID}`: caches an NFT's assets for the shop.
+- `GET /CancelListing/{listingId}`: cancels a listing.
+- `GET /DeleteListing/{listingId}`: deletes a listing and its records.
+- `GET /GetAuctionByListing/{listingId}`, `GET /GetResetAuction/{listingId}`: an auction's state, or reset its ended state.
+- `GET /GetDecShop`: this node's shop.
+- `POST /SaveDecShop`: saves this node's shop.
+- `GET /GetSetShopStatus`: toggles the shop online or offline.
+- `GET /GetPublishDecShop`, `GET /GetUpdateDecShop`, `GET /GetDeleteDecShop`: publish, update or delete the shop on the network (each sends a transaction).
+- `GET /GetDeleteLocalDecShop`: deletes the local shop record.
+- `GET /GetImportDecShopFromNetwork/{address}`: imports this address's shop from the network.
+- `GET /GetDecShopByURL/{**url}`, `GET /GetNetworkDecShopInfo/{**url}`: a shop's network record by its `vfx://` (or legacy `rbx://`) URL.
+- `GET /GetDecShopStateTreiList`: all shops on the network.
+- `GET /GetConnections`: the shop this node is connected to.
+- `GET /GetShopInfo`, `GET /GetShopCollections`, `GET /GetShopAuctions/{page}`, `GET /GetShopListingsByCollection/{collectionId}/{page}`, `GET /GetShopSpecificListing/{scUID}`, `GET /GetShopSpecificAuction/{listingId}`: request data from the connected shop.
+- `GET /CheckPingShop/{pingId}`, `GET /ClearPingRequest`: check or clear ping requests.
+- `GET /ResendBid/{bidId}`: resends a bid.
+- `GET /RetrySale/{listingId}`: retries a sale.
+- `GET /GetListingBids/{listingId}/{sendReceive}`, `GET /GetBidsByStatus/{bidStatus}/{sendReceive}`, `GET /GetSingleBids/{bidId}`, `GET /GetShopListingBids/{listingId}`: bid reads (the last one asks the shop).
+- `POST /SendChatMessageThirdParty`, `GET /ResendChatMessage/{messageId}/{**shopUrl}`: send or resend a buyer chat message.
+- `GET /GetDetailedChatMessages/{**shopUrl}`, `GET /GetSimpleChatMessages/{**shopUrl}`, `GET /GetSpecificChatMessages/{messageId}`, `GET /GetMostRecentChatMessages/{key}`, `GET /DeleteChatMessages/{**key}`: buyer-side chat reads and delete.
+- `POST /SendShopChatMessage`, `GET /GetSummaryChatMessages`, `GET /GetSimpleShopChatMessages`, `GET /GetDetailedShopChatMessages`, `GET /GetDetailedSpecificShopChatMessages/{vfxAddress}`, `GET /GetSimpleSpecificShopChatMessages/{vfxAddress}`: shop-side chat.
+- `GET /GetDecShopData`: the shop data held in memory.
+- `GET /Debug`, `GET /DebugData`: debug dumps.
 
 ## 8. Voting API
 **Base Routes:** `voapi/VOV1`, `voapi/VOV1/{somePassword?}`  
@@ -849,13 +955,17 @@ These are the V1 vBTC routes. V1 was retired at block 7,400,500 on mainnet (bloc
 **Summary:** Cast vote on topic  
 **Parameters:**
 - `topicUID` (string, path) - Topic identifier  
-- `voteType` (string, path) - Vote choice  
+- `voteType` (enum, path) - `1` (`Yes`) or `0` (`No`)  
 **Returns:** Vote casting result
 
 #### POST `/PostNewTopic`
 **Summary:** Create new voting topic  
 **Request Body:** Topic creation data  
 **Returns:** Topic creation result
+
+### Other voting endpoints
+
+- `GET /GetAuditTopic/{topicUID}`: audits a topic's votes (slow).
 
 ## 9. Beacon API
 **Base Routes:** `bcapi/BCV1`, `bcapi/BCV1/{somePassword?}`  
@@ -869,7 +979,7 @@ These are the V1 vBTC routes. V1 was retired at block 7,400,500 on mainnet (bloc
 - `name` (string, path) - Beacon name  
 - `isPrivate` (bool, path) - Private beacon flag  
 - `autoDelete` (bool, path) - Auto-delete when idle  
-- `fileCachePeriod` (int, path) - Cache period in minutes  
+- `fileCachePeriod` (int, path) - Cache period in days  
 - `port` (int, path) - Beacon port (0 for auto)  
 **Returns:** Beacon creation result
 
@@ -915,6 +1025,14 @@ These are the V1 vBTC routes. V1 was retired at block 7,400,500 on mainnet (bloc
 #### GET `/GetAssetQueue`
 **Summary:** Get beacon asset processing queue  
 **Returns:** Current asset queue status
+
+### Other beacon endpoints
+
+- `GET /GetBeaconInfo`: the local beacon.
+- `GET /GetAssetQuestComplete`: marks the asset queue complete.
+- `GET /GetDeleteAssetQueue/{id}`, `GET /GetDeleteAssetQueueAll`: delete one or all asset queue entries.
+- `GET /GetBeaconRequest`: current beacon requests.
+- `GET /GetDeleteBeaconRequest/{id}`, `GET /GetDeleteBeaconRequestAll`: delete one or all beacon requests.
 
 ## 10. Web Shop API
 **Base Routes:** `wsapi/WebShopV1`, `wsapi/WebShopV1/{somePassword?}`  
@@ -980,6 +1098,14 @@ These are the V1 vBTC routes. V1 was retired at block 7,400,500 on mainnet (bloc
 **Summary:** Get debug information for Web Shop API  
 **Returns:** Debug data
 
+### Other Web Shop endpoints
+
+- `GET /CheckPingShop/{pingId}`, `GET /ClearPingRequest`: check or clear ping requests.
+- `GET /GetShopListingBids/{listingId}/{address}/{**shopURL}`: a listing's bids from a shop.
+- `POST /SendBuyNowBid/{address}/{**shopURL}`: sends a buy-now bid to a shop.
+- `POST /SendChatMessageThirdParty`: sends a chat message for a third-party client.
+- `GET /ResendChatMessage/{messageId}/{address}/{**shopUrl}`: resends a chat message.
+
 ## 11. Reserve Accounts API
 **Base Routes:** `rsapi/RSV1`, `rsapi/RSV1/{somePassword?}`  
 **Controller:** RSV1Controller  
@@ -987,8 +1113,8 @@ These are the V1 vBTC routes. V1 was retired at block 7,400,500 on mainnet (bloc
 ### Reserve Account Management
 
 #### GET `/GetAllReserveAccounts`
-**Summary:** Get all reserve accounts in system  
-**Returns:** List of all reserve accounts
+**Summary:** Get all reserve accounts stored in this wallet  
+**Returns:** List of the wallet's reserve accounts
 
 #### GET `/GetReserveAccountInfo/{address}`
 **Summary:** Get specific reserve account information  
@@ -1003,6 +1129,19 @@ These are the V1 vBTC routes. V1 was retired at block 7,400,500 on mainnet (bloc
 - `address` (string, path) - Reserve account address  
 - `password` (string, path, catch-all) - Access password  
 **Returns:** NFT asset information
+
+### Other reserve account endpoints
+
+- `GET /GetReserveTransactions`, `GET /GetReserveTransactions/{address}`: the wallet's reserve transactions, optionally for one address (vBTC V2 rows carry the vBTC amount in `Data`).
+- `GET /DecodeRestoreCode/{restoreCodeBase}`: decodes a reserve account restore code.
+- `POST /NewReserveAddress`: creates a reserve address.
+- `POST /RestoreReserveAddress`: restores a reserve address with its recovery information.
+- `GET /PublishReserveAccount/{address}/{**password}`: registers the reserve account on chain (4 VFX).
+- `POST /SendReserveTransaction`: sends VFX from a reserve account (delayed).
+- `POST /ReserveTransferNFT`: sends an NFT from a reserve account (delayed).
+- `GET /CallBackReserveAccountTx/{hash}/{**password}`: calls back a pending reserve transaction.
+- `GET /RecoverReserveAccountTx/{recoveryPhrase}/{address}/{**password}`: moves everything in a reserve account to its recovery address.
+- `GET /UnlockReserveAccount/{address}/{unlockTime}/{**password}`: unlocks a reserve account for a time.
 
 ## 12. Adjudicator API
 **Base Routes:** `adjapi/ADJV1`, `adjapi/ADJV1/{somePassword?}`  
@@ -1036,27 +1175,21 @@ These are the V1 vBTC routes. V1 was retired at block 7,400,500 on mainnet (bloc
 **Summary:** Get sent masternodes  
 **Returns:** Sent masternode data
 
-#### GET `/GetTaskAnswersList`
-**Summary:** Get task answers list  
-**Returns:** Network task answers
-
 #### GET `/GetAdjInfo`
 **Summary:** Get adjudicator information  
 **Returns:** Adjudicator state data
-
-#### GET `/GetConsensusInfo`
-**Summary:** Get detailed consensus information  
-**Returns:** Comprehensive consensus data
 
 ## 13. Validator Node API
 **Base Route:** `valapi/Validator`  
 **Controller:** ValidatorController  
 
+This controller is not on the wallet API port. It is served on the validator port (`ValAPIPort`: 7294 on mainnet, 17294 on testnet) for validator-to-validator consensus calls, without the API filter. The routes below are a selection; the rest are internal.
+
 ### Basic Status
 
 #### GET `/`
 **Summary:** Simple validator API greeting  
-**Returns:** "Hello from Validator API"
+**Returns:** `"Hello from ValidatorController!"`
 
 ### Validator Operations
 
@@ -1164,7 +1297,7 @@ These are the V1 vBTC routes. V1 was retired at block 7,400,500 on mainnet (bloc
 
 This section covers the routes Core 9.0 adds to the vBTC V2 API: withdrawals from vaults the chain watches, the Bitcoin attestation reads, and the validator bond. The whole vault lifecycle (creation, deposits, transfers, ownership, withdrawals including the multi-vault withdrawal, legacy vaults and S3C) is documented with examples on the [vBTC](/build/vbtc/integration/) page, and the external-signer flow on [vBTC Raw Integration](/build/vbtc/raw-integration/).
 
-**Watched and legacy vaults.** From the Bitcoin attestation recording height (`BitcoinAttestationRecordHeight`; block 7,568,350 on mainnet; block 400 on testnet since its October 2026 restart), a newly created vault is *watched*: its deposits and withdrawals are recorded on chain from Bitcoin reports, and the owner's balance is its attested coins. A watched vault's withdrawal has no completion transaction and no cancellation vote. After the request is mined, the chain fixes ("pins") the Bitcoin transaction that pays it, and the withdrawal completes when Bitcoin confirms it. Until it is pinned, the requester can cancel it, and the cancel takes effect when mined. If it does not confirm, the requester can raise its fee (bump) or give it up (release), both as a `VBTC_V2_COIN_PIN` (type 44) transaction. Vaults created before that height are *legacy*. They keep the earlier request, complete and cancel flow until the enforcement height (`BitcoinAttestationHeight`; block 401 on testnet, set at the 9.0 release on mainnet, about two weeks after the recording height). From then on they are frozen, and withdrawal completion (type 28), the cancellation vote (type 30), bridge exit completion (type 41) and bridge exit failure (type 42) are refused for every vault. `GetVaultBitcoin` tells you which kind a vault is.
+**Watched and legacy vaults.** From the Bitcoin attestation recording height (`BitcoinAttestationRecordHeight`; block 7,568,350 on mainnet; block 400 on testnet since its October 2026 restart), a newly created vault is *watched*: its deposits and withdrawals are recorded on chain from Bitcoin reports, and the owner's balance is its attested coins. A watched vault's withdrawal has no completion transaction and no cancellation vote. After the request is mined, the chain fixes ("pins") the Bitcoin transaction that pays it, and the withdrawal completes when Bitcoin confirms it. Until it is pinned, the requester can cancel it, and the cancel takes effect when mined. If it does not confirm, the requester can raise its fee (bump) or give it up (release), both as a `VBTC_V2_COIN_PIN` (type 44) transaction. Vaults created before that height are *legacy*. They keep the earlier request, complete and cancel flow until the enforcement height (`BitcoinAttestationHeight`; block 7,658,350 on mainnet, about two weeks after the recording height; block 401 on testnet). From then on they are frozen, and withdrawal completion (type 28), the cancellation vote (type 30), bridge exit completion (type 41) and bridge exit failure (type 42) are refused for every vault. `GetVaultBitcoin` tells you which kind a vault is.
 
 ### Withdrawal Flows
 
@@ -1283,6 +1416,38 @@ The node's built-in browser wallet has the same three operations at `GET /wallet
 
 See [Run a Validator](/node/validator/#10-stopping-and-updating) for the full exit.
 
+### Other vBTC V2 endpoints
+
+The full flows, with request bodies, are on [vBTC](/build/vbtc/integration/) and [vBTC Raw Integration](/build/vbtc/raw-integration/).
+
+- `GET /`: status check (`["VFX/vBTC-V2", "vBTC API V2 - MPC Based"]`).
+- `GET /GetValidatorList/{activeOnly?}`, `GET /GetValidatorStatus/{validatorAddress}`, `POST /ValidatorHeartbeat/{validatorAddress}`: vBTC validator list, status and heartbeat.
+- `POST /InitiateMPCCeremony/{ownerAddress}`, `GET /GetCeremonyStatus/{ceremonyId}`, `POST /CancelCeremony/{ceremonyId}/{ownerAddress}`: run, follow or cancel the FROST key ceremony (DKG) for a new vault.
+- `POST /PrepareMPCCeremonyRaw`, `POST /ExecuteMPCCeremonyRaw`: the same ceremony for an external signer.
+- `POST /CreateVBTCContract`, `POST /CreateVBTCContractRaw`, `POST /GetRawCreateContractTxData`, `POST /SendRawCreateContractTx`: create the vault contract after the ceremony.
+- `GET /GetMPCDepositAddress/{scUID}`: a vault's Bitcoin deposit address.
+- `GET /GetS3CStatus`, `POST /StartS3CAutoBridge`, `GET /GetS3CAutoBridgeStatus/{orchestrationId}`: S3C (Self-Custodial Smart Contract) pre-flight and the S3C auto-bridge to Base.
+- `POST /TransferVBTC`, `POST /TransferVBTCMulti`, `POST /GetRawTransferVBTCData`, `POST /GetRawTransferVBTCMultiData`, `POST /SendRawTransferVBTCTx`: transfers, single-vault or spread across the sender's vaults.
+- `GET /TransferOwnership/{scUID}/{toAddress}`, `GET /GetVBTCOwnershipTransferData/{scUID}/{toAddress}/{**locator}`: transfer a vault contract's ownership.
+- `POST /RequestWithdrawal`, `POST /RequestWithdrawalMulti`, `POST /RequestWithdrawalRaw`, `POST /GetRawRequestWithdrawalTxData`, `POST /GetRawRequestWithdrawalMultiTxData`, `POST /SendRawRequestWithdrawalTx`: withdrawal requests.
+- `GET /GetWithdrawalRequestShares/{withdrawalRequestHash}`: the per-vault shares of a (multi-vault) withdrawal request.
+- `POST /CompleteWithdrawal`, `POST /CompleteWithdrawalMulti`, `POST /PrepareCompleteWithdrawalRaw`, `POST /ExecuteCompleteWithdrawalRaw`, `POST /GetRawCompleteWithdrawalTxData`, `POST /SendRawCompleteWithdrawalTx`: completion (legacy vaults; on a watched vault these report the pin's state).
+- `POST /CancelWithdrawal`, `POST /CancelWithdrawalRaw`, `POST /GetRawCancelWithdrawalTxData`, `POST /SendRawCancelWithdrawalTx`: cancellation.
+- `POST /VoteOnCancellation`, `GET /GetCancellationStatus/{scUID}/{withdrawalRequestHash}`: a validator's cancellation vote (legacy vaults) and the vote status.
+- `GET /GetVBTCBalance/{address}/{scUID}`, `GET /GetAllVBTCBalances/{address}`: vBTC balances.
+- `GET /GetContractDetails/{scUID}`, `GET /GetContractList/{address?}`, `GET /GetContractHealth/{scUID}`: vault details, list and signer health.
+- `GET /GetWithdrawalHistory/{scUID}`, `GET /GetWithdrawalStatus/{scUID}`: a vault's withdrawals.
+- `GET /ResyncVBTCContracts`: rebuilds the node's local vBTC records.
+- `GET /GetDefaultImageBase`: the default vBTC image (Base64).
+- `POST /ShieldVBTC`, `POST /UnshieldVBTC`, `POST /PrivateTransferVBTC`, `GET /GetShieldedVBTCBalance`, `GET /GetShieldedVBTCPoolState/{scUID}`: shielded vBTC (Prism).
+- `POST /BridgeToBase`, `GET /GetBridgeLockStatus/{lockId}`, `GET /GetBridgeLocks/{scUID}`, `GET /GetBridgeLocksByOwner/{ownerAddress}`: lock vBTC to mint vBTC.b on Base, and follow the locks.
+- `POST /SignMintAttestation`, `GET /GetMintAttestation/{lockId}`: validator signatures for a vBTC.b mint.
+- `GET /GetBaseBalance/{evmAddress}`, `GET /GetBridgeStatus`, `GET /GetBridgeConfig`: vBTC.b balance on Base and the bridge configuration.
+- `POST /PollBaseExitBurns`, `POST /RescanExitBurns/{fromBlock}`: rescan Base for exit burns.
+- `POST /ConfigureBridge`: sets the bridge configuration at runtime (development only).
+- `POST /RelayPendingBridgeLocks`: deprecated.
+- `POST /InvalidateFrostContract/{scUID}`, `POST /RemoveFrostBlacklist/{scUID}`, `GET /GetFrostBlacklist`: the operator's FROST blacklist.
+
 ## 16. Privacy API: raw shielded VFX (9.0 additions)
 **Base Routes:** `privacyapi/PrivacyV1`, `privacyapi/PrivacyV1/{somePassword?}`  
 **Controller:** PrivacyV1Controller  
@@ -1357,14 +1522,67 @@ Responses are `{"Success": true, "Result": {...}}` or `{"Success": false, "Messa
 **Request Body:** `{"Hash": "...", "Signature": "..."}`  
 **Returns:** `Result` with `Hash` and `Message`
 
+### Other privacy endpoints
+
+These use the shielded wallet held on this node.
+
+- `GET /GetPlonkStatus`: whether the PLONK proving parameters are loaded.
+- `POST /GenerateShieldedAddress`, `POST /CreateShieldedAddressFromAccount`: create a `zfx_` shielded address.
+- `POST /ShieldVFX`, `POST /UnshieldVFX`, `POST /PrivateTransferVFX`, `POST /ConsolidateShieldedVFX`: shielded VFX operations.
+- `GET /GetShieldedBalance`, `GET /GetShieldedPoolState`: shielded VFX balance and pool state.
+- `POST /ScanShielded`, `POST /ResyncShieldedWallet`: scan for notes, or wipe and rescan from a height.
+- `POST /ExportViewingKey`, `POST /ImportViewingKey`: export or import a viewing key (it can spend, so treat it as a private key).
+- `POST /ShieldVBTC`, `POST /UnshieldVBTC`, `POST /PrivateTransferVBTC`, `POST /ConsolidateShieldedVBTC`, `GET /GetShieldedVbtcBalance`, `GET /GetVbtcShieldedPoolState`, `POST /ScanShieldedVBTC`, `POST /ResyncShieldedVBTC`: the same for shielded vBTC.
+
+## 17. Explorer API
+**Base Route:** `explorer`  
+**Controller:** ExplorerController  
+
+The node's built-in read-only explorer. It answers without the API token and without the API switched on, but only on loopback unless the node runs with `openapi`.
+
+- `GET /`: the explorer web page.
+- `GET /api/stats`: height, network supply, peers, mempool size and network.
+- `GET /api/blocks`: the latest blocks.
+- `GET /api/block/{height}`, `GET /api/block/hash/{hash}`: one block.
+- `GET /api/tx/{hash}`: one transaction.
+- `GET /api/address/{address}`: an address's balance, locked balance, nonce and transactions.
+- `GET /api/mempool`: pending transactions.
+- `GET /api/search?q=`: finds a block, transaction or address.
+- `GET /api/stream`: a server-sent event stream (`text/event-stream`) of live updates for the page.
+
+## 18. Browser Wallet API
+**Base Route:** `wallet`  
+**Controller:** WalletController  
+
+The JSON routes behind the node's built-in browser wallet page (`GET /wallet`). They act for accounts held by this node and go through the same API gate as the other controllers.
+
+- `GET /api/accounts`, `GET /api/txs/{address}`, `GET /api/nfts/{address}`: accounts, transactions and NFTs.
+- `POST /api/send/vfx`: sends VFX.
+- `GET /api/btc`, `GET /api/btc/base-balances`, `POST /api/btc/link-evm`: Bitcoin accounts, the ETH and vBTC.b balances on Base of those with a linked EVM address, and linking an EVM address.
+- `GET /api/vbtc/{address}`, `POST /api/vbtc/transfer`: vBTC balances and transfers.
+- `POST /api/vbtc/withdraw/request`, `POST /api/vbtc/withdraw/complete`, `POST /api/vbtc/withdraw/cancel`, `POST /api/vbtc/withdraw/bumpfee`, `POST /api/vbtc/withdraw/release`, `GET /api/vbtc/withdraw/pin/{scUID}/{requestHash}`, `GET /api/vbtc/withdraw/status/{scUID}`: vBTC withdrawals (see [section 15](#15-vbtc-v2-api-90-additions)).
+- `GET /api/vbtc/bridge/preflight/{ownerAddress}/{scUID}`, `POST /api/vbtc/bridge/toBase`, `GET /api/vbtc/bridge/status/{lockId}`, `POST /api/vbtc/bridge/submitMint/{lockId}`, `POST /api/vbtc/bridge/retry/{lockId}/{ownerAddress}`, `POST /api/vbtc/bridge/forceRetry/{lockId}/{ownerAddress}`, `GET /api/vbtc/bridge/base-balance/{evmAddress}`: the bridge to Base.
+- `GET /api/privacy/addresses`, `POST /api/privacy/createShieldedAddress`, `GET /api/privacy/balance/{zfxAddress}`, `POST /api/privacy/shield`, `POST /api/privacy/unshield`, `POST /api/privacy/transfer`, `POST /api/privacy/scan`, `POST /api/privacy/resync`, `GET /api/privacy/plonkStatus`, `GET /api/privacy/poolState`: shielded VFX.
+- `GET /api/privacy/vbtc/balance/{zfxAddress}/{scUID}`, `POST /api/privacy/vbtc/shield`, `POST /api/privacy/vbtc/unshield`, `POST /api/privacy/vbtc/transfer`, `POST /api/privacy/vbtc/scan`, `GET /api/privacy/vbtc/poolState/{scUID}`: shielded vBTC.
+- `GET /api/base-address/{vfxAddress}`: the Base (EVM) address derived for a VFX address.
+
 ## Common Response Patterns
+
+Responses are JSON strings in one of two shapes, depending on the controller. Most controllers return `Success` and `Message`, plus a named field for the data (for example `Token`, `Vote`, `Bond`, `Result`). The transaction routes (`txapi/TXV1`) and the wallet sends return `Result` (`"Success"` or `"Fail"`) and `Message`, plus a field such as `Hash`, `Fee` or `Nonce`. A few routes return plain text or a bare value (for example `CheckStatus`, `GetCLIVersion`, `iapi/IntegrationsV1/Height`).
 
 ### Success Response Format
 ```json
 {
   "Success": true,
-  "Message": "Operation completed successfully",
-  "Data": { /* Response data */ }
+  "Message": "Operation completed successfully"
+}
+```
+
+```json
+{
+  "Result": "Success",
+  "Message": "Transaction has been broadcasted.",
+  "Hash": "..."
 }
 ```
 
@@ -1372,13 +1590,12 @@ Responses are `{"Success": true, "Result": {...}}` or `{"Success": false, "Messa
 ```json
 {
   "Success": false,
-  "Message": "Error description",
-  "Data": null
+  "Message": "Error description"
 }
 ```
 
 ### Authentication
-All APIs support optional password authentication through the `{somePassword?}` route parameter.
+Requests carry the `apitoken` header when the node was started with an API token, and the `{somePassword?}` route segment only when `AlwaysRequireAPIPassword=true`. See [Authentication](/build/node-api/overview/#authentication).
 
 ### Parameter Types
 - **Path Parameters**: Required values in URL path
@@ -1389,8 +1606,9 @@ All APIs support optional password authentication through the `{somePassword?}` 
 ### HTTP Status Codes
 - **200 OK**: Success
 - **400 Bad Request**: Invalid parameters
-- **401 Unauthorized**: Authentication required
+- **401 Unauthorized**: The wallet is encrypted and locked ("You must type in your encryption password first!")
+- **403 Forbidden**: Missing or wrong `apitoken`, missing API password, API not enabled, or a non-loopback or cross-origin request
 - **404 Not Found**: Resource not found
 - **500 Internal Server Error**: Server error
 
-This comprehensive documentation covers all 14 API controllers with detailed endpoint information for integration with Swagger and API consumers.
+This documentation covers the 18 controllers of Core 9.0.1. Swagger on a running node (`/swagger`) lists every route with its parameters.
