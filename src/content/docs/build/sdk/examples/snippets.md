@@ -7,6 +7,8 @@ sidebar:
 
 This section provides focused code examples for common tasks using the VerifiedX Web SDK. These snippets are designed to be copy-paste ready for your applications.
 
+On testnet, Bitcoin examples use the [VerifiedX signet](/build/signet/). `vfx-web-sdk` 9.0.3 still defaults `BtcClient('testnet')` to the public testnet4 API, so the snippets pass `apiBaseUrl: 'https://signet.verifiedx.io/api'`.
+
 ## VFX Examples
 
 ### Quick Wallet Setup
@@ -20,8 +22,8 @@ const client = new VfxClient(Network.Testnet);
 // Generate wallet
 const privateKey = client.generatePrivateKey();
 const keypair = {
-  private: privateKey,
-  public: client.publicFromPrivate(privateKey),
+  privateKey,
+  publicKey: client.publicFromPrivate(privateKey),
   address: client.addressFromPrivate(privateKey)
 };
 
@@ -39,10 +41,13 @@ async function sendVfx(client, fromKeypair, toAddress, amount) {
       throw new Error('Insufficient balance');
     }
 
-    // Send transaction
-    const result = await client.sendCoin(fromKeypair, toAddress, amount);
-    console.log('Transaction sent:', result.txHash);
-    return result.txHash;
+    // Send transaction: resolves to the hash, or null when nothing was sent
+    const hash = await client.sendCoin(fromKeypair, toAddress, amount);
+    if (!hash) {
+      throw new Error('Transaction was not sent');
+    }
+    console.log('Transaction sent:', hash);
+    return hash;
   } catch (error) {
     console.error('Transaction failed:', error.message);
     throw error;
@@ -55,9 +60,9 @@ async function sendVfx(client, fromKeypair, toAddress, amount) {
 ```typescript
 async function checkBalance(client, address) {
   try {
-    const details = await client.getAddressDetails(address);
+    const details = await client.getAddressDetails(address, { strict: true });
     console.log(`Balance: ${details.balance} VFX`);
-    console.log(`Transactions: ${details.txCount}`);
+    console.log(`Locked: ${details.balanceLocked} VFX`);
     if (details.adnr) {
       console.log(`Domain: ${details.adnr}`);
     }
@@ -96,7 +101,7 @@ async function buyDomain(client, keypair, domain) {
   }
 }
 
-// Lookup domain
+// Lookup domain (full name with its .vfx suffix; resolves to null when not found)
 async function lookupDomain(client, domain) {
   try {
     const address = await client.lookupDomain(domain);
@@ -114,10 +119,10 @@ async function lookupDomain(client, domain) {
 ```typescript
 function restoreVfxWallet(client, mnemonic, index = 0) {
   try {
-    const privateKey = client.privateKeyFromMneumonic(mnemonic, index);
+    const privateKey = client.privateKeyFromMnemonic(mnemonic, index);
     const keypair = {
-      private: privateKey,
-      public: client.publicFromPrivate(privateKey),
+      privateKey,
+      publicKey: client.publicFromPrivate(privateKey),
       address: client.addressFromPrivate(privateKey)
     };
 
@@ -137,8 +142,8 @@ function restoreVfxWallet(client, mnemonic, index = 0) {
 ```typescript
 import { btc } from 'vfx-web-sdk';
 
-// Create client
-const client = new btc.BtcClient('testnet');
+// Create client on the VerifiedX signet
+const client = new btc.BtcClient('testnet', { apiBaseUrl: 'https://signet.verifiedx.io/api' });
 
 // Generate wallet with all address types
 const wallet = client.generatePrivateKey();
@@ -152,11 +157,12 @@ console.log('Taproot:', wallet.addresses.bech32m);
 ### Send Bitcoin Transaction
 
 ```typescript
-async function sendBitcoin(client, wif, toAddress, amountSats, feeRate = 20) {
+async function sendBitcoin(client, wif, toAddress, amountBtc, feeRate = 2) {
   try {
-    console.log(`Sending ${amountSats} sats to ${toAddress}`);
+    console.log(`Sending ${amountBtc} BTC to ${toAddress}`);
 
-    const txId = await client.sendBtc(wif, toAddress, amountSats, feeRate);
+    // amount is in BTC, not satoshis; resolves to null when nothing was sent
+    const txId = await client.sendBtc(wif, toAddress, amountBtc, feeRate);
     console.log('Transaction sent:', txId);
     return txId;
   } catch (error) {
@@ -249,16 +255,18 @@ function createUnifiedWallet(network = 'testnet') {
   const vfxClient = new VfxClient(
     network === 'mainnet' ? Network.Mainnet : Network.Testnet
   );
-  const btcClient = new btc.BtcClient(network);
+  const btcClient = network === 'testnet'
+    ? new btc.BtcClient('testnet', { apiBaseUrl: 'https://signet.verifiedx.io/api' })
+    : new btc.BtcClient('mainnet');
 
   // Generate shared mnemonic
   const mnemonic = vfxClient.generateMnemonic(12);
 
   // Create VFX wallet
-  const vfxPrivateKey = vfxClient.privateKeyFromMneumonic(mnemonic, 0);
+  const vfxPrivateKey = vfxClient.privateKeyFromMnemonic(mnemonic, 0);
   const vfxWallet = {
-    private: vfxPrivateKey,
-    public: vfxClient.publicFromPrivate(vfxPrivateKey),
+    privateKey: vfxPrivateKey,
+    publicKey: vfxClient.publicFromPrivate(vfxPrivateKey),
     address: vfxClient.addressFromPrivate(vfxPrivateKey)
   };
 
@@ -331,8 +339,11 @@ function signOnBothChains(vfxClient, btcClient, message, vfxPrivateKey, btcWif) 
 ### Address Validation
 
 ```typescript
-function isValidVfxAddress(address) {
-  return address && typeof address === 'string' && address.startsWith('VFX');
+// Mainnet addresses start with 'R', testnet addresses with 'x', reserve (vault) addresses with 'xRBX'.
+// The SDK's exported isOtherNetworksAddress(address, network) checks the version byte and checksum.
+function isValidVfxAddress(address, network = 'testnet') {
+  if (!address || typeof address !== 'string') return false;
+  return network === 'mainnet' ? address.startsWith('R') : address.startsWith('x');
 }
 
 function isValidBitcoinAddress(address, network = 'testnet') {
@@ -460,8 +471,10 @@ function useBitcoinTransaction(network = 'testnet') {
     setError(null);
 
     try {
-      const client = new btc.BtcClient(network);
-      const txId = await client.sendBtc(wif, toAddress, amount, feeRate);
+      const client = network === 'testnet'
+        ? new btc.BtcClient('testnet', { apiBaseUrl: 'https://signet.verifiedx.io/api' })
+        : new btc.BtcClient('mainnet');
+      const txId = await client.sendBtc(wif, toAddress, amount, feeRate); // amount in BTC
       return txId;
     } catch (err) {
       setError(err.message);
@@ -490,7 +503,9 @@ const network = process.env.NODE_ENV === 'production' ? 'mainnet' : 'testnet';
 const vfxClient = new VfxClient(
   network === 'mainnet' ? Network.Mainnet : Network.Testnet
 );
-const btcClient = new btc.BtcClient(network);
+const btcClient = network === 'testnet'
+  ? new btc.BtcClient('testnet', { apiBaseUrl: 'https://signet.verifiedx.io/api' })
+  : new btc.BtcClient('mainnet');
 ```
 
 ### Secure Key Storage
@@ -498,18 +513,24 @@ const btcClient = new btc.BtcClient(network);
 ```typescript
 import * as crypto from 'crypto';
 
+// AES-256-GCM with a key derived from the password (scrypt) and a random salt and IV.
+// crypto.createCipher was removed in Node.js 22; use createCipheriv.
 function encryptPrivateKey(privateKey, password) {
-  const cipher = crypto.createCipher('aes-256-cbc', password);
-  let encrypted = cipher.update(privateKey, 'utf8', 'hex');
-  encrypted += cipher.final('hex');
-  return encrypted;
+  const salt = crypto.randomBytes(16);
+  const iv = crypto.randomBytes(12);
+  const key = crypto.scryptSync(password, salt, 32);
+  const cipher = crypto.createCipheriv('aes-256-gcm', key, iv);
+  const encrypted = Buffer.concat([cipher.update(privateKey, 'utf8'), cipher.final()]);
+  const tag = cipher.getAuthTag();
+  return [salt, iv, tag, encrypted].map((part) => part.toString('hex')).join(':');
 }
 
 function decryptPrivateKey(encryptedKey, password) {
-  const decipher = crypto.createDecipher('aes-256-cbc', password);
-  let decrypted = decipher.update(encryptedKey, 'hex', 'utf8');
-  decrypted += decipher.final('utf8');
-  return decrypted;
+  const [salt, iv, tag, encrypted] = encryptedKey.split(':').map((part) => Buffer.from(part, 'hex'));
+  const key = crypto.scryptSync(password, salt, 32);
+  const decipher = crypto.createDecipheriv('aes-256-gcm', key, iv);
+  decipher.setAuthTag(tag);
+  return Buffer.concat([decipher.update(encrypted), decipher.final()]).toString('utf8');
 }
 ```
 
@@ -539,15 +560,15 @@ class MockVfxClient {
   }
 
   addressFromPrivate(privateKey) {
-    return 'VFX_MOCK_ADDRESS';
+    return 'xMockAddress';
   }
 
   async getAddressDetails(address) {
-    return { balance: 1000, txCount: 5 };
+    return { address, balance: 1000, balanceTotal: 1000, balanceLocked: 0, adnr: null, activated: false };
   }
 
   async sendCoin(keypair, toAddress, amount) {
-    return { txHash: 'mock-tx-hash' };
+    return 'mock-tx-hash'; // sendCoin resolves to the transaction hash
   }
 }
 ```
@@ -567,16 +588,16 @@ describe('VFX Operations', () => {
     const address = client.addressFromPrivate(privateKey);
 
     expect(privateKey).toBeDefined();
-    expect(address).toMatch(/^VFX/);
+    expect(address).toMatch(/^[Rx]/);
   });
 
   test('should check balance', async () => {
-    const details = await client.getAddressDetails('VFX_TEST_ADDRESS');
+    const details = await client.getAddressDetails('xTestAddress');
 
     expect(details.balance).toBeGreaterThanOrEqual(0);
-    expect(details.txCount).toBeGreaterThanOrEqual(0);
+    expect(details.balanceLocked).toBeGreaterThanOrEqual(0);
   });
 });
 ```
 
-These snippets provide practical, copy-paste ready code for common operations. For complete applications and more complex examples, see [Complete Applications](/build/sdk/examples/applications/).
+These snippets provide practical, copy-paste ready code for common operations. For longer walkthroughs, see the [VFX Basics](/build/sdk/vfx-basics/), [Bitcoin Basics](/build/sdk/bitcoin-basics/) and [Cross-Chain](/build/sdk/cross-chain/) guides.

@@ -6,7 +6,7 @@ sidebar:
   order: 5
 ---
 
-This guide explores how to build applications that leverage both VerifiedX and Bitcoin networks. As a Bitcoin sidechain, VerifiedX enables powerful cross-chain functionality that opens up new possibilities for decentralized applications.
+This guide explores how to build applications that leverage both VerifiedX and Bitcoin networks. VerifiedX is a Layer 1 blockchain built as a Bitcoin reliever chain: it extends what Bitcoin can do without wrapping it, which opens up new possibilities for decentralized applications.
 
 ## Prerequisites
 
@@ -16,11 +16,11 @@ This guide explores how to build applications that leverage both VerifiedX and B
 
 ## Understanding the VFX-Bitcoin Relationship
 
-VerifiedX operates as both a standalone blockchain and a Bitcoin sidechain:
+VerifiedX is its own Layer 1 chain that works alongside Bitcoin:
 
-- **Standalone Operations**: Full VFX blockchain functionality
-- **Sidechain Operations**: Bitcoin-compatible transactions and interoperability
-- **Cross-Chain Features**: Seamless integration between both networks
+- **Layer 1 Operations**: Full VFX blockchain functionality (VFX transfers, `.vfx` names, tokens, smart contracts)
+- **Bitcoin Operations**: Ordinary Bitcoin wallets and transactions through the SDK's `BtcClient`, plus `.btc` names that link a Bitcoin address to a VFX account
+- **vBTC**: 1:1 BTC-backed tokens held in FROST-secured vaults on Bitcoin and moved on VerifiedX (see [vBTC](/build/vbtc/integration/) and the vBTC methods in the [VfxClient API](/build/sdk/reference/vfx-client/))
 
 ## Setting Up Dual Network Support
 
@@ -28,6 +28,7 @@ Initialize both clients for cross-chain operations:
 
 ```typescript
 import { VfxClient, btc, Network } from 'vfx-web-sdk';
+import type { Keypair } from 'vfx-web-sdk';
 
 class CrossChainClient {
   private vfxClient: VfxClient;
@@ -38,7 +39,7 @@ class CrossChainClient {
     btcNetwork: 'mainnet' | 'testnet' = 'testnet'
   ) {
     this.vfxClient = new VfxClient(vfxNetwork);
-    this.btcClient = new btc.BtcClient(btcNetwork);
+    this.btcClient = new btc.BtcClient(btcNetwork, btcNetwork === 'testnet' ? { apiBaseUrl: 'https://signet.verifiedx.io/api' } : {});
   }
 
   // Access both clients
@@ -48,6 +49,10 @@ class CrossChainClient {
 
 const crossChain = new CrossChainClient(Network.Testnet, 'testnet');
 ```
+
+:::caution[Bitcoin testnet means the VerifiedX signet]
+The VFX testnet watches the [VerifiedX signet](/build/signet/). In `vfx-web-sdk` 9.0.3 `new btc.BtcClient('testnet')` still defaults to the public testnet4 API, so every example on this page passes `apiBaseUrl: 'https://signet.verifiedx.io/api'` on testnet.
+:::
 
 ## Cross-Platform Wallet Generation
 
@@ -62,16 +67,16 @@ class CrossPlatformWallet {
 
   constructor(network: 'mainnet' | 'testnet' = 'testnet') {
     this.vfxClient = new VfxClient(network === 'mainnet' ? Network.Mainnet : Network.Testnet);
-    this.btcClient = new btc.BtcClient(network);
+    this.btcClient = new btc.BtcClient(network, network === 'testnet' ? { apiBaseUrl: 'https://signet.verifiedx.io/api' } : {});
   }
 
   // Generate wallets that can be recreated on any platform
   generateCrossPlatformWallet(email: string, password: string, index: number = 0) {
-    // Generate VFX wallet
-    const vfxPrivateKey = this.vfxClient.generatePrivateKey();
+    // Generate VFX wallet from the same email/password
+    const vfxPrivateKey = this.vfxClient.privateKeyFromEmailPassword(email, password, index);
     const vfxKeypair = {
-      private: vfxPrivateKey,
-      public: this.vfxClient.publicFromPrivate(vfxPrivateKey),
+      privateKey: vfxPrivateKey,
+      publicKey: this.vfxClient.publicFromPrivate(vfxPrivateKey),
       address: this.vfxClient.addressFromPrivate(vfxPrivateKey)
     };
 
@@ -88,10 +93,15 @@ class CrossPlatformWallet {
   // Restore wallets on any platform
   restoreCrossPlatformWallet(email: string, password: string, index: number = 0) {
     const btcKeypair = this.btcClient.generateEmailKeypair(email, password, index);
+    const vfxPrivateKey = this.vfxClient.privateKeyFromEmailPassword(email, password, index);
 
     return {
-      bitcoin: btcKeypair,
-      // Note: VFX wallet would need to be restored separately using mnemonic or private key
+      vfx: {
+        privateKey: vfxPrivateKey,
+        publicKey: this.vfxClient.publicFromPrivate(vfxPrivateKey),
+        address: this.vfxClient.addressFromPrivate(vfxPrivateKey)
+      },
+      bitcoin: btcKeypair
     };
   }
 }
@@ -118,7 +128,7 @@ class MnemonicCrossChainWallet {
 
   constructor(network: 'mainnet' | 'testnet' = 'testnet') {
     this.vfxClient = new VfxClient(network === 'mainnet' ? Network.Mainnet : Network.Testnet);
-    this.btcClient = new btc.BtcClient(network);
+    this.btcClient = new btc.BtcClient(network, network === 'testnet' ? { apiBaseUrl: 'https://signet.verifiedx.io/api' } : {});
   }
 
   // Generate wallets using the same mnemonic
@@ -127,10 +137,10 @@ class MnemonicCrossChainWallet {
     const seed = mnemonic || this.vfxClient.generateMnemonic(12);
 
     // Generate VFX wallet from mnemonic
-    const vfxPrivateKey = this.vfxClient.privateKeyFromMneumonic(seed, vfxIndex);
+    const vfxPrivateKey = this.vfxClient.privateKeyFromMnemonic(seed, vfxIndex);
     const vfxKeypair = {
-      private: vfxPrivateKey,
-      public: this.vfxClient.publicFromPrivate(vfxPrivateKey),
+      privateKey: vfxPrivateKey,
+      publicKey: this.vfxClient.publicFromPrivate(vfxPrivateKey),
       address: this.vfxClient.addressFromPrivate(vfxPrivateKey)
     };
 
@@ -163,8 +173,7 @@ interface CrossChainAccountInfo {
   vfx: {
     address: string;
     balance: number;
-    domain?: string;
-    txCount: number;
+    domain?: string | null;
   };
   bitcoin: {
     address: string;
@@ -184,7 +193,7 @@ class CrossChainDashboard {
 
   constructor(vfxNetwork: Network, btcNetwork: 'mainnet' | 'testnet') {
     this.vfxClient = new VfxClient(vfxNetwork);
-    this.btcClient = new btc.BtcClient(btcNetwork);
+    this.btcClient = new btc.BtcClient(btcNetwork, btcNetwork === 'testnet' ? { apiBaseUrl: 'https://signet.verifiedx.io/api' } : {});
   }
 
   async getUnifiedAccountInfo(vfxAddress: string, btcAddress: string): Promise<CrossChainAccountInfo> {
@@ -198,9 +207,8 @@ class CrossChainDashboard {
       return {
         vfx: {
           address: vfxAddress,
-          balance: vfxInfo.balance,
-          domain: vfxInfo.adnr,
-          txCount: vfxInfo.txCount
+          balance: vfxInfo?.balance ?? 0,
+          domain: vfxInfo?.adnr
         },
         bitcoin: {
           address: btcAddress,
@@ -217,7 +225,7 @@ class CrossChainDashboard {
   }
 
   private async getBitcoinAddressTypes(address: string) {
-    // If we have the original keypair, we could show all address types
+    // With the original keypair, all address types could be shown
     // For now, just return the queried address
     return { primary: address };
   }
@@ -225,19 +233,23 @@ class CrossChainDashboard {
   async getUnifiedTransactionHistory(vfxAddress: string, btcAddress: string) {
     try {
       const [vfxTxs, btcTxs] = await Promise.all([
-        this.vfxClient.getAddressDetails(vfxAddress), // VFX doesn't have separate tx history endpoint
-        this.btcClient.getTransactions(btcAddress, 10) // Get last 10 Bitcoin transactions
+        this.vfxClient.listTransactionsForAddress(vfxAddress, 1, 10), // First page, 10 per page
+        this.btcClient.getTransactions(btcAddress) // The API's newest page of Bitcoin transactions
       ]);
 
       return {
         vfx: {
-          transactionCount: vfxTxs.txCount,
-          // Note: VFX SDK doesn't currently expose transaction history
-          // This would need to be added to get detailed transaction list
+          transactionCount: vfxTxs?.count ?? 0,
+          transactions: (vfxTxs?.results ?? []).map(tx => ({
+            id: tx.hash,
+            type: tx.type_label,
+            height: tx.height,
+            amount: tx.total_amount
+          }))
         },
         bitcoin: {
           transactionCount: btcTxs.length,
-          transactions: btcTxs.map(tx => ({
+          transactions: btcTxs.slice(0, 10).map(tx => ({
             id: tx.txid,
             confirmed: tx.status.confirmed,
             blockHeight: tx.status.block_height,
@@ -266,7 +278,6 @@ async function showCrossChainDashboard() {
   console.log('=============================');
   console.log('VFX Balance:', accountInfo.vfx.balance, 'VFX');
   console.log('VFX Domain:', accountInfo.vfx.domain || 'None');
-  console.log('VFX Transactions:', accountInfo.vfx.txCount);
   console.log('');
   console.log('Bitcoin Balance:', accountInfo.bitcoin.balanceBTC, 'BTC');
   console.log('Bitcoin Balance (sats):', accountInfo.bitcoin.balance);
@@ -285,16 +296,19 @@ class CrossChainTransactionCoordinator {
 
   constructor(vfxNetwork: Network, btcNetwork: 'mainnet' | 'testnet') {
     this.vfxClient = new VfxClient(vfxNetwork);
-    this.btcClient = new btc.BtcClient(btcNetwork);
+    this.btcClient = new btc.BtcClient(btcNetwork, btcNetwork === 'testnet' ? { apiBaseUrl: 'https://signet.verifiedx.io/api' } : {});
   }
 
   // Send VFX transaction
-  async sendVfxTransaction(fromKeypair: any, toAddress: string, amount: number) {
+  async sendVfxTransaction(fromKeypair: Keypair, toAddress: string, amount: number) {
     try {
       console.log(`Sending ${amount} VFX to ${toAddress}`);
-      const result = await this.vfxClient.sendCoin(fromKeypair, toAddress, amount);
-      console.log('VFX transaction successful:', result.txHash);
-      return { success: true, txHash: result.txHash, network: 'vfx' };
+      const hash = await this.vfxClient.sendCoin(fromKeypair, toAddress, amount);
+      if (!hash) {
+        return { success: false, error: 'not sent', network: 'vfx' };
+      }
+      console.log('VFX transaction sent:', hash);
+      return { success: true, txHash: hash, network: 'vfx' };
     } catch (error) {
       console.error('VFX transaction failed:', error.message);
       return { success: false, error: error.message, network: 'vfx' };
@@ -302,11 +316,14 @@ class CrossChainTransactionCoordinator {
   }
 
   // Send Bitcoin transaction
-  async sendBitcoinTransaction(fromWif: string, toAddress: string, amountSats: number, feeRate?: number) {
+  async sendBitcoinTransaction(fromWif: string, toAddress: string, amountBtc: number, feeRate?: number) {
     try {
-      console.log(`Sending ${amountSats} satoshis to ${toAddress}`);
-      const txId = await this.btcClient.sendBtc(fromWif, toAddress, amountSats, feeRate);
-      console.log('Bitcoin transaction successful:', txId);
+      console.log(`Sending ${amountBtc} BTC to ${toAddress}`);
+      const txId = await this.btcClient.sendBtc(fromWif, toAddress, amountBtc, feeRate); // amount in BTC
+      if (!txId) {
+        return { success: false, error: 'not sent', network: 'bitcoin' };
+      }
+      console.log('Bitcoin transaction sent:', txId);
       return { success: true, txHash: txId, network: 'bitcoin' };
     } catch (error) {
       console.error('Bitcoin transaction failed:', error.message);
@@ -316,8 +333,8 @@ class CrossChainTransactionCoordinator {
 
   // Coordinate simultaneous transactions (for atomic swaps or similar)
   async coordinateTransactions(
-    vfxTx: { fromKeypair: any; toAddress: string; amount: number },
-    btcTx: { fromWif: string; toAddress: string; amountSats: number; feeRate?: number }
+    vfxTx: { fromKeypair: Keypair; toAddress: string; amount: number },
+    btcTx: { fromWif: string; toAddress: string; amountBtc: number; feeRate?: number }
   ) {
     try {
       console.log('Coordinating cross-chain transactions...');
@@ -325,7 +342,7 @@ class CrossChainTransactionCoordinator {
       // Execute both transactions in parallel
       const [vfxResult, btcResult] = await Promise.all([
         this.sendVfxTransaction(vfxTx.fromKeypair, vfxTx.toAddress, vfxTx.amount),
-        this.sendBitcoinTransaction(btcTx.fromWif, btcTx.toAddress, btcTx.amountSats, btcTx.feeRate)
+        this.sendBitcoinTransaction(btcTx.fromWif, btcTx.toAddress, btcTx.amountBtc, btcTx.feeRate)
       ]);
 
       return {
@@ -349,8 +366,9 @@ class CrossChainTransactionCoordinator {
       bitcoin: { confirmed: false, txHash: btcTxHash }
     };
 
-    // Note: This would require additional API endpoints to check transaction status
-    // For now, we'll return the initial status
+    // To check status, look the VFX hash up on the Spyglass API
+    // (GET /api/transaction/<hash>/) and the Bitcoin txid with
+    // btcClient.checkBroadcast(signedTxHex) or the explorer's /api/tx/<txid>/status
     console.log('Transaction monitoring started...');
     console.log('VFX TX:', vfxTxHash);
     console.log('BTC TX:', btcTxHash);
@@ -365,8 +383,8 @@ async function performCrossChainTransaction() {
 
   // Prepare VFX transaction
   const vfxKeypair = {
-    private: 'vfx-private-key',
-    public: 'vfx-public-key',
+    privateKey: 'vfx-private-key',
+    publicKey: 'vfx-public-key',
     address: 'vfx-address'
   };
 
@@ -380,8 +398,8 @@ async function performCrossChainTransaction() {
     {
       fromWif: 'sender-bitcoin-wif',
       toAddress: 'recipient-bitcoin-address',
-      amountSats: 50000,
-      feeRate: 20
+      amountBtc: 0.0005, // 50,000 satoshis
+      feeRate: 2
     }
   );
 
@@ -391,7 +409,7 @@ async function performCrossChainTransaction() {
 
 ## Domain Name Integration
 
-Leverage VFX domains for cross-chain address resolution:
+Leverage VFX domains for cross-chain address resolution. A `.vfx` name points at a VFX address. A `.btc` name points at a Bitcoin address and is managed by a VFX account; buying one costs 5 VFX and is signed by that Bitcoin address's key:
 
 ```typescript
 class CrossChainDomainService {
@@ -400,36 +418,38 @@ class CrossChainDomainService {
 
   constructor(vfxNetwork: Network, btcNetwork: 'mainnet' | 'testnet') {
     this.vfxClient = new VfxClient(vfxNetwork);
-    this.btcClient = new btc.BtcClient(btcNetwork);
+    this.btcClient = new btc.BtcClient(btcNetwork, btcNetwork === 'testnet' ? { apiBaseUrl: 'https://signet.verifiedx.io/api' } : {});
   }
 
-  // Register a domain with both VFX and Bitcoin addresses
+  // Register name.vfx for the VFX address and name.btc for the Bitcoin address
   async registerCrossChainDomain(
-    vfxKeypair: any,
-    domain: string,
-    bitcoinAddress: string
+    vfxKeypair: Keypair,
+    name: string,
+    btcPrivateKey: string // hex private key of the Bitcoin address
   ) {
     try {
-      // Check if domain is available
-      const available = await this.vfxClient.domainAvailable(domain);
-      if (!available) {
-        throw new Error(`Domain ${domain} is not available`);
+      // Check that both names are free
+      const vfxDomain = `${name}.vfx`;
+      const btcDomain = `${name}.btc`;
+      if (!(await this.vfxClient.domainAvailable(vfxDomain)) || !(await this.vfxClient.domainAvailable(btcDomain))) {
+        throw new Error(`${name} is not available`);
       }
 
-      // Purchase VFX domain
-      const result = await this.vfxClient.buyVfxDomain(vfxKeypair, domain);
-      console.log(`Domain ${domain} registered for VFX address: ${vfxKeypair.address}`);
+      // Purchase the .vfx name (5 VFX)
+      const vfxResult = await this.vfxClient.buyVfxDomain(vfxKeypair, vfxDomain);
+      console.log(`Domain ${vfxDomain} registered for VFX address: ${vfxKeypair.address}`);
 
-      // Store Bitcoin address association (would require additional service)
-      // For now, we'll just log it
-      console.log(`Bitcoin address ${bitcoinAddress} associated with ${domain}`);
+      // Purchase the .btc name (5 VFX), linking the Bitcoin address to this VFX account
+      const btcResult = await this.vfxClient.buyBtcDomain(vfxKeypair, btcDomain, btcPrivateKey);
+      const bitcoinAddress = this.btcClient.addressFromPrivate(btcPrivateKey).address;
+      console.log(`Domain ${btcDomain} registered for Bitcoin address: ${bitcoinAddress}`);
 
       return {
         success: true,
-        domain,
+        name,
         vfxAddress: vfxKeypair.address,
         bitcoinAddress,
-        transaction: result
+        transactions: { vfx: vfxResult, btc: btcResult }
       };
     } catch (error) {
       console.error('Domain registration failed:', error.message);
@@ -440,23 +460,14 @@ class CrossChainDomainService {
     }
   }
 
-  // Resolve domain to get both addresses
-  async resolveCrossChainDomain(domain: string) {
+  // Resolve name.vfx and name.btc (each lookup resolves to null when the name does not exist)
+  async resolveCrossChainDomain(name: string) {
     try {
-      // Get VFX address from domain
-      const vfxAddress = await this.vfxClient.lookupDomain(domain);
-
-      // Get Bitcoin address (would require additional service/storage)
-      // For demonstration, we'll try the Bitcoin domain lookup
-      let bitcoinAddress;
-      try {
-        bitcoinAddress = await this.vfxClient.lookupBtcDomain(domain);
-      } catch {
-        bitcoinAddress = null;
-      }
+      const vfxAddress = await this.vfxClient.lookupDomain(`${name}.vfx`);
+      const bitcoinAddress = await this.vfxClient.lookupBtcDomain(`${name}.btc`);
 
       return {
-        domain,
+        name,
         vfxAddress,
         bitcoinAddress,
         resolved: true
@@ -464,7 +475,7 @@ class CrossChainDomainService {
     } catch (error) {
       console.error('Domain resolution failed:', error.message);
       return {
-        domain,
+        name,
         resolved: false,
         error: error.message
       };
@@ -477,7 +488,7 @@ async function domainExample() {
   const domainService = new CrossChainDomainService(Network.Testnet, 'testnet');
 
   // Resolve existing domain
-  const resolution = await domainService.resolveCrossChainDomain('example.vfx');
+  const resolution = await domainService.resolveCrossChainDomain('example');
   console.log('Domain resolution:', resolution);
 }
 ```
@@ -488,6 +499,7 @@ Here's a complete example bringing everything together:
 
 ```typescript
 import { VfxClient, btc, Network } from 'vfx-web-sdk';
+import type { Keypair } from 'vfx-web-sdk';
 
 class CrossChainWalletApp {
   private vfxClient: VfxClient;
@@ -496,7 +508,7 @@ class CrossChainWalletApp {
 
   constructor(network: 'mainnet' | 'testnet' = 'testnet') {
     this.vfxClient = new VfxClient(network === 'mainnet' ? Network.Mainnet : Network.Testnet);
-    this.btcClient = new btc.BtcClient(network);
+    this.btcClient = new btc.BtcClient(network, network === 'testnet' ? { apiBaseUrl: 'https://signet.verifiedx.io/api' } : {});
   }
 
   // Initialize wallet from credentials
@@ -507,20 +519,20 @@ class CrossChainWalletApp {
     // Create VFX wallet (from mnemonic if provided, otherwise generate new)
     let vfxWallet;
     if (vfxMnemonic) {
-      const vfxPrivateKey = this.vfxClient.privateKeyFromMneumonic(vfxMnemonic, 0);
+      const vfxPrivateKey = this.vfxClient.privateKeyFromMnemonic(vfxMnemonic, 0);
       vfxWallet = {
         mnemonic: vfxMnemonic,
-        private: vfxPrivateKey,
-        public: this.vfxClient.publicFromPrivate(vfxPrivateKey),
+        privateKey: vfxPrivateKey,
+        publicKey: this.vfxClient.publicFromPrivate(vfxPrivateKey),
         address: this.vfxClient.addressFromPrivate(vfxPrivateKey)
       };
     } else {
       const mnemonic = this.vfxClient.generateMnemonic(12);
-      const vfxPrivateKey = this.vfxClient.privateKeyFromMneumonic(mnemonic, 0);
+      const vfxPrivateKey = this.vfxClient.privateKeyFromMnemonic(mnemonic, 0);
       vfxWallet = {
         mnemonic,
-        private: vfxPrivateKey,
-        public: this.vfxClient.publicFromPrivate(vfxPrivateKey),
+        privateKey: vfxPrivateKey,
+        publicKey: this.vfxClient.publicFromPrivate(vfxPrivateKey),
         address: this.vfxClient.addressFromPrivate(vfxPrivateKey)
       };
     }
@@ -547,9 +559,8 @@ class CrossChainWalletApp {
       return {
         vfx: {
           address: this.wallet.vfx.address,
-          balance: vfxInfo.balance,
-          domain: vfxInfo.adnr,
-          transactions: vfxInfo.txCount
+          balance: vfxInfo?.balance ?? 0,
+          domain: vfxInfo?.adnr
         },
         bitcoin: {
           address: this.wallet.bitcoin.address,
@@ -571,8 +582,8 @@ class CrossChainWalletApp {
 
     return await this.vfxClient.sendCoin(
       {
-        private: this.wallet.vfx.private,
-        public: this.wallet.vfx.public,
+        privateKey: this.wallet.vfx.privateKey,
+        publicKey: this.wallet.vfx.publicKey,
         address: this.wallet.vfx.address
       },
       toAddress,
@@ -581,13 +592,13 @@ class CrossChainWalletApp {
   }
 
   // Send Bitcoin
-  async sendBitcoin(toAddress: string, amountSats: number, feeRate?: number) {
+  async sendBitcoin(toAddress: string, amountBtc: number, feeRate?: number) {
     if (!this.wallet) throw new Error('Wallet not initialized');
 
     return await this.btcClient.sendBtc(
       this.wallet.bitcoin.wif,
       toAddress,
-      amountSats,
+      amountBtc, // in BTC, not satoshis
       feeRate
     );
   }
@@ -646,7 +657,7 @@ demonstrateCrossChainApp().catch(console.error);
 ### User Experience
 - **Unified interfaces**: Present both networks seamlessly
 - **Clear network indicators**: Always show which network operations affect
-- **Gas/fee estimation**: Show costs for both networks
+- **Fee estimation**: Show costs for both networks (VFX fees are size-based and burned; Bitcoin fees follow the fee rate)
 
 ### Architecture
 - **Modular design**: Separate VFX and Bitcoin logic
@@ -657,8 +668,8 @@ demonstrateCrossChainApp().catch(console.error);
 
 Now that you understand cross-chain integration:
 
-1. **Build Advanced Apps**: Explore [Complete Applications](/build/sdk/examples/applications/)
-2. **See More Examples**: Check out [Code Snippets](/build/sdk/examples/snippets/)
+1. **See More Examples**: Check out [Code Snippets](/build/sdk/examples/snippets/)
+2. **Bitcoin-backed tokens**: Read about [vBTC](/build/vbtc/integration/)
 3. **API Deep Dive**: Study the [API References](/build/sdk/reference/vfx-client/)
 
 Cross-chain development opens up exciting possibilities. Start building the future of decentralized finance!

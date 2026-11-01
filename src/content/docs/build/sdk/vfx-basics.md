@@ -43,7 +43,7 @@ const client = new VfxClient(Network.Testnet);
 
 ## Step 2: Generate a Wallet
 
-There are several ways to create a VFX wallet. Let's explore the most common methods:
+There are several ways to create a VFX wallet. The most common methods:
 
 ### Method 1: Generate a Random Private Key
 
@@ -68,21 +68,25 @@ const mnemonic = client.generateMnemonic(12);
 console.log('Mnemonic:', mnemonic);
 
 // Derive a private key from the mnemonic
-const privateKey = client.privateKeyFromMneumonic(mnemonic, 0); // index 0
+const privateKey = client.privateKeyFromMnemonic(mnemonic, 0); // index 0
 const address = client.addressFromPrivate(privateKey);
 
 console.log('Address from mnemonic:', address);
 ```
 
+`privateKeyFromMnemonic` is the correctly spelled alias of the original `privateKeyFromMneumonic`. Both exist and derive the same key.
+
 ### Creating a Keypair Object
 
-For transactions, you'll need a complete keypair object:
+For transactions, you'll need a complete keypair object. Its fields are `privateKey`, `publicKey` and `address` (the `Keypair` type):
 
 ```typescript
-function createKeypair(privateKey: string) {
+import type { Keypair } from 'vfx-web-sdk';
+
+function createKeypair(privateKey: string): Keypair {
   return {
-    private: privateKey,
-    public: client.publicFromPrivate(privateKey),
+    privateKey,
+    publicKey: client.publicFromPrivate(privateKey),
     address: client.addressFromPrivate(privateKey)
   };
 }
@@ -92,7 +96,7 @@ const keypair = createKeypair(privateKey);
 
 ## Step 3: Check Address Details
 
-Before sending transactions, let's check an address's balance and information:
+Before sending transactions, check an address's balance and information:
 
 ```typescript
 async function checkBalance(address: string) {
@@ -101,7 +105,7 @@ async function checkBalance(address: string) {
 
     console.log('Address Details:');
     console.log('- Balance:', addressDetails.balance, 'VFX');
-    console.log('- Transaction Count:', addressDetails.txCount);
+    console.log('- Locked:', addressDetails.balanceLocked, 'VFX');
     console.log('- Domain:', addressDetails.adnr || 'None');
 
     return addressDetails;
@@ -114,22 +118,26 @@ async function checkBalance(address: string) {
 await checkBalance(keypair.address);
 ```
 
+`getAddressDetails` returns a `VfxAddress` (`address`, `balance`, `balanceTotal`, `balanceLocked`, `adnr`, `activated`, `deactivated`). An address the explorer has never seen comes back with a zero balance, and so does an API outage unless you pass `{ strict: true }`, which rethrows anything but a 404.
+
 ## Step 4: Send Your First Transaction
 
-Now let's send VFX tokens to another address:
+Now send VFX tokens to another address:
 
 ```typescript
-async function sendVfx(fromKeypair: any, toAddress: string, amount: number) {
+async function sendVfx(fromKeypair: Keypair, toAddress: string, amount: number) {
   try {
     console.log(`Sending ${amount} VFX from ${fromKeypair.address} to ${toAddress}`);
 
-    const result = await client.sendCoin(fromKeypair, toAddress, amount);
+    const hash = await client.sendCoin(fromKeypair, toAddress, amount);
 
-    console.log('Transaction successful!');
-    console.log('Transaction Hash:', result.txHash);
-    console.log('Status:', result.status);
+    if (!hash) {
+      console.log('Transaction was not sent');
+      return null;
+    }
 
-    return result;
+    console.log('Transaction Hash:', hash);
+    return hash;
   } catch (error) {
     console.error('Transaction failed:', error.message);
   }
@@ -137,8 +145,10 @@ async function sendVfx(fromKeypair: any, toAddress: string, amount: number) {
 
 // Example usage (make sure you have sufficient balance)
 const recipientAddress = 'VFX_RECIPIENT_ADDRESS_HERE';
-await sendVfx(keypair, recipientAddress, 100); // Send 100 VFX
+await sendVfx(keypair, recipientAddress, 1); // Send 1 VFX
 ```
+
+`sendCoin` resolves to the transaction hash, or `null` when the transaction failed before it reached the node (nothing was sent). It throws `TransactionDispatchError` when the request went out but no answer came back: look the hash up on the explorer before sending again. The recipient can also be a `.vfx` or `.btc` name.
 
 ## Step 5: Working with VFX Domains
 
@@ -158,8 +168,10 @@ await checkDomain('myawesomeapp.vfx');
 
 ### Purchase a Domain
 
+A `.vfx` name costs 5 VFX plus the network fee, and an address can hold only one.
+
 ```typescript
-async function buyDomain(keypair: any, domain: string) {
+async function buyDomain(keypair: Keypair, domain: string) {
   try {
     // Check if domain is available first
     const available = await client.domainAvailable(domain);
@@ -184,6 +196,8 @@ await buyDomain(keypair, 'myapp.vfx');
 
 ### Lookup Domain
 
+Pass the full name with its `.vfx` suffix. `lookupDomain` resolves to `null` for a name that does not exist.
+
 ```typescript
 async function lookupDomain(domain: string) {
   try {
@@ -204,6 +218,7 @@ Here's a complete example that puts everything together:
 
 ```typescript title="wallet-manager.ts"
 import { VfxClient, Network } from 'vfx-web-sdk';
+import type { Keypair } from 'vfx-web-sdk';
 
 class VfxWalletManager {
   private client: VfxClient;
@@ -215,13 +230,13 @@ class VfxWalletManager {
   // Create a new wallet
   createWallet() {
     const mnemonic = this.client.generateMnemonic(12);
-    const privateKey = this.client.privateKeyFromMneumonic(mnemonic, 0);
+    const privateKey = this.client.privateKeyFromMnemonic(mnemonic, 0);
 
     return {
       mnemonic,
       keypair: {
-        private: privateKey,
-        public: this.client.publicFromPrivate(privateKey),
+        privateKey,
+        publicKey: this.client.publicFromPrivate(privateKey),
         address: this.client.addressFromPrivate(privateKey)
       }
     };
@@ -229,11 +244,11 @@ class VfxWalletManager {
 
   // Restore wallet from mnemonic
   restoreWallet(mnemonic: string, index: number = 0) {
-    const privateKey = this.client.privateKeyFromMneumonic(mnemonic, index);
+    const privateKey = this.client.privateKeyFromMnemonic(mnemonic, index);
 
     return {
-      private: privateKey,
-      public: this.client.publicFromPrivate(privateKey),
+      privateKey,
+      publicKey: this.client.publicFromPrivate(privateKey),
       address: this.client.addressFromPrivate(privateKey)
     };
   }
@@ -244,7 +259,7 @@ class VfxWalletManager {
   }
 
   // Send transaction
-  async sendTransaction(fromKeypair: any, toAddress: string, amount: number) {
+  async sendTransaction(fromKeypair: Keypair, toAddress: string, amount: number) {
     return await this.client.sendCoin(fromKeypair, toAddress, amount);
   }
 }
@@ -264,7 +279,7 @@ async function main() {
   console.log('Wallet balance:', info.balance, 'VFX');
 
   // Note: You'll need testnet VFX to send transactions
-  // You can get testnet VFX from a faucet or by mining
+  // Get testnet VFX from the testnet faucet
 }
 
 main().catch(console.error);
@@ -293,18 +308,18 @@ Now that you understand VFX basics, you can:
 
 1. **Explore Bitcoin Integration**: Learn about [Bitcoin Basics](/build/sdk/bitcoin-basics/)
 2. **Build Cross-Chain Apps**: Check out the [Cross-Chain Guide](/build/sdk/cross-chain/)
-3. **See Examples**: Browse [Complete Applications](/build/sdk/examples/applications/)
+3. **See Examples**: Browse [Code Snippets](/build/sdk/examples/snippets/)
 
 ## Common Issues
 
 ### Transaction Fails with Insufficient Balance
-Make sure your wallet has enough VFX tokens. On testnet, you may need to get tokens from a faucet.
+Make sure your wallet has enough VFX tokens. On testnet, get tokens from the faucet (see [Testnet](/build/testnet/#getting-test-funds)).
 
 ### Domain Purchase Fails
-Domains cost VFX tokens. Ensure you have sufficient balance and the domain is available.
+A `.vfx` name costs 5 VFX plus the fee. Ensure you have sufficient balance, the name is available, and the address does not already hold a name. Names cannot be bought from a reserve account.
 
 ### Network Connection Issues
-Check your internet connection and try again. The SDK will automatically retry failed requests.
+Check your internet connection and try again. The SDK does not retry failed requests on its own; each request times out after 30 seconds by default (set `timeoutMs` in the client options to change it).
 
 ## Getting Help
 

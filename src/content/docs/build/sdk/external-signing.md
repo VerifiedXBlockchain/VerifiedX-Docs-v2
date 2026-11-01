@@ -16,8 +16,9 @@ The VerifiedX Web SDK can sign every transaction with a key it never sees. Inste
 ## The Signer Contract
 
 ```typescript
-import { Signer } from 'vfx-web-sdk';
+import type { Signer } from 'vfx-web-sdk';
 
+// The shape of the exported Signer type:
 interface Signer {
   address: string;   // the VFX address the signature is verified against
   publicKey: string; // uncompressed secp256k1 public key, hex, with or without the 04 prefix
@@ -43,7 +44,6 @@ Everywhere the SDK signs:
 | All token methods (`deployToken`, `mintToken`, `transferToken`, …) | first argument |
 | Reserve account methods (`registerReserveAccount`, `callBackReserveTransaction`, `recoverReserveAccount`) | first argument |
 | vBTC flows (`transferVbtc`, `transferVbtcMulti`, `createVbtcToken`, withdrawals) | `signer` in the params object, in place of `privateKey` (passing both is an error) |
-| `RawTransactionService` | `signer` option |
 
 ## Step 1: Derive the Address from the Public Key
 
@@ -61,13 +61,15 @@ Fund this address like any other. For a reserve (vault) account held in an HSM, 
 ## Step 2: Build the Signer and Use It
 
 ```typescript
+import type { Signer } from 'vfx-web-sdk';
+
 const signer: Signer = {
   address,
   publicKey,
   signDigest: (digestHex) => hsm.signDigest(digestHex), // returns DER
 };
 
-await client.sendCoin(signer, 'xRecipient...', 10);
+await client.sendCoin(signer, 'RRecipient...', 10); // mainnet addresses start with R, testnet with x
 await client.mintToken(signer, { scIdentifier, amount: 1000 });
 await client.transferVbtc({ scIdentifier, fromAddress: signer.address, toAddress, amount: 0.5, signer });
 ```
@@ -78,7 +80,8 @@ A sketch using the AWS SDK v3. KMS returns the public key as a DER `SubjectPubli
 
 ```typescript
 import { KMSClient, GetPublicKeyCommand, SignCommand } from '@aws-sdk/client-kms';
-import { VfxClient, Network, Signer } from 'vfx-web-sdk';
+import { VfxClient, Network } from 'vfx-web-sdk';
+import type { Signer } from 'vfx-web-sdk';
 
 const kms = new KMSClient({ region: 'us-east-1' });
 const KeyId = 'arn:aws:kms:...:key/...'; // key spec ECC_SECG_P256K1, usage SIGN_VERIFY
@@ -106,7 +109,7 @@ async function kmsSigner(client: VfxClient): Promise<Signer> {
 
 const client = new VfxClient(Network.Mainnet);
 const signer = await kmsSigner(client);
-await client.sendCoin(signer, 'xRecipient...', 1);
+await client.sendCoin(signer, 'RRecipient...', 1);
 ```
 
 ## Testing a Signer Without Spending
@@ -115,7 +118,7 @@ A `dryRun` client signs and has the node verify the transaction, then stops befo
 
 ```typescript
 const dry = new VfxClient(Network.Mainnet, true);
-const hash = await dry.sendCoin(signer, 'xRecipient...', 0.01);
+const hash = await dry.sendCoin(signer, 'RRecipient...', 0.01);
 // a hash means the node verified the signature; nothing was broadcast
 ```
 

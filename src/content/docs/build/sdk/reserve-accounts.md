@@ -19,7 +19,7 @@ A reserve account (also called a vault) is an `xRBX…` address whose outgoing s
 - **Delayed sends.** Every send from an activated vault carries an unlock time, at least 24 hours ahead. Until then the amount shows as locked: it has left the vault's spendable balance but has not reached the recipient.
 - **Call back.** Before the unlock time, the vault can cancel a pending send and the funds return.
 - **Recovery.** The recovery key signs a `Recover()` that sweeps the vault's balance to the recovery address and permanently deactivates the vault.
-- **Scope.** The delay applies to VFX, vBTC and NFT sends. A fungible-token transfer from a vault carries the unlock time but settles immediately, so a vault protects treasury, not fund tokens. Domain operations, token deployment and multi-contract vBTC transfers are refused from a vault.
+- **Scope.** The delay applies to VFX, vBTC and NFT sends. A fungible-token transfer from a vault carries the unlock time but settles immediately, so a vault protects treasury, not fund tokens. Domain operations, token deployment, multi-contract vBTC transfers and multi-vault vBTC withdrawals are refused from a vault.
 
 ## Step 1: Derive the Vault Keys
 
@@ -66,7 +66,7 @@ Confirm activation before sending from the vault:
 
 ```typescript
 const details = await client.getAddressDetails(vault.address);
-// { address: 'xRBX...', balance: 1.49999273, balanceLocked: 0, activated: true, deactivated: false, ... }
+// { address: 'xRBX...', balance: 0.99999273, balanceLocked: 0, activated: true, deactivated: false, ... }
 ```
 
 ## Step 3: Send from the Vault
@@ -79,8 +79,8 @@ const later = await client.sendCoin(vault, 'xRecipient...', 100, { unlockHours: 
 The SDK enforces the 24-hour minimum (the network requires slightly less) and refuses `unlockHours` on an ordinary account. While a send is pending, `getAddressDetails` shows it in `balanceLocked`:
 
 ```typescript
-// after sending 0.25 from a vault holding 1.5:
-// { balance: 1.24998667, balanceTotal: 1.49998667, balanceLocked: 0.25, ... }
+// after sending 0.25 from a vault holding 1:
+// { balance: 0.74998667, balanceTotal: 0.99998667, balanceLocked: 0.25, ... }
 ```
 
 ## Step 4: Call a Send Back
@@ -128,7 +128,7 @@ See [External Signing](/build/sdk/external-signing/) for the `Signer` contract.
 The SDK's minimum is 24 hours, matching the wallet.
 
 ### `... cannot be sent from a reserve account`
-Domain purchases and management, token deployment and multi-contract vBTC transfers are not allowed from a vault. Use an ordinary account.
+Domain purchases and management, token deployment, multi-contract vBTC transfers and multi-vault vBTC withdrawals are not allowed from a vault. Use an ordinary account.
 
 ### `Invalid Transaction` on register
 The vault needs at least 4.5 VFX (4 for activation plus the 0.5 floor) and the funding transaction must be confirmed first.

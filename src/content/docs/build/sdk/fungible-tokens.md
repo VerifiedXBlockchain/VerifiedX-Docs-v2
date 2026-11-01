@@ -11,7 +11,7 @@ This guide walks through the full life of a fungible (VFX20) token with the Veri
 ## Prerequisites
 
 - `vfx-web-sdk` 3.4.0 or later
-- A funded VFX address. Token operations pay only the ordinary network fee in VFX (a few thousandths of a VFX each); there is no deployment charge beyond that.
+- A funded VFX address. Token operations pay only the ordinary size-based network fee in VFX, which is burned (well under a thousandth of a VFX each: on testnet a deploy paid about 0.00025 VFX and a transfer about 0.00001 VFX); there is no deployment charge beyond that.
 - Testnet is strongly recommended while learning: a ban cannot be undone, and a token cannot be deleted.
 
 ## How Tokens Work on VerifiedX
@@ -64,7 +64,7 @@ Without an `image`, the network assigns a default token image.
 
 ## Step 3: Wait for Confirmation
 
-Mutating methods return the transaction hash once the node accepts the transaction. Blocks arrive roughly every 10 seconds, and Spyglass indexes them shortly after. Before acting on a result, confirm it by reading state back:
+Mutating methods return the transaction hash once the node accepts the transaction. Blocks arrive about every 12 seconds, and Spyglass indexes them shortly after (on testnet a new token showed up about 30 seconds after the deploy). Before acting on a result, confirm it by reading state back:
 
 ```typescript
 async function waitForToken(scIdentifier: string) {
@@ -155,12 +155,15 @@ await client.createTokenVoteTopic(owner, {
   name: 'Distribute Q3',
   description: 'Pay out the Q3 distribution',
   votingDays: 7,
-  minimumVoteRequirement: 51,
+  minimumVoteRequirement: 100, // minimum token balance a holder needs to vote
 });
 
 const topics = await client.listTokenVotingTopics(scIdentifier);
+// holder: the keypair (or Signer) of an address that holds the token
 await client.castTokenVote(holder, { scIdentifier, topicUid: topics.results[0].topic_id, vote: true });
 ```
+
+`minimumVoteRequirement` is a token balance, not a percentage: the network refuses a vote from a holder whose balance of the token is below it ("Insufficient Balance to cast a vote."), and each holder votes once per topic. Read the tally with `getTokenVotingTopic(topicId)`, whose `vote_data` lists the votes and the yes and no counts.
 
 ## Dry Runs
 
@@ -171,6 +174,8 @@ const dry = new VfxClient(Network.Mainnet, true);
 const check = await dry.deployToken(owner, { name: 'Acme Fund', ticker: 'ACME', initialSupply: 1_000_000 });
 // check.scIdentifier and check.transactionHash are returned; nothing is broadcast
 ```
+
+The node verifies the transaction against the owner's real balance, so the dry run needs a funded address on that network; for an address with no VFX it resolves to `null`.
 
 ## Reserve Accounts and Tokens
 
