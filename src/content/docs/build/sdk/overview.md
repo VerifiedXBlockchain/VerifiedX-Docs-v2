@@ -97,6 +97,7 @@ This documentation is organized into several sections:
 ## Community and Support
 
 - **GitHub**: [VerifiedX WebSDK Repository](https://github.com/VerifiedXBlockchain/VerifiedX-WebSdk)
+- **Examples**: [VerifiedX WebSDK Examples](https://github.com/VerifiedXBlockchain/VerifiedX-WebSdkExamples)
 - **Issues**: [Report bugs and request features](https://github.com/VerifiedXBlockchain/VerifiedX-WebSdk/issues)
 - **Discord**: [Join the community](https://discord.gg/7cd5ebDQCj)
 

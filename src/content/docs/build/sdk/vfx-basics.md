@@ -196,7 +196,7 @@ await buyDomain(keypair, 'myapp.vfx');
 
 ### Lookup Domain
 
-Pass the full name with its `.vfx` suffix. `lookupDomain` resolves to `null` for a name that does not exist.
+Pass the full name, lowercase, with its `.vfx` suffix. `lookupDomain` and `domainAvailable` send the name as given, so an uppercase or suffix-less form of a taken name reads as missing or available; `buyVfxDomain` lowercases the name and adds the suffix itself. `lookupDomain` resolves to `null` for a name that does not exist.
 
 ```typescript
 async function lookupDomain(domain: string) {

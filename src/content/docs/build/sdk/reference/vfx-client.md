@@ -220,7 +220,7 @@ Purchases a VFX domain name. Costs 5 VFX plus the fee.
 
 **Parameters:**
 - `keypair` (Keypair | Signer): The buyer
-- `domain` (string): The domain name to purchase (e.g., "myapp.vfx"; the suffix is added when missing)
+- `domain` (string): The domain name to purchase (e.g., "myapp.vfx"; it is lowercased and the suffix is added when missing, before the availability check)
 
 **Returns:** `Promise<string | null>` - The transaction hash, or `null` when nothing was sent. It throws for an invalid name, a taken name, a buyer that already has a domain, or a reserve-account buyer; availability is checked strictly, so an API outage fails the purchase
 
@@ -622,7 +622,7 @@ console.log(`Domain: ${details.adnr || 'None'}`);
 Checks if a domain name is available for purchase.
 
 **Parameters:**
-- `domain` (string): The full name to check, with its `.vfx` or `.btc` suffix
+- `domain` (string): The full name to check, lowercase, with its `.vfx` or `.btc` suffix. The name is sent as given: an uppercase or suffix-less form of a taken name reads as available
 - `options` (`{ strict?: boolean }`, optional): By default any failure reads as "available". With `strict: true` only a 404 does and other errors are thrown; use it before a purchase decision
 
 **Returns:** `Promise<boolean>` - True if available, false if taken
@@ -642,7 +642,7 @@ if (isAvailable) {
 Resolves a `.vfx` name to its VFX address.
 
 **Parameters:**
-- `domain` (string): The full name, with its `.vfx` suffix (a bare name does not resolve)
+- `domain` (string): The full name, lowercase, with its `.vfx` suffix (a bare or uppercase name does not resolve)
 - `options` (`{ strict?: boolean }`, optional): With `strict: true`, errors other than a 404 are thrown instead of read as "not found"
 
 **Returns:** `Promise<string | null>` - The VFX address, or `null` when the name does not exist
@@ -658,7 +658,7 @@ console.log(address ? `example.vfx resolves to: ${address}` : "Domain not found"
 Resolves a `.btc` name to its Bitcoin address.
 
 **Parameters:**
-- `domain` (string): The full name, with its `.btc` suffix
+- `domain` (string): The full name, lowercase, with its `.btc` suffix
 
 **Returns:** `Promise<string | null>` - The Bitcoin address, or `null` when the name does not exist (also for a `.vfx` name). It never throws
 
