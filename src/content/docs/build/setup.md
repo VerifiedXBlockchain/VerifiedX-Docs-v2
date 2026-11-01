@@ -142,7 +142,7 @@ The point of this section is to outline the config file setup and features it ha
 
    - Type `boolean`
    - Ex: `AlwaysRequireAPIPassword=true`
-   - If set to true then you must include the password in all API requests, as the last path segment (`/api/V1/<Action>/{password}`).
+   - If set to true then you must include the password in all API requests, as the segment before the action (`/api/V1/{password}/<Action>`, for example `/api/V1/{password}/GetWalletInfo`).
 
 7. APICallURL (default is null)
 
@@ -546,7 +546,7 @@ These are the most relevant config options:
 
    - Type boolean
    - Ex: `AlwaysRequireAPIPassword=true`
-   - If set to true then you must include the password in all API requests, as the last path segment (`/api/V1/<Action>/{password}`).
+   - If set to true then you must include the password in all API requests, as the segment before the action (`/api/V1/{password}/<Action>`, for example `/api/V1/{password}/GetWalletInfo`).
 
 7. APICallURL (default is null)
 

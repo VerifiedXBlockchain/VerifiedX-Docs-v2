@@ -51,7 +51,7 @@ A restart of the CLI is required after making changes. Write one `Key=Value` per
 6.	AlwaysRequireAPIPassword (default is false)
 	+ a.	Type boolean
 	+ b.	Ex: AlwaysRequireAPIPassword=true
-	+ c.	If set to true then you must include the password in all API requests, as the last path segment (`/api/V1/<Action>/{password}`). A missing or wrong password returns 403.
+	+ c.	If set to true then you must include the password in all API requests, as the segment before the action (`/api/V1/{password}/<Action>`, for example `/api/V1/{password}/GetWalletInfo`). A missing or wrong password returns 403.
 
 7.	APICallURL (default is null)
 	+ a.	Type string

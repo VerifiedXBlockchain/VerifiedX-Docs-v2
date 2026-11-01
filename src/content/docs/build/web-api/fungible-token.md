@@ -170,7 +170,7 @@ Returns one voting topic, in the same format as a list result.
 - `from_address`: Address that created the topic
 - `name`: Short title of the proposal
 - `description`: Description of the proposal
-- `vote_requirement`: Percentage of yes votes the topic asks for
+- `vote_requirement`: Minimum token balance a holder needs to vote
 - `created_at`: When the topic was created
 - `voting_ends_at`: When voting ends
 - `vote_data.votes`: Each vote cast, with the voter's `address`, its `value` (`true` = yes) and `created_at`

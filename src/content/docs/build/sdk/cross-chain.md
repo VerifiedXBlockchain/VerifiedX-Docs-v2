@@ -435,13 +435,27 @@ class CrossChainDomainService {
         throw new Error(`${name} is not available`);
       }
 
-      // Purchase the .vfx name (5 VFX)
+      // Purchase the .vfx name (5 VFX). buyVfxDomain resolves to the transaction hash, or null when nothing was sent.
       const vfxResult = await this.vfxClient.buyVfxDomain(vfxKeypair, vfxDomain);
+      if (!vfxResult) {
+        throw new Error(`${vfxDomain} was not purchased (insufficient balance or the transaction was refused)`);
+      }
       console.log(`Domain ${vfxDomain} registered for VFX address: ${vfxKeypair.address}`);
 
       // Purchase the .btc name (5 VFX), linking the Bitcoin address to this VFX account
       const btcResult = await this.vfxClient.buyBtcDomain(vfxKeypair, btcDomain, btcPrivateKey);
       const bitcoinAddress = this.btcClient.addressFromPrivate(btcPrivateKey).address;
+      if (!btcResult) {
+        // The .vfx name is already bought: return its hash so the caller can retry only the .btc purchase
+        console.error(`${btcDomain} was not purchased; ${vfxDomain} is registered (${vfxResult})`);
+        return {
+          success: false,
+          error: `${btcDomain} was not purchased`,
+          name,
+          vfxAddress: vfxKeypair.address,
+          transactions: { vfx: vfxResult, btc: null }
+        };
+      }
       console.log(`Domain ${btcDomain} registered for Bitcoin address: ${bitcoinAddress}`);
 
       return {
