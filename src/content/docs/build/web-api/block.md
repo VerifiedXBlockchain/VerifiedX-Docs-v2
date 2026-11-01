@@ -23,7 +23,7 @@ GET /api/blocks/
 Returns a paginated list of blocks, ordered by height (newest first). Each result is a full block object, including its transactions.
 
 **Query Parameters:**
-- `search`: Search by hash, height, validator address, or validator name
+- `search`: An all-digit term matches that exact height. Any other term of 3 characters or more matches blocks whose hash or validator address starts with it, or whose validator name starts with it (case-insensitive); a shorter term matches nothing.
 - `ordering`: Order results (`-height` or `height`)
 - `master_node`: Filter by validator address
 - `page` (integer): Page number
@@ -72,7 +72,7 @@ Returns a paginated list of blocks, ordered by height (newest first). Each resul
 ```
 
 :::caution
-On mainnet a `search` by height scans the whole block table and can time out. To fetch a block by height, use `GET /api/blocks/{height}/` instead.
+Mainnet still serves the older search until the explorer update reaches it. There, a `search` by height scans the whole block table and can time out, so fetch a block by height with `GET /api/blocks/{height}/` instead.
 :::
 
 ### Get Block by Height

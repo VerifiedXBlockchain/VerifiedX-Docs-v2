@@ -62,7 +62,7 @@ Returns the live VFX price, fetched from the exchange ticker at request time.
 GET /api/price/latest/
 ```
 
-Returns the most recent recorded price.
+Returns the most recent recorded price. When no price has been recorded, it answers `404` with `{"message": "No price recorded"}`.
 
 **Response:**
 ```json

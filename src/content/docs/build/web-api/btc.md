@@ -22,15 +22,11 @@ The BTC API of the VerifiedX explorer provides Bitcoin address information and v
 GET /api/btc/address/{address}/
 ```
 
-Returns a Bitcoin address's confirmed balance, its transactions from the last seven days and its UTXOs, read from a third-party Bitcoin data provider.
-
-:::caution
-On 2026-11-01 this endpoint answered `500` on both networks. Use a Bitcoin explorer or the node's BTC routes for address data until it is fixed.
-:::
+Returns a Bitcoin address's confirmed balance, its confirmed transaction history and its UTXOs, read from Esplora: the VerifiedX signet's Esplora on testnet, and `mempool.space` then `blockstream.info` on mainnet.
 
 **Parameters:**
 - `address` (string): The Bitcoin address
-- `offset` (query parameter): Pagination offset for transactions and UTXOs (default: 0, 50 per page)
+- `offset` (query parameter): Pagination offset for transactions and UTXOs, from `0` to `100` (default: 0, 50 per page). Any other value answers `400`.
 
 **Response:**
 ```json
@@ -41,11 +37,11 @@ On 2026-11-01 this endpoint answered `500` on both networks. Use a Bitcoin explo
     "results": [
       {
         "id": "abc123...",
-        "index": 0,
+        "index": null,
         "hash": "abc123...",
         "recipients": [{ "address": "bc1q...", "amount": "0.0005" }],
         "senders": [{ "address": "bc1q...", "amount": "0.00051" }],
-        "timestamp": "abc123...",
+        "timestamp": 1793534253,
         "fee": "0.00001"
       }
     ]
@@ -66,6 +62,14 @@ On 2026-11-01 this endpoint answered `500` on both networks. Use a Bitcoin explo
   }
 }
 ```
+
+- Transactions are the address's confirmed history, newest first. `timestamp` is the block time as a Unix timestamp in seconds, and `index` is always `null`.
+- UTXOs are listed newest first, paged by the same `offset`. `utxos.total` is `null`, with an empty list, when the provider will not list the address's UTXOs (public Esplora servers refuse addresses with more than 500).
+
+**Status Codes:**
+- `200 OK`: Address data returned
+- `400 Bad Request`: A malformed address, an address of the other network, or an `offset` outside `0` to `100`
+- `503 Service Unavailable`: No provider answered within the 20-second budget for the lookup; `{"message": "Bitcoin address data is unavailable, try again later"}`
 
 ### Broadcast a Bitcoin Transaction
 ```http
@@ -231,7 +235,7 @@ The `/api/btc/vbtc-v2/…/prepare/` and `…/send/` routes forward raw builds an
 |---|---|
 | `POST /api/btc/vbtc-v2/ceremony/prepare/` | `owner_address` |
 | `POST /api/btc/vbtc-v2/ceremony/execute/` | `ceremony_id`, `session_id`, `owner_address`, `start_signature`, `start_timestamp`, `share_distribution_signature`, `share_distribution_timestamp` |
-| `GET /api/btc/vbtc-v2/ceremony/{ceremony_id}/` | (ceremony status; an unknown id answers `500` "Ceremony not found") |
+| `GET /api/btc/vbtc-v2/ceremony/{ceremony_id}/` | (ceremony status; an unknown id answers `404` "Ceremony not found", and a node that cannot be reached `503`) |
 | `POST /api/btc/vbtc-v2/create/prepare/` | `owner_address`, `name`, `description`, `ticker`, `ceremony_id`, `timestamp`, `unique_id`, `owner_signature` |
 | `POST /api/btc/vbtc-v2/create/send/` | `hash`, `signature`, `public_key` |
 | `POST /api/btc/vbtc-v2/transfer/prepare/` | `sc_identifier`, `from_address`, `to_address`, `amount` |
@@ -259,12 +263,13 @@ The explorer has no route for a fee raise or release; send those to a node.
 
 ### Bitcoin Address Data
 - `balance`: Confirmed Bitcoin balance in BTC, as a string
-- `transactions.total`, `utxos.total`: Totals reported by the data provider
+- `transactions.total`: The address's confirmed transaction count
+- `utxos.total`: The address's UTXO count, or `null` when the provider will not list them
 
 ## Notes
 
 - vBTC is Bitcoin held one to one in vaults whose keys are split among VerifiedX validators
-- vBTC V2 amounts are JSON numbers in BTC; the Bitcoin address endpoint returns provider amounts as strings
+- vBTC V2 amounts are JSON numbers in BTC; the Bitcoin address endpoint returns amounts as strings in BTC
 - UTXOs (Unspent Transaction Outputs) are used for Bitcoin transaction construction
 - Read endpoints are cached for performance
 - Bitcoin address validation follows standard Bitcoin address formats

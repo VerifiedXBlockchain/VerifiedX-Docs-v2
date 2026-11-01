@@ -18,7 +18,10 @@ The Transaction API provides endpoints for retrieving transaction information, i
 Every endpoint returns transactions in the format shown under Get Transaction Details. The list endpoints are paginated with `count`, `page`, `num_pages` and `results`, newest first.
 
 **Query Parameters (all list endpoints):**
-- `search`: Search by transaction hash, sender or recipient address
+- `search`: Transactions whose hash, sender or recipient address starts with the term (case-sensitive). A term shorter than 4 characters matches nothing.
+- `type`: One transaction type number, or a comma-separated list such as `0,1` (see [Transaction Types](#transaction-types))
+- `from_address`: Exact sender address
+- `to_address`: Exact recipient address
 - `ordering`: `date_crafted` or `-date_crafted` (default)
 - `reverse`: `true` reverses the order
 - `page` (integer): Page number

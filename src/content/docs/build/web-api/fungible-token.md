@@ -23,6 +23,7 @@ GET /api/fungible-tokens/
 Returns a paginated list of all fungible tokens on the VFX blockchain, newest first.
 
 **Query Parameters:**
+- `search`: Tokens whose name, ticker, contract identifier or owner address contains the term
 - `page` (integer): Page number
 - `limit` (integer): Results per page (default 30, max 500)
 

@@ -34,6 +34,8 @@ GET /api/metrics/
 - `circulating_supply`, `lifetime_supply`: 200,000,000 minus `total_burned`; both are the same figure because the supply is fixed and fully circulated
 - `block_time`: average seconds between blocks over the last five minutes (`0` when fewer than two blocks fall in that window)
 
+A burn category with no transactions yet, such as shop registrations on testnet, counts as zero.
+
 The `ordering`, `search`, `page`, and `limit` parameters shown for this endpoint in Swagger are ignored.
 
 ## Block Cadence
@@ -92,9 +94,9 @@ GET /api/circulation/
 - `active_master_nodes`, `total_master_nodes`: validators active now, and every validator address the explorer has recorded
 - `total_addresses`: addresses known to the explorer
 - `total_transactions`: indexed transactions
-- `cli_version`: a static string in the current service; do not use it to detect the Core release
+- `cli_version`: the CLI version reported by the explorer's node, in the form `<major>.<minor>.<revision>.<build>-beta`, cached for ten minutes. When the node does not answer, the field falls back to the static string `5.0.1.xxx-beta` for a minute.
 
-Values refresh at most every 30 seconds.
+Values refresh at most every 30 seconds; a request that finds them older syncs them first and serves the fresh figures. Empty totals count as zero.
 
 Two plain-text variants serve supply trackers:
 
