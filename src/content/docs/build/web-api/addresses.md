@@ -23,6 +23,8 @@ GET /api/addresses/
 Returns a paginated list of all addresses with basic information.
 
 **Query Parameters:**
+- `ordering`: `balance` or `address`; prefix with `-` for descending order, for example `-balance`
+- `search`: Addresses that start with the term (case-sensitive). A term shorter than 4 characters matches nothing.
 - `page` (integer): Page number
 - `limit` (integer): Results per page (default 30, max 500)
 
@@ -55,7 +57,7 @@ Returns a paginated list of all addresses with basic information.
 GET /api/addresses/top-holders/
 ```
 
-Returns the top 100 addresses by balance, sorted in descending order. The list is not paginated. Each balance is computed from indexed transactions: `received` is the sum of incoming amounts, `sent` is the sum of outgoing amounts plus fees, and `balance` is `received - sent`.
+Returns the 100 addresses with the largest balances, sorted in descending order. The list is not paginated and is cached on the server. `balance` is the same balance the address list serves, and system names such as `Adnr_Base` are left out. Each row has the address list's shape.
 
 **Response:**
 ```json
@@ -63,14 +65,13 @@ Returns the top 100 addresses by balance, sorted in descending order. The list i
   {
     "address": "R9Ng1rDS2YgB7R2bJMU3RKzVXSriXLRsBR",
     "balance": 50000.123456789,
-    "received": 60000.0,
-    "sent": 9999.876543211
+    "adnr": null
   }
 ]
 ```
 
 :::caution
-On mainnet this aggregate runs over the full transaction history and can take longer than a typical client timeout.
+Mainnet still serves the older version of this endpoint until the explorer update reaches it. There, each row carries `received` and `sent` totals computed over the full transaction history, and the request can take longer than a typical client timeout.
 :::
 
 ### Get Address Details
