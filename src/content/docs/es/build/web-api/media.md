@@ -1,5 +1,5 @@
 ---
-sourceHash: 9d35a4c7bb04
+sourceHash: "fd469eeb26ff"
 title: "Web API: Media"
 description: Endpoints de la API del explorador para subir recursos multimedia y asociarlos con NFTs y contratos inteligentes.
 sidebar:
@@ -7,7 +7,7 @@ sidebar:
   order: 11
 ---
 
-La API de Media ofrece endpoints para subir y gestionar recursos multimedia asociados a NFTs y contratos inteligentes en la blockchain de VFX.
+La API de Media sube archivos multimedia para NFTs y contratos inteligentes y registra qué archivos pertenecen a un contrato inteligente. Los archivos se guardan en el bucket público de recursos del explorador: `https://rbx-nft-web-assets.s3.amazonaws.com/` en mainnet y `https://rbx-nft-web-assets-testnet.s3.amazonaws.com/` en testnet.
 
 ## URL base
 ```
@@ -21,45 +21,31 @@ La API de Media ofrece endpoints para subir y gestionar recursos multimedia asoc
 POST /api/media/
 ```
 
-Sube un archivo multimedia y devuelve los metadatos y las URL asociados.
+Sube un archivo y devuelve su URL pública. El archivo se guarda en una carpeta aleatoria de 32 caracteres con su nombre de archivo original.
 
 **Solicitud (multipart/form-data):**
-- `file`: el archivo multimedia que se sube (imagen, video, audio, etc.)
-- `title` (opcional): título del recurso multimedia
-- `description` (opcional): descripción del recurso multimedia
-- `tags` (opcional): etiquetas separadas por comas para categorizarlo
+- `file`: el archivo multimedia que se sube (máximo 150 MiB)
+
+**Ejemplo:**
+```bash
+curl -X POST https://data-testnet.verifiedx.io/api/media/ -F "file=@artwork.png"
+```
 
 **Respuesta:**
 ```json
 {
-  "success": true,
-  "asset_id": "asset_123...",
-  "file_name": "artwork.png",
-  "file_size": 1048576,
-  "content_type": "image/png",
-  "urls": {
-    "original": "https://media.vfx.io/assets/original/asset_123.png",
-    "thumbnail": "https://media.vfx.io/assets/thumb/asset_123_thumb.png",
-    "preview": "https://media.vfx.io/assets/preview/asset_123_preview.png"
-  },
-  "metadata": {
-    "width": 1920,
-    "height": 1080,
-    "format": "PNG",
-    "color_space": "sRGB"
-  },
-  "upload_date": "2024-01-01T12:00:00Z",
-  "ipfs_hash": "QmX5Y8Z9...",
-  "checksum": "sha256:abc123..."
+  "url": "https://rbx-nft-web-assets.s3.amazonaws.com/jFhps372uEHEFHHSuYhWCI4c5LNUSxmf/artwork.png"
 }
 ```
+
+Una solicitud sin archivo responde `400` con `{"detail": "No file in request."}`; un archivo más grande responde `400` con `File exceeds max size: …`.
 
 ### Asociar multimedia con un contrato inteligente
 ```http
 POST /api/media/associate-media/{sc_id}/
 ```
 
-Asocia los recursos multimedia subidos con un contrato inteligente específico (normalmente NFTs).
+Establece las URL de los recursos de un contrato inteligente de NFT. El mapa reemplaza los `asset_urls` existentes del contrato.
 
 **Parámetros:**
 - `sc_id` (string): identificador del contrato inteligente
@@ -67,115 +53,21 @@ Asocia los recursos multimedia subidos con un contrato inteligente específico (
 **Solicitud:**
 ```json
 {
-  "asset_ids": ["asset_123...", "asset_456..."],
-  "primary_asset": "asset_123...",
-  "metadata": {
-    "title": "Digital Artwork Collection",
-    "description": "A beautiful collection of digital art pieces",
-    "attributes": [
-      {
-        "trait_type": "Background",
-        "value": "Blue"
-      },
-      {
-        "trait_type": "Style",
-        "value": "Abstract"
-      }
-    ]
+  "media_map": {
+    "artwork.png": "https://rbx-nft-web-assets.s3.amazonaws.com/jFhps372uEHEFHHSuYhWCI4c5LNUSxmf/artwork.png"
   }
 }
 ```
 
-**Respuesta:**
-```json
-{
-  "success": true,
-  "smart_contract_id": "SC123...",
-  "associated_assets": [
-    {
-      "asset_id": "asset_123...",
-      "type": "primary",
-      "url": "https://media.vfx.io/assets/original/asset_123.png",
-      "thumbnail": "https://media.vfx.io/assets/thumb/asset_123_thumb.png"
-    },
-    {
-      "asset_id": "asset_456...",
-      "type": "additional",
-      "url": "https://media.vfx.io/assets/original/asset_456.png",
-      "thumbnail": "https://media.vfx.io/assets/thumb/asset_456_thumb.png"
-    }
-  ],
-  "metadata_updated": true,
-  "ipfs_metadata_hash": "QmMetadata123..."
-}
-```
-
-## Tipos de archivo compatibles
-
-### Imágenes
-- **PNG**: recomendado para obras con transparencia
-- **JPEG/JPG**: adecuado para fotografías e imágenes complejas
-- **GIF**: admite animación
-- **WEBP**: formato moderno con buena compresión
-- **SVG**: gráficos vectoriales (con restricciones)
-
-### Videos
-- **MP4**: se recomienda el códec H.264/H.265
-- **WEBM**: códec VP8/VP9
-- **MOV**: formato QuickTime
-
-### Audio
-- **MP3**: formato de audio estándar
-- **WAV**: audio sin comprimir
-- **OGG**: formato de audio de código abierto
-
-### Documentos
-- **PDF**: formato de documento para whitepapers, etc.
+**Respuesta:** el NFT actualizado, en el formato descrito en la página [NFT](/es/build/web-api/nft/). Un `sc_id` desconocido responde `400` con `{"detail": "Smart contract with identifier of … not found"}`.
 
 ## Descripción de los campos
 
-### Respuesta de la subida
-- `asset_id`: identificador único del recurso subido
-- `file_name`: nombre original del archivo
-- `file_size`: tamaño del archivo en bytes
-- `content_type`: tipo MIME del archivo
-- `urls`: versiones del recurso en distintos tamaños
-- `metadata`: metadatos técnicos extraídos del archivo
-- `ipfs_hash`: hash de IPFS para el almacenamiento descentralizado
-- `checksum`: hash SHA-256 para verificar la integridad
-
-### Respuesta de la asociación
-- `smart_contract_id`: el identificador del contrato inteligente asociado
-- `associated_assets`: lista de los recursos ahora vinculados al contrato inteligente
-- `type`: tipo de recurso (primary, additional, thumbnail, etc.)
-- `metadata_updated`: si se actualizaron los metadatos del NFT
-- `ipfs_metadata_hash`: hash de IPFS de los metadatos completos
-
-## Límites de tamaño de archivo
-
-- **Imágenes**: máximo 50 MB
-- **Videos**: máximo 500 MB
-- **Audio**: máximo 100 MB
-- **Documentos**: máximo 25 MB
-
-## Funciones de procesamiento
-
-### Generación automática
-- **Miniaturas**: miniaturas cuadradas de 150x150 px
-- **Vistas previas**: vistas previas de 800x600 px como máximo
-- **Subida a IPFS**: almacenamiento descentralizado automático
-
-### Extracción de metadatos
-- Dimensiones de la imagen y perfiles de color
-- Duración del video e información del códec
-- Tasa de bits y duración del audio
-- Datos EXIF (con filtrado por privacidad)
+- `url`: URL pública del archivo subido
+- `media_map`: mapa de nombre de archivo a URL del archivo; se convierte en los `asset_urls` del NFT
 
 ## Notas
 
-- Todos los archivos subidos se respaldan automáticamente en IPFS
-- Los recursos multimedia son inmutables una vez asociados a contratos inteligentes
-- Las miniaturas y vistas previas se generan automáticamente para los formatos compatibles
-- Los recursos subidos pueden estar sujetos a moderación de contenido
-- Los archivos grandes pueden tardar en procesarse y en generar vistas previas
-- Los hashes de IPFS garantizan un acceso permanente y descentralizado a los archivos multimedia
+- El explorador guarda cualquier tipo de archivo; no convierte archivos, no genera miniaturas ni vistas previas, no extrae metadatos ni fija archivos en IPFS
+- Los archivos subidos son de lectura pública
+- Los archivos de recursos que un NFT lleva on-chain los define su contrato inteligente; `asset_urls` es la copia del explorador para mostrarlos

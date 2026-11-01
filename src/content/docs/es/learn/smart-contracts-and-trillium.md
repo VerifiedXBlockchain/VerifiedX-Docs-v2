@@ -1,5 +1,5 @@
 ---
-sourceHash: 4fd00f4301a0
+sourceHash: "49e2de360fa8"
 title: "Contratos inteligentes de VerifiedX y el lenguaje Trillium"
 description: El lenguaje de contratos inteligentes Trillium y los casos de uso de los contratos inteligentes sin gas de VerifiedX que admite.
 sidebar:
@@ -7,14 +7,14 @@ sidebar:
   label: Contratos inteligentes y Trillium
 ---
 
-La blockchain VerifiedX (VFX) admite un sistema de contratos inteligentes versátil y sin gas, impulsado por el lenguaje **Trillium**. Este sistema habilita una amplia gama de aplicaciones descentralizadas y funcionalidades de gestión de activos digitales. Los contratos de VerifiedX tienen un amplio conjunto de posibles casos de uso, todos sin comisiones de gas, lo que los hace más eficientes y accesibles.
+La blockchain VerifiedX (VFX) admite un sistema de contratos inteligentes versátil y sin gas, impulsado por el lenguaje **Trillium**. Este sistema habilita una amplia gama de aplicaciones descentralizadas y funcionalidades de gestión de activos digitales. Los contratos de VerifiedX tienen un amplio conjunto de posibles casos de uso, todos sin gas: cada transacción de contrato paga solo la comisión normal de la red VFX, basada en el tamaño, que se quema.
 
 ## El lenguaje de contratos inteligentes Trillium
 
 **Trillium** es el lenguaje propio que se usa para desarrollar y ejecutar contratos inteligentes en la blockchain VerifiedX. Sus funciones clave incluyen:
 
-- **Ejecución sin gas**: no se requieren comisiones de transacción para ejecutar contratos ni para interactuar con ellos.
-- **Seguridad**: los contratos están diseñados con funciones de seguridad avanzadas para prevenir vulnerabilidades como la reentrada y los bucles o la recursión infinitos. 
+- **Ejecución sin gas**: Trillium no tiene gas ni medición de ejecución. Cada transacción de contrato (despliegue, emisión, transferencia, quema, evolución, venta) paga la comisión normal de la red VFX, basada en el tamaño, que se quema.
+- **Seguridad**: los contratos están diseñados con funciones de seguridad avanzadas para prevenir vulnerabilidades como la reentrada y los bucles o la recursión infinitos. Los nodos analizan el cuerpo de cada contrato con los bucles y la recursión prohibidos.
 - **Personalización**: permite contratos flexibles y escalables, adecuados para una amplia gama de casos de uso.
 
 ## Casos de uso de los contratos inteligentes de VerifiedX
@@ -68,10 +68,10 @@ Los **tokens soulbound (SBT)** son tokens no transferibles que representan las c
 
 ## Ejecución de contratos inteligentes
 
-Todos los contratos inteligentes de VerifiedX son sin gas, lo que significa que los usuarios no tienen que pagar comisiones de transacción para interactuar con contratos ni para desplegarlos. Esto reduce de forma significativa las barreras para desarrolladores y usuarios por igual, y permite aplicaciones descentralizadas escalables y económicas. Se les puede llamar SEN (Self-Executing Nodes, nodos autoejecutables). Este es el reemplazo de VerifiedX para las EVM y la forma en que puede lograrlo sin gas. 
+Todos los contratos inteligentes de VerifiedX son sin gas: no hay gas ni medición de ejecución. Desplegar un contrato o interactuar con él solo cuesta la comisión normal de la red VFX, basada en el tamaño, que se quema. Esto reduce de forma significativa las barreras para desarrolladores y usuarios por igual, y permite aplicaciones descentralizadas escalables y económicas. Se les puede llamar SEN (Self-Executing Nodes, nodos autoejecutables). Los SEN son el reemplazo de VerifiedX para las EVM y la razón por la que la red puede ejecutar contratos sin gas. 
 
 ### Puntos clave sobre los contratos inteligentes de VerifiedX:
-- **Sin gas**: no se requieren comisiones de transacción para ninguna operación.
+- **Sin gas**: ninguna operación usa gas; cada transacción paga solo la comisión normal de la red, basada en el tamaño.
 - **Seguros**: diseñados con seguridad de primer nivel para prevenir vulnerabilidades en los contratos.
 - **Flexibles**: admiten una amplia gama de casos de uso, desde NFTs hasta DeFi y la gestión de identidades.
 - **Potencial infinito**: aunque aquí se describen los casos de uso actuales, la flexibilidad del sistema permite posibilidades ilimitadas de creación de contratos.
@@ -80,4 +80,4 @@ Todos los contratos inteligentes de VerifiedX son sin gas, lo que significa que 
 
 El **sistema de contratos inteligentes de VerifiedX** ofrece un entorno sin gas, escalable y muy flexible para crear aplicaciones descentralizadas con el lenguaje **Trillium**. Con soporte para NFTs, tokens fungibles, votación, tokenización de activos y más, VerifiedX permite a desarrolladores y usuarios participar en una amplia gama de casos de uso descentralizados, desde el arte digital hasta la gobernanza y las finanzas.
 
-Para explorar más detalles técnicos y revisar los modelos de contratos inteligentes, visita el [repositorio de VerifiedX-Core en GitHub](https://github.com/VerifiedXBlockchain/VerifiedX-Core/tree/testnet/ReserveBlockCore/Models/SmartContracts).
+Para explorar más detalles técnicos y revisar los modelos de contratos inteligentes, visita el [repositorio de VerifiedX-Core en GitHub](https://github.com/VerifiedXBlockchain/VerifiedX-Core/tree/main/VerifiedXCore/Models/SmartContracts).

@@ -1,5 +1,5 @@
 ---
-sourceHash: 8be256407321
+sourceHash: "0b1db9fc3685"
 title: "Quemar NFTs"
 description: Quema un contrato inteligente NFT con la API del CLI de Core.
 sidebar:
@@ -10,7 +10,7 @@ import { Tabs, TabItem } from '@astrojs/starlight/components';
 
 #### Endpoint de la API:
 
-```
+```text
 GET http://localhost:7292/scapi/scv1/Burn/{id}
 ```
 
@@ -19,6 +19,8 @@ GET http://localhost:7292/scapi/scv1/Burn/{id}
 `id`: el identificador del contrato inteligente
 
 #### Respuesta:
+
+El nodo devuelve la transacción de quema firmada (tipo `4`, `NFT_BURN`). Devuelve un cuerpo vacío cuando el contrato no está en la billetera de este nodo o no se ha emitido.
 
 ```json
 {

@@ -1,5 +1,5 @@
 ---
-sourceHash: 15bf5e2f0310
+sourceHash: "23f150407a07"
 title: "Contratos inteligentes y NFTs"
 description: Crea y despliega contratos inteligentes y administra NFTs en la billetera de VerifiedX.
 sidebar:
@@ -19,8 +19,8 @@ sidebar:
    - Habilita utilidades avanzadas como regalías o funciones evolutivas.
 
 ### Despliegue
-- Usa el IDE de Trillium integrado para personalizar y desplegar tu contrato inteligente.
-- Combina varios contratos inteligentes en una colección.
+- Haz clic en **Abrir IDE** para abrir el [Trillium IDE](https://trillium.verifiedx.io) en línea y escribir tu propio código Trillium para tu contrato inteligente.
+- Usa **Emitir colección de NFTs** para crear varios contratos inteligentes como una colección.
 
 ## NFTs
 

@@ -1,5 +1,5 @@
 ---
-sourceHash: 5d291c451b4c
+sourceHash: "c2180f70f545"
 title: "Documentos"
 description: Índice de los documentos descargables de VerifiedX y vBTC, desde la presentación y el whitepaper hasta las auditorías.
 sidebar:
@@ -11,6 +11,8 @@ sidebar:
 [Ficha de VerifiedX](/es/resources/documents/one-sheet/)
 
 [Whitepaper](/es/resources/documents/whitepaper/)
+
+[Whitepaper MiCA](/es/resources/documents/mica-whitepaper/)
 
 [Documento principal de vBTC](/es/resources/documents/vbtc-hero-doc/)
 

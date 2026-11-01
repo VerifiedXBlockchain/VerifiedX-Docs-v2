@@ -1,5 +1,5 @@
 ---
-sourceHash: c061bf41a2a7
+sourceHash: "2f751575abd6"
 title: "Aplicaciones"
 description: Dónde descargar la billetera SwitchBlade y el CLI de Core, abrir la billetera web y Bfly, y obtener el snapshot más reciente de la blockchain.
 sidebar:
@@ -14,9 +14,11 @@ Accede a las aplicaciones de VerifiedX y a las descargas de billeteras.
 
 Descarga la billetera de escritorio SwitchBlade para tu plataforma:
 
-- [MacOS (Apple Silicon)](https://github.com/VerifiedXBlockchain/VerifiedX-GUI/releases/download/9.0.1/VFX-OSX-ARM-Installer.dmg)
-- [MacOS (Intel)](https://github.com/VerifiedXBlockchain/VerifiedX-GUI/releases/download/9.0.1/VFX-OSX-Intel-Installer.dmg)
+- [macOS (Apple Silicon)](https://github.com/VerifiedXBlockchain/VerifiedX-GUI/releases/download/9.0.1/VFX-OSX-ARM-Installer.dmg)
+- [macOS (Intel)](https://github.com/VerifiedXBlockchain/VerifiedX-GUI/releases/download/9.0.1/VFX-OSX-Intel-Installer.dmg)
 - [Windows](https://github.com/VerifiedXBlockchain/VerifiedX-GUI/releases/download/9.0.1/VFXWalletSetup-64.exe)
+
+Estos enlaces apuntan a la versión 9.0.1 de SwitchBlade. Todas las versiones, incluida cualquier versión más reciente, están en la [página de versiones de SwitchBlade](https://github.com/VerifiedXBlockchain/VerifiedX-GUI/releases).
 
 Para ver las instrucciones de configuración, consulta la [guía de instalación](/es/wallet/installation/).
 
@@ -48,6 +50,6 @@ Sincroniza tu nodo rápidamente con el snapshot más reciente de la blockchain.
 
 ## Bfly
 
-Abre el marketplace descentralizado Bfly.
+Abre Bfly, la app de pagos y acceso financiero en VerifiedX.
 
-- [Abrir Bfly](https://www.befree.io)
+- [Abrir Bfly](https://befree.io)

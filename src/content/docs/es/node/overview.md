@@ -1,12 +1,12 @@
 ---
-sourceHash: e5702c6206bf
+sourceHash: "f36f743b049a"
 title: "Descripción general del Core CLI"
-description: "Descripción general del VerifiedX Core CLI para Windows, MacOS y Linux, con enlaces a sus guías de compilación, configuración, validador y otras relacionadas."
+description: "Descripción general del VerifiedX Core CLI para Windows, macOS y Linux, con enlaces a sus guías de compilación, configuración, validador y otras relacionadas."
 sidebar:
   order: 1
 ---
 
-Usa el Core CLI en Windows, MacOS o Linux para interactuar con la red.
+Usa el Core CLI en Windows, macOS o Linux para interactuar con la red.
 
 
 ## Tabla de contenido
@@ -33,4 +33,4 @@ Usa el Core CLI en Windows, MacOS o Linux para interactuar con la red.
 
 11. [Coinomics](/es/learn/coinomics/)
 
-12. [IDE web de Trilliam](/es/build/trillium/web-ide/)
+12. [IDE web de Trillium](/es/build/trillium/web-ide/)

@@ -1,5 +1,5 @@
 ---
-sourceHash: 1882a3e08353
+sourceHash: "1882a3e08353"
 title: "Web API: Master Node"
 description: "Endpoints de la API del explorador para validadores (nodos maestros): detalles, búsqueda por nombre y datos del mapa."
 sidebar:

@@ -1,5 +1,5 @@
 ---
-sourceHash: 5e40cc5b4958
+sourceHash: "5e40cc5b4958"
 title: "Recursos de la red"
 description: Colores de marca, fuentes y archivos de logotipos descargables de VerifiedX, vBTC y Bfly.
 sidebar:

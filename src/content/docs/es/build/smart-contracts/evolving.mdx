@@ -1,5 +1,5 @@
 ---
-sourceHash: 645512fd3a0b
+sourceHash: "23cdd488bd52"
 title: "Evolucionar NFTs"
 description: Evoluciona a una etapa específica un NFT con evolución controlada por el emisor mediante la API del CLI de Core.
 sidebar:
@@ -12,11 +12,11 @@ Los NFTs que tienen habilitada la evolución controlada por el emisor pueden ser
 
 #### Endpoint de la API:
 
-```
+```text
 GET http://localhost:7292/scapi/scv1/EvolveSpecific/{id}/{address}/{stage}
 ```
 
-Parámetros de la URL
+#### Parámetros de la URL:
 
 `id`: el identificador del contrato inteligente
 
@@ -26,10 +26,24 @@ Parámetros de la URL
 
 #### Respuesta:
 
+El nodo devuelve la transacción de evolución. La cuenta del emisor la firma y paga la comisión de la red. El nodo devuelve el texto `Failed to Change State - TX` cuando la dirección del emisor no está en la billetera de este nodo, `address` no es el propietario actual, la etapa no existe o el saldo del emisor no alcanza para la comisión.
+
 ```json
 {
-  "Result": "Success",
-  "Message": "NFT Evolve transaction has been sent."
+  "Hash": "abcdfg...",
+  "ToAddress": "Rabc123...",
+  "FromAddress": "Rabc123...",
+  "Amount": 0.0,
+  "Nonce": 12,
+  "Fee": 0.00000883,
+  "Timestamp": 0000000000,
+  "Data": "[{\"Function\":\"ChangeEvolveStateSpecific()\",\"ContractUID\":\"…\",\"FromAddress\":\"Rabc123...\",\"ToAddress\":\"Rabc123...\",\"NewEvoState\":1,\"Data\":\"…\"}]",
+  "UnlockTime": null,
+  "Signature": "AbCdF...",
+  "Height": 0,
+  "TransactionType": 3,
+  "TransactionRating": null,
+  "TransactionStatus": 0
 }
 ```
 
@@ -65,3 +79,24 @@ def evolve_nft(smart_contract_uid, address, stage):
 
 </TabItem>
 </Tabs>
+
+## Etapa siguiente y anterior
+
+El nodo también puede mover un NFT una etapa hacia adelante o hacia atrás. Se aplican las mismas reglas: la cuenta del emisor debe estar en la billetera de este nodo, `address` debe ser el propietario actual, y el emisor firma y paga la comisión de la red.
+
+#### Endpoints de la API:
+
+```text
+GET http://localhost:7292/scapi/scv1/Evolve/{id}/{address}
+GET http://localhost:7292/scapi/scv1/Devolve/{id}/{address}
+```
+
+#### Parámetros de la URL:
+
+`id`: el identificador del contrato inteligente
+
+`address`: la dirección de VFX del propietario actual
+
+#### Respuesta:
+
+La transacción firmada, con la misma forma que arriba. Si falla, el nodo devuelve el texto `Failed to Evolve - TX` o `Failed to Devolve - TX`.

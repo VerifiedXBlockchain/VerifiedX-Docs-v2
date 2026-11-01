@@ -1,5 +1,5 @@
 ---
-sourceHash: 5d2023ae3a74
+sourceHash: "5b6254328da1"
 title: "Web API"
 description: "La Web API del VFX Explorer (Spyglass): sus espacios de nombres, URL base, entorno de pruebas de Swagger, autenticación y formato de respuesta."
 sidebar:
@@ -20,11 +20,11 @@ Estos son los espacios de nombres de la API disponibles (sin incluir application
 6. **[CMC Price](/es/build/web-api/cmc-price/)** - Integración de datos de precios de CoinMarketCap
 7. **[Faucet](/es/build/web-api/faucet/)** - Funciones del faucet de testnet
 8. **[Fungible Token](/es/build/web-api/fungible-token/)** - Información y operaciones de tokens fungibles
-9. **[Master Node](/es/build/web-api/master-node/)** - Datos y estadísticas de los nodos maestros
+9. **[Master Node](/es/build/web-api/master-node/)** - Validadores (validators), también llamados nodos maestros (master nodes): estado, ubicación y bloques producidos
 10. **[Media](/es/build/web-api/media/)** - Almacenamiento y obtención de archivos multimedia
-11. **[Metrics](/es/build/web-api/metrics/)** - Métricas y analítica de la red
+11. **[Metrics](/es/build/web-api/metrics/)** - Totales de la red, cadencia de bloques y cifras de circulación y quema
 12. **[NFT](/es/build/web-api/nft/)** - Datos y operaciones de tokens no fungibles
-13. **[Price](/es/build/web-api/price/)** - Datos de precios e información de mercado
+13. **[Price](/es/build/web-api/price/)** - Precio de VFX en exchanges e historial de precios registrado
 14. **[Raw](/es/build/web-api/raw/)** - Operaciones y utilidades de bajo nivel de la blockchain
 15. **[Shop](/es/build/web-api/shop/)** - Funciones del marketplace y las tiendas de NFTs
 16. **[Transaction](/es/build/web-api/transaction/)** - Datos y operaciones de transacciones
@@ -44,12 +44,21 @@ Mainnet: https://data.verifiedx.io/docs/
 Testnet: https://data-testnet.verifiedx.io/docs/
 ```
 
-
-
 ## Autenticación
 
-La mayoría de los endpoints son de acceso público. Los requisitos de autenticación se indican en la documentación de cada endpoint cuando corresponde.
+La mayoría de los endpoints son de acceso público. Actualizar o eliminar una tienda, una colección o una publicación requiere el token del propietario; la página [Shop](/es/build/web-api/shop/#autenticación) explica cómo obtenerlo.
 
 ## Formato de respuesta
 
-Todas las respuestas de la API siguen un formato JSON uniforme con los códigos de estado HTTP adecuados. Los endpoints paginados incluyen los metadatos de paginación estándar.
+Las respuestas son JSON con códigos de estado HTTP estándar. Los montos son números JSON. Los endpoints paginados aceptan `page` y `limit` (30 de forma predeterminada, máximo 500) y responden con esta estructura:
+
+```json
+{
+  "count": 7624911,
+  "page": 1,
+  "num_pages": 254164,
+  "results": []
+}
+```
+
+No hay enlaces `next` ni `previous`; solicita la siguiente `page` en su lugar.

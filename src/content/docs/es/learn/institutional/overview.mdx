@@ -1,5 +1,5 @@
 ---
-sourceHash: 0276bb35c389
+sourceHash: "fb34b7d14dc8"
 title: "Panorama institucional"
 description: Cómo VerifiedX lleva a Bitcoin una infraestructura en autocustodia de nivel institucional, y las capas, los flujos, el modelo de seguridad y la gobernanza de su arquitectura institucional.
 sidebar:
@@ -275,11 +275,11 @@ Interfaces para usuarios finales e instituciones construidas sobre VerifiedX.
 
 ### Flujo de despliegue entre ecosistemas
 
-1. El vBTC se bloquea en el lockbox de VerifiedX
-2. La prueba se publica en la cadena externa
-3. Se emite la representación canónica en la cadena de destino
+1. El vBTC se bloquea en VerifiedX (tipo de transacción 37)
+2. Cuando el bloqueo tiene 30 bloques VFX de profundidad, los validadores del puente firman certificaciones de él
+3. El nodo del propietario envía esas firmas al contrato de vBTC.b en Base, que emite vBTC.b uno a uno
 4. El capital se despliega en plataformas de liquidez externas
-5. La redención revierte el proceso con verificación completa
+5. La redención quema vBTC.b en Base, de vuelta a una dirección VFX o directamente a Bitcoin ([vBTC.b en Base](/es/learn/vbtc-protocol/#vbtcb-en-base))
 
 ---
 
