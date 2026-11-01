@@ -1,5 +1,5 @@
 ---
-sourceHash: 3189151158b8
+sourceHash: 32339ba59f0d
 title: "Descripción general de la API del nodo de VFX CLI"
 description: "Descripción general de los espacios de nombres de la API de VFX Core y para qué sirve cada uno."
 sidebar:
@@ -39,7 +39,7 @@ Este documento ofrece una descripción general de los distintos espacios de nomb
   - Gestión de direcciones de Bitcoin
   - Creación y transmisión de transacciones
   - Gestión de UTXO
-  - Operaciones de tokenización de Bitcoin
+  - Nombres de dominio BTC (ADNR `.btc`)
   - Datos de Bitcoin de la billetera a través de servidores Electrum (el consenso verifica por su cuenta el Bitcoin de las bóvedas (vaults); consulta [Integración con Bitcoin](/es/learn/bitcoin-integration/))
 
 ### 4. **API de contratos inteligentes** (`scapi/`)
@@ -78,7 +78,7 @@ Este documento ofrece una descripción general de los distintos espacios de nomb
 ### 7. **API de validadores** (`valapi/`)
 - **Ruta base**: `valapi/validator`
 - **Controlador**: ValidatorController
-- **Propósito**: operaciones de nodos validadores y mecanismos de consenso
+- **Propósito**: llamadas de consenso entre validadores. Este controlador no se sirve en el puerto de la API de la billetera: se ejecuta en el host del validador (`ValAPIPort`, 7294 en mainnet, 17294 en testnet) y no usa el filtro `ActionFilterController`
 - **Funciones clave**:
   - Estado y heartbeat del validador
   - Validación y aprobación de bloques
@@ -99,72 +99,113 @@ Este documento ofrece una descripción general de los distintos espacios de nomb
 ### 9. **API de reserva** (`rsapi/`)
 - **Ruta base**: `rsapi/rsv1`
 - **Controlador**: RSV1Controller
-- **Propósito**: operaciones de bloques de reserva y funciones especiales de la blockchain
+- **Propósito**: cuentas de reserva (de bóveda): direcciones `xRBX…` cuyas transacciones salientes esperan un plazo y se pueden devolver (call back) o recuperar
 - **Funciones clave**:
-  - Gestión de bloques de reserva
-  - Manejo de transacciones especiales
-  - Operaciones de reserva de la red
-  - Utilidades avanzadas de la blockchain
+  - Crear, restaurar y publicar cuentas de reserva
+  - Envíos diferidos y transferencias de NFTs desde una cuenta de reserva
+  - Devolución y recuperación de transacciones de reserva pendientes
+  - Información de la cuenta de reserva y listas de transacciones
 
 ### 10. **API del adjudicador** (`adjapi/`)
 - **Ruta base**: `adjapi/adjv1`
 - **Controlador**: ADJV1Controller
-- **Propósito**: servicios de resolución de disputas y adjudicación
+- **Propósito**: lecturas de diagnóstico del estado de consenso del nodo
 - **Funciones clave**:
-  - Manejo de disputas
-  - Procesos de adjudicación
-  - Resolución de conflictos
-  - Arbitraje de la red
+  - Transmisiones duplicadas de validadores
+  - Transacciones de transmisión del consenso y del pool de Fortis
+  - Listas de masternodes (validadores) que ve el nodo
+  - Información del adjudicador
 
-### 11. **API de almacén de datos** (`dstapi/`)
+### 11. **API de tiendas descentralizadas** (`dstapi/`)
 - **Ruta base**: `dstapi/dstv1`
 - **Controlador**: DSTV1Controller
-- **Propósito**: almacenamiento y recuperación descentralizados de datos
+- **Propósito**: tiendas descentralizadas (DST): el marketplace de NFTs alojado en el nodo
 - **Funciones clave**:
-  - Operaciones de almacenamiento de datos
-  - Gestión de archivos
-  - Direccionamiento por contenido
-  - Coordinación del almacenamiento distribuido
+  - Creación, publicación, actualización y eliminación de tiendas
+  - Colecciones y publicaciones
+  - Subastas, ofertas y compras inmediatas (buy now)
+  - Chat entre comprador y vendedor
 
 ### 12. **API de tienda web** (`wsapi/`)
 - **Ruta base**: `wsapi/webshopv1`
 - **Controlador**: WebShopV1Controller
-- **Propósito**: funcionalidad de comercio electrónico y marketplace
+- **Propósito**: conectarse a la tienda descentralizada de otro nodo y comerciar en ella
 - **Funciones clave**:
-  - Listados de productos
-  - Gestión de pedidos
-  - Procesamiento de pagos
-  - Operaciones del marketplace
+  - Conectarse a una tienda remota y hacerle ping
+  - Leer los datos, las subastas y las ofertas de una tienda remota
+  - Enviar ofertas y ofertas de compra inmediata
+  - Chatear con el propietario de la tienda
 
 ### 13. **API de integraciones** (`iapi/`)
 - **Ruta base**: `iapi/integrationsv1`
 - **Controlador**: IntegrationsV1Controller
-- **Propósito**: integraciones con servicios de terceros
+- **Propósito**: lecturas mínimas de la cadena para integraciones de terceros (exchanges, sitios de listados)
 - **Funciones clave**:
-  - Conectividad con servicios externos
-  - Puentes entre API
-  - Gestión de integraciones
-  - Operaciones multiplataforma
+  - `Network`: altura, hash y hora del último bloque, versión del bloque, versiones del CLI y de GitHub, antigüedad de la red, suministro total
+  - `Height`: altura actual del bloque
+  - `LastBlock`: el bloque más reciente
+
+### 14. **API de privacidad** (`privacyapi/`)
+- **Ruta base**: `privacyapi/privacyv1`
+- **Controlador**: PrivacyV1Controller
+- **Propósito**: capa de privacidad Prism (pruebas PLONK)
+- **Funciones clave**:
+  - Direcciones y saldos blindados
+  - Blindaje, desblindaje y transferencias privadas de VFX y vBTC
+  - Estado del fondo blindado y escaneos de la billetera
+  - Estado de los parámetros de PLONK
+
+### 15. **API de vBTC** (`vbtcapi/`)
+- **Ruta base**: `vbtcapi/vbtc`
+- **Controlador**: VBTCController
+- **Propósito**: vBTC V2: bóvedas FROST, depósitos en bóvedas vigiladas, transferencias y retiros
+- **Funciones clave**:
+  - Registro de validadores de vBTC y ceremonias DKG
+  - Creación de contratos de bóveda
+  - Transferencias de vBTC, incluidas las transferencias desde varias bóvedas
+  - Solicitud, finalización, subida de comisión, liberación y cancelación de retiros
+  - Puente a Base (vBTC.b)
+
+### 16. **API de la billetera de navegador** (`wallet/`)
+- **Ruta base**: `wallet`
+- **Controlador**: WalletController
+- **Propósito**: rutas JSON detrás de la página de billetera de navegador integrada en el nodo (`/wallet`)
+- **Funciones clave**:
+  - Cuentas, transacciones y NFTs
+  - Envíos de VFX y vBTC, retiros de vBTC y el puente a Base
+  - Operaciones blindadas (Prism)
+
+### 17. **API del explorador** (`explorer/`)
+- **Ruta base**: `explorer`
+- **Controlador**: ExplorerController
+- **Propósito**: la página de explorador de bloques de solo lectura integrada en el nodo y sus rutas JSON
+- **Funciones clave**:
+  - Estadísticas, bloques, transacciones, direcciones, mempool y búsqueda (`explorer/api/...`)
+  - Se sirve sin el token de la API ni el interruptor que habilita la API
 
 ## Funciones comunes a todas las API
 
 ### Autenticación
-Todos los controladores de la API implementan autenticación por contraseña mediante el parámetro de ruta `{somePassword?}` y usan el atributo `ActionFilterController` para filtrar las solicitudes.
+Todos los controladores del puerto de la API de la billetera, excepto el controlador del explorador, usan el atributo `ActionFilterController` para filtrar las solicitudes:
+
+- **Token de la API**: cuando el nodo se inicia con `apitoken=<value>`, cada solicitud debe enviar el encabezado `apitoken: <value>`, o recibe `403`. Algunas lecturas de estado (`CheckStatus`, `GetCLIVersion`, `GetWalletInfo`, `NetworkMetrics`, `SyncBalances`, `Mother`, `Egg`) responden sin él.
+- **Contraseña de la API**: con `AlwaysRequireAPIPassword=true` en la configuración, la contraseña va en el segmento opcional de ruta `{somePassword?}` (por ejemplo, `api/V1/{somePassword}/GetWalletInfo`); sin ella, la solicitud recibe `403`. El controlador de integraciones no tiene segmento de contraseña.
+- **Billetera bloqueada**: mientras una billetera cifrada está bloqueada, las acciones que no son lecturas, retransmisiones sin procesar de transacciones firmadas externamente ni llamadas de desbloqueo devuelven `401` con "You must type in your encryption password first!".
+- **Acceso de red**: la API escucha solo en loopback y rechaza los encabezados `Host` que no son de loopback y las solicitudes de navegador de otro origen. El argumento de inicio `openapi` (o `OpenAPI=true`) la abre en todas las interfaces, y el nodo rechaza `openapi` a menos que haya un token de la API (o una contraseña de la API con `AlwaysRequireAPIPassword=true`) configurado.
 
 ### Formato de respuesta
 Las API suelen devolver respuestas JSON con un manejo de errores y un reporte de estado consistentes.
 
 ### Documentación de Swagger
-Todos los endpoints están documentados con especificaciones Swagger/OpenAPI para pruebas interactivas y documentación. Puedes encontrarlas mientras ejecutas un CLI con la opción `enableapi` activada y visitando `http://localhost:7292` (o `http://localhost:17292` en testnet).
+Todos los endpoints están documentados con especificaciones Swagger/OpenAPI para pruebas interactivas y documentación. En una máquina que ejecuta el CLI, visita `http://localhost:7292/swagger` (o `http://localhost:17292/swagger` en testnet). Las llamadas a la API solo responden después de habilitar la API con el argumento de inicio `enableapi` o la opción `10` del menú principal. Consulta [Swagger](/es/build/node-api/swagger/).
 
 
 ## Notas de uso
 
 1. **Control de versiones**: las API usan versiones (V1, V2) para mantener la compatibilidad con versiones anteriores
-2. **Estructura de rutas**: todas las rutas siguen el patrón `{namespace}api/[controller]/{action}`
-3. **Seguridad**: todas las API requieren la autenticación y autorización adecuadas
-4. **Límite de solicitudes**: algunos endpoints pueden tener un límite de solicitudes implementado
-5. **Operaciones asíncronas**: la mayoría de las operaciones son asíncronas para un mejor rendimiento
+2. **Estructura de rutas**: la mayoría de las rutas siguen el patrón `{namespace}api/{controller}/{action}`, por ejemplo `txapi/TXV1/GetTimestamp`; las rutas de la billetera de navegador (`wallet/api/...`) y del explorador (`explorer/api/...`) son las excepciones
+3. **Seguridad**: consulta [Autenticación](#autenticación) más arriba
+4. **Operaciones asíncronas**: la mayoría de las operaciones son asíncronas para un mejor rendimiento
 
 Esta estructura ofrece una superficie completa de API REST para toda la funcionalidad de VFX Core, organizada por áreas de cada dominio.
 

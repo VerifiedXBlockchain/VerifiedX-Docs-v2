@@ -1,5 +1,5 @@
 ---
-sourceHash: 2ee1d0325296
+sourceHash: d73989d96248
 title: "Ejecuta un validador"
 description: "Lleva un servidor Ubuntu vacío a un validador activo en la mainnet de VerifiedX: compilación, sincronización rápida, watchdog contra fallos, fondeo, validación, detención y actualización."
 sidebar:
@@ -17,7 +17,7 @@ Los avisos como este indican qué cambia cuando trabajas con **testnet** en luga
 ## Lo que necesitas
 
 - **5,000 VFX.** A partir de la altura de fianza (bond) del validador (`ValidatorBondHeight`; bloque 7,568,349 en mainnet; bloque 399 en testnet desde su reinicio de octubre de 2026), los 5,000 VFX quedan bloqueados como fianza: no se pueden enviar mientras seas un validador registrado y se desbloquean 1,200 bloques después de que se mine tu transacción de salida de validador (consulta [Detener y actualizar](#10-detener-y-actualizar)). Todo lo que supere los 5,000 VFX sigue disponible para gastar. No hay penalización. Antes de esa altura, tus VFX siguen totalmente líquidos. Envía 5,001 VFX para que una comisión de transacción nunca te deje por debajo del mínimo de 5,000.
-- **Un servidor.** Ubuntu 22.04 LTS, 2 vCPU, 4 GB de RAM, SSD de 40 GB o más, con una IP pública estática. Funcionan tanto x64 como ARM64. La cadena de mainnet ocupa unos 15 GB a mediados de 2026 y sigue creciendo, así que deja margen en el disco, más unos 300 MB para los bloques recientes de Bitcoin y unos 400 MB para los parámetros de PLONK.
+- **Un servidor.** Ubuntu 22.04 LTS, 2 vCPU, 4 GB de RAM, SSD de 40 GB o más, con una IP pública estática. Funcionan tanto x64 como ARM64. La cadena de mainnet ocupa unos 19 GB en octubre de 2026 (el tamaño del snapshot más reciente) y sigue creciendo, así que deja margen en el disco, más unos 300 MB para los bloques recientes de Bitcoin y unos 400 MB para los parámetros de PLONK.
 - **Puertos abiertos.** Consulta la tabla a continuación.
 - **Acceso saliente a la red de Bitcoin.** Un validador sigue a Bitcoin directamente (consulta [Qué hace un validador](#qué-hace-un-validador)), así que necesita llegar a pares de Bitcoin en el puerto `8333` y, como respaldo, a `mempool.space` y `blockstream.info` por HTTPS. La mayoría de los servidores permiten el tráfico saliente de forma predeterminada.
 - **Una billetera con tus VFX** (por ejemplo, [Switchblade](/es/wallet/installation/)) desde la cual fondear la dirección del validador.
@@ -32,7 +32,7 @@ Los avisos como este indican qué cambia cuando trabajas con **testnet** en luga
 | `7295` | Puerto del validador (FROST) | Abierto al mundo; **necesario para validar** |
 | `7296` | Puerto del validador (FROST) sobre TLS | Opcional; el nodo lo abre junto a `7295` con un certificado autofirmado; no se verifica en la activación |
 | `7292` | API de la billetera (HTTP) | Mantenlo cerrado; llámalo desde el propio servidor |
-| `7293` | API de la billetera (HTTPS, con `openapi`) | Mantenlo cerrado |
+| `7293` | API de la billetera (HTTPS, certificado autofirmado) | Mantenlo cerrado |
 | `22` | SSH | Restríngelo a tu propia IP si es posible |
 
 El CLI verifica sus propios puertos `3339`, `7294` y `7295` cuando activas un validador y los sigue revisando mientras valida. Si alguno no es accesible desde fuera, la activación falla aunque el CLI esté escuchando; la causa más común es que falte una regla del firewall. `3338` no se verifica, pero sin él tu nodo no tiene pares entrantes.
@@ -104,10 +104,10 @@ La compilación debería terminar con 0 errores. Luego publica una compilación 
 
 ```bash
 # x64
-dotnet publish -c Release -r linux-x64 --self-contained false --output ./published
+dotnet publish VerifiedXCore/VerifiedXCore.csproj -c Release -r linux-x64 --self-contained false --output ./published
 
 # ARM64 (Graviton, Ampere, Raspberry Pi 5, ...)
-dotnet publish -c Release -r linux-arm64 --self-contained false --output ./published
+dotnet publish VerifiedXCore/VerifiedXCore.csproj -c Release -r linux-arm64 --self-contained false --output ./published
 ```
 
 El nodo queda ahora en `~/vfx-cli/published/VerifiedXCore.dll`.
@@ -161,7 +161,7 @@ screen -dmS vfx bash -lc "dotnet VerifiedXCore.dll enableapi openapi apitoken=YO
 Qué hacen las opciones de arranque:
 
 - `enableapi`: activa la API local de la billetera en el puerto `7292`. Está desactivada de forma predeterminada, y esta guía depende de ella.
-- `openapi`: expone la API en todas las interfaces en lugar de solo en localhost. Con `7292` cerrado en tu firewall, esto no cambia nada en el día a día, pero te permite abrir el puerto más adelante para administrar el nodo de forma remota sin reiniciarlo. Quítala si solo vas a llamar a la API desde el propio servidor.
+- `openapi`: expone la API en todas las interfaces en lugar de solo en localhost. Con `7292` cerrado en tu firewall, esto no cambia nada en el día a día, pero te permite abrir el puerto más adelante para administrar el nodo de forma remota sin reiniciarlo. El nodo rechaza `openapi` y se queda en localhost a menos que también se indique `apitoken=`, y en ese caso la página de Swagger en `/swagger` exige el encabezado `apitoken`. Quítala si solo vas a llamar a la API desde el propio servidor.
 - `apitoken=...`: exige el encabezado `apitoken` en cada llamada a la API.
 
 Desde Core 9.0, los valores de `apitoken=` y `encpass=` se toman exactamente como los escribes: se conservan las mayúsculas y minúsculas, y también cualquier `=` dentro del valor (`apitoken=AbC123==` da el token `AbC123==`). Las versiones anteriores los pasaban a minúsculas y los cortaban en un segundo `=`. Si iniciaste un nodo anterior con un token con mayúsculas y minúsculas o que contiene `=`, tus llamadas a la API ahora deben enviar el token exactamente como lo diste. Un token de `openssl rand -hex 16` está en minúsculas y no tiene `=`, así que para él nada cambia.
@@ -393,7 +393,7 @@ cd ~/vfx-cli
 git fetch origin && git reset --hard origin/main
 
 # Build the new version alongside the running one (use linux-arm64 on ARM)
-dotnet publish -c Release -r linux-x64 --self-contained false --output ./published_next
+dotnet publish VerifiedXCore/VerifiedXCore.csproj -c Release -r linux-x64 --self-contained false --output ./published_next
 test -f ./published_next/VerifiedXCore.dll && echo "BUILD OK" || echo "BUILD FAILED - old version untouched"
 
 # Swap and restart

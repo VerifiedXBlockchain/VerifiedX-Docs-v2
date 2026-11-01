@@ -1,5 +1,5 @@
 ---
-sourceHash: 0ceb6abf6dc5
+sourceHash: c91beece2979
 title: "Web API: Faucet"
 description: La API del faucet de testnet, que paga VFX de testnet y BTC de signet después de la verificación por SMS, y el acceso al faucet para automatizar pruebas.
 sidebar:
@@ -109,7 +109,7 @@ El pago de BTC entra de inmediato en el mempool de signet y se confirma en el si
 
 ## Errores
 
-Todos los rechazos son HTTP 400 con un `message`:
+Todos los rechazos son HTTP 400. Un campo mal formado (por ejemplo, un número de teléfono que no es válido) responde con los errores de ese campo, como `{"phone": ["Enter a valid phone number."]}`. Todos los demás rechazos llevan un `message`:
 
 | Mensaje | Causa |
 |---------|-------|

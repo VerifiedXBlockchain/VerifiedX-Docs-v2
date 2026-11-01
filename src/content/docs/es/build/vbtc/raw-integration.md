@@ -1,5 +1,5 @@
 ---
-sourceHash: b4b75741a7f3
+sourceHash: 7403efad3d92
 title: "Guía de integración de vBTC sin SDK"
 description: "Construye, firma y envía transacciones de vBTC V2 fuera del nodo: creación de bóvedas, transferencias, cambios de propiedad y retiros con claves que guarda tu propio firmante."
 sidebar:
@@ -44,7 +44,7 @@ La construcción se conserva en ese nodo durante unos 65 minutos. Envíala al mi
 
 Nunca firmes un hash que no hayas revisado. El hash es:
 
-```
+```text
 Hash = SHA-256( lowercase hex of SHA-256( HashPreimage as UTF-8 ) ), as lowercase hex
 HashPreimage = Timestamp + FromAddress + ToAddress + Amount + Fee + Nonce + TransactionType + Data
 ```
@@ -162,7 +162,7 @@ Su propietario crea una bóveda en dos partes: una ceremonia de claves entre los
    { "SmartContractUID": "<contract UID>", "FromAddress": "<sender>", "ToAddress": "<recipient>", "Amount": 0.00003 }
    ```
 
-2. **Revisa:** `TransactionType` es `VBTC_V2_TRANSFER`, `Amount` (el monto en VFX) es 0 y `Data` es `{"Function":"TransferVBTCV2()","ContractUID":…,"FromAddress":<sender>,"ToAddress":<recipient>,"Amount":<vBTC amount>}`. Para un remitente de reserva (`xRBX`), `IsReserveSend` es `true` y `UnlockTime` forma parte del hash: la transferencia queda retenida durante 24 horas y se puede revertir hasta entonces.
+2. **Revisa:** `TransactionType` es `VBTC_V2_TRANSFER`, `Amount` (el monto en VFX) es 0 y `Data` es `{"Function":"TransferVBTCV2()","ContractUID":…,"FromAddress":<sender>,"ToAddress":<recipient>,"Amount":<vBTC amount>}`. Para un remitente de reserva (`xRBX`), `IsReserveSend` es `true` y `UnlockTime` forma parte del hash: la transferencia queda retenida durante el plazo de desbloqueo de la cuenta de reserva, de al menos 24 horas, y se puede devolver hasta entonces.
 3. Firma y envía con `POST SendRawTransferVBTCTx`.
 
 Rechazos al construir: `Insufficient balance. Available: …, Requested: …`, `Reserve accounts cannot send vBTC to another Reserve Account.`
@@ -353,7 +353,3 @@ En una bóveda creada antes de la altura de registro de la certificación, hasta
 4. Registra la finalización: `POST GetRawCompleteWithdrawalTxData` (`SmartContractUID`, `FromAddress`, `WithdrawalRequestHash`, `BTCTransactionHash`, `Amount`, `BTCDestination`), firma y haz `POST SendRawCompleteWithdrawalTx` (tipo 28, sin comisión).
 
 Una cancelación en una bóveda heredada es la misma transacción de tipo 29, después de la cual votan los validadores de la bóveda (tipo 30). Desde la altura de aplicación, una bóveda heredada queda congelada: se rechazan las transferencias, los retiros y las cancelaciones en ella, y los tipos 28 y 30 se rechazan para todas las bóvedas.
-
-## vBTC V1 está retirado
-
-El flujo V1 sin firmar (`btcapi/BTCV2/GetTokenizationDetails`, `TokenizeBitcoin`, `WithdrawalCoinRawTX`, tipos de transacción 17 a 21) se retiró en el bloque 7,400,500 de mainnet. La red ya no acepta tokens, transferencias ni retiros de V1, y los saldos de V1 quedan congelados tal como están.
