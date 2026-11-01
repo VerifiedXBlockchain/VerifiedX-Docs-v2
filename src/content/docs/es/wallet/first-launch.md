@@ -1,5 +1,5 @@
 ---
-sourceHash: 70d549d08331
+sourceHash: "70d549d08331"
 title: "Primer inicio"
 description: Qué hacer la primera vez que abres VerifiedX Switchblade, y un recorrido por el panel, el selector de direcciones y la administración de direcciones.
 sidebar:

@@ -1,5 +1,5 @@
 ---
-sourceHash: 82dcf3f670a0
+sourceHash: "82dcf3f670a0"
 title: "Creación de direcciones de VFX"
 description: "Cómo se deriva una dirección de VFX a partir de una clave privada ECDSA, paso a paso."
 sidebar:

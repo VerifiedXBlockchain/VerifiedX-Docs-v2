@@ -1,5 +1,5 @@
 ---
-sourceHash: 23c36572e159
+sourceHash: "23c36572e159"
 title: "Web API: ADNR"
 description: Endpoints de la API del explorador para listar y resolver dominios ADNR (Address Domain Name Resolution) de direcciones de VFX.
 sidebar:

@@ -1,5 +1,5 @@
 ---
-sourceHash: a00a17986f51
+sourceHash: "a00a17986f51"
 title: "Web API: Price"
 description: Endpoints de la API del explorador para datos de precios actuales e históricos de VFX y tendencias de precio.
 sidebar:

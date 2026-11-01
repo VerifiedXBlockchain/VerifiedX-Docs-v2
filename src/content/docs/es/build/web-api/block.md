@@ -1,5 +1,5 @@
 ---
-sourceHash: e9245a383488
+sourceHash: "e9245a383488"
 title: "Web API: Block"
 description: Endpoints de la API del explorador para listar bloques y obtener un bloque por altura, por hash o por dirección del validador.
 sidebar:

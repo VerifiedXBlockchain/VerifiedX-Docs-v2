@@ -1,5 +1,5 @@
 ---
-sourceHash: aa2659821727
+sourceHash: "aa2659821727"
 title: "Servicio de contratos de tokens de VerifiedX"
 description: El servicio de contratos de tokens para crear, gestionar y transferir tokens fungibles escritos en Trillium.
 sidebar:

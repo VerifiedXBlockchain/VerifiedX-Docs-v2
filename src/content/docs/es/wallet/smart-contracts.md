@@ -1,5 +1,5 @@
 ---
-sourceHash: 23f150407a07
+sourceHash: "23f150407a07"
 title: "Contratos inteligentes y NFTs"
 description: Crea y despliega contratos inteligentes y administra NFTs en la billetera de VerifiedX.
 sidebar:

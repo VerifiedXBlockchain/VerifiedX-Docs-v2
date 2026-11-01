@@ -1,5 +1,5 @@
 ---
-sourceHash: 5a6a3226c5b8
+sourceHash: "5a6a3226c5b8"
 title: "Web API: Shop"
 description: Endpoints de la API del explorador para tiendas, colecciones, publicaciones y ofertas del marketplace de NFTs.
 sidebar:

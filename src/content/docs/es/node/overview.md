@@ -1,5 +1,5 @@
 ---
-sourceHash: f36f743b049a
+sourceHash: "f36f743b049a"
 title: "Descripción general del Core CLI"
 description: "Descripción general del VerifiedX Core CLI para Windows, macOS y Linux, con enlaces a sus guías de compilación, configuración, validador y otras relacionadas."
 sidebar:

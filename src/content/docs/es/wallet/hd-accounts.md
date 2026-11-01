@@ -1,5 +1,5 @@
 ---
-sourceHash: 32f9bd975424
+sourceHash: "32f9bd975424"
 title: "Cuentas HD"
 description: Crea y recupera cuentas jerárquicas deterministas (HD) que generan varias direcciones a partir de una sola frase de recuperación.
 sidebar:

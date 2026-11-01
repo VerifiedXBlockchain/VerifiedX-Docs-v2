@@ -1,5 +1,5 @@
 ---
-sourceHash: 1173114afcad
+sourceHash: "1173114afcad"
 title: "Trillium"
 description: Qué es Trillium, en qué se diferencia de otros lenguajes de contratos inteligentes, dónde está su código fuente y el Trillium Web IDE (tIDE).
 sidebar:

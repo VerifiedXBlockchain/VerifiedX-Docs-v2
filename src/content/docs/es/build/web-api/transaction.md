@@ -1,5 +1,5 @@
 ---
-sourceHash: 50028ca0e2ae
+sourceHash: "50028ca0e2ae"
 title: "Web API: Transaction"
 description: Endpoints de la API del explorador para detalles de transacciones y transacciones por dirección, por varias direcciones o por bloque, con los tipos de transacción.
 sidebar:

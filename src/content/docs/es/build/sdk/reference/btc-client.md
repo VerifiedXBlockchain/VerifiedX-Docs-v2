@@ -1,5 +1,5 @@
 ---
-sourceHash: 70d69b3d5eb4
+sourceHash: "70d69b3d5eb4"
 title: "Referencia de la API de BtcClient"
 description: Referencia de BtcClient en el VerifiedX Web SDK, que abarca la generación de billeteras de Bitcoin, la información de direcciones, las transacciones, las tasas de comisión y la firma de mensajes.
 sidebar:

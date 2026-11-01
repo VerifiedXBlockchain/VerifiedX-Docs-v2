@@ -1,5 +1,5 @@
 ---
-sourceHash: 704a34e901ba
+sourceHash: "704a34e901ba"
 title: "Hoja de ruta"
 description: Lanzamientos planificados de VerifiedX por trimestre, del cuarto trimestre de 2026 al cuarto trimestre de 2027.
 sidebar:

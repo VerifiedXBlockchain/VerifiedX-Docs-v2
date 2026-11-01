@@ -1,5 +1,5 @@
 ---
-sourceHash: c91beece2979
+sourceHash: "c91beece2979"
 title: "Web API: Faucet"
 description: La API del faucet de testnet, que paga VFX de testnet y BTC de signet después de la verificación por SMS, y el acceso al faucet para automatizar pruebas.
 sidebar:

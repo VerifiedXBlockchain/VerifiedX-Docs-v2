@@ -1,5 +1,5 @@
 ---
-sourceHash: 7403efad3d92
+sourceHash: "7403efad3d92"
 title: "Guía de integración de vBTC sin SDK"
 description: "Construye, firma y envía transacciones de vBTC V2 fuera del nodo: creación de bóvedas, transferencias, cambios de propiedad y retiros con claves que guarda tu propio firmante."
 sidebar:

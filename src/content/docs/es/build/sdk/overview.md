@@ -1,5 +1,5 @@
 ---
-sourceHash: 736375f0a3fe
+sourceHash: "736375f0a3fe"
 title: "SDK de JavaScript"
 description: Descripción general del VerifiedX Web SDK, una interfaz unificada para la blockchain de VerifiedX y la red de Bitcoin, con instalación, uso básico y un mapa de las guías.
 sidebar:

@@ -1,5 +1,5 @@
 ---
-sourceHash: 49e2de360fa8
+sourceHash: "49e2de360fa8"
 title: "Contratos inteligentes de VerifiedX y el lenguaje Trillium"
 description: El lenguaje de contratos inteligentes Trillium y los casos de uso de los contratos inteligentes sin gas de VerifiedX que admite.
 sidebar:

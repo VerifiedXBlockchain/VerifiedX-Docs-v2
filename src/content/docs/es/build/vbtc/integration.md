@@ -1,5 +1,5 @@
 ---
-sourceHash: 5d2939a24013
+sourceHash: "5d2939a24013"
 title: "vBTC"
 description: Crea bóvedas de vBTC V2, deposita, transfiere, retira a Bitcoin y lleva vBTC a Base por puente con la API del nodo cuando la billetera del nodo tiene las claves.
 sidebar:

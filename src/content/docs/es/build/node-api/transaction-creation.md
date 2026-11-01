@@ -1,5 +1,5 @@
 ---
-sourceHash: 2291acb83cfd
+sourceHash: "2291acb83cfd"
 title: "Creación de transacciones y firmas de VFX"
 description: "Construye, aplica el hash, firma, verifica y transmite una transacción de VFX en bruto a través de la API de Core sin exponer la clave privada, y las reglas del libro mayor de Core 9.0.1."
 sidebar:

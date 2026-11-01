@@ -1,5 +1,5 @@
 ---
-sourceHash: de3cb71f5b4a
+sourceHash: "de3cb71f5b4a"
 title: "Integración multicadena: crea con VFX y Bitcoin"
 description: Crea aplicaciones que usan VerifiedX y Bitcoin con el VerifiedX Web SDK, desde billeteras para las dos redes hasta paneles de cuentas, coordinación de transacciones y dominios.
 sidebar:

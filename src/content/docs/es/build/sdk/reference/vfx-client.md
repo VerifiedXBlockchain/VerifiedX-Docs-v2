@@ -1,5 +1,5 @@
 ---
-sourceHash: a34c4a690c80
+sourceHash: "a34c4a690c80"
 title: "Referencia de la API de VfxClient"
 description: Referencia de los métodos de VfxClient en el VerifiedX Web SDK, que abarca pares de claves, firma externa, transacciones, vBTC V2, tokens VFX20, cuentas de reserva y operaciones con direcciones.
 sidebar:

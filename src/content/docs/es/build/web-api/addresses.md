@@ -1,5 +1,5 @@
 ---
-sourceHash: ea9bc824f9aa
+sourceHash: "ea9bc824f9aa"
 title: "Web API: Addresses"
 description: Endpoints de la API del explorador para información de direcciones, saldos, principales poseedores, tokens en posesión y búsqueda de dominios ADNR.
 sidebar:

@@ -1,5 +1,5 @@
 ---
-sourceHash: d176fa82f9b7
+sourceHash: "d176fa82f9b7"
 title: "Dominios"
 description: Los dominios son alias personalizables para las direcciones de tu billetera.
 sidebar:

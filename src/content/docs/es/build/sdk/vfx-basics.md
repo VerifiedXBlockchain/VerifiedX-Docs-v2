@@ -1,5 +1,5 @@
 ---
-sourceHash: 143b3a17badc
+sourceHash: "143b3a17badc"
 title: "Conceptos básicos de VFX: primeros pasos con VerifiedX"
 description: Crea billeteras, consulta saldos, envía VFX y trabaja con dominios con el VerifiedX Web SDK.
 sidebar:

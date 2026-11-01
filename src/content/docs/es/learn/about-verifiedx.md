@@ -1,5 +1,5 @@
 ---
-sourceHash: 391fd078b593
+sourceHash: "391fd078b593"
 title: "Acerca de VerifiedX"
 description: VerifiedX es una red Layer 1 independiente con consenso que conoce Bitcoin; esta página cubre su diseño, su ecosistema, las cifras de la red y los documentos clave.
 sidebar:

@@ -1,5 +1,5 @@
 ---
-sourceHash: b0d197dc2141
+sourceHash: "b0d197dc2141"
 title: "Swagger"
 description: "Dónde encontrar los entornos de prueba de API de Swagger para el Core CLI y para Spyglass."
 sidebar:

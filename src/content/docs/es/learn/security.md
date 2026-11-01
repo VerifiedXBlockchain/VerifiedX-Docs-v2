@@ -1,5 +1,5 @@
 ---
-sourceHash: 82eefcf8ff8b
+sourceHash: "82eefcf8ff8b"
 title: "Funciones de seguridad de la blockchain VerifiedX"
 description: Las funciones de seguridad de la red VerifiedX, desde la descentralización y el consenso hasta las auditorías, la custodia y el monitoreo.
 sidebar:

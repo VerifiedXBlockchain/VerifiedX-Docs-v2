@@ -1,5 +1,5 @@
 ---
-sourceHash: 5eaf9fb832b4
+sourceHash: "5eaf9fb832b4"
 title: "Descripción general de la GUI"
 description: Descripción general de la billetera GUI de VerifiedX para Windows y macOS, con enlaces a todas las guías de la billetera.
 sidebar:

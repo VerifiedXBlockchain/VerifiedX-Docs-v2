@@ -1,5 +1,5 @@
 ---
-sourceHash: a6dcc1c50727
+sourceHash: "a6dcc1c50727"
 title: "Solución de problemas de la GUI"
 description: "Soluciones para problemas comunes de la billetera de VerifiedX: inicio, saldos incorrectos y claves perdidas después de importar un snapshot."
 sidebar:

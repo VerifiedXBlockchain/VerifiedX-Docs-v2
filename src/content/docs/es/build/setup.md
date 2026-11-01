@@ -1,5 +1,5 @@
 ---
-sourceHash: 0e52612df220
+sourceHash: "0e52612df220"
 title: "Configuración de la integración con VFX"
 description: "Configura el CLI de Core para una integración de terceros: billeteras, compilación, configuración, la interfaz RPC, testnet y prácticas recomendadas para exchanges."
 sidebar:

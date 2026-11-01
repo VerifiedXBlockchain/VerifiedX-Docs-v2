@@ -1,5 +1,5 @@
 ---
-sourceHash: d73989d96248
+sourceHash: "d73989d96248"
 title: "Ejecuta un validador"
 description: "Lleva un servidor Ubuntu vacío a un validador activo en la mainnet de VerifiedX: compilación, sincronización rápida, watchdog contra fallos, fondeo, validación, detención y actualización."
 sidebar:

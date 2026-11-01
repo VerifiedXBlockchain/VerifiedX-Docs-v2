@@ -1,5 +1,5 @@
 ---
-sourceHash: b8b35e845dee
+sourceHash: "b8b35e845dee"
 title: "Tokens fungibles: emite y administra tokens VFX20"
 description: Despliega un token VFX20 con el VerifiedX Web SDK, emite y transfiere el suministro, y usa los controles del propietario para pausar, bloquear, transferir la propiedad y abrir votaciones de los tenedores.
 sidebar:

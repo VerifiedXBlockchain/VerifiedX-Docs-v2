@@ -1,5 +1,5 @@
 ---
-sourceHash: 2d2a9d859a82
+sourceHash: "2d2a9d859a82"
 title: "Servicios de dominio de VFX"
 description: Los servicios de dominio de VFX (ADNR), que asocian direcciones de Bitcoin y de VFX con nombres legibles .btc y .vfx.
 sidebar:

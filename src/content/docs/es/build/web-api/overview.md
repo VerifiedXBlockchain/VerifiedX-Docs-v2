@@ -1,5 +1,5 @@
 ---
-sourceHash: 5b6254328da1
+sourceHash: "5b6254328da1"
 title: "Web API"
 description: "La Web API del VFX Explorer (Spyglass): sus espacios de nombres, URL base, entorno de pruebas de Swagger, autenticación y formato de respuesta."
 sidebar:

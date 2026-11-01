@@ -1,5 +1,5 @@
 ---
-sourceHash: 8baf401e466e
+sourceHash: "8baf401e466e"
 title: "Integración con Bitcoin en VerifiedX Core"
 description: Cómo el consenso de VerifiedX verifica la cadena de encabezados y la inclusión de transacciones de Bitcoin, de dónde provienen sus datos de Bitcoin y qué red de Bitcoin sigue cada red de VerifiedX.
 sidebar:

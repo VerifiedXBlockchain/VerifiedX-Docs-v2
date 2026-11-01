@@ -1,5 +1,5 @@
 ---
-sourceHash: def241151bb5
+sourceHash: "def241151bb5"
 title: "Billetera web"
 description: Funciones, seguridad y configuración de la billetera web autocustodiada de VerifiedX.
 sidebar:

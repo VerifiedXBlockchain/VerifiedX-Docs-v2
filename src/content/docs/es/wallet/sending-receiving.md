@@ -1,5 +1,5 @@
 ---
-sourceHash: 429c9885383e
+sourceHash: "429c9885383e"
 title: "Enviar y recibir fondos"
 description: Envía y recibe fondos con la billetera de VerifiedX.
 sidebar:

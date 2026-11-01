@@ -1,5 +1,5 @@
 ---
-sourceHash: 4a40ce5f49e9
+sourceHash: "4a40ce5f49e9"
 title: "Conceptos básicos de Bitcoin: primeros pasos con la integración de Bitcoin"
 description: Genera billeteras de Bitcoin, consulta saldos y tarifas de comisión, envía transacciones y firma mensajes con el cliente de Bitcoin del VerifiedX Web SDK.
 sidebar:

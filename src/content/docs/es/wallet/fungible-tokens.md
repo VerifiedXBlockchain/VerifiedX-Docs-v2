@@ -1,5 +1,5 @@
 ---
-sourceHash: b0302d131e78
+sourceHash: "b0302d131e78"
 title: "Tokens fungibles"
 description: Crea y administra tokens fungibles en la billetera de VerifiedX.
 sidebar:

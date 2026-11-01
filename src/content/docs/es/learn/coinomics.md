@@ -1,5 +1,5 @@
 ---
-sourceHash: c0846342cb28
+sourceHash: "c0846342cb28"
 title: "Resumen de la moneda VerifiedX (VFX)"
 description: La oferta, el modelo de quema, la utilidad y los detalles de VFX, la moneda nativa de la red VerifiedX.
 sidebar:

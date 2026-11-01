@@ -1,5 +1,5 @@
 ---
-sourceHash: 9edc9da15a18
+sourceHash: "9edc9da15a18"
 title: "Web API: Raw"
 description: Endpoints de la API del explorador que construyen, comprueban y transmiten transacciones de VFX firmadas en el cliente, sin ejecutar un nodo Core CLI.
 sidebar:

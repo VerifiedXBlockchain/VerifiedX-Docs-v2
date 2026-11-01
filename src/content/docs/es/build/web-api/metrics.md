@@ -1,5 +1,5 @@
 ---
-sourceHash: 607b3a722017
+sourceHash: "607b3a722017"
 title: "Web API: Metrics"
 description: Endpoints de la API del explorador para totales de la red, salud de la cadencia de bloques y cifras de circulación y quema.
 sidebar:

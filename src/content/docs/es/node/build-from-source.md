@@ -1,5 +1,5 @@
 ---
-sourceHash: 0210519412e0
+sourceHash: "0210519412e0"
 title: "Instrucciones de compilación del CLI"
 description: "Compila y ejecuta el VerifiedX Core CLI desde el código fuente en Linux, Windows y Mac con .NET 6, incluidas sus bibliotecas nativas de FROST y PLONK."
 sidebar:

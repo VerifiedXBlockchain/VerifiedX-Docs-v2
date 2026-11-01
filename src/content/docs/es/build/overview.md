@@ -1,5 +1,5 @@
 ---
-sourceHash: 383064940fa4
+sourceHash: "383064940fa4"
 title: "Descripción general de la integración con VFX"
 description: "Índice de las guías para integrar la red VFX como tercero."
 sidebar:

@@ -1,5 +1,5 @@
 ---
-sourceHash: bedcafd81dd0
+sourceHash: "bedcafd81dd0"
 title: "Web API: BTC"
 description: Endpoints de la API del explorador para información de direcciones de Bitcoin y datos de bóvedas de vBTC, incluidas las bóvedas de vBTC V2 y las alturas de certificación.
 sidebar:

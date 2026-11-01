@@ -1,5 +1,5 @@
 ---
-sourceHash: 19df55307d83
+sourceHash: "19df55307d83"
 title: "Firma externa: claves de HSM, KMS y MPC"
 description: Firma transacciones de VerifiedX con una clave guardada en un HSM, un KMS en la nube o un servicio de MPC pasando un Signer al VerifiedX Web SDK en lugar de una clave privada.
 sidebar:

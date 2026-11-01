@@ -1,5 +1,5 @@
 ---
-sourceHash: fd469eeb26ff
+sourceHash: "fd469eeb26ff"
 title: "Web API: Media"
 description: Endpoints de la API del explorador para subir recursos multimedia y asociarlos con NFTs y contratos inteligentes.
 sidebar:

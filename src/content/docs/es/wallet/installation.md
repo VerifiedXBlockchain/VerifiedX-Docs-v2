@@ -1,5 +1,5 @@
 ---
-sourceHash: 10a77c7c153d
+sourceHash: "10a77c7c153d"
 title: "Instrucciones de instalación"
 description: Instala la billetera de VerifiedX en macOS o Windows.
 sidebar:

@@ -1,5 +1,5 @@
 ---
-sourceHash: 661d04801b92
+sourceHash: "661d04801b92"
 title: "Web API: Fungible Token"
 description: Endpoints de la API del explorador para los detalles de tokens fungibles y sus temas de votación.
 sidebar:

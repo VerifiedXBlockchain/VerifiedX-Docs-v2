@@ -1,5 +1,5 @@
 ---
-sourceHash: eb9264560f2c
+sourceHash: "eb9264560f2c"
 title: "Cuentas de reserva: bóvedas con retraso y recuperables"
 description: Crea, usa y recupera una cuenta de reserva (bóveda) con el VerifiedX Web SDK, incluidos los envíos con retraso, las devoluciones y la recuperación a una dirección segura.
 sidebar:

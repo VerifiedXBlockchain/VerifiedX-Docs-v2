@@ -1,5 +1,5 @@
 ---
-sourceHash: cf7944efbd4a
+sourceHash: "cf7944efbd4a"
 title: "Contratos inteligentes"
 description: Integra los contratos inteligentes de VFX con aplicaciones de terceros mediante la API del CLI de Core, con notas de configuración y un índice de las operaciones.
 sidebar:

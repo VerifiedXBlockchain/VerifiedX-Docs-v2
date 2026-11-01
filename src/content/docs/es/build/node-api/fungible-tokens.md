@@ -1,5 +1,5 @@
 ---
-sourceHash: 5484fc54551c
+sourceHash: "5484fc54551c"
 title: "Tokens fungibles"
 description: "Despliega un contrato inteligente de token fungible y emite, transfiere, quema, pausa, transfiere la propiedad de sus tokens y vota con ellos a través de la API de Core."
 sidebar:

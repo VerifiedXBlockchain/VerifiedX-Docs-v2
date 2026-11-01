@@ -1,5 +1,5 @@
 ---
-sourceHash: 8a241dff0134
+sourceHash: "8a241dff0134"
 title: "Web API: CMC Price"
 description: Endpoints de la API del explorador para datos de precios actuales e históricos de CoinMarketCap.
 sidebar:

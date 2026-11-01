@@ -1,5 +1,5 @@
 ---
-sourceHash: 5e92e383d876
+sourceHash: "5e92e383d876"
 title: "Beacons"
 description: "Qué son los beacons, cómo transmiten los archivos multimedia de los NFTs y cómo configurar, ejecutar y revisar tu propio beacon desde el Core CLI."
 sidebar:

@@ -1,5 +1,5 @@
 ---
-sourceHash: 8e79e226b206
+sourceHash: "8e79e226b206"
 title: "Transacciones"
 description: Usa la pestaña Transacciones para revisar la actividad de tus cuentas, los componentes de las transacciones y los tipos de transacción.
 sidebar:

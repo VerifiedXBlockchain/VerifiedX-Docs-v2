@@ -1,5 +1,5 @@
 ---
-sourceHash: b7026e727f62
+sourceHash: "b7026e727f62"
 title: "Testnet"
 description: "Ejecuta el CLI y la GUI en testnet: sus puertos y direcciones, el signet de VerifiedX y cómo obtener fondos de prueba."
 sidebar:

@@ -1,5 +1,5 @@
 ---
-sourceHash: eeeb7bf5b302
+sourceHash: "eeeb7bf5b302"
 title: "Operaciones avanzadas del sistema"
 description: Operaciones avanzadas de la billetera para cuentas, tokens y NFTs, validadores y diagnóstico.
 sidebar:

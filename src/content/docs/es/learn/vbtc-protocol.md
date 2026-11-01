@@ -1,5 +1,5 @@
 ---
-sourceHash: 2e5ef1ae4700
+sourceHash: "2e5ef1ae4700"
 title: "vBTC: Bitcoin verificado en la red VFX"
 description: "Cómo las bóvedas de vBTC mantienen Bitcoin uno a uno: depósitos, transferencias, retiros, certificación de Bitcoin, bóvedas S3C y vBTC.b en Base."
 sidebar:

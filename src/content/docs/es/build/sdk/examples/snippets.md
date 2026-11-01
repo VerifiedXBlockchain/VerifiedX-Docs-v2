@@ -1,5 +1,5 @@
 ---
-sourceHash: eb579c1e2275
+sourceHash: "eb579c1e2275"
 title: "Fragmentos de código"
 description: Fragmentos de código listos para copiar y pegar para tareas comunes con el VerifiedX Web SDK en VFX, Bitcoin, multicadena, React, Node.js y pruebas.
 sidebar:

@@ -1,5 +1,5 @@
 ---
-sourceHash: f86c6bde2368
+sourceHash: "f86c6bde2368"
 title: "Validación"
 description: Lo que necesitas para convertirte en validador de VerifiedX desde la billetera, y qué hacen los validadores.
 sidebar:

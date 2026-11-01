@@ -1,5 +1,5 @@
 ---
-sourceHash: 1a3909800708
+sourceHash: "1a3909800708"
 title: "Tipos e interfaces"
 description: Definiciones de tipos de TypeScript del VerifiedX Web SDK, incluidos los tipos de VFX, de Bitcoin, utilitarios y de error, las constantes, las guardas de tipo y las exportaciones del módulo.
 sidebar:

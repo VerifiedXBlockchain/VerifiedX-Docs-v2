@@ -1,5 +1,5 @@
 ---
-sourceHash: 32339ba59f0d
+sourceHash: "32339ba59f0d"
 title: "Descripción general de la API del nodo de VFX CLI"
 description: "Descripción general de los espacios de nombres de la API de VFX Core y para qué sirve cada uno."
 sidebar:

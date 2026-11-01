@@ -1,5 +1,5 @@
 ---
-sourceHash: 628803401d42
+sourceHash: "628803401d42"
 title: "Whitepaper MICA"
 description: Descarga el whitepaper MiCA de VerifiedX en formato iXBRL (XHTML) legible por máquina o en PDF.
 ---

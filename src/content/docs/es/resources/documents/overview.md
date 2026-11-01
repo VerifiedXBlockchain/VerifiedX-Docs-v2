@@ -1,5 +1,5 @@
 ---
-sourceHash: c2180f70f545
+sourceHash: "c2180f70f545"
 title: "Documentos"
 description: Índice de los documentos descargables de VerifiedX y vBTC, desde la presentación y el whitepaper hasta las auditorías.
 sidebar:

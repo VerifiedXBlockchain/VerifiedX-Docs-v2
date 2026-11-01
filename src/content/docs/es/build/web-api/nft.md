@@ -1,5 +1,5 @@
 ---
-sourceHash: 64d50a9346d4
+sourceHash: "64d50a9346d4"
 title: "Web API: NFT"
 description: Endpoints de la API del explorador para detalles de NFTs, propiedad, historial de transferencias y publicaciones en el marketplace.
 sidebar:

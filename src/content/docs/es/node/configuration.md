@@ -1,5 +1,5 @@
 ---
-sourceHash: 1d3e7f55add2
+sourceHash: "1d3e7f55add2"
 title: "Configuración del CLI"
 description: "Cada opción del archivo de configuración del Core CLI, con su tipo, su valor predeterminado y un ejemplo."
 sidebar:

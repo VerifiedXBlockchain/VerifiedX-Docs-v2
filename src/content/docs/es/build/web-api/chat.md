@@ -1,5 +1,5 @@
 ---
-sourceHash: 47fa08679f5a
+sourceHash: "47fa08679f5a"
 title: "Web API: Chat"
 description: Endpoints de la API del explorador para hilos de chat y mensajes entre usuarios en el contexto del marketplace y las tiendas.
 sidebar:

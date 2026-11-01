@@ -1,5 +1,5 @@
 ---
-sourceHash: 9659cff835f7
+sourceHash: "9659cff835f7"
 title: "Signet de VerifiedX (Bitcoin de testnet)"
 description: "El signet de VerifiedX, la red privada de prueba de Bitcoin detrás de la testnet de VFX: cómo funciona, su explorador y sus API, el BTC de signet y el acceso a la API de socios (Partner API)."
 sidebar:

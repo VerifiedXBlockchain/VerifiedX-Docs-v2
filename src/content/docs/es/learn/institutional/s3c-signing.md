@@ -1,5 +1,5 @@
 ---
-sourceHash: 22edc0e2c5e6
+sourceHash: "22edc0e2c5e6"
 title: "Firma institucional (S3C)"
 description: Cómo una institución usa S3C para restringir la ceremonia de claves y la firma de Bitcoin de sus bóvedas de vBTC a tres o más validadores que opera.
 sidebar:

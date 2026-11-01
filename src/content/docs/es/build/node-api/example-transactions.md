@@ -1,5 +1,5 @@
 ---
-sourceHash: f3cb70e3ffde
+sourceHash: "f3cb70e3ffde"
 title: "Transacciones de ejemplo"
 description: "Ejemplos reales de transacciones de mainnet por tipo, cada uno con su hash, su enlace de Spyglass y su payload de datos."
 sidebar:

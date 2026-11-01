@@ -1,5 +1,5 @@
 ---
-sourceHash: 0fc8b3b6d8d5
+sourceHash: "0fc8b3b6d8d5"
 title: "Integración con custodios"
 description: Cómo los custodios institucionales, los bancos de activos digitales y los proveedores de infraestructura se integran con VerifiedX para admitir vBTC.
 sidebar:

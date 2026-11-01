@@ -1,5 +1,5 @@
 ---
-sourceHash: b002cfecffec
+sourceHash: "b002cfecffec"
 title: "Detalles de la API del nodo de VFX CLI"
 description: "Referencia de todos los endpoints de la API de VFX Core, agrupados por espacio de nombres, con sus parámetros y valores devueltos."
 sidebar:

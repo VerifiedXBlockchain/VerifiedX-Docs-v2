@@ -1,5 +1,5 @@
 ---
-sourceHash: db3a6cfef33a
+sourceHash: "db3a6cfef33a"
 title: "VerifiedX Trillium Web IDE"
 description: El Trillium Web IDE en el navegador para escribir, desplegar, depurar y probar contratos inteligentes de Trillium en VerifiedX.
 sidebar:
