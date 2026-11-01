@@ -1,5 +1,5 @@
 ---
-sourceHash: 996309901114
+sourceHash: "996309901114"
 title: Acerca de vBTC
 description: vBTC es la propiedad programable, no sintética y sin intermediarios de confianza de Bitcoin, verificada por el consenso de VerifiedX.
 sidebar:
