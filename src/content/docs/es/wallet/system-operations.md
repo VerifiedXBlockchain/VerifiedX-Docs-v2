@@ -1,5 +1,5 @@
 ---
-sourceHash: 14a728c4e245
+sourceHash: eeeb7bf5b302
 title: "Operaciones avanzadas del sistema"
 description: Operaciones avanzadas de la billetera para cuentas, tokens y NFTs, validadores y diagnóstico.
 sidebar:
@@ -11,7 +11,7 @@ sidebar:
    - Reinicio del CLI
    - Impresión de direcciones
    - Acceso a la carpeta de la base de datos
-   - Importación de snapshots
+   - Importación de snapshots (las bases de datos de cuentas, claves y bóvedas se mantienen en su lugar; antes se guarda una copia en `SnapshotBackups/snapshot-import-{timestamp}` en tu carpeta de datos)
 
 2. Administración de la red:
    - Seguimiento del estado de sincronización
@@ -45,6 +45,11 @@ sidebar:
    - Cumplimiento del protocolo
 
 ## Administración de validadores
+
+:::note
+En la billetera 9.0.1 la pantalla Validador está oculta: no hay un elemento Validador en el menú lateral ni una sección Validador en Operaciones, así que el estado del validador, las propuestas y las votaciones no se pueden usar desde la billetera. La búsqueda de **Pool de validadores** sigue en **Operaciones**, **General**. Para validar, ejecuta el Core CLI como se describe en [Ejecuta un validador](/es/node/validator/).
+:::
+
 1. Herramientas de estado:
    - Verificación del estado del validador (validator)
    - Búsqueda de pools

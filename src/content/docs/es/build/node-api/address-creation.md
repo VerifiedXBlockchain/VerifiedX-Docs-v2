@@ -1,5 +1,5 @@
 ---
-sourceHash: 7bd0ff98bfd8
+sourceHash: 82dcf3f670a0
 title: "Creación de direcciones de VFX"
 description: "Cómo se deriva una dirección de VFX a partir de una clave privada ECDSA, paso a paso."
 sidebar:
@@ -23,34 +23,36 @@ con fines informativos:
 
   `18e14a7b6a307f426a94f8114701e7c8e774e7f9a47e2c2035db29a206321725`
 
-1.  Toma la clave pública correspondiente generada con ella y agrega el
-    identificador hexadecimal '04'. Las claves privadas de VFX se crean a partir
-    de la multiplicación ECDSA de `(curve.G, secret, curve.N, curve.A, curve.P)`.
-    En el código se ve así:
+1.  Toma la clave pública sin comprimir correspondiente y agrega el
+    identificador hexadecimal '04'. Las claves de VFX usan la curva secp256k1,
+    y la clave pública se crea a partir de la multiplicación ECDSA de
+    `(curve.G, secret, curve.N, curve.A, curve.P)`. En el código se ve así:
 
-        multiply(Point p, BigInteger n, BigInteger N, BigInteger A, BigIntegerP)
+    ```csharp
+    multiply(Point p, BigInteger n, BigInteger N, BigInteger A, BigInteger P)
+    ```
 
-    Forma rápida de multiplicar un punto y un escalar en curvas elípticas
+    Multiplicación escalar de un punto de una curva elíptica:
 
-    - param p: primer punto que se multiplica
+    - param p: punto de la curva que se multiplica
 
-    - param n: escalar que se multiplica
+    - param n: escalar multiplicador
 
     - param N: orden de la curva elíptica
 
-    - param P:` Prime number in the module of the equation Y\^2 = X \^ 3 + A \* X + B(mod p)`
+    - param A: coeficiente del término de primer orden de la ecuación `Y^2 = X^3 + A*X + B (mod p)`
 
-    - param A: `Coefficient of the first-order term of the equation Y \^ 2 = X \^ 3 + A \* X + B(mod p)`
+    - param P: número primo del módulo de la ecuación `Y^2 = X^3 + A*X + B (mod p)`
 
-    - return: **punto que representa la suma del primer y el segundo punto**
+    - return: **el punto resultante n·p**
 
-    Puedes verlo en el código en EllipticCurve-\>Math
+    Puedes verlo en el código en `VerifiedXCore/EllipticCurve/Math.cs`
 
     > Ten en cuenta que muchas bibliotecas de ECDSA manejan las claves públicas
     > de esta forma, así que quizá no necesites hacer el cálculo jacobiano anterior.
 
-    ```
-    \[04\*\*added\]50863ad64a87ae8a2fe83c1af1a8403cb53f53e486d8511dad8a04887e5b23522cd470243453a299fa9e77237716103abc11a1df38855ed6f2ee187e9c582ba6 =
+    ```text
+    [04 added]50863ad64a87ae8a2fe83c1af1a8403cb53f53e486d8511dad8a04887e5b23522cd470243453a299fa9e77237716103abc11a1df38855ed6f2ee187e9c582ba6 =
     0450863ad64a87ae8a2fe83c1af1a8403cb53f53e486d8511dad8a04887e5b23522cd470243453a299fa9e77237716103abc11a1df38855ed6f2ee187e9c582ba6
     ```
 
@@ -63,7 +65,8 @@ con fines informativos:
     `010966776006953d5567439e5e39f86a0d273bee`
 
 1.  Agrega el byte de versión delante del hash RIPEMD-160 del paso 3 (0x3C
-    para la red principal).
+    para mainnet, que da direcciones que empiezan con `R`; 0x89 para testnet,
+    que da direcciones que empiezan con `x`).
 
     `3c010966776006953d5567439e5e39f86a0d273bee`
 
@@ -94,3 +97,7 @@ con fines informativos:
     codificación Base58Check del paso 8.
 
     `R9Ng1rDS2YgB7R2bJMU3RKzVXSriXLRsBR`
+
+    Con el byte de versión de testnet 0x89, la misma clave da
+    `x8Q7qDAchSMe5nmGBf7akyx4zHhMMLp9gD`. Un nodo rechaza como destinatario
+    una dirección que lleva el byte de versión de la otra red.

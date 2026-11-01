@@ -1,32 +1,33 @@
 ---
-sourceHash: 5f3e6421c543
+sourceHash: 70d69b3d5eb4
 title: "Referencia de la API de BtcClient"
 description: Referencia de BtcClient en el VerifiedX Web SDK, que abarca la generación de billeteras de Bitcoin, la información de direcciones, las transacciones, las tasas de comisión y la firma de mensajes.
 sidebar:
   order: 2
 ---
 
-`BtcClient` ofrece administración de billeteras de Bitcoin, transacciones e información de comisiones a través de una API al estilo de mempool.space (Esplora): mempool.space para mainnet y la API del signet de VerifiedX para testnet.
+`BtcClient` ofrece administración de billeteras de Bitcoin, transacciones e información de comisiones a través de una API al estilo de mempool.space (Esplora): mempool.space para mainnet y, en testnet, la API del signet de VerifiedX cuando la pasas (consulta el constructor).
 
 ## Constructor
 
-### `new btc.BtcClient(network, options?)`
+### `new btc.BtcClient(network?, dryRunOrOptions?)`
 
 Crea una nueva instancia de BtcClient.
 
 **Parámetros:**
-- `network` ('mainnet' | 'testnet'): la red de Bitcoin a la que te conectas. `'testnet'` es la red de Bitcoin que sigue la testnet de VerifiedX: el signet de VerifiedX.
-- `options` (opcional): `{ dryRun?: boolean, apiBaseUrl?: string }`. `apiBaseUrl` sobrescribe el origen de la API de Esplora, incluido `/api`. Valores predeterminados: `https://mempool.space/api` en mainnet; en testnet, `https://signet.verifiedx.io/api` a partir del SDK 3.7.0. El SDK 3.6.0 y las versiones anteriores usan por defecto Bitcoin testnet4 en testnet, que la testnet de VerifiedX ya no usa: con esas versiones, pasa `{ apiBaseUrl: 'https://signet.verifiedx.io/api' }`.
+- `network` ('mainnet' | 'testnet', opcional): la red de Bitcoin (predeterminada: `'mainnet'`). `'testnet'` usa los formatos de dirección de la testnet de Bitcoin (`tb1…`, `m…`/`n…`, `2…`), que comparte el signet de VerifiedX.
+- `dryRunOrOptions` (boolean | `BtcClientOptions`, opcional): `true` para un cliente de ejecución de prueba (dry run), o `{ dryRun?: boolean, apiBaseUrl?: string }`. `apiBaseUrl` sobrescribe el origen de la API de Esplora, incluido `/api`.
+
+Valores predeterminados de la API en `vfx-web-sdk` 9.0.3: `https://mempool.space/api` en mainnet y `https://mempool.space/testnet4/api` en testnet. La testnet de VerifiedX sigue el [signet de VerifiedX](/es/build/signet/), no testnet4, así que en testnet pasa `{ apiBaseUrl: 'https://signet.verifiedx.io/api' }`. Sin él, los saldos, los UTXO y las transmisiones van a testnet4.
 
 **Ejemplo:**
 ```typescript
 import { btc } from 'vfx-web-sdk';
 
-const client = new btc.BtcClient('testnet');
+// VerifiedX signet (the Bitcoin side of the VFX testnet)
+const client = new btc.BtcClient('testnet', { apiBaseUrl: 'https://signet.verifiedx.io/api' });
 const mainnetClient = new btc.BtcClient('mainnet');
-
-// SDK 3.6.0 and earlier: point testnet at the VerifiedX signet
-const signetClient = new btc.BtcClient('testnet', { apiBaseUrl: 'https://signet.verifiedx.io/api' });
+const dryRunClient = new btc.BtcClient('testnet', { dryRun: true, apiBaseUrl: 'https://signet.verifiedx.io/api' });
 ```
 
 ## Generación de billeteras
@@ -40,15 +41,15 @@ Genera una nueva billetera de Bitcoin aleatoria con todos los tipos de direcció
 **Objeto de respuesta:**
 ```typescript
 {
-  privateKey: string;
+  privateKey: string | undefined;  // hex
   publicKey: string;
   wif: string;
-  address: string; // Default address (bech32)
+  address: string | undefined;     // Default address (bech32)
   addresses: {
-    p2pkh: string;    // Legacy (starts with 1)
-    p2sh: string;     // Nested SegWit (starts with 3)
-    bech32: string;   // Native SegWit (starts with bc1/tb1)
-    bech32m: string;  // Taproot (starts with bc1p/tb1p)
+    p2pkh: string | undefined;     // Legacy (starts with 1; m or n on testnet)
+    p2sh: string | undefined;      // Nested SegWit (starts with 3; 2 on testnet)
+    bech32: string | undefined;    // Native SegWit (starts with bc1q/tb1q)
+    bech32m: string | undefined;   // Taproot (starts with bc1p/tb1p)
   };
 }
 ```
@@ -64,24 +65,19 @@ console.log('Taproot address:', keypair.addresses.bech32m);
 
 ### `generateMnemonic()`
 
-Genera una nueva billetera con una frase de recuperación (mnemónico) BIP39.
+Genera una nueva billetera con una frase de recuperación (mnemónico) BIP39 de 24 palabras.
 
-**Devuelve:** `BtcMnemonicKeypair` - Par de claves con la frase de recuperación para restaurarla
+**Devuelve:** `BtcKeypair` - Par de claves con `mnemonic` establecido para restaurarla
 
 **Objeto de respuesta:**
 ```typescript
 {
-  mnemonic: string;
-  privateKey: string;
+  mnemonic: string;  // 24 words
+  privateKey: string | undefined;
   publicKey: string;
   wif: string;
-  address: string;
-  addresses: {
-    p2pkh: string;
-    p2sh: string;
-    bech32: string;
-    bech32m: string;
-  };
+  address: string | undefined;
+  addresses: BtcAddresses;
 }
 ```
 
@@ -92,13 +88,13 @@ console.log('Mnemonic:', wallet.mnemonic);
 console.log('Address:', wallet.address);
 ```
 
-### `privateKeyFromMnemonic(mnemonic, index)`
+### `privateKeyFromMnemonic(mnemonic, index?)`
 
 Deriva una clave privada a partir de una frase de recuperación.
 
 **Parámetros:**
 - `mnemonic` (string): la frase de recuperación BIP39
-- `index` (number): el índice de derivación (normalmente 0)
+- `index` (number, opcional): el índice de derivación (predeterminado: 0)
 
 **Devuelve:** `BtcKeypair` - Par de claves derivado
 
@@ -124,6 +120,15 @@ const privateKey = "your-private-key-hex";
 const keypair = client.publicFromPrivate(privateKey);
 ```
 
+### `addressFromPrivate(privateKey)`
+
+Igual que `publicFromPrivate`: devuelve el `BtcKeypair` completo para una clave privada en hexadecimal; lee `.address` para obtener la dirección predeterminada (bech32).
+
+**Ejemplo:**
+```typescript
+const address = client.addressFromPrivate(privateKey).address;
+```
+
 ### `addressFromWif(wif)`
 
 Importa una billetera desde el formato Wallet Import Format (WIF).
@@ -139,14 +144,14 @@ const wif = "your-wif-string";
 const importedWallet = client.addressFromWif(wif);
 ```
 
-### `generateEmailKeypair(email, password, index)`
+### `generateEmailKeypair(email, password, index?)`
 
 Genera una billetera determinista a partir de un correo electrónico y una contraseña.
 
 **Parámetros:**
 - `email` (string): dirección de correo electrónico
 - `password` (string): contraseña
-- `index` (number): índice de derivación
+- `index` (number, opcional): índice de derivación (predeterminado: 0)
 
 **Devuelve:** `BtcKeypair` - Par de claves determinista
 
@@ -161,22 +166,22 @@ const emailWallet = client.generateEmailKeypair(
 
 ## Información de direcciones
 
-### `getAddressInfo(address)`
+### `getAddressInfo(address, inSatoshis?)`
 
-Obtiene información detallada sobre una dirección de Bitcoin.
+Obtiene información detallada sobre una dirección de Bitcoin, contando solo las transacciones confirmadas.
 
 **Parámetros:**
 - `address` (string): la dirección de Bitcoin que consultas
+- `inSatoshis` (boolean, opcional): `true` (predeterminado) para satoshis, `false` para BTC
 
-**Devuelve:** `Promise<BtcAddressInfo>` - Información de la dirección
+**Devuelve:** `Promise<AccountInfo>` - Información de la dirección. Lanza `Error fetching address info: <status>` cuando la API rechaza la solicitud (por ejemplo, con una dirección no válida)
 
 **Objeto de respuesta:**
 ```typescript
 {
-  address: string;
-  balance: number;        // Balance in satoshis
-  totalRecieved: number;  // Total received in satoshis
-  totalSent: number;      // Total sent in satoshis
+  balance: number;        // Balance (satoshis by default)
+  totalRecieved: number;  // Total received (spelling as in the SDK)
+  totalSent: number;      // Total sent
   txCount: number;        // Number of transactions
 }
 ```
@@ -188,14 +193,15 @@ console.log(`Balance: ${addressInfo.balance} satoshis`);
 console.log(`BTC Balance: ${addressInfo.balance / 100000000} BTC`);
 ```
 
-### `getTransactions(address)`
+### `getTransactions(address, limit?, before?)`
 
-Obtiene el historial de transacciones de una dirección.
+Obtiene el historial de transacciones de una dirección: la primera página de la API, de la más reciente a la más antigua, incluidas las no confirmadas.
 
 **Parámetros:**
 - `address` (string): la dirección de Bitcoin que consultas
+- `limit` (number, opcional) y `before` (number | null, opcional): se aceptan, pero en 9.0.3 no se envían a la API, así que no tienen efecto
 
-**Devuelve:** `Promise<BtcTransaction[]>` - Arreglo de transacciones
+**Devuelve:** `Promise<Transaction[]>` - Arreglo de transacciones
 
 **Objeto de transacción:**
 ```typescript
@@ -250,47 +256,47 @@ transactions.forEach(tx => {
 
 ## Operaciones con transacciones
 
-### `sendBtc(wif, toAddress, amountSats, feeRate?)`
+### `sendBtc(wif, toAddress, amount, feeRate?)`
 
-Envía Bitcoin a otra dirección (método simplificado).
+Construye, firma y transmite un pago (método simplificado). Gasta los UTXO de la dirección SegWit nativa (bech32) del WIF y le devuelve el cambio.
 
 **Parámetros:**
 - `wif` (string): la clave en Wallet Import Format del remitente
 - `toAddress` (string): la dirección de Bitcoin del destinatario
-- `amountSats` (number): el monto que envías, en satoshis
-- `feeRate` (number, opcional): tasa de comisión en sat/vB (si no la indicas, usa la estimación de la red)
+- `amount` (number): el monto que envías, en **BTC** (no en satoshis)
+- `feeRate` (number, opcional): tasa de comisión en sat/vB (predeterminada: 0 = la tasa económica de la API, con 2 en testnet y 5 en mainnet como respaldo)
 
-**Devuelve:** `Promise<string>` - ID de la transacción
+**Devuelve:** `Promise<string | null>` - El txid, o `null` cuando no se envió nada (no se pudo construir la transacción, por ejemplo por falta de fondos, o la red la rechazó; el motivo queda registrado). Lanza `BtcBroadcastUnknownError` cuando la transmisión salió pero no llegó una respuesta definitiva: no vuelvas a llamar a `sendBtc` para ese pago; resuélvelo con `checkBroadcast(error.signedTxHex)` y `broadcastTransaction(error.signedTxHex)`.
 
 **Ejemplo:**
 ```typescript
 const txId = await client.sendBtc(
   wallet.wif,
-  "bc1qrecipient...",
-  50000,  // 0.0005 BTC
-  20      // 20 sat/vB fee rate
+  "tb1qrecipient...",
+  0.0005, // 50,000 satoshis
+  2       // 2 sat/vB fee rate
 );
 console.log('Transaction sent:', txId);
 ```
 
-### `createTransaction(wif, toAddress, amountSats, feeRate?)`
+### `createTransaction(wif, toAddress, amount, feeRate?)`
 
-Crea una transacción de Bitcoin sin transmitirla.
+Crea y firma una transacción de Bitcoin sin transmitirla. Un cliente de ejecución de prueba devuelve `result: 'dry_run_transaction_hex'`.
 
 **Parámetros:**
 - `wif` (string): el WIF del remitente
 - `toAddress` (string): la dirección del destinatario
-- `amountSats` (number): monto en satoshis
+- `amount` (number): monto en **BTC**
 - `feeRate` (number, opcional): tasa de comisión en sat/vB
 
-**Devuelve:** `Promise<TransactionResult>` - Resultado de la creación de la transacción
+**Devuelve:** `Promise<CreateTxResponse>` - Resultado de la creación de la transacción
 
 **Objeto de respuesta:**
 ```typescript
 {
   success: boolean;
-  result?: string;  // Raw transaction hex
-  error?: string;   // Error message if failed
+  result: string | null;  // Signed raw transaction hex
+  error: string | null;   // Error message if failed (e.g. "Insufficient funds: …")
 }
 ```
 
@@ -298,8 +304,8 @@ Crea una transacción de Bitcoin sin transmitirla.
 ```typescript
 const result = await client.createTransaction(
   wallet.wif,
-  "bc1qrecipient...",
-  100000,
+  "tb1qrecipient...",
+  0.001, // 100,000 satoshis
   15
 );
 
@@ -312,12 +318,12 @@ if (result.success) {
 
 ### `broadcastTransaction(rawTransaction)`
 
-Transmite una transacción en bruto a la red de Bitcoin.
+Transmite una transacción en bruto firmada. Puedes repetirla sin riesgo con el mismo hex: una transacción que la red ya tiene se informa como aceptada. Un cliente de ejecución de prueba devuelve `result: 'dry_run_transaction_id'`.
 
 **Parámetros:**
 - `rawTransaction` (string): la transacción en bruto en hexadecimal
 
-**Devuelve:** `Promise<TransactionResult>` - Resultado de la transmisión
+**Devuelve:** `Promise<BroadcastTxResponse>` - `{ success, result: txid | null, error }`. `success: false` significa que la red no la aceptó; un resultado desconocido (sin respuesta en 30 segundos, o una conexión caída) lanza `BtcBroadcastUnknownError` con `txid` y `signedTxHex`
 
 **Ejemplo:**
 ```typescript
@@ -327,13 +333,44 @@ if (broadcastResult.success) {
 }
 ```
 
+### `checkBroadcast(signedTxHex)`
+
+Indica en qué estado está una transacción firmada en la red, para resolver un `BtcBroadcastUnknownError`.
+
+**Devuelve:** `Promise<BroadcastCheck>`, uno de:
+- `{ state: 'found', txid, confirmed }`: está en el mempool o en un bloque
+- `{ state: 'conflicted', txid, conflictingTxid }`: otra transacción gasta una de sus entradas, así que nunca podrá confirmarse
+- `{ state: 'absent', txid }`: no se ha visto y sus entradas no están gastadas; vuelve a transmitir el mismo hex
+- `{ state: 'unresolved', txid }`: una entrada la gasta una transacción que la API no informa
+
+Lanza un error cuando la API no puede responder.
+
+**Ejemplo:**
+```typescript
+const check = await client.checkBroadcast(signedTxHex);
+if (check.state === 'absent') {
+  await client.broadcastTransaction(signedTxHex);
+}
+```
+
+### `getRawTransaction(txId)`
+
+Obtiene los bytes en bruto de una transacción.
+
+**Devuelve:** `Promise<Buffer>`
+
+```typescript
+const raw = await client.getRawTransaction(txId);
+const hex = raw.toString('hex');
+```
+
 ## Información de la red
 
 ### `getFeeRates()`
 
 Obtiene las tasas de comisión actuales de la red.
 
-**Devuelve:** `Promise<BtcFeeRates | null>` - Tasas de comisión actuales, o null si no están disponibles
+**Devuelve:** `Promise<FeeRates | null>` - Tasas de comisión actuales, o `null` si la API no está disponible o responde con un error (nunca lanza errores). En el signet de VerifiedX, todas las tasas son de 1 sat/vB
 
 **Objeto de respuesta:**
 ```typescript
@@ -391,36 +428,32 @@ const signature = client.getSignatureFromWif("Hello Bitcoin!", wallet.wif);
 
 ## Tipos
 
+Todos se exportan desde el espacio de nombres `btc` (`import type { btc } from 'vfx-web-sdk'` y luego `btc.BtcKeypair`), y cada uno también con un nombre con el prefijo `I` (`IBtcKeypair`, …).
+
 ### BtcKeypair
 
 ```typescript
 interface BtcKeypair {
-  privateKey: string;
-  publicKey: string;
+  address: string | undefined;
+  addresses: BtcAddresses;
   wif: string;
-  address: string;
-  addresses: {
-    p2pkh: string;
-    p2sh: string;
-    bech32: string;
-    bech32m: string;
-  };
+  privateKey: string | undefined;
+  publicKey: string;
+  mnemonic?: string;  // set by generateMnemonic
+}
+
+interface BtcAddresses {
+  p2pkh: string | undefined;
+  p2sh: string | undefined;
+  bech32: string | undefined;
+  bech32m: string | undefined;
 }
 ```
 
-### BtcMnemonicKeypair
+### AccountInfo
 
 ```typescript
-interface BtcMnemonicKeypair extends BtcKeypair {
-  mnemonic: string;
-}
-```
-
-### BtcAddressInfo
-
-```typescript
-interface BtcAddressInfo {
-  address: string;
+interface AccountInfo {
   balance: number;
   totalRecieved: number;
   totalSent: number;
@@ -428,20 +461,31 @@ interface BtcAddressInfo {
 }
 ```
 
-### TransactionResult
+### CreateTxResponse / BroadcastTxResponse
 
 ```typescript
-interface TransactionResult {
+interface CreateTxResponse {
   success: boolean;
-  result?: string;
-  error?: string;
+  result: string | null;
+  error: string | null;
 }
+// BroadcastTxResponse has the same shape; result is the txid
 ```
 
-### BtcFeeRates
+### BroadcastCheck
 
 ```typescript
-interface BtcFeeRates {
+type BroadcastCheck =
+  | { state: 'found'; txid: string; confirmed: boolean }
+  | { state: 'conflicted'; txid: string; conflictingTxid: string }
+  | { state: 'absent'; txid: string }
+  | { state: 'unresolved'; txid: string };
+```
+
+### FeeRates
+
+```typescript
+interface FeeRates {
   fastestFee: number;
   halfHourFee: number;
   hourFee: number;
@@ -452,15 +496,27 @@ interface BtcFeeRates {
 
 ## Manejo de errores
 
-Las operaciones de Bitcoin pueden fallar por varias razones. Envuelve siempre las llamadas asíncronas en bloques try-catch:
+Las operaciones de Bitcoin informan los fallos de distintas formas:
 
 ### Saldo insuficiente
+`sendBtc` no lanza un error por un pago que no puede construir; registra el motivo y se resuelve en `null`. Usa `createTransaction` para leer el motivo:
 ```typescript
+const created = await client.createTransaction(wif, toAddress, amount);
+if (!created.success) {
+  console.log(created.error); // "Insufficient funds: …" or "No UTXOs found for the given address."
+}
+```
+
+### Resultado de transmisión desconocido
+```typescript
+import { BtcBroadcastUnknownError } from 'vfx-web-sdk';
+
 try {
   await client.sendBtc(wif, toAddress, amount);
 } catch (error) {
-  if (error.message.includes('insufficient')) {
-    console.log('Not enough Bitcoin balance');
+  if (error instanceof BtcBroadcastUnknownError) {
+    const check = await client.checkBroadcast(error.signedTxHex);
+    if (check.state === 'absent') await client.broadcastTransaction(error.signedTxHex);
   }
 }
 ```
@@ -470,19 +526,15 @@ try {
 try {
   await client.getAddressInfo(address);
 } catch (error) {
-  if (error.message.includes('address')) {
-    console.log('Invalid Bitcoin address format');
-  }
+  console.log(error.message); // "Error fetching address info: 400"
 }
 ```
 
 ### Errores de red
 ```typescript
-try {
-  const fees = await client.getFeeRates();
-} catch (error) {
-  console.log('Network connectivity issue');
-  // Fallback to default fee rates
+const fees = await client.getFeeRates();
+if (!fees) {
+  // API unreachable: fall back to a default fee rate
 }
 ```
 
@@ -514,7 +566,7 @@ const SATOSHI_TO_BTC_MULTIPLIER = 0.00000001;
 ### Redes
 El cliente configura automáticamente la red de Bitcoin correcta según el parámetro del constructor:
 - `'mainnet'`: la mainnet de Bitcoin
-- `'testnet'`: el signet de VerifiedX, un signet privado de Bitcoin con bloques de 10 minutos y direcciones `tb1…` (explorador `https://signet.verifiedx.io`). Los BTC de prueba se obtienen del [faucet de testnet](https://spyglass-testnet.verifiedx.io/faucet) (pestaña Signet BTC).
+- `'testnet'`: los formatos de dirección de la testnet de Bitcoin. Para la testnet de VerifiedX, pasa `apiBaseUrl: 'https://signet.verifiedx.io/api'` para usar el [signet de VerifiedX](/es/build/signet/), un signet privado de Bitcoin con bloques de 10 minutos y direcciones `tb1…` (explorador `https://signet.verifiedx.io`); el valor predeterminado de 9.0.3 es la API pública de testnet4. Los BTC de prueba se obtienen del [faucet de testnet](https://spyglass-testnet.verifiedx.io/faucet) (pestaña Signet BTC).
 
 ## Ejemplos
 
@@ -528,7 +580,9 @@ class BitcoinWallet {
   private keypair: btc.BtcKeypair | null = null;
 
   constructor(network: 'mainnet' | 'testnet' = 'testnet') {
-    this.client = new btc.BtcClient(network);
+    this.client = network === 'testnet'
+      ? new btc.BtcClient('testnet', { apiBaseUrl: 'https://signet.verifiedx.io/api' })
+      : new btc.BtcClient('mainnet');
   }
 
   createWallet(): { mnemonic: string; address: string } {
@@ -536,20 +590,20 @@ class BitcoinWallet {
     this.keypair = wallet;
 
     return {
-      mnemonic: wallet.mnemonic,
-      address: wallet.address
+      mnemonic: wallet.mnemonic!,
+      address: wallet.address!
     };
   }
 
   restoreWallet(mnemonic: string, index: number = 0): string {
     this.keypair = this.client.privateKeyFromMnemonic(mnemonic, index);
-    return this.keypair.address;
+    return this.keypair.address!;
   }
 
   async getBalance(): Promise<number> {
     if (!this.keypair) throw new Error('Wallet not initialized');
 
-    const info = await this.client.getAddressInfo(this.keypair.address);
+    const info = await this.client.getAddressInfo(this.keypair.address!);
     return info.balance;
   }
 
@@ -558,21 +612,22 @@ class BitcoinWallet {
     return satoshis / 100000000;
   }
 
-  async send(toAddress: string, amountSats: number, feeRate?: number): Promise<string> {
+  // amount in BTC; resolves to the txid, or null when nothing was sent
+  async send(toAddress: string, amountBtc: number, feeRate?: number): Promise<string | null> {
     if (!this.keypair) throw new Error('Wallet not initialized');
 
     return await this.client.sendBtc(
       this.keypair.wif,
       toAddress,
-      amountSats,
+      amountBtc,
       feeRate
     );
   }
 
-  async getTransactionHistory(): Promise<btc.BtcTransaction[]> {
+  async getTransactionHistory(): Promise<btc.Transaction[]> {
     if (!this.keypair) throw new Error('Wallet not initialized');
 
-    return await this.client.getTransactions(this.keypair.address);
+    return await this.client.getTransactions(this.keypair.address!);
   }
 
   signMessage(message: string): string {
@@ -582,26 +637,6 @@ class BitcoinWallet {
   }
 }
 ```
-
-## Notas de migración
-
-### Desde el uso directo de vfx-btc-js
-
-Si migras desde el uso directo de vfx-btc-js:
-
-```typescript
-// Old way
-import BtcClient from 'vfx-btc-js';
-const client = new BtcClient('testnet');
-
-// New way
-import { btc } from 'vfx-web-sdk';
-const client = new btc.BtcClient('testnet');
-```
-
-### Compatibilidad de la API
-
-BtcClient mantiene compatibilidad total con la API original de vfx-btc-js, y a la vez forma parte del SDK unificado.
 
 ## Integración con VFX
 
