@@ -9,7 +9,7 @@ This section covers integration for VFX Smart Contracts with third party applica
 
 ## Example Code
 
-Checkout this repository which includes full examples of all the smart contract integrations in node/javascript:
+Check out this repository, which includes full examples of the smart contract integrations in Node.js. It predates the VerifiedX rebrand and still lives under the legacy ReserveBlockIO organization:
 <a href="https://github.com/ReserveBlockIO/rbx-integration-js-examples" target="_blank">https://github.com/ReserveBlockIO/rbx-integration-js-examples</a>
 
 <p></p>
@@ -28,12 +28,12 @@ Snippets from this repo are also included within the following docs, but the exa
     - `./VerifiedXCore enableapi openapi`
     - This will allow you to communicate to the CLI's API outside of localhost
 
-3. If you are planning on running it using openapi, it is recommended you seed an `apitoken` to block non-authenticated access.
+3. If you run it with `openapi`, you must also seed an `apitoken`. Without an `apitoken` (or an `APIPassword` with `AlwaysRequireAPIPassword=true`), the node refuses `openapi` and keeps the API on localhost.
     - `./VerifiedXCore enableapi openapi apitoken=random_lowercase_string`
     - Then, in all requests you will need to add this key/value into your headers: `{"apitoken": "random_lowercase_string"}`
     - If this is not included and/or is not the correct token, the API will throw a 403 error
 
-4. There are many more API endpoints available. Please visit http://localhost:7292/swagger on the machine running the CLI+API to review and interact with everything that's available.
+4. There are many more API endpoints available. Visit http://localhost:7292/swagger on the machine running the CLI+API to review and interact with everything that's available. Under `openapi`, Swagger answers only requests that carry the `apitoken` header.
 
 5. You'll see a reference to `CLI_BASE_URL` throughout the examples. This should be set to `http://localhost:7292` in most cases.
 
@@ -41,7 +41,7 @@ Snippets from this repo are also included within the following docs, but the exa
 
 1. [Compiling & Minting](/build/smart-contracts/compiling-and-minting/)
 
-2. [Tranferring NFTs](/build/smart-contracts/transferring/)
+2. [Transferring NFTs](/build/smart-contracts/transferring/)
 
 3. [Burning NFTs](/build/smart-contracts/burning/)
 

@@ -9,9 +9,9 @@ import { Tabs, TabItem } from '@astrojs/starlight/components';
 
 ## Create / Update Collection
 
-#### API Enpoint:
+#### API Endpoint:
 
-```
+```text
 POST http://localhost:7292/dstapi/DSTV1/SaveCollection
 ```
 
@@ -28,6 +28,19 @@ Params:
 ```
 
 > Use ID of `0` if it's a new collection. For updating, use the existing ID of that collection.
+
+Collections live in the node's local shop database; no transaction is sent. `Name` is limited to 64 characters and `Description` to 200 words and 1,200 characters.
+
+#### Response:
+
+```json
+{
+  "Success": true,
+  "Message": "Collection saved."
+}
+```
+
+An update answers `"Collection updated."`.
 
 #### Code Example
 
@@ -86,9 +99,9 @@ def save_collection(id=0):
 
 ## List Collections
 
-#### API Enpoint:
+#### API Endpoint:
 
-```
+```text
 GET http://localhost:7292/dstapi/DSTV1/GetAllCollections
 ```
 
@@ -97,9 +110,10 @@ GET http://localhost:7292/dstapi/DSTV1/GetAllCollections
 ```json
 {
     "Success": true,
+    "Message": "Collections Found",
     "Collections": [
         {
-           "Id": 1,
+            "Id": 1,
             "Name": "My Collection",
             "Description": "My description goes here...",
             "CollectionLive": true,
@@ -159,9 +173,9 @@ def list_collections():
 
 ## Retrieve Collection
 
-#### API Enpoint:
+#### API Endpoint:
 
-```
+```text
 GET http://localhost:7292/dstapi/DSTV1/GetCollection/{id}
 ```
 
@@ -174,6 +188,7 @@ GET http://localhost:7292/dstapi/DSTV1/GetCollection/{id}
 ```json
 {
   "Success": true,
+  "Message": "Collection Found",
   "Collection": {
     "Id": 1,
     "Name": "My Collection",
@@ -233,9 +248,9 @@ def retrieve_collection(collection_id):
 
 ## Delete Collection
 
-#### API Enpoint:
+#### API Endpoint:
 
-```
+```text
 GET http://localhost:7292/dstapi/DSTV1/DeleteCollection/{id}
 ```
 
@@ -243,11 +258,14 @@ GET http://localhost:7292/dstapi/DSTV1/DeleteCollection/{id}
 
 `id`: ID of the collection
 
+Deleting a collection also deletes its listings, auctions and bids on this node. The default collection cannot be deleted; switch the default first with `GET /dstapi/DSTV1/GetDefaultCollectionChange/{id}`.
+
 #### Response:
 
 ```json
 {
-  "Success": true
+  "Success": true,
+  "Message": "Collection deleted."
 }
 ```
 

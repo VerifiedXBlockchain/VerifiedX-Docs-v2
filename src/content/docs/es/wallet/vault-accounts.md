@@ -1,5 +1,5 @@
 ---
-sourceHash: 367590152e0d
+sourceHash: "367590152e0d"
 title: "Cuentas de bóveda"
 description: Configura cuentas de bóveda para transacciones con bloqueo de tiempo y para recuperar tus activos.
 sidebar:

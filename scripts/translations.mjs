@@ -1,6 +1,6 @@
 // Translation bookkeeping. Each translated page records the hash of the English file it was translated from.
 //   node scripts/translations.mjs check          list missing and stale translations; exits 1 if any are stale
-//   node scripts/translations.mjs stamp <file>   record the current English hash on a translated file after (re)translating it
+//   node scripts/translations.mjs stamp <file>   record the current English hash on a translated file after (re)translating it (quoted, so an all-digit hash stays a string)
 import { readFileSync, writeFileSync } from 'node:fs';
 import { join, relative } from 'node:path';
 import { ROOT, CONTENT_DIR, LOCALES, listContentFiles, englishSourceFor, sourceHash, readSourceHash } from './lib/content.mjs';
@@ -34,8 +34,8 @@ function stamp(file) {
 	const text = readFileSync(join(ROOT, rel), 'utf8');
 	if (!text.startsWith('---\n')) throw new Error(`${rel} has no frontmatter`);
 	const updated = readSourceHash(rel)
-		? text.replace(/^sourceHash:.*$/m, `sourceHash: ${hash}`)
-		: text.replace(/^---\n/, `---\nsourceHash: ${hash}\n`);
+		? text.replace(/^sourceHash:.*$/m, `sourceHash: "${hash}"`)
+		: text.replace(/^---\n/, `---\nsourceHash: "${hash}"\n`);
 	writeFileSync(join(ROOT, rel), updated);
 	console.log(`${rel} <- ${source} (${hash})`);
 }

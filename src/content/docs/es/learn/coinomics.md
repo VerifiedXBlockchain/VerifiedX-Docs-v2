@@ -1,5 +1,5 @@
 ---
-sourceHash: 286557cb7455
+sourceHash: "c0846342cb28"
 title: "Resumen de la moneda VerifiedX (VFX)"
 description: La oferta, el modelo de quema, la utilidad y los detalles de VFX, la moneda nativa de la red VerifiedX.
 sidebar:
@@ -39,7 +39,7 @@ La moneda VerifiedX (VFX) es la moneda nativa de la red VerifiedX. Paga cada tra
 
 - **Comisiones**: VFX es la única moneda que se usa para las comisiones en la red VerifiedX. La comisión de red es de 0.00002 VFX por KB de transacción, con un mínimo de 0.000003 VFX. Las comisiones del lado de Bitcoin de los retiros de vBTC se pagan en BTC.
 
-- **Sin gas**: los contratos inteligentes de VerifiedX no se ejecutan en una EVM y no necesitan gas. Tienen protección integrada contra la recursión, así que la ejecución no cuesta comisiones de gas.
+- **Sin gas**: los contratos inteligentes de VerifiedX no se ejecutan en una EVM y no necesitan gas. Trillium tiene protección integrada contra la recursión, así que la ejecución no se mide y no cuesta gas. Cada transacción de contrato inteligente (despliegue, emisión, transferencia, quema, evolución, venta) sigue pagando la comisión normal de red en VFX, basada en el tamaño, que se quema.
 
 ## Detalles de la moneda
 

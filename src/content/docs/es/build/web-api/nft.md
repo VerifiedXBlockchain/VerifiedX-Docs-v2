@@ -1,5 +1,5 @@
 ---
-sourceHash: 4ba1a13ffa52
+sourceHash: "64d50a9346d4"
 title: "Web API: NFT"
 description: Endpoints de la API del explorador para detalles de NFTs, propiedad, historial de transferencias y publicaciones en el marketplace.
 sidebar:
@@ -21,38 +21,42 @@ La API de NFT ofrece endpoints para obtener información sobre tokens no fungibl
 GET /api/nft/
 ```
 
-Devuelve una lista paginada de NFTs con opciones de filtrado y búsqueda.
+Devuelve una lista paginada de NFTs on-chain. Se excluyen los NFTs quemados, los contratos de tokens fungibles y las bóvedas de vBTC.
 
 **Parámetros de consulta:**
 - `search`: busca por nombre o identificador del NFT
-- `ordering`: ordena los resultados (p. ej., `-created_at`, `name`)
-- `owner`: filtra por dirección del propietario
-- `collection`: filtra por contrato inteligente de la colección
+- `ordering`: ordena por un campo de la respuesta, por ejemplo `-minted_at` o `name`
+- `owner_address`: filtra por dirección del propietario
+- `minter_address`: filtra por dirección de quien lo emitió
+- `page` (integer): número de página
+- `limit` (integer): resultados por página (predeterminado 30, máximo 500)
 
 **Respuesta:**
 ```json
 {
-  "count": 75000,
-  "next": "http://localhost:8000/api/nft/?page=2",
-  "previous": null,
+  "count": 2542,
+  "page": 1,
+  "num_pages": 85,
   "results": [
     {
-      "identifier": "NFT123...",
-      "name": "Digital Artwork #1",
-      "description": "A beautiful piece of digital art",
-      "owner_address": "R9Ng1rDS2YgB7R2bJMU3RKzVXSriXLRsBR",
-      "creator_address": "RNiQrW3aBUWZhfadqKxPuN46iGaR13ox7P",
-      "collection": "Cool Art Collection",
-      "image_url": "https://media.vfx.io/nft/image123.png",
-      "thumbnail_url": "https://media.vfx.io/nft/thumb123.png",
-      "mint_date": "2024-01-01T12:00:00Z",
-      "last_sale_price": "150.0",
-      "attributes": [
-        {
-          "trait_type": "Background",
-          "value": "Blue"
-        }
-      ]
+      "identifier": "e70f10e2f68f4905ae310a2111abb6f5:1793057907",
+      "name": "Bridge 2026 Receipt 2 of 3",
+      "description": "A receipt token from The Bridge 2026, New York.",
+      "minter_address": "RQBfMgJyMARNv3qXv75Kh9tf4rwdBahdvJ",
+      "owner_address": "RQBfMgJyMARNv3qXv75Kh9tf4rwdBahdvJ",
+      "minter_name": "RQBfMgJyMARNv3qXv75Kh9tf4rwdBahdvJ",
+      "smart_contract_data": "{\"SmartContractMain\": {...}}",
+      "primary_asset_name": "receipt-2.png",
+      "primary_asset_size": 515234,
+      "minted_at": "2026-10-26T23:38:35Z",
+      "mint_transaction": "b39767ff71137a8a78bbc85cb25e5079dbe7c19f361433c014a64dde34672fa8",
+      "burn_transaction": null,
+      "is_burned": false,
+      "data": "[{\"Function\":\"Mint()\",\"ContractUID\":\"e70f10e2f68f4905ae310a2111abb6f5:1793057907\",\"Data\":\"H4sI...\"}]",
+      "asset_urls": {
+        "receipt-2.png": "https://rbx-nft-web-assets.s3.amazonaws.com/jFhps372uEHEFHHSuYhWCI4c5LNUSxmf/receipt-2.png"
+      },
+      "is_listed": false
     }
   ]
 }
@@ -63,7 +67,7 @@ Devuelve una lista paginada de NFTs con opciones de filtrado y búsqueda.
 GET /api/nft/addresses/{addresses}/
 ```
 
-Devuelve los NFTs que poseen varias direcciones (separadas por comas).
+Devuelve una lista paginada de los NFTs que posee cualquiera de las direcciones indicadas, en el formato de Listar NFTs.
 
 **Parámetros:**
 - `addresses` (string): lista de direcciones de VFX separadas por comas
@@ -73,7 +77,7 @@ Devuelve los NFTs que poseen varias direcciones (separadas por comas).
 GET /api/nft/listed/{owner_address}/
 ```
 
-Devuelve los identificadores de los NFTs que un propietario tiene publicados a la venta actualmente.
+Devuelve los identificadores de los NFTs que un propietario tiene publicados actualmente en una tienda.
 
 **Parámetros:**
 - `owner_address` (string): la dirección de VFX del propietario
@@ -82,9 +86,8 @@ Devuelve los identificadores de los NFTs que un propietario tiene publicados a l
 ```json
 {
   "results": [
-    "NFT123...",
-    "NFT456...",
-    "NFT789..."
+    "e70f10e2f68f4905ae310a2111abb6f5:1793057907",
+    "18c187fbe7fd46b9aed368cd3e1ac938:1792838812"
   ]
 }
 ```
@@ -94,64 +97,17 @@ Devuelve los identificadores de los NFTs que un propietario tiene publicados a l
 GET /api/nft/{identifier}/
 ```
 
-Devuelve la información detallada de un NFT específico.
+Devuelve un NFT, en el mismo formato que un resultado de Listar NFTs.
 
 **Parámetros:**
-- `identifier` (string): el identificador del NFT
-
-**Respuesta:**
-```json
-{
-  "identifier": "NFT123...",
-  "name": "Digital Artwork #1",
-  "description": "A beautiful piece of digital art",
-  "owner_address": "R9Ng1rDS2YgB7R2bJMU3RKzVXSriXLRsBR",
-  "creator_address": "RNiQrW3aBUWZhfadqKxPuN46iGaR13ox7P",
-  "collection": {
-    "name": "Cool Art Collection",
-    "smart_contract_uid": "SC456..."
-  },
-  "metadata": {
-    "image": "https://media.vfx.io/nft/image123.png",
-    "animation_url": "https://media.vfx.io/nft/animation123.mp4",
-    "external_url": "https://example.com/nft123"
-  },
-  "attributes": [
-    {
-      "trait_type": "Background",
-      "value": "Blue",
-      "rarity": "15%"
-    },
-    {
-      "trait_type": "Style",
-      "value": "Abstract",
-      "rarity": "8%"
-    }
-  ],
-  "mint_transaction": {
-    "hash": "tx123...",
-    "block_height": 12345,
-    "timestamp": "2024-01-01T12:00:00Z"
-  },
-  "royalty_info": {
-    "percentage": 5.0,
-    "recipient": "RNiQrW3aBUWZhfadqKxPuN46iGaR13ox7P"
-  },
-  "listing": {
-    "price": "200.0",
-    "currency": "VFX",
-    "marketplace": "VFX Marketplace",
-    "expires_at": "2024-02-01T12:00:00Z"
-  }
-}
-```
+- `identifier` (string): el identificador del contrato inteligente del NFT
 
 ### Obtener el historial de un NFT
 ```http
 GET /api/nft/{identifier}/history/
 ```
 
-Devuelve el historial completo de transacciones de un NFT.
+Devuelve las transacciones del NFT (emisión, transferencias, ventas, otras llamadas al contrato inteligente, quema) en orden de bloque.
 
 **Parámetros:**
 - `identifier` (string): el identificador del NFT
@@ -161,108 +117,75 @@ Devuelve el historial completo de transacciones de un NFT.
 {
   "num_pages": 1,
   "page": 1,
-  "count": 5,
+  "count": 1,
   "results": [
     {
-      "type": "mint",
-      "hash": "tx123...",
-      "from_address": null,
-      "to_address": "RNiQrW3aBUWZhfadqKxPuN46iGaR13ox7P",
-      "amount": null,
-      "timestamp": "2024-01-01T12:00:00Z",
-      "block_height": 12345
-    },
-    {
-      "type": "transfer",
-      "hash": "tx456...",
-      "from_address": "RNiQrW3aBUWZhfadqKxPuN46iGaR13ox7P",
-      "to_address": "R9Ng1rDS2YgB7R2bJMU3RKzVXSriXLRsBR",
-      "amount": "150.0",
-      "timestamp": "2024-01-15T14:30:00Z",
-      "block_height": 12678
-    },
-    {
-      "type": "sale",
-      "hash": "tx789...",
-      "from_address": "R9Ng1rDS2YgB7R2bJMU3RKzVXSriXLRsBR",
-      "to_address": "RQKDU4UUCwbKXoydjknnH1y7Y3QYYHkvUz",
-      "amount": "200.0",
-      "timestamp": "2024-01-20T16:45:00Z",
-      "block_height": 12890
+      "hash": "b39767ff71137a8a78bbc85cb25e5079dbe7c19f361433c014a64dde34672fa8",
+      "height": 7587361,
+      "type": 2,
+      "type_label": "Nft Mint",
+      "to_address": "RQBfMgJyMARNv3qXv75Kh9tf4rwdBahdvJ",
+      "from_address": "RQBfMgJyMARNv3qXv75Kh9tf4rwdBahdvJ",
+      "total_amount": 0.0,
+      "total_fee": 0.00002708,
+      "data": "[{\"Function\":\"Mint()\", ...}]",
+      "date_crafted": "2026-10-26T23:38:35Z",
+      "signature": "MEUCIQ..."
     }
   ]
 }
 ```
+
+Todas las transacciones se devuelven en una sola página. Un identificador desconocido responde `404`.
 
 ### Verificar la propiedad de un NFT
 ```http
 POST /api/nft/verify-ownership/
 ```
 
-Verifica la propiedad de un NFT mediante una firma criptográfica.
+Verifica una prueba de propiedad con un nodo. La prueba es la cadena de firma que produce la ruta de contrato inteligente `ProveOwnership` de un nodo (consulta la [API del nodo](/es/build/node-api/overview/)).
 
 **Solicitud:**
 ```json
 {
-  "signature": "signature_data_here...",
-  "message": "I own this NFT",
-  "nft_identifier": "NFT123...",
-  "address": "R9Ng1rDS2YgB7R2bJMU3RKzVXSriXLRsBR"
+  "signature": "<ownership proof>"
 }
 ```
 
 **Respuesta:**
 ```json
 {
-  "verified": true,
-  "owner_address": "R9Ng1rDS2YgB7R2bJMU3RKzVXSriXLRsBR",
-  "nft_identifier": "NFT123...",
-  "verification_timestamp": "2024-01-01T12:00:00Z"
+  "verified": true
 }
 ```
+
+Si falta `signature`, responde `400` con `{"signature": ["This field is required."]}`.
 
 ## Descripción de los campos
 
 ### Datos del NFT
-- `identifier`: identificador único del NFT / ID del token
-- `name`: nombre legible del NFT
-- `description`: descripción detallada del NFT
+- `identifier`: el identificador del contrato inteligente del NFT
+- `name`, `description`: nombre y descripción del contrato inteligente
+- `minter_address`, `minter_name`: dirección y nombre de quien lo emitió
 - `owner_address`: dirección de VFX del propietario actual
-- `creator_address`: dirección de VFX del creador original
-- `collection`: información o nombre de la colección
-- `image_url`: URL de la imagen principal del NFT
-- `thumbnail_url`: URL de una imagen de vista previa más pequeña
-
-### Metadatos
-- `image`: URL de la imagen principal
-- `animation_url`: URL del contenido animado o de video
-- `external_url`: enlace a un sitio web o marketplace externo
-
-### Atributos
-- `trait_type`: categoría o tipo del atributo
-- `value`: el valor del atributo
-- `rarity`: qué tan raro es este atributo dentro de la colección
+- `smart_contract_data`: el contrato inteligente como string JSON
+- `primary_asset_name`, `primary_asset_size`: nombre de archivo y tamaño en bytes del activo principal
+- `minted_at`: cuándo se emitió el NFT
+- `mint_transaction`, `burn_transaction`: hashes de las transacciones de emisión y de quema (`burn_transaction` es `null` salvo que se haya quemado)
+- `is_burned`: si el NFT se quemó
+- `data`: el campo de datos de la transacción de emisión
+- `asset_urls`: mapa del nombre de archivo de cada activo a una URL donde el explorador lo sirve
+- `is_listed`: si el NFT está publicado en una tienda
 
 ### Historial de transacciones
-- `type`: tipo de transacción (mint, transfer, sale, burn)
-- `hash`: hash de la transacción
-- `from_address/to_address`: direcciones del remitente y del destinatario
-- `amount`: precio de venta (si corresponde)
-- `timestamp`: cuándo ocurrió la transacción
-
-## Tipos de transacción
-
-- `mint`: el NFT se creó o se emitió
-- `transfer`: el NFT se transfirió entre direcciones
-- `sale`: el NFT se vendió (transferencia con pago)
-- `burn`: el NFT se destruyó o se quemó
-- `misc`: otras interacciones con contratos inteligentes
+- `type`, `type_label`: número y etiqueta del tipo de transacción, como en la página [Transaction](/es/build/web-api/transaction/)
+- `hash`, `height`, `date_crafted`: hash, altura de bloque y hora de la transacción
+- `from_address`, `to_address`: direcciones del remitente y del destinatario
+- `total_amount`, `total_fee`: monto y comisión en VFX
+- `data`, `signature`: los datos y la firma de la transacción
 
 ## Notas
 
 - Los identificadores de NFT son únicos dentro del ecosistema de VFX
-- Las imágenes y los metadatos pueden almacenarse en IPFS para descentralizarlos
-- Los porcentajes de rareza se calculan dentro de cada colección
-- La información de regalías define las ganancias del creador en las ventas secundarias
-- La información de publicación muestra la disponibilidad actual en el marketplace
+- `asset_urls` es la copia alojada en el explorador de los activos del NFT, para mostrarlos; se establece a través de la API de [Media](/es/build/web-api/media/)
 - La verificación de propiedad usa el sistema de firmas criptográficas de VFX

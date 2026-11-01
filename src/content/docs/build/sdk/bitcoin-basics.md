@@ -6,7 +6,7 @@ sidebar:
   order: 2
 ---
 
-This guide covers how to use the VerifiedX Web SDK for Bitcoin operations. The SDK provides a comprehensive Bitcoin client that supports wallet management, transactions, and mempool interactions through the Mempool.space API.
+This guide covers how to use the VerifiedX Web SDK for Bitcoin operations. The SDK provides a comprehensive Bitcoin client that supports wallet management, transactions, and mempool interactions through a mempool.space-style API: mempool.space on mainnet, and the VerifiedX signet's own explorer API on testnet.
 
 ## Prerequisites
 
@@ -16,10 +16,14 @@ This guide covers how to use the VerifiedX Web SDK for Bitcoin operations. The S
 
 ## Understanding Bitcoin Networks
 
-The SDK supports both Bitcoin networks:
+The SDK supports two Bitcoin networks:
 
 - **Mainnet**: The production Bitcoin network with real BTC
-- **Testnet**: The test network with test BTC (recommended for development)
+- **Testnet**: For VerifiedX development this is the [VerifiedX signet](/build/signet/), the private Bitcoin test network the VFX testnet watches. It uses testnet address formats (`tb1…`, `m…`/`n…`, `2…`) and signet BTC from the testnet faucet
+
+:::caution[Point testnet at the VerifiedX signet]
+In `vfx-web-sdk` 9.0.3, `new btc.BtcClient('testnet')` still defaults to the public Bitcoin testnet4 API (`https://mempool.space/testnet4/api`). Keys and addresses are the same on both networks, but balances, UTXOs and broadcasts are not. Pass `apiBaseUrl: 'https://signet.verifiedx.io/api'` so the client reads and broadcasts on the VerifiedX signet.
+:::
 
 ## Step 1: Initialize the Bitcoin Client
 
@@ -28,8 +32,8 @@ The `BtcClient` provides all Bitcoin functionality in a single interface:
 ```typescript
 import { btc } from 'vfx-web-sdk';
 
-// Initialize for testnet (recommended for development)
-const client = new btc.BtcClient('testnet');
+// Initialize for the VerifiedX signet (recommended for development)
+const client = new btc.BtcClient('testnet', { apiBaseUrl: 'https://signet.verifiedx.io/api' });
 
 // For mainnet (production)
 // const client = new btc.BtcClient('mainnet');
@@ -54,6 +58,8 @@ console.log('- Default Address:', keypair.address);
 console.log('- WIF:', keypair.wif);
 ```
 
+The default `address` is the native SegWit (`bech32`) address, which is also the address `sendBtc` spends from.
+
 ### Method 2: Generate from Mnemonic
 
 ```typescript
@@ -66,12 +72,14 @@ console.log('- Address:', mnemonicWallet.address);
 console.log('- WIF:', mnemonicWallet.wif);
 ```
 
+`generateMnemonic()` returns a keypair whose `mnemonic` is a 24-word phrase.
+
 ### Method 3: Restore from Mnemonic
 
 ```typescript
 // Restore an existing wallet from mnemonic
 const restoredWallet = client.privateKeyFromMnemonic(
-  'your twelve word mnemonic phrase goes here like this example',
+  'your mnemonic phrase goes here',
   0 // account index
 );
 
@@ -130,6 +138,8 @@ const wallet = client.generatePrivateKey();
 await getAccountInfo(wallet.address);
 ```
 
+The figures count confirmed transactions only (the API's `chain_stats`); an unconfirmed payment shows up after its block. Pass `false` as the second argument to get BTC instead of satoshis.
+
 ## Step 4: Get Transaction History
 
 Retrieve transaction history for any address:
@@ -158,6 +168,8 @@ async function getTransactionHistory(address: string) {
 
 await getTransactionHistory(wallet.address);
 ```
+
+`getTransactions` returns the API's first page for the address (the newest transactions, unconfirmed ones first). In 9.0.3 its `limit` and `before` parameters are accepted but not sent, so they have no effect.
 
 ## Step 5: Check Current Fee Rates
 
@@ -193,49 +205,55 @@ await getCurrentFees();
 The easiest way to send Bitcoin:
 
 ```typescript
-async function sendBitcoin(senderWif: string, recipientAddress: string, amountSats: number) {
+async function sendBitcoin(senderWif: string, recipientAddress: string, amountBtc: number) {
   try {
-    console.log(`Sending ${amountSats} satoshis to ${recipientAddress}`);
+    console.log(`Sending ${amountBtc} BTC to ${recipientAddress}`);
 
     // This method handles transaction creation and broadcasting
     const txId = await client.sendBtc(
       senderWif,
       recipientAddress,
-      amountSats,
-      20 // fee rate in sat/vB (optional)
+      amountBtc, // in BTC, not satoshis
+      2 // fee rate in sat/vB (optional; 1 sat/vB is enough on the signet)
     );
 
-    console.log('Transaction sent successfully!');
-    console.log('Transaction ID:', txId);
+    if (!txId) {
+      console.error('Nothing was sent');
+      return null;
+    }
 
+    console.log('Transaction ID:', txId);
     return txId;
   } catch (error) {
+    // BtcBroadcastUnknownError: the broadcast went out but no answer came back
     console.error('Transaction failed:', error.message);
   }
 }
 
-// Send 50,000 satoshis (0.0005 BTC)
+// Send 0.0005 BTC (50,000 satoshis)
 const wallet = client.generatePrivateKey();
 await sendBitcoin(
   wallet.wif,
   'recipient-bitcoin-address',
-  50000
+  0.0005
 );
 ```
+
+`sendBtc` takes the amount in **BTC**. It spends the UTXOs of the WIF's native SegWit (`bech32`) address, sends change back to it, and picks the API's economy fee rate when `feeRate` is 0. It resolves to the txid, or `null` when nothing was sent (the transaction could not be built or the network refused it). It throws `BtcBroadcastUnknownError` when the broadcast went out but no definite answer came back: do not call `sendBtc` again, check with `checkBroadcast(error.signedTxHex)` and re-broadcast that same hex if it is absent.
 
 ### Advanced Send (Manual Control)
 
 For more control over the transaction process:
 
 ```typescript
-async function advancedSend(senderWif: string, recipientAddress: string, amountSats: number) {
+async function advancedSend(senderWif: string, recipientAddress: string, amountBtc: number) {
   try {
-    // Step 1: Create the transaction
+    // Step 1: Create the transaction (amount in BTC)
     const createResult = await client.createTransaction(
       senderWif,
       recipientAddress,
-      amountSats,
-      15 // custom fee rate
+      amountBtc,
+      15 // custom fee rate in sat/vB
     );
 
     if (!createResult.success) {
@@ -299,7 +317,10 @@ class BitcoinWalletManager {
   private client: btc.BtcClient;
 
   constructor(network: 'mainnet' | 'testnet' = 'testnet') {
-    this.client = new btc.BtcClient(network);
+    // On testnet, read and broadcast on the VerifiedX signet
+    this.client = network === 'testnet'
+      ? new btc.BtcClient('testnet', { apiBaseUrl: 'https://signet.verifiedx.io/api' })
+      : new btc.BtcClient('mainnet');
   }
 
   // Create new wallet
@@ -334,9 +355,9 @@ class BitcoinWalletManager {
     };
   }
 
-  // Send Bitcoin
-  async sendBitcoin(fromWif: string, toAddress: string, amountSats: number, feeRate?: number) {
-    return await this.client.sendBtc(fromWif, toAddress, amountSats, feeRate);
+  // Send Bitcoin (amount in BTC)
+  async sendBitcoin(fromWif: string, toAddress: string, amountBtc: number, feeRate?: number) {
+    return await this.client.sendBtc(fromWif, toAddress, amountBtc, feeRate);
   }
 
   // Get current network fees
@@ -395,22 +416,22 @@ main().catch(console.error);
 
 The SDK generates multiple address types for maximum compatibility:
 
-### Legacy (P2PKH) - addresses start with '1'
+### Legacy (P2PKH) - addresses start with '1' (mainnet) or 'm'/'n' (testnet and signet)
 - Oldest address format
 - Highest fees
 - Maximum compatibility
 
-### Nested SegWit (P2SH) - addresses start with '3'
+### Nested SegWit (P2SH) - addresses start with '3' (mainnet) or '2' (testnet and signet)
 - Medium fees
 - Good compatibility
 - Wrapped SegWit transactions
 
-### Native SegWit (Bech32) - addresses start with 'bc1' (mainnet) or 'tb1' (testnet)
+### Native SegWit (Bech32) - addresses start with 'bc1q' (mainnet) or 'tb1q' (testnet and signet)
 - Lower fees
 - Modern standard
 - Best for most use cases
 
-### Taproot (Bech32m) - addresses start with 'bc1p' (mainnet) or 'tb1p' (testnet)
+### Taproot (Bech32m) - addresses start with 'bc1p' (mainnet) or 'tb1p' (testnet and signet)
 - Lowest fees
 - Latest Bitcoin upgrade
 - Advanced privacy features
@@ -425,7 +446,7 @@ The SDK generates multiple address types for maximum compatibility:
 ### Performance
 - **Cache fee rates**: Don't fetch fees for every transaction
 - **Batch operations**: Group multiple API calls when possible
-- **Handle rate limits**: Mempool.space has API rate limits
+- **Handle rate limits**: mempool.space (the mainnet default) has API rate limits
 
 ### Error Handling
 - **Check balances**: Ensure sufficient balance before sending
@@ -437,7 +458,7 @@ The SDK generates multiple address types for maximum compatibility:
 Now that you understand Bitcoin basics:
 
 1. **Learn Cross-Chain**: Explore [Cross-Chain Integration](/build/sdk/cross-chain/)
-2. **Build Applications**: Check out [Complete Applications](/build/sdk/examples/applications/)
+2. **See Examples**: Browse [Code Snippets](/build/sdk/examples/snippets/)
 3. **API Reference**: Browse the [BtcClient API](/build/sdk/reference/btc-client/)
 
 ## Common Issues
@@ -446,13 +467,13 @@ Now that you understand Bitcoin basics:
 Make sure your wallet has enough Bitcoin. On testnet, get signet BTC from the [testnet faucet](https://spyglass-testnet.verifiedx.io/faucet) (Signet BTC tab).
 
 ### Transaction Fee Too Low
-Increase the fee rate if transactions are stuck in mempool.
+Increase the fee rate if transactions are stuck in mempool. On the VerifiedX signet 1 sat/vB is enough and a block comes about every 10 minutes (see [Signet](/build/signet/)).
 
 ### Invalid Address Format
 Ensure you're using the correct address format for the recipient's wallet.
 
 ### Network Connection Issues
-Check internet connection and try again. The SDK automatically retries failed requests.
+Check internet connection and try again. The SDK does not retry failed requests on its own. A broadcast that gets no answer within 30 seconds throws `BtcBroadcastUnknownError` instead of failing, so check it with `checkBroadcast` before sending again.
 
 ## Getting Help
 

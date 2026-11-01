@@ -7,7 +7,7 @@ sidebar:
 
 ### The Graphical User Interface
 
-Use the GUI on Windows or MacOS to interact with the network.
+Use the GUI on Windows or macOS to interact with the network.
 
 
 ## Documentation
@@ -16,7 +16,7 @@ Use the GUI on Windows or MacOS to interact with the network.
 
 #### Download & Install
 
-Download and Install the application for your operating system (Windows or MacOS).
+Download and install the application for your operating system (Windows or macOS).
 
 [Installation Instructions](/wallet/installation/)
 
@@ -54,6 +54,6 @@ Learn how to operate the application.
 [Advanced System Operations](/wallet/system-operations/)
 
 
-#### Trouble Shooting
+#### Troubleshooting
 
-[GUI Trouble Shooting](/wallet/troubleshooting/)
+[GUI Troubleshooting](/wallet/troubleshooting/)

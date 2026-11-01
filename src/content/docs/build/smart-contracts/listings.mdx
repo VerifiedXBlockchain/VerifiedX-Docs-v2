@@ -9,9 +9,9 @@ import { Tabs, TabItem } from '@astrojs/starlight/components';
 
 ## Create / Update Listing
 
-#### API Enpoint:
+#### API Endpoint:
 
-```
+```text
 POST http://localhost:7292/dstapi/DSTV1/SaveListing
 ```
 
@@ -34,6 +34,19 @@ Params:
 ```
 
 > Use ID of `0` if it's a new listing. For updating, use the existing ID of that listing.
+
+Listings live in the node's local shop database; saving one sends no transaction.
+
+#### Response:
+
+```json
+{
+  "Success": true,
+  "Message": "Listing saved."
+}
+```
+
+An update answers `"Listing updated."`.
 
 #### Code Example
 
@@ -102,9 +115,9 @@ def save_listing(collection_id, listing_id=0):
 
 ## List Listings
 
-#### API Enpoint:
+#### API Endpoint:
 
-```
+```text
 GET http://localhost:7292/dstapi/DSTV1/GetCollectionListings/{collectionId}
 ```
 
@@ -117,6 +130,7 @@ GET http://localhost:7292/dstapi/DSTV1/GetCollectionListings/{collectionId}
 ```json
 {
     "Success": true,
+    "Message": "Listings Found",
     "Listings": [
         ...
     ]
@@ -172,9 +186,9 @@ def list_listings(collection_id):
 
 ## Retrieve Listing
 
-#### API Enpoint:
+#### API Endpoint:
 
-```
+```text
 GET http://localhost:7292/dstapi/DSTV1/GetListing/{id}
 ```
 
@@ -187,9 +201,16 @@ GET http://localhost:7292/dstapi/DSTV1/GetListing/{id}
 ```json
 {
     "Success": true,
+    "Message": "Listing Found",
     "Listing": {
         ...
-    }
+    },
+    "Auction": {
+        ...
+    },
+    "Bids": [
+        ...
+    ]
 }
 ```
 
@@ -242,9 +263,9 @@ def retrieve_listing(listing_id):
 
 ## Cancel Listing
 
-#### API Enpoint:
+#### API Endpoint:
 
-```
+```text
 GET http://localhost:7292/dstapi/DSTV1/CancelListing/{id}
 ```
 
@@ -252,19 +273,22 @@ GET http://localhost:7292/dstapi/DSTV1/CancelListing/{id}
 
 `id`: ID of the listing
 
+Cancelling marks the listing `IsCancelled` and keeps it on the node.
+
 #### Response:
 
 ```json
 {
-  "Success": true
+  "Success": true,
+  "Message": "Listing updated."
 }
 ```
 
 ## Delete Listing
 
-#### API Enpoint:
+#### API Endpoint:
 
-```
+```text
 GET http://localhost:7292/dstapi/DSTV1/DeleteListing/{id}
 ```
 
@@ -272,11 +296,14 @@ GET http://localhost:7292/dstapi/DSTV1/DeleteListing/{id}
 
 `id`: ID of the listing
 
+Deleting a listing also deletes its auction and bids on this node.
+
 #### Response:
 
 ```json
 {
-  "Success": true
+  "Success": true,
+  "Message": "Listing deleted."
 }
 ```
 

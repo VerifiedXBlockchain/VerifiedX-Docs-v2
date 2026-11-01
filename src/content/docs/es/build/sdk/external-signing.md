@@ -1,5 +1,5 @@
 ---
-sourceHash: affe7c8a8003
+sourceHash: "19df55307d83"
 title: "Firma externa: claves de HSM, KMS y MPC"
 description: Firma transacciones de VerifiedX con una clave guardada en un HSM, un KMS en la nube o un servicio de MPC pasando un Signer al VerifiedX Web SDK en lugar de una clave privada.
 sidebar:
@@ -17,8 +17,9 @@ El VerifiedX Web SDK puede firmar cada transacción con una clave que nunca ve. 
 ## El contrato de Signer
 
 ```typescript
-import { Signer } from 'vfx-web-sdk';
+import type { Signer } from 'vfx-web-sdk';
 
+// The shape of the exported Signer type:
 interface Signer {
   address: string;   // the VFX address the signature is verified against
   publicKey: string; // uncompressed secp256k1 public key, hex, with or without the 04 prefix
@@ -44,7 +45,6 @@ En todos los lugares donde el SDK firma:
 | Todos los métodos de tokens (`deployToken`, `mintToken`, `transferToken`, …) | primer argumento |
 | Métodos de cuentas de reserva (`registerReserveAccount`, `callBackReserveTransaction`, `recoverReserveAccount`) | primer argumento |
 | Flujos de vBTC (`transferVbtc`, `transferVbtcMulti`, `createVbtcToken`, retiros) | `signer` en el objeto de parámetros, en lugar de `privateKey` (pasar ambos es un error) |
-| `RawTransactionService` | opción `signer` |
 
 ## Paso 1: deriva la dirección a partir de la clave pública
 
@@ -62,13 +62,15 @@ Fondea esta dirección como cualquier otra. Para una cuenta de reserva (bóveda,
 ## Paso 2: construye el Signer y úsalo
 
 ```typescript
+import type { Signer } from 'vfx-web-sdk';
+
 const signer: Signer = {
   address,
   publicKey,
   signDigest: (digestHex) => hsm.signDigest(digestHex), // returns DER
 };
 
-await client.sendCoin(signer, 'xRecipient...', 10);
+await client.sendCoin(signer, 'RRecipient...', 10); // mainnet addresses start with R, testnet with x
 await client.mintToken(signer, { scIdentifier, amount: 1000 });
 await client.transferVbtc({ scIdentifier, fromAddress: signer.address, toAddress, amount: 0.5, signer });
 ```
@@ -79,7 +81,8 @@ Un esbozo con AWS SDK v3. KMS devuelve la clave pública como un `SubjectPublicK
 
 ```typescript
 import { KMSClient, GetPublicKeyCommand, SignCommand } from '@aws-sdk/client-kms';
-import { VfxClient, Network, Signer } from 'vfx-web-sdk';
+import { VfxClient, Network } from 'vfx-web-sdk';
+import type { Signer } from 'vfx-web-sdk';
 
 const kms = new KMSClient({ region: 'us-east-1' });
 const KeyId = 'arn:aws:kms:...:key/...'; // key spec ECC_SECG_P256K1, usage SIGN_VERIFY
@@ -107,7 +110,7 @@ async function kmsSigner(client: VfxClient): Promise<Signer> {
 
 const client = new VfxClient(Network.Mainnet);
 const signer = await kmsSigner(client);
-await client.sendCoin(signer, 'xRecipient...', 1);
+await client.sendCoin(signer, 'RRecipient...', 1);
 ```
 
 ## Prueba un Signer sin gastar
@@ -116,7 +119,7 @@ Un cliente `dryRun` firma y hace que el nodo verifique la transacción, y luego 
 
 ```typescript
 const dry = new VfxClient(Network.Mainnet, true);
-const hash = await dry.sendCoin(signer, 'xRecipient...', 0.01);
+const hash = await dry.sendCoin(signer, 'RRecipient...', 0.01);
 // a hash means the node verified the signature; nothing was broadcast
 ```
 

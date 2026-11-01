@@ -1,5 +1,5 @@
 ---
-sourceHash: 6d5f0277031e
+sourceHash: "db3a6cfef33a"
 title: "VerifiedX Trillium Web IDE"
 description: El Trillium Web IDE en el navegador para escribir, desplegar, depurar y probar contratos inteligentes de Trillium en VerifiedX.
 sidebar:
@@ -9,7 +9,7 @@ sidebar:
 
 El **VerifiedX Trillium Web IDE** es un entorno de desarrollo integrado diseñado para crear, desplegar y probar contratos inteligentes de **Trillium** en la **blockchain de VerifiedX**. Esta herramienta busca simplificar el proceso para los desarrolladores con una interfaz en el navegador para crear, editar e interactuar con contratos inteligentes en un entorno fácil de usar. 
 
-El Web IDE está hecho a la medida del lenguaje **Trillium**, que se usa para crear contratos inteligentes sin gas en la **blockchain de VerifiedX**. Esta plataforma elimina la necesidad de configuraciones o instalaciones locales complejas y ofrece una forma eficiente de trabajar con contratos inteligentes directamente desde el navegador web.
+El Web IDE está hecho a la medida del lenguaje **Trillium**, que se usa para crear contratos inteligentes sin gas en la **blockchain de VerifiedX**: Trillium no tiene gas ni medición de ejecución. Esta plataforma elimina la necesidad de configuraciones o instalaciones locales complejas y ofrece una forma eficiente de trabajar con contratos inteligentes directamente desde el navegador web.
 
 ## Funciones principales
 
@@ -21,10 +21,10 @@ El **Trillium Web IDE** permite a los desarrolladores escribir, editar y despleg
 - **Validación instantánea**: ayuda a los desarrolladores a detectar rápidamente problemas de sintaxis y de lógica en el código del contrato inteligente.
 
 ### 2. **Ejecución de contratos inteligentes sin gas**
-Una de las características únicas de la **blockchain de VerifiedX** es que sus contratos inteligentes son **sin gas**. El **Trillium Web IDE** permite a los usuarios desplegar y ejecutar contratos inteligentes sin pagar comisiones de transacción (gas). Esto es especialmente valioso para los desarrolladores que quieren probar y desplegar contratos de forma más eficiente y económica.
+Una de las características únicas de la **blockchain de VerifiedX** es que sus contratos inteligentes son **sin gas**: Trillium no tiene gas ni medición de ejecución. Cada transacción de contrato inteligente en la cadena (despliegue, emisión, transferencia, quema, evolución, venta) sigue pagando la comisión normal de la red VFX, basada en el tamaño, que se quema.
 
-- **Despliegue sin gas**: despliega contratos inteligentes en VerifiedX sin comisiones de transacción.
-- **Pruebas eficientes**: prueba contratos en el IDE sin preocuparte por las comisiones de gas.
+- **Despliegue sin gas**: desplegar un contrato solo cuesta la comisión normal de la red VFX, basada en el tamaño, sin gas adicional.
+- **Pruebas eficientes**: el código que compilas y ejecutas en el IDE no envía ninguna transacción, así que probar no cuesta nada.
 
 ### 3. **Despliegue de contratos en la blockchain de VerifiedX**
 El Web IDE simplifica el proceso de desplegar contratos inteligentes de **Trillium** en la **blockchain de VerifiedX**. Una vez que creas y pruebas un contrato inteligente, puedes desplegarlo en la blockchain con solo unos clics.

@@ -1,5 +1,5 @@
 ---
-sourceHash: c8208a143ad1
+sourceHash: "661d04801b92"
 title: "Web API: Fungible Token"
 description: Endpoints de la API del explorador para los detalles de tokens fungibles y sus temas de votación.
 sidebar:
@@ -11,40 +11,46 @@ La API de Fungible Token ofrece endpoints para obtener información sobre tokens
 
 ## URL base
 ```
-/api/fungible-token/
+/api/fungible-tokens/
 ```
 
 ## Endpoints
 
 ### Listar tokens fungibles
 ```http
-GET /api/fungible-token/
+GET /api/fungible-tokens/
 ```
 
-Devuelve una lista paginada de todos los tokens fungibles de la blockchain de VFX.
+Devuelve una lista paginada de todos los tokens fungibles de la blockchain de VFX, de los más recientes a los más antiguos.
 
 **Parámetros de consulta:**
-- `search`: busca por nombre del token, símbolo o identificador del contrato inteligente
-- `ordering`: ordena los resultados (p. ej., `name`, `-created_at`)
+- `page` (integer): número de página
+- `limit` (integer): resultados por página (30 de forma predeterminada, 500 como máximo)
 
 **Respuesta:**
 ```json
 {
-  "count": 150,
-  "next": "http://localhost:8000/api/fungible-token/?page=2",
-  "previous": null,
+  "count": 400,
+  "page": 1,
+  "num_pages": 14,
   "results": [
     {
-      "id": 1,
-      "smart_contract_uid": "SC123...",
-      "name": "VFX Utility Token",
-      "symbol": "VUT",
-      "total_supply": "1000000.0",
-      "decimals": 18,
-      "creator_address": "R9Ng1rDS2YgB7R2bJMU3RKzVXSriXLRsBR",
-      "created_at": "2024-01-01T12:00:00Z",
-      "is_voting_enabled": true,
-      "description": "A utility token for the VFX ecosystem"
+      "sc_identifier": "9541c645d3ae4d15886885d4627278b3:1792822131",
+      "name": "QA Token W2",
+      "ticker": "LR24AW2",
+      "description": "Two-decimal test token",
+      "owner_address": "xXVdgxHRzmr5WnSsi3c2v9wEjsFdk7jnkf",
+      "can_mint": true,
+      "can_burn": true,
+      "can_vote": false,
+      "created_at": "2026-10-24T06:08:57Z",
+      "initial_supply": 0.0,
+      "circulating_supply": 501.0,
+      "decimal_places": 2,
+      "image_url": "https://rbx-nft-web-assets-testnet.s3.amazonaws.com/9541c645d3ae4d15886885d4627278b31792822131/tmpol_eqhuk.png",
+      "is_paused": false,
+      "banned_addresses": [],
+      "nsfw": false
     }
   ]
 }
@@ -52,10 +58,10 @@ Devuelve una lista paginada de todos los tokens fungibles de la blockchain de VF
 
 ### Obtener los detalles de un token fungible
 ```http
-GET /api/fungible-token/{sc_identifier}/
+GET /api/fungible-tokens/{sc_identifier}/
 ```
 
-Devuelve la información detallada de un token fungible específico.
+Devuelve un token y el saldo de cada dirección que lo ha tenido.
 
 **Parámetros:**
 - `sc_identifier` (string): el identificador del contrato inteligente
@@ -63,32 +69,37 @@ Devuelve la información detallada de un token fungible específico.
 **Respuesta:**
 ```json
 {
-  "id": 1,
-  "smart_contract_uid": "SC123...",
-  "name": "VFX Utility Token",
-  "symbol": "VUT",
-  "total_supply": "1000000.0",
-  "decimals": 18,
-  "creator_address": "R9Ng1rDS2YgB7R2bJMU3RKzVXSriXLRsBR",
-  "created_at": "2024-01-01T12:00:00Z",
-  "is_voting_enabled": true,
-  "description": "A utility token for the VFX ecosystem",
-  "metadata": {
-    "website": "https://example.com",
-    "logo": "https://example.com/logo.png",
-    "whitepaper": "https://example.com/whitepaper.pdf"
+  "token": {
+    "sc_identifier": "9541c645d3ae4d15886885d4627278b3:1792822131",
+    "name": "QA Token W2",
+    "ticker": "LR24AW2",
+    "description": "Two-decimal test token",
+    "owner_address": "xXVdgxHRzmr5WnSsi3c2v9wEjsFdk7jnkf",
+    "can_mint": true,
+    "can_burn": true,
+    "can_vote": false,
+    "created_at": "2026-10-24T06:08:57Z",
+    "initial_supply": 0.0,
+    "circulating_supply": 501.0,
+    "decimal_places": 2,
+    "image_url": "https://rbx-nft-web-assets-testnet.s3.amazonaws.com/9541c645d3ae4d15886885d4627278b31792822131/tmpol_eqhuk.png",
+    "is_paused": false,
+    "banned_addresses": [],
+    "nsfw": false
   },
-  "holders_count": 500,
-  "transfer_count": 1250
+  "holders": {
+    "xVWNbcBXTtiiL7ZHCqxRP1q12tcgUTQA4m": 399.5,
+    "xXVdgxHRzmr5WnSsi3c2v9wEjsFdk7jnkf": 101.5
+  }
 }
 ```
 
 ### Listar los temas de votación de un token
 ```http
-GET /api/fungible-token/{sc_identifier}/voting-topics/
+GET /api/fungible-tokens/{sc_identifier}/voting-topics/
 ```
 
-Devuelve los temas de votación asociados a un token fungible específico.
+Devuelve una lista paginada de los temas de votación de un token.
 
 **Parámetros:**
 - `sc_identifier` (string): el identificador del contrato inteligente
@@ -96,20 +107,30 @@ Devuelve los temas de votación asociados a un token fungible específico.
 **Respuesta:**
 ```json
 {
-  "count": 5,
+  "count": 2,
+  "page": 1,
+  "num_pages": 1,
   "results": [
     {
-      "topic_id": "topic_123",
-      "title": "Proposal to Increase Token Supply",
-      "description": "Vote on whether to increase the total token supply by 20%",
-      "status": "active",
-      "created_by": "R9Ng1rDS2YgB7R2bJMU3RKzVXSriXLRsBR",
-      "start_time": "2024-01-01T12:00:00Z",
-      "end_time": "2024-01-08T12:00:00Z",
-      "votes_for": 1500,
-      "votes_against": 800,
-      "total_votes": 2300,
-      "participation_rate": "46%"
+      "sc_identifier": "39685758c457473686504b4c16516a5b:1793534071",
+      "token": { "sc_identifier": "39685758c457473686504b4c16516a5b:1793534071", "name": "...", "ticker": "..." },
+      "from_address": "xWhMdq5TPzdXCib68kSHVUBhgdxdAZ1G2s",
+      "topic_id": "u9GGgZ0R1793534287",
+      "name": "Distribute Q3",
+      "description": "Pay out the Q3 distribution",
+      "vote_requirement": 51.0,
+      "created_at": "2026-11-01T11:58:07Z",
+      "voting_ends_at": "2026-11-08T11:58:07Z",
+      "vote_data": {
+        "votes": [
+          { "address": "xWhMdq5TPzdXCib68kSHVUBhgdxdAZ1G2s", "value": true, "created_at": "2026-11-01T12:10:00Z" }
+        ],
+        "vote_yes": 1,
+        "vote_no": 0,
+        "total_votes": 1,
+        "percent_yes": 1.0,
+        "percent_no": 0.0
+      }
     }
   ]
 }
@@ -117,78 +138,48 @@ Devuelve los temas de votación asociados a un token fungible específico.
 
 ### Obtener los detalles de un tema de votación
 ```http
-GET /api/fungible-token/voting-topics/{topic_id}/
+GET /api/fungible-tokens/voting-topics/{topic_id}/
 ```
 
-Devuelve la información detallada de un tema de votación específico.
+Devuelve un tema de votación, con el mismo formato que un resultado de la lista.
 
 **Parámetros:**
-- `topic_id` (string): el identificador del tema de votación
-
-**Respuesta:**
-```json
-{
-  "topic_id": "topic_123",
-  "token": {
-    "smart_contract_uid": "SC123...",
-    "name": "VFX Utility Token",
-    "symbol": "VUT"
-  },
-  "title": "Proposal to Increase Token Supply",
-  "description": "Vote on whether to increase the total token supply by 20%",
-  "full_description": "This proposal suggests increasing the total supply...",
-  "status": "active",
-  "created_by": "R9Ng1rDS2YgB7R2bJMU3RKzVXSriXLRsBR",
-  "start_time": "2024-01-01T12:00:00Z",
-  "end_time": "2024-01-08T12:00:00Z",
-  "votes_for": 1500,
-  "votes_against": 800,
-  "abstain": 100,
-  "total_votes": 2400,
-  "participation_rate": "48%",
-  "quorum_required": "25%",
-  "quorum_met": true,
-  "voting_options": ["For", "Against", "Abstain"]
-}
-```
+- `topic_id` (string): el identificador del tema de votación, por ejemplo `u9GGgZ0R1793534287`
 
 ## Descripción de los campos
 
 ### Token fungible
-- `smart_contract_uid`: identificador único del contrato inteligente del token
+- `sc_identifier`: identificador único del contrato inteligente del token
 - `name`: nombre completo del token
-- `symbol`: símbolo o ticker de cotización del token
-- `total_supply`: número total de tokens en circulación
-- `decimals`: número de decimales admitidos
-- `creator_address`: dirección que creó el token
-- `is_voting_enabled`: si la votación de gobernanza está habilitada
-- `holders_count`: número de direcciones que poseen el token
-- `transfer_count`: número total de transferencias
+- `ticker`: símbolo de cotización del token
+- `description`: descripción del token
+- `owner_address`: propietario actual del contrato del token
+- `can_mint`, `can_burn`, `can_vote`: si el token permite la emisión, la quema y los temas de votación
+- `created_at`: cuándo se desplegó el token
+- `initial_supply`: suministro emitido en el despliegue
+- `circulating_supply`: suministro actual
+- `decimal_places`: número de decimales admitidos
+- `image_url`: imagen del token
+- `is_paused`: si el propietario pausó el token
+- `banned_addresses`: direcciones que el propietario bloqueó en el token
+- `nsfw`: si el token está marcado como contenido no apto para el trabajo (NSFW)
+- `holders` (solo en el detalle): saldo por dirección
 
 ### Tema de votación
 - `topic_id`: identificador único del tema de votación
-- `title`: título corto de la propuesta
-- `description`: breve descripción de la propuesta
-- `status`: estado actual (active, completed, cancelled)
-- `start_time`: cuándo comienza la votación
-- `end_time`: cuándo termina la votación
-- `votes_for/against`: conteo de votos de cada opción
-- `participation_rate`: porcentaje de votantes habilitados que participaron
-- `quorum_required`: participación mínima necesaria para que sea válida
-- `quorum_met`: si se cumplió el requisito de quórum
-
-## Valores de estado de la votación
-
-- `pending`: la votación aún no ha comenzado
-- `active`: la votación está abierta
-- `completed`: la votación terminó correctamente
-- `cancelled`: la votación se canceló antes de completarse
-- `failed`: la votación no alcanzó los requisitos de quórum
+- `sc_identifier`, `token`: el token al que pertenece el tema
+- `from_address`: dirección que creó el tema
+- `name`: título corto de la propuesta
+- `description`: descripción de la propuesta
+- `vote_requirement`: saldo mínimo de tokens que necesita un tenedor para votar
+- `created_at`: cuándo se creó el tema
+- `voting_ends_at`: cuándo termina la votación
+- `vote_data.votes`: cada voto emitido, con la `address` del votante, su `value` (`true` = sí) y `created_at`
+- `vote_data.vote_yes`, `vote_data.vote_no`, `vote_data.total_votes`: conteos de votos
+- `vote_data.percent_yes`, `vote_data.percent_no`: proporción de los votos emitidos, como fracciones de 0 a 1
 
 ## Notas
 
-- Los montos de tokens se devuelven como strings para conservar la precisión decimal
-- La votación solo está disponible para tokens con `is_voting_enabled: true`
-- El poder de voto normalmente se basa en los tokens en posesión en un bloque de captura (snapshot)
-- Los temas pueden tener distintos mecanismos de votación (mayoría simple, mayoría calificada, etc.)
-- Los datos históricos de votación se conservan por transparencia y para auditorías
+- Los montos de tokens son números JSON
+- Los temas de votación solo existen para tokens con `can_vote: true`
+- El explorador cuenta cada voto registrado una vez; `vote_data` no pondera los votos según el saldo de tokens

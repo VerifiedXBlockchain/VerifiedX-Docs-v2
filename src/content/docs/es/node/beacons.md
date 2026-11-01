@@ -1,5 +1,5 @@
 ---
-sourceHash: b8b43d06dcb3
+sourceHash: "5e92e383d876"
 title: "Beacons"
 description: "Qué son los beacons, cómo transmiten los archivos multimedia de los NFTs y cómo configurar, ejecutar y revisar tu propio beacon desde el Core CLI."
 sidebar:
@@ -8,7 +8,7 @@ sidebar:
 
 ## Resumen
 
-El propósito de este documento es enseñarte a crear un beacon desde el CLI de VFX. Ten en cuenta que en este proceso nunca necesitas exponer tu clave privada a la billetera ni a ningún lugar fuera de tu propia aplicación.
+El propósito de este documento es enseñarte a crear un beacon desde el CLI de VFX. En este proceso nunca necesitas exponer tu clave privada a la billetera ni a ningún lugar fuera de tu propia aplicación.
 
 Crear un beacon es un proceso bastante sencillo y, al terminar este documento, tendrás toda la información necesaria para convertirte en tu propio beacon.
 
@@ -18,7 +18,7 @@ Un beacon es la herramienta subyacente de la red VFX que se usa para ayudar a tr
 
 1. El archivo puede pesar como máximo 150 MB
 2. Solo puedes tener 26 recursos en total, más el recurso principal.
-3. El tipo de extensión de tu archivo no debe estar en la lista de ignorados del remitente, del beacon ni del destinatario. (Esto ayuda a evitar la propagación de archivos maliciosos)
+3. El tipo de extensión de tu archivo no debe estar en la lista de rechazo del remitente, del beacon ni del destinatario (la clave de configuración `RejectAssetExtensionTypes`). (Esto ayuda a evitar la propagación de archivos maliciosos)
 
 Si un NFT no cumple estas reglas, tu beacon rechazará el archivo multimedia y ese archivo no quedará asociado al NFT en tu beacon.
 
@@ -52,7 +52,7 @@ La transacción incluye lo que se llama un localizador (Locator). Al transmitirs
 
 A continuación encontrarás los pasos para configurar un beacon.
 
-Para iniciar el proceso de creación del beacon, escribe /beacon y presiona Enter en el CLI.
+Para iniciar el proceso de creación del beacon, escribe `/beacon` y presiona Enter en el CLI.
 
 1. <ins>Please give your beacon a name</ins>
 
@@ -74,7 +74,7 @@ Si este proceso se hace correctamente, al final verás “Beacon Inserted. Pleas
 
 ## ¿Puedo desactivar mi propio beacon?
 
-Sí. Escribe el comando `/switchbeacon` y presiona Enter. Esto enciende y apaga tu beacon local.
+Sí. Escribe el comando `/switchbeacon` y presiona Enter. Esto enciende y apaga tu beacon local. El CLI muestra "Beacon has been turned on" u "off"; reinicia la billetera para que el cambio surta efecto.
 
 ## ¿Es necesario abrir y redirigir algún puerto?
 
@@ -82,8 +82,8 @@ Sí. Para que un beacon funcione, asegúrate de que los siguientes puertos esté
 
 Puertos:
 
-- <ins>3338</ins>
-- <ins>23338</ins>
+- <ins>3338</ins> (P2P; testnet 13338)
+- <ins>23339</ins> (servidor HTTP del beacon; testnet 33339)
 
 Puedes comprobarlo fácilmente con cualquier verificador de puertos en línea: escribe tu IP y luego el puerto, con la billetera en ejecución después de configurar el beacon y reiniciar. Si el puerto aparece abierto, tu beacon está en ejecución. Si no, significa que hay uno de 3 problemas:
 
@@ -94,13 +94,13 @@ Puedes comprobarlo fácilmente con cualquier verificador de puertos en línea: e
 ## ¿Cómo sé si mi beacon está en ejecución?
 
 1. Haz una comprobación de puertos con una herramienta en línea para asegurarte de que los puertos estén abiertos.
-2. Escribe /beacon y presiona Enter. Si tu beacon está en ejecución y configurado, mostrará la información del beacon. Si no, te pedirá que vuelvas a hacer el proceso de configuración.
+2. Escribe `/beacon` y presiona Enter. Si tu beacon está configurado, el CLI muestra "You are already a beacon!" y la información del beacon, incluido si está activo. Si no, vuelve a ejecutar el proceso de configuración. `/testbeacon` prueba la conexión con los beacons de la red.
 
-Si en algún momento sientes que configuraste mal tu beacon, otros beacons agregados o los beacons públicos de la red y quieres empezar de nuevo, simplemente elimina los dos archivos de beacon. A continuación se muestra una captura de pantalla.  
+Si en algún momento sientes que configuraste mal tu beacon, otros beacons agregados o los beacons públicos de la red y quieres empezar de nuevo, puedes detener la billetera y eliminar los dos archivos de beacon (`rsrvbeacon.db` y su archivo de registro) en la carpeta `Databases` del directorio de datos. A continuación se muestra una captura de pantalla.  
 ![Los dos archivos de beacon en la carpeta de datos](../../../../assets/media/core/beacon-files.png)  
-También hay una API completa para los beacons con la que puedes integrar fácilmente y realizar tareas más complejas. Puedes verla en `http://localhost:7292/swagger`
+También hay una API completa para los beacons con la que puedes integrar fácilmente y realizar tareas más complejas. Puedes verla en `http://localhost:7292/swagger` (testnet `http://localhost:17292/swagger`) en el propio nodo, con la API habilitada (`enableapi`). Un nodo iniciado con `openapi` solo sirve la página de Swagger a quienes envían su encabezado `apitoken`.
 ![Endpoints de beacons en la página de Swagger del CLI](../../../../assets/media/core/swagger-screenshot.png)
 
 ## ¿Cómo obtengo ayuda si la necesito?
 
-Si alguna de las instrucciones anteriores no funciona o si tienes problemas, se recomienda contactar al Discord de la comunidad. Hay muchos desarrolladores y miembros de la comunidad que con gusto te ayudarán. El enlace está arriba, en la primera página.
+Si alguna de las instrucciones anteriores no funciona o si tienes problemas, contacta al [Discord de la comunidad](https://discord.gg/7cd5ebDQCj). Hay muchos desarrolladores y miembros de la comunidad que con gusto te ayudarán.

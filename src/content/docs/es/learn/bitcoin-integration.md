@@ -1,5 +1,5 @@
 ---
-sourceHash: a38e0f5f9658
+sourceHash: "8baf401e466e"
 title: "Integración con Bitcoin en VerifiedX Core"
 description: Cómo el consenso de VerifiedX verifica la cadena de encabezados y la inclusión de transacciones de Bitcoin, de dónde provienen sus datos de Bitcoin y qué red de Bitcoin sigue cada red de VerifiedX.
 sidebar:
@@ -25,7 +25,7 @@ La única regla de Bitcoin que deliberadamente no se verifica es "no más de dos
 
 Los validadores (validators) convierten los bloques de Bitcoin en **informes de Bitcoin** (tipo de transacción 43). Un informe lleva los nuevos encabezados y cada evento de bóveda de un bloque de Bitcoin: un depósito al script de depósito de una bóveda, o el gasto de una moneda que la cadena tiene para una bóveda. Cada evento viene con la transacción de Bitcoin y su rama Merkle hasta el encabezado del bloque.
 
-Un informe es válido solo cuando está firmado por dos tercios del conjunto de firmantes validadores actual y cada nodo puede verificarlo por su cuenta:
+Un informe es válido solo cuando está firmado por dos tercios del conjunto de firmantes validadores actual y por al menos tres de sus miembros, y cada nodo puede verificarlo por su cuenta:
 
 - los encabezados cumplen las reglas de encabezados anteriores y extienden la cadena almacenada;
 - la rama Merkle de cada transacción lleva al encabezado que indica;
@@ -56,7 +56,7 @@ Un validador firmante ejecuta un cliente ligero de Bitcoin integrado, sin un seg
 - Mantiene unos cuantos pares de Bitcoin encontrados mediante las semillas DNS de Bitcoin, elegidos de redes distintas para que ningún proveedor de hosting los suministre todos.
 - Sigue la cadena de encabezados que esos pares sirven desde el punto de control y obtiene los bloques recientes de esa cadena. Cada bloque obtenido se verifica contra su encabezado antes de conservarlo. En mainnet se conservan en disco unos 300 MB de bloques recientes.
 - También pide sus encabezados a algunos otros validadores activos en cada ronda.
-- Los exploradores Esplora públicos (mempool.space y blockstream.info en mainnet) se consultan solo cuando ningún par entrega un bloque, y lo que devuelven se verifica como cualquier otra fuente.
+- Los exploradores Esplora públicos (mempool.space y blockstream.info en mainnet) se consultan solo cuando ningún par entrega un bloque o cuando no ha llegado ningún encabezado nuevo en 90 minutos, y lo que devuelven se verifica como cualquier otra fuente.
 
 Un validador que no puede obtener un bloque de la cadena más pesada espera; no firma un informe que no puede construir. El validador necesita acceso saliente a la red peer-to-peer de Bitcoin (puerto 8333 en mainnet). Consulta [Ejecutar un validador](/es/node/validator/).
 
@@ -64,7 +64,7 @@ Un validador que no puede obtener un bloque de la cadena más pesada espera; no 
 
 Las funciones de billetera de Bitcoin del nodo (cuentas BTC, saldos, salidas no gastadas y la transmisión de transacciones de Bitcoin) usan servidores Electrum. Viene integrada una lista predeterminada de servidores públicos; configura los tuyos en `config.txt` con una lista separada por comas, usando `https://` para una conexión TLS:
 
-```
+```ini
 ElectrumServers=https://electrum.example.com:50002,http://10.0.0.5:50001
 ```
 

@@ -5,7 +5,7 @@ sidebar:
   order: 3
 ---
 
-This document provides comprehensive TypeScript type definitions for the VerifiedX Web SDK.
+This page lists the TypeScript types the VerifiedX Web SDK (`vfx-web-sdk` 9.0.3) exports. Import them with `import type { … } from 'vfx-web-sdk'`; Bitcoin types live in the `btc` namespace (`btc.BtcKeypair`).
 
 ## VFX Types
 
@@ -18,10 +18,34 @@ enum Network {
   Testnet = 'testnet'
 }
 
-// Transaction type enumeration
+// Transaction types the SDK builds (numeric, matching Core's TransactionType)
 enum TxType {
-  Transfer = 'transfer',
-  Adnr = 'adnr'
+  RbxTransfer = 0,   // VFX transfer (legacy identifier)
+  Node = 1,
+  NftMint = 2,
+  NftTx = 3,
+  NftBurn = 4,
+  NftSale = 5,
+  Adnr = 6,
+  DstShop = 7,
+  VoteTopic = 8,
+  Vote = 9,
+  Reserve = 10,
+  TokenTx = 15,
+  TokenDeploy = 17,
+  VbtcV2ContractCreate = 25,
+  VbtcV2Transfer = 26,
+  VbtcV2WithdrawalRequest = 27,
+  VbtcV2WithdrawalComplete = 28,
+  VbtcV2WithdrawalCancel = 29,
+  VbtcV2CoinPin = 44
+}
+
+// Second constructor argument of VfxClient (or pass a boolean dryRun)
+interface VfxClientOptions {
+  dryRun?: boolean;    // verify but do not broadcast
+  baseUrl?: string;    // data API origin including /api
+  timeoutMs?: number;  // per request, default 30000, 0 disables
 }
 ```
 
@@ -29,9 +53,9 @@ enum TxType {
 
 ```typescript
 interface Keypair {
-  private: string;   // Private key in hexadecimal format
-  public: string;    // Public key in hexadecimal format
-  address: string;   // VFX address
+  privateKey: string;   // Private key in hexadecimal format
+  publicKey: string;    // Public key in hexadecimal format
+  address: string;      // VFX address (R… on mainnet, x… on testnet)
 }
 ```
 
@@ -143,24 +167,36 @@ interface TokenVotingTopic {
 ```typescript
 interface VfxAddress {
   address: string;        // The VFX address
-  balance: number;        // Balance in VFX tokens
-  txCount: number;        // Number of transactions
-  adnr?: string;         // Associated domain name (if any)
+  balance: number;        // Spendable balance in VFX
+  balanceTotal: number;   // Balance including locked amounts
+  balanceLocked: number;  // Reserve-account sends waiting to settle
+  adnr: string | null;    // Associated .vfx name (if any)
+  activated: boolean;     // Reserve accounts: Register() has been sent
+  deactivated?: boolean;  // Reserve accounts: Recover() has been sent
 }
 ```
 
 ### Transaction Interface
 
+As Spyglass returns it from `listTransactionsForAddress`:
+
 ```typescript
 interface Transaction {
-  hash: string;                                    // Transaction hash
-  from: string;                                   // Sender address
-  to: string;                                     // Recipient address
-  amount: number;                                 // Amount transferred
-  fee: number;                                    // Transaction fee
-  timestamp: number;                              // Unix timestamp
-  blockHeight?: number;                           // Block height (if confirmed)
-  status: 'pending' | 'confirmed' | 'failed';    // Transaction status
+  hash: string;
+  height: number;               // Block height
+  type: number;                 // Core TransactionType
+  type_label: string;           // e.g. "Tx", "Address"
+  to_address: string;
+  from_address: string;
+  total_amount: number;
+  total_fee: number;
+  data: string | null;          // JSON string for contract, name and token transactions
+  date_crafted: string;         // ISO timestamp
+  signature: string;
+  nft: unknown;
+  unlock_time: string | null;   // Reserve-account sends
+  callback_details: unknown;
+  recovery_details: unknown;
 }
 ```
 
@@ -168,48 +204,208 @@ interface Transaction {
 
 ```typescript
 interface PaginatedResponse<T> {
-  data: T[];           // Array of items
-  total: number;       // Total number of items
+  count: number;       // Total number of items
   page: number;        // Current page number
-  limit: number;       // Items per page
-  hasNext: boolean;    // Whether there are more pages
-  hasPrev: boolean;    // Whether there are previous pages
+  num_pages: number;   // Number of pages
+  results: T[];        // Items on this page
+}
+```
+
+### vBTC V2 Types
+
+```typescript
+interface VbtcV2Token {
+  sc_identifier: string;
+  name: string;
+  description: string;
+  owner_address: string;
+  image_url: string;
+  deposit_address: string;            // Bitcoin (Taproot) deposit address of the vault
+  frost_group_public_key: string;
+  required_threshold: number;
+  proof_block_height: number;
+  global_balance: number;
+  total_received: number;
+  total_sent: number;
+  tx_count: number;
+  is_pending_withdrawal: boolean;
+  is_watched?: boolean;               // the chain watches this vault (Core 9.0)
+  addresses: Record<string, number>;  // holder → balance
+  available_balances?: Record<string, number>; // balance minus open withdrawal requests
+  nft: unknown;
+  withdrawal_requests: VbtcWithdrawalRequest[];
+  created_at: string;
+}
+
+type VbtcWithdrawalStatus = 'requested' | 'pending_btc' | 'completed' | 'cancelled' | 'cancellation_requested';
+
+interface VbtcWithdrawalRequest {
+  id: number;
+  requestor_address: string;
+  btc_address: string;
+  amount: string;
+  fee_rate: string;
+  btc_transaction_hash: string;
+  status: VbtcWithdrawalStatus;
+  request_transaction_hash: string;
+  completion_transaction_hash: string | null;
+  created_at: string;
+  completed_at: string | null;
+}
+
+interface VbtcTransfer {
+  id: number;
+  from_address: string;
+  to_address: string;
+  amount: string;
+  transaction_hash: string;
+  created_at: string;
+}
+
+interface CreateVbtcResult { transactionHash: string; scIdentifier: string; depositAddress: string }
+interface VbtcTransferResult { transactionHash: string }
+interface VbtcMultiTransferResult { transactionHash: string; inputs: Array<{ scIdentifier: string; amount: number }> }
+interface VbtcCancelResult { transactionHash: string }
+
+interface VbtcWithdrawalResult {
+  btcTransactionHash: string;         // empty while paid is false
+  completionTransactionHash: string;  // empty while paid is false
+  withdrawalRequestHash: string;
+  paid: boolean;
+  watched: VbtcWatchedWithdrawal | null;
+  lastError?: string;
+}
+
+interface VbtcWatchedWithdrawal {
+  status: string;              // Completed, Awaiting_BTC_Confirmation, Awaiting_BTC_Transaction, Closed or Unknown
+  paid: boolean;
+  notMinedYet: boolean;
+  closed: boolean;
+  message: string | null;
+  state: string | null;        // Waiting, Pinned, Settled, Released, or another closed state
+  summary: string | null;
+  feeRate: number | null;      // sat/vB of the newest live Bitcoin transaction
+  minimumNextFeeRate: number;
+  canRaiseFee: boolean;
+  canRelease: boolean;
+  releasing: boolean;
+  canCancel: boolean;
+  pinnedBtcTransactionHash: string | null;
+  btcTransactionHash: string | null;
+  completionTransactionHash: string | null;
+  transactions: VbtcWatchedWithdrawalTransaction[];
+}
+
+interface VbtcWatchedWithdrawalTransaction {
+  txid: string;
+  kind: 'Payment' | 'Release';
+  feeRate: number | null;
+  feeSats: number | null;
+  superseded: boolean;
+  dead: boolean;
+  confirmed: boolean;
+}
+
+type VbtcWithdrawalShareOutcome =
+  'paid' | 'released' | 'cancelled' | 'closed' | 'being_paid' | 'waiting' | 'not_mined' | 'legacy';
+
+interface VbtcWithdrawalShare {
+  scIdentifier: string;
+  amount: number;
+  outcome: VbtcWithdrawalShareOutcome;
+  watched: VbtcWatchedWithdrawal | null;
+  pinnedBtcTransactionHash: string | null;
+  btcTransactionHash: string | null;
+}
+
+interface VbtcMultiWithdrawalResult {
+  withdrawalRequestHash: string;
+  inputs: Array<{ scIdentifier: string; amount: number }>;
+  totalAmount: number;
+  btcAddress: string;
+  feeRate: number;
+  fee: number;                 // VFX fee the request paid
+}
+
+interface VbtcWithdrawalSharesResult {
+  withdrawalRequestHash: string;
+  shares: VbtcWithdrawalShare[];
+  settled: boolean;
+  lastError?: string;
+}
+
+type VbtcProgressPhase =
+  | 'ceremony_started' | 'ceremony_polling' | 'ceremony_complete'
+  | 'contract_preparing' | 'contract_sent'
+  | 'withdraw_request_sent'
+  | 'frost_preparing' | 'frost_polling' | 'frost_complete'
+  | 'btc_broadcast' | 'completion_recorded'
+  | 'watched_polling';
+
+interface VbtcProgressEvent {
+  phase: VbtcProgressPhase;
+  message: string;
+  progress?: number;
+  data?: unknown;
+}
+
+// Multi-contract allocation (allocateVbtcInputs)
+interface VbtcAllocationInput { scIdentifier: string; amount: number }
+type VbtcAllocationFailure = 'insufficientBalance' | 'tooManyInputs';
+interface VbtcAllocation { inputs: VbtcAllocationInput[]; available: number; failure?: VbtcAllocationFailure }
+```
+
+`VbtcWithdrawalStatus` is used by `VbtcWithdrawalRequest` but is not exported by name in 9.0.3; write the union yourself if you need it.
+
+### .btc Name Types
+
+```typescript
+// parseBtcNameAcceptanceCode() result
+interface BtcNameAcceptance {
+  message: string;
+  signature: string;
+  timestamp: number;   // Unix seconds when the receiver signed
+  owner: string;       // VFX address that will own the name
+  name: string;
 }
 ```
 
 ## Bitcoin Types
 
+All are exported from the `btc` namespace, each also under an `I`-prefixed name (`IBtcKeypair`, …).
+
 ### Bitcoin Keypair Types
 
 ```typescript
-// Basic Bitcoin keypair
 interface BtcKeypair {
-  privateKey: string;    // Private key in hexadecimal format
-  publicKey: string;     // Public key in hexadecimal format
-  wif: string;          // Wallet Import Format
-  address: string;      // Default address (bech32)
-  addresses: {
-    p2pkh: string;      // Legacy address (starts with 1/m)
-    p2sh: string;       // Nested SegWit (starts with 3/2)
-    bech32: string;     // Native SegWit (starts with bc1/tb1)
-    bech32m: string;    // Taproot (starts with bc1p/tb1p)
-  };
+  address: string | undefined;    // Default address (bech32)
+  addresses: BtcAddresses;
+  wif: string;                    // Wallet Import Format
+  privateKey: string | undefined; // Private key in hexadecimal format
+  publicKey: string;              // Public key in hexadecimal format
+  mnemonic?: string;              // 24-word phrase, set by generateMnemonic()
 }
 
-// Bitcoin keypair with mnemonic
-interface BtcMnemonicKeypair extends BtcKeypair {
-  mnemonic: string;     // BIP39 mnemonic phrase
+interface BtcAddresses {
+  p2pkh: string | undefined;      // Legacy (starts with 1, or m/n on testnet)
+  p2sh: string | undefined;       // Nested SegWit (starts with 3, or 2 on testnet)
+  bech32: string | undefined;     // Native SegWit (starts with bc1q/tb1q)
+  bech32m: string | undefined;    // Taproot (starts with bc1p/tb1p)
+}
+
+interface BtcClientOptions {
+  dryRun?: boolean;
+  apiBaseUrl?: string;            // e.g. 'https://signet.verifiedx.io/api' for the VFX testnet
 }
 ```
 
 ### Bitcoin Address Information
 
 ```typescript
-interface BtcAddressInfo {
-  address: string;         // Bitcoin address
-  balance: number;         // Balance in satoshis
-  totalRecieved: number;   // Total received in satoshis
-  totalSent: number;       // Total sent in satoshis
+interface AccountInfo {
+  balance: number;         // Confirmed balance (satoshis, or BTC with inSatoshis = false)
+  totalRecieved: number;   // Total received (spelling as in the SDK)
+  totalSent: number;       // Total sent
   txCount: number;         // Number of transactions
 }
 ```
@@ -217,17 +413,10 @@ interface BtcAddressInfo {
 ### Bitcoin Transaction Types
 
 ```typescript
-// Transaction input
-interface BtcTransactionInput {
+interface TransactionInput {
   txid: string;            // Previous transaction ID
   vout: number;            // Output index
-  prevout?: {
-    scriptpubkey: string;
-    scriptpubkey_asm: string;
-    scriptpubkey_type: string;
-    scriptpubkey_address: string;
-    value: number;
-  };
+  prevout: TransactionOutput;
   scriptsig: string;
   scriptsig_asm: string;
   witness: string[];
@@ -235,41 +424,46 @@ interface BtcTransactionInput {
   sequence: number;
 }
 
-// Transaction output
-interface BtcTransactionOutput {
+interface TransactionOutput {
   scriptpubkey: string;
   scriptpubkey_asm: string;
   scriptpubkey_type: string;
-  scriptpubkey_address: string;
+  scriptpubkey_address?: string;
   value: number;           // Value in satoshis
 }
 
-// Transaction status
-interface BtcTransactionStatus {
+interface TransactionStatus {
   confirmed: boolean;
-  block_height?: number;
-  block_hash?: string;
-  block_time?: number;
+  block_height: number;
+  block_hash: string;
+  block_time: number;
 }
 
-// Complete Bitcoin transaction
-interface BtcTransaction {
-  txid: string;                      // Transaction ID
-  version: number;                   // Transaction version
-  locktime: number;                  // Lock time
-  vin: BtcTransactionInput[];        // Transaction inputs
-  vout: BtcTransactionOutput[];      // Transaction outputs
-  size: number;                      // Transaction size in bytes
-  weight: number;                    // Transaction weight
-  fee: number;                       // Transaction fee in satoshis
-  status: BtcTransactionStatus;      // Transaction status
+// btc.Transaction, as getTransactions returns it
+interface Transaction {
+  txid: string;
+  version: number;
+  locktime: number;
+  vin: TransactionInput[];
+  vout: TransactionOutput[];
+  size: number;            // bytes
+  weight: number;
+  fee: number;             // satoshis
+  status: TransactionStatus;
+}
+
+interface UTXO {
+  txid: string;
+  vout: number;
+  status: TransactionStatus;
+  value: number;
 }
 ```
 
 ### Bitcoin Fee Rates
 
 ```typescript
-interface BtcFeeRates {
+interface FeeRates {
   fastestFee: number;     // Fastest confirmation fee (sat/vB)
   halfHourFee: number;    // ~30 minute confirmation fee (sat/vB)
   hourFee: number;        // ~1 hour confirmation fee (sat/vB)
@@ -281,343 +475,193 @@ interface BtcFeeRates {
 ### Transaction Result Types
 
 ```typescript
-// Generic transaction result
-interface TransactionResult {
+// createTransaction()
+interface CreateTxResponse {
   success: boolean;
-  result?: string;        // Transaction ID or raw transaction
-  error?: string;         // Error message if failed
+  result: string | null;  // Signed raw transaction hex
+  error: string | null;
 }
 
-// Bitcoin transaction creation result
-interface BtcTransactionCreateResult extends TransactionResult {
-  result?: string;        // Raw transaction hex
+// broadcastTransaction()
+interface BroadcastTxResponse {
+  success: boolean;
+  result: string | null;  // Transaction ID
+  error: string | null;
 }
 
-// Bitcoin transaction broadcast result
-interface BtcTransactionBroadcastResult extends TransactionResult {
-  result?: string;        // Transaction ID
-}
+// checkBroadcast()
+type BroadcastCheck =
+  | { state: 'found'; txid: string; confirmed: boolean }
+  | { state: 'conflicted'; txid: string; conflictingTxid: string }
+  | { state: 'absent'; txid: string }
+  | { state: 'unresolved'; txid: string };
 ```
 
 ## Utility Types
 
-### Network Types
+The SDK has no aliases for addresses, keys or amounts; they are plain `string` and `number`. The conventions:
 
-```typescript
-// Supported networks
-type NetworkType = 'mainnet' | 'testnet';
-
-// VFX Network enumeration values
-type VfxNetworkType = Network.Mainnet | Network.Testnet;
-```
-
-### Address Types
-
-```typescript
-// VFX address (starts with 'VFX')
-type VfxAddressString = string;
-
-// Bitcoin address types
-type BitcoinLegacyAddress = string;      // P2PKH (1... or m/n...)
-type BitcoinSegWitAddress = string;      // P2SH (3... or 2...)
-type BitcoinBech32Address = string;      // Native SegWit (bc1... or tb1...)
-type BitcoinTaprootAddress = string;     // Taproot (bc1p... or tb1p...)
-
-type BitcoinAddress =
-  | BitcoinLegacyAddress
-  | BitcoinSegWitAddress
-  | BitcoinBech32Address
-  | BitcoinTaprootAddress;
-```
-
-### Key Types
-
-```typescript
-// Private key in hexadecimal format
-type PrivateKey = string;
-
-// Public key in hexadecimal format
-type PublicKey = string;
-
-// Wallet Import Format
-type WIF = string;
-
-// BIP39 mnemonic phrase
-type Mnemonic = string;
-```
-
-### Amount Types
-
-```typescript
-// VFX amount (integer)
-type VfxAmount = number;
-
-// Bitcoin amount in satoshis
-type SatoshiAmount = number;
-
-// Bitcoin amount in BTC
-type BtcAmount = number;
-
-// Fee rate in satoshis per virtual byte
-type FeeRate = number;
-```
+- **VFX addresses** start with `R` on mainnet and `x` on testnet; reserve (vault) addresses start with `xRBX`.
+- **Bitcoin addresses** use mainnet formats (`1…`, `3…`, `bc1q…`, `bc1p…`) or, on testnet and the VerifiedX signet, `m…`/`n…`, `2…`, `tb1q…`, `tb1p…`.
+- **Amounts**: VFX in VFX (decimals allowed); `sendBtc` and `createTransaction` take BTC; `getAddressInfo` reports satoshis by default; fee rates are sat/vB.
 
 ## Error Types
 
-### Base Error Types
+Error classes exported from `vfx-web-sdk` (use `instanceof`):
 
 ```typescript
-// Generic SDK error
-interface SdkError extends Error {
-  code?: string;
-  details?: any;
+class VfxApiError extends Error {          // non-2xx answer from the data API
+  readonly status: number | undefined;
+  readonly url: string;
+  readonly body: string | undefined;
 }
 
-// Network-related errors
-interface NetworkError extends SdkError {
-  code: 'NETWORK_ERROR';
-  statusCode?: number;
+class TransactionDispatchError extends Error {  // sent, but no answer came back
+  readonly hash: string;
+  readonly cause: unknown;
 }
 
-// Validation errors
-interface ValidationError extends SdkError {
-  code: 'VALIDATION_ERROR';
-  field?: string;
+class TransactionRefusedError extends Error {   // the node refused it (methods that opt in)
+  readonly hash: string;
+  readonly reason: string | null;
 }
 
-// Transaction errors
-interface TransactionError extends SdkError {
-  code: 'TRANSACTION_ERROR';
-  txHash?: string;
-}
-```
+class PreSignCheckError extends Error {}        // the transaction to sign was not the one asked for
 
-### Specific Error Types
-
-```typescript
-// Insufficient balance error
-interface InsufficientBalanceError extends TransactionError {
-  code: 'INSUFFICIENT_BALANCE';
-  required: number;
-  available: number;
+class VbtcWithdrawalIncompleteError extends Error {   // request on chain, completion failed
+  readonly withdrawalRequestHash: string;
+  readonly cause: unknown;
 }
 
-// Invalid address error
-interface InvalidAddressError extends ValidationError {
-  code: 'INVALID_ADDRESS';
-  address: string;
+class VbtcWithdrawalUnrecordedError extends Error {   // Bitcoin sent (or maybe sent), completion not recorded
+  readonly withdrawalRequestHash: string;
+  readonly btcTransactionHash: string | null;
+  readonly signedBtcTxHex: string | null;
+  readonly cause: unknown;
 }
 
-// Domain errors
-interface DomainError extends SdkError {
-  code: 'DOMAIN_ERROR';
-  domain: string;
+class VbtcWithdrawalClosedError extends Error {       // watched withdrawal closed unpaid
+  readonly withdrawalRequestHash: string;
+  readonly withdrawal: VbtcWatchedWithdrawal;
 }
 
-interface DomainNotAvailableError extends DomainError {
-  code: 'DOMAIN_NOT_AVAILABLE';
+class VbtcNodeUnreachableError extends Error {        // Spyglass could not reach the node; ask again
+  readonly answer: string;
 }
 
-interface DomainNotFoundError extends DomainError {
-  code: 'DOMAIN_NOT_FOUND';
+class BtcBroadcastUnknownError extends Error {        // Bitcoin broadcast outcome unknown (also btc.BtcBroadcastUnknownError)
+  readonly txid: string;
+  readonly signedTxHex: string;
+  readonly cause: unknown;
 }
 ```
 
 ## Constants and Enums
 
+### VFX Constants
+
+```typescript
+const TOKEN_BASE_ADDRESS = 'Token_Base';
+const RESERVE_BASE_ADDRESS = 'Reserve_Base';
+const RESERVE_ACTIVATION_COST = 4;              // VFX sent with Register()
+const RESERVE_MIN_UNLOCK_HOURS = 24;
+const VBTC_MULTI_MAX_INPUTS = 25;               // contracts per multi transfer
+const VBTC_MULTI_WITHDRAWAL_MAX_INPUTS = 10;    // vaults per multi withdrawal
+const VBTC_MULTI_WITHDRAWAL_FUNCTION = 'VBTCWithdrawalRequestMultiV2()';
+const VBTC_WITHDRAWAL_DUST_SATS = 546;
+const VBTC_WATCHED_MAX_FEE_RATE = 5000;         // sat/vB
+const BTC_NAME_ACCEPTANCE_MAX_AGE_SECONDS = 86400;
+const BTC_NAME_SIGNED_MESSAGE_HEIGHT_MAINNET = 7_575_250;
+const BTC_NAME_SIGNED_MESSAGE_HEIGHT_TESTNET = 7400;
+```
+
 ### Bitcoin Constants
 
 ```typescript
-// Conversion constants
+// btc namespace
 const BTC_TO_SATOSHI_MULTIPLIER = 100000000;
 const SATOSHI_TO_BTC_MULTIPLIER = 0.00000001;
-
-// Address type identifiers
-enum BitcoinAddressType {
-  P2PKH = 'p2pkh',        // Legacy
-  P2SH = 'p2sh',          // Nested SegWit
-  BECH32 = 'bech32',      // Native SegWit
-  BECH32M = 'bech32m'     // Taproot
-}
-```
-
-### Transaction Types
-
-```typescript
-// VFX transaction types
-enum VfxTransactionType {
-  TRANSFER = 'transfer',
-  DOMAIN = 'adnr'
-}
-
-// Bitcoin transaction types
-enum BtcTransactionType {
-  P2PKH = 'p2pkh',
-  P2SH = 'p2sh',
-  P2WPKH = 'v0_p2wpkh',
-  P2WSH = 'v0_p2wsh',
-  P2TR = 'v1_p2tr'
-}
-```
-
-## Advanced Types
-
-### Generic Response Types
-
-```typescript
-// API response wrapper
-interface ApiResponse<T> {
-  success: boolean;
-  data?: T;
-  error?: string;
-  timestamp: number;
-}
-
-// Async operation result
-type AsyncResult<T> = Promise<T>;
-
-// Optional result (may be null)
-type OptionalResult<T> = T | null;
-```
-
-### Configuration Types
-
-```typescript
-// Client configuration
-interface ClientConfig {
-  network: NetworkType;
-  timeout?: number;
-  retries?: number;
-  apiKey?: string;
-}
-
-// VFX client configuration
-interface VfxClientConfig extends ClientConfig {
-  dryRun?: boolean;
-}
-
-// Bitcoin client configuration
-interface BtcClientConfig extends ClientConfig {
-  feeRate?: number;
-  rbf?: boolean;  // Replace-by-fee
-}
-```
-
-### Event Types
-
-```typescript
-// Transaction event
-interface TransactionEvent {
-  type: 'transaction';
-  txHash: string;
-  status: 'pending' | 'confirmed' | 'failed';
-  timestamp: number;
-}
-
-// Balance change event
-interface BalanceChangeEvent {
-  type: 'balance_change';
-  address: string;
-  oldBalance: number;
-  newBalance: number;
-  timestamp: number;
-}
-
-// Domain event
-interface DomainEvent {
-  type: 'domain';
-  action: 'purchased' | 'transferred';
-  domain: string;
-  address: string;
-  timestamp: number;
-}
-
-type SdkEvent = TransactionEvent | BalanceChangeEvent | DomainEvent;
+// btc.networks re-exports bitcoinjs-lib's networks (bitcoin, testnet, regtest)
 ```
 
 ## Type Guards
 
-### Utility type guards for runtime type checking
+The SDK exports two address checks:
+
+- `isOtherNetworksAddress(address, network)`: true for a well-formed VFX address of the other network (the node refuses those as recipients).
+- `assertRecipientOnNetwork(address, network, label?)` and `assertBtcAddressOnNetwork(btcAddress, network, label)`: throw when the address belongs to another network.
+
+Helpers you can write yourself:
 
 ```typescript
-// Check if value is a valid VFX address
-function isVfxAddress(value: any): value is VfxAddressString {
-  return typeof value === 'string' && value.startsWith('VFX');
-}
+import type { Keypair } from 'vfx-web-sdk';
 
-// Check if value is a valid Bitcoin address
-function isBitcoinAddress(value: any): value is BitcoinAddress {
+// VFX address prefix check (use isOtherNetworksAddress for checksum and version)
+function isVfxAddress(value: unknown, network: 'mainnet' | 'testnet'): value is string {
   if (typeof value !== 'string') return false;
-
-  // Simplified check - in practice, use proper validation
-  return /^[13bc1tb1]/.test(value);
+  // Reserve (vault) accounts start with xRBX on both networks
+  return network === 'mainnet' ? value.startsWith('R') || value.startsWith('xRBX') : value.startsWith('x');
 }
 
-// Check if object is a valid keypair
+// Check if object is a local keypair the SDK can sign with
 function isKeypair(value: any): value is Keypair {
-  return (
-    typeof value === 'object' &&
-    typeof value.private === 'string' &&
-    typeof value.public === 'string' &&
-    typeof value.address === 'string'
-  );
-}
-
-// Check if object is a Bitcoin keypair
-function isBtcKeypair(value: any): value is BtcKeypair {
   return (
     typeof value === 'object' &&
     typeof value.privateKey === 'string' &&
     typeof value.publicKey === 'string' &&
-    typeof value.wif === 'string' &&
-    typeof value.address === 'string' &&
-    typeof value.addresses === 'object'
+    typeof value.address === 'string'
   );
 }
 ```
 
 ## Module Exports
 
-### Complete type exports from the SDK
+What `vfx-web-sdk` 9.0.3 exports (`src/index.ts`):
 
 ```typescript
-// VFX exports
+// Clients
+export { VfxClient, MediaApiClient };   // VfxClient is also the default export and vfx.VfxClient
+export * as btc from './btc';           // btc.BtcClient, btc types, KeypairService, TransactionService,
+                                        // AccountService, publicKeyToAddress, wifToPrivateKey,
+                                        // seedToPrivateKey, hashSeed, regtestUtils, networks
+
+// Enums and constants
+export { Network, TxType };
 export {
-  VfxClient,
-  Network,
-  TxType,
-  type Keypair,
-  type VfxAddress,
-  type Transaction,
-  type PaginatedResponse
+  TOKEN_BASE_ADDRESS, RESERVE_BASE_ADDRESS, RESERVE_ACTIVATION_COST, RESERVE_MIN_UNLOCK_HOURS,
+  VBTC_MULTI_MAX_INPUTS, VBTC_MULTI_WITHDRAWAL_FUNCTION, VBTC_MULTI_WITHDRAWAL_MAX_INPUTS,
+  VBTC_WITHDRAWAL_DUST_SATS, VBTC_WATCHED_MAX_FEE_RATE, BTC_NAME_ACCEPTANCE_MAX_AGE_SECONDS,
+  BTC_NAME_SIGNED_MESSAGE_HEIGHT_MAINNET, BTC_NAME_SIGNED_MESSAGE_HEIGHT_TESTNET,
 };
 
-// Bitcoin exports
-export namespace btc {
-  export {
-    BtcClient,
-    type BtcKeypair,
-    type BtcMnemonicKeypair,
-    type BtcAddressInfo,
-    type BtcTransaction,
-    type BtcFeeRates,
-    type TransactionResult
-  };
-}
-
-// Utility exports
+// Errors
 export {
-  type NetworkType,
-  type VfxNetworkType,
-  type PrivateKey,
-  type PublicKey,
-  type WIF,
-  type Mnemonic,
-  type VfxAmount,
-  type SatoshiAmount,
-  type BtcAmount,
-  type FeeRate
+  VfxApiError, TransactionDispatchError, TransactionRefusedError, PreSignCheckError,
+  VbtcWithdrawalIncompleteError, VbtcWithdrawalUnrecordedError, VbtcWithdrawalClosedError,
+  VbtcNodeUnreachableError, BtcBroadcastUnknownError,
+};
+
+// Functions
+export {
+  verifySignature, vfxSignatureFromDer,
+  allocateVbtcInputs, vbtcMultiTransferData, vbtcMultiWithdrawalData, withdrawalFeeFloorError,
+  parseWatchedWithdrawal, assertBtcAddressOnNetwork, isOtherNetworksAddress, assertRecipientOnNetwork,
+  btcNameAcceptanceMessage, buildBtcNameAcceptanceCode, parseBtcNameAcceptanceCode,
+  btcNameSignedMessageHeight, btcNameSignedMessagesActive,
+};
+
+// Types
+export type {
+  VfxClientOptions, ReserveSendOptions, Signer, KeypairOrSigner,
+  Keypair, VfxAddress, Transaction, PaginatedResponse,
+  VbtcV2Token, VbtcWithdrawalRequest, VbtcTransfer, CreateVbtcResult, VbtcTransferResult,
+  VbtcMultiTransferResult, VbtcMultiWithdrawalResult, VbtcWithdrawalShare, VbtcWithdrawalShareOutcome,
+  VbtcWithdrawalSharesResult, VbtcWithdrawalResult, VbtcWatchedWithdrawal,
+  VbtcWatchedWithdrawalTransaction, VbtcCancelResult, VbtcProgressPhase, VbtcProgressEvent,
+  VbtcAllocation, VbtcAllocationInput, VbtcAllocationFailure, BtcNameAcceptance,
+  FungibleToken, FungibleTokenDetail, FungibleTokenBalance, TokenVotingTopic, TokenImage,
+  DeployTokenParams, DeployTokenResult, ReserveKeypair,
 };
 ```
 
-These type definitions provide complete TypeScript support for the VerifiedX Web SDK, enabling full type safety and IntelliSense support in your applications.
+These type definitions give full TypeScript support for the VerifiedX Web SDK, with type safety and IntelliSense in your applications.

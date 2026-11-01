@@ -13,6 +13,24 @@ The Shop API provides endpoints for managing NFT marketplace functionality, incl
 /api/shop/
 ```
 
+## Authentication
+
+Reads and creates are open. `PATCH` and `DELETE` on a shop, collection or listing require the shop owner's token in the `Authorization` header. Get a token, valid for one hour, by signing a message with the owner's key:
+
+```http
+POST /api/auth/sign-token/
+```
+
+```json
+{
+  "message": "any message",
+  "address": "R9Ng1rDS2YgB7R2bJMU3RKzVXSriXLRsBR",
+  "signature": "<signature of message by address>"
+}
+```
+
+The response carries `token` and `expires_at`. Send it as `Authorization: <token>`.
+
 ## Endpoints
 
 ### List/Create Shops
@@ -21,36 +39,39 @@ GET /api/shop/
 POST /api/shop/
 ```
 
-**GET** - Returns a paginated list of shops.
+**GET** - Returns a paginated list of shops that are not deleted.
 
 **Query Parameters:**
-- `search`: Search by shop name, URL, or owner address
-- `ordering`: Order results (e.g., `-created_at`, `name`)
+- `search`: Search by shop URL, name, or owner address
+- `owner_address`: Filter by owner address
+- `is_published`: `true` or `false`
+- `is_third_party`: `true` or `false`
+- `page` (integer): Page number
+- `limit` (integer): Results per page (default 30, max 500)
 
 **Response:**
 ```json
 {
-  "count": 150,
+  "count": 875,
+  "page": 1,
+  "num_pages": 30,
   "results": [
     {
-      "id": 1,
+      "id": 20,
+      "unique_id": "rRjDVmfLCS1683686043",
       "name": "Digital Art Gallery",
-      "url": "rbx://digital-art-gallery",
-      "owner_address": "R9Ng1rDS2YgB7R2bJMU3RKzVXSriXLRsBR",
       "description": "Premium digital artwork collection",
-      "banner_image": "https://media.vfx.io/shop/banner1.png",
-      "profile_image": "https://media.vfx.io/shop/profile1.png",
-      "is_verified": true,
-      "is_third_party": false,
-      "created_at": "2024-01-01T12:00:00Z",
-      "collections_count": 5,
-      "total_sales": "15000.0"
+      "owner_address": "R9Ng1rDS2YgB7R2bJMU3RKzVXSriXLRsBR",
+      "is_third_party": true,
+      "url": "rbx://digital-art-gallery",
+      "is_published": true,
+      "is_online": false
     }
   ]
 }
 ```
 
-**POST** - Creates a new shop.
+**POST** - Creates a third-party shop. `rbx://` is added to `url` when missing.
 
 **Request:**
 ```json
@@ -58,7 +79,7 @@ POST /api/shop/
   "name": "My NFT Shop",
   "url": "rbx://my-nft-shop",
   "description": "A collection of unique digital assets",
-  "banner_image": "https://example.com/banner.png"
+  "owner_address": "R9Ng1rDS2YgB7R2bJMU3RKzVXSriXLRsBR"
 }
 ```
 
@@ -72,19 +93,21 @@ DELETE /api/shop/{id}/
 **Parameters:**
 - `id` (integer): Shop ID
 
+`PATCH` accepts `name`, `description` and `is_published`. `DELETE` marks the shop deleted. Both need the owner's token.
+
 ### Lookup Shop by URL
 ```http
 GET /api/shop/url/?url=rbx://shop-name
 ```
 
-Returns shop information by URL.
+Returns the shop with that URL. A missing or unknown URL answers `400`.
 
 **Query Parameters:**
-- `url` (string): Shop URL (with or without rbx:// prefix)
+- `url` (string): Shop URL (with or without the `rbx://` prefix)
 
 ### Check Shop URL Availability
 ```http
-GET /api/shop/available/?url=rbx://shop-name
+GET /api/shop/url/available/?url=rbx://shop-name
 ```
 
 Checks if a shop URL is available for registration.
@@ -101,7 +124,14 @@ Checks if a shop URL is available for registration.
 GET /api/shop/resync/?url=rbx://shop-name&delay=35
 ```
 
-Triggers a resynchronization of shop data.
+Schedules a re-import of a node-hosted shop after `delay` seconds (default 35). A third-party shop answers `400`.
+
+**Response:**
+```json
+{
+  "success": true
+}
+```
 
 ### Collections
 
@@ -114,21 +144,32 @@ POST /api/shop/{shop_id}/collection/
 **GET Response:**
 ```json
 {
-  "count": 10,
+  "count": 1,
+  "page": 1,
+  "num_pages": 1,
   "results": [
     {
-      "id": 1,
+      "id": 11,
+      "shop": {
+        "id": 20,
+        "unique_id": "rRjDVmfLCS1683686043",
+        "name": "Digital Art Gallery",
+        "description": "Premium digital artwork collection",
+        "owner_address": "R9Ng1rDS2YgB7R2bJMU3RKzVXSriXLRsBR",
+        "is_third_party": true,
+        "url": "rbx://digital-art-gallery",
+        "is_published": true,
+        "is_online": false
+      },
       "name": "Pixel Art Collection",
-      "description": "8-bit style digital art",
-      "image": "https://media.vfx.io/collection/pixel1.png",
-      "shop_id": 1,
-      "nft_count": 25,
-      "floor_price": "50.0",
-      "total_volume": "2500.0"
+      "is_live": true,
+      "description": "8-bit style digital art"
     }
   ]
 }
 ```
+
+**POST** takes `name` and `description`.
 
 #### Get/Update/Delete Collection
 ```http
@@ -136,6 +177,8 @@ GET /api/shop/{shop_id}/collection/{id}/
 PATCH /api/shop/{shop_id}/collection/{id}/
 DELETE /api/shop/{shop_id}/collection/{id}/
 ```
+
+`PATCH` accepts `name`, `description` and `is_live`; it and `DELETE` need the owner's token.
 
 ### Listings
 
@@ -145,41 +188,65 @@ GET /api/shop/{shop_id}/collection/{collection_id}/listing/
 POST /api/shop/{shop_id}/collection/{collection_id}/listing/
 ```
 
+**GET** returns the collection's open listings (not deleted, sale not complete).
+
 **GET Response:**
 ```json
 {
-  "count": 50,
+  "count": 1,
+  "page": 1,
+  "num_pages": 1,
   "results": [
     {
-      "id": 1,
-      "smart_contract_uid": "NFT123...",
-      "name": "Pixel Warrior #1",
-      "description": "A brave digital warrior",
+      "id": 244,
+      "listing_id": 1,
+      "collection": { "id": 11, "shop": { "...": "..." }, "name": "Pixel Art Collection", "is_live": true, "description": "..." },
+      "smart_contract_uid": "f1e9cd967899476292cb503ed39b1d2c:1739326665",
+      "nft": { "identifier": "f1e9cd967899476292cb503ed39b1d2c:1739326665", "...": "..." },
       "owner_address": "R9Ng1rDS2YgB7R2bJMU3RKzVXSriXLRsBR",
-      "floor_price": "100.0",
-      "buy_now_price": "150.0",
-      "is_auction": true,
-      "is_buy_now": true,
-      "auction_end_time": "2024-01-08T12:00:00Z",
-      "current_bid": "120.0",
-      "bid_count": 5,
-      "is_sale_complete": false
+      "buy_now_price": null,
+      "floor_price": 3000.0,
+      "reserve_price": 3000.0,
+      "start_date": "2025-02-11T21:46:36.959000Z",
+      "end_date": "2025-02-18T21:46:36.959000Z",
+      "has_started": true,
+      "has_ended": true,
+      "is_visible_before_start_date": true,
+      "is_visible_after_end_date": true,
+      "final_price": null,
+      "is_sale_complete": false,
+      "is_sale_pending": false,
+      "winning_address": null,
+      "thumbnails": ["https://rbx-nft-web-assets.s3.amazonaws.com/BHf55hcvm0hXLQJqDMGzDOOsROyj1dib/IMG_2502.jpeg"],
+      "thumbnail_previews": null,
+      "purchase_key": "...",
+      "auction": {
+        "id": 204,
+        "current_bid_price": 3000.0,
+        "increment_amount": 75.0,
+        "is_reserve_met": true,
+        "is_auction_over": false,
+        "current_winning_address": "RBgMw2d1pe3DPaf387Y8zpXqRPE8ZZ1bUv"
+      },
+      "bids": []
     }
   ]
 }
 ```
 
-**POST** - Creates a new listing.
+**POST** - Creates a listing. The owner is taken from the NFT.
 
 **Request:**
 ```json
 {
-  "smart_contract_uid": "NFT123...",
-  "floor_price": "100.0",
-  "buy_now_price": "150.0",
-  "is_auction": true,
-  "is_buy_now": true,
-  "auction_duration_hours": 168
+  "collection": 11,
+  "smart_contract_uid": "f1e9cd967899476292cb503ed39b1d2c:1739326665",
+  "buy_now_price": 150.0,
+  "floor_price": 100.0,
+  "reserve_price": 120.0,
+  "start_date": "2026-11-01T12:00:00Z",
+  "end_date": "2026-11-08T12:00:00Z",
+  "thumbnails": []
 }
 ```
 
@@ -190,6 +257,8 @@ PATCH /api/shop/{shop_id}/collection/{collection_id}/listing/{id}/
 DELETE /api/shop/{shop_id}/collection/{collection_id}/listing/{id}/
 ```
 
+`PATCH` accepts `buy_now_price`, `floor_price`, `reserve_price`, `start_date` and `end_date`; it and `DELETE` need the owner's token.
+
 ### Bidding
 
 #### Create Bid
@@ -197,90 +266,106 @@ DELETE /api/shop/{shop_id}/collection/{collection_id}/listing/{id}/
 POST /api/shop/bid/
 ```
 
-Places a bid on a listing.
+Places a bid or a buy-now purchase on a listing.
 
 **Request:**
 ```json
 {
-  "listing": 1,
+  "listing": 244,
   "address": "R9Ng1rDS2YgB7R2bJMU3RKzVXSriXLRsBR",
-  "amount": "125.0",
+  "amount": 3100.0,
   "signature": "bid_signature_here...",
   "is_buy_now": false,
-  "from_third_party": false
+  "from_third_party": true,
+  "pre_signed_sale_complete_tx": null
 }
 ```
 
-**Response:**
+`listing`, `address` and `amount` are required. A bid must exceed the floor price, or the highest accepted bid, by the auction's `increment_amount`. A buy-now `amount` must match `buy_now_price`.
+
+**Response** (`201`):
 ```json
 {
   "success": true,
-  "message": "Bid Placed",
-  "bid_id": "bid_123...",
-  "amount": "125.0",
-  "estimated_confirmation": "2024-01-01T12:02:00Z"
+  "message": "Bid Placed"
 }
 ```
+
+A refused bid answers `200` with only a `message`, for example `"Listing not found."`, `"Not enough balance to process this transaction"` or `"The amount is less than the floor price."`.
 
 #### Get Bid Details
 ```http
 GET /api/shop/bid/{id}/
 ```
 
-Returns detailed information about a specific bid.
+Returns one bid:
+
+```json
+{
+  "id": 1,
+  "bid_id": "6f1c2d3e-4b5a-4c7d-8e9f-0a1b2c3d4e5f",
+  "address": "R9Ng1rDS2YgB7R2bJMU3RKzVXSriXLRsBR",
+  "signature": "...",
+  "amount": 3100.0,
+  "send_time": 1793534700,
+  "is_buy_now": false,
+  "is_processed": false,
+  "purchase_key": "...",
+  "status": 0,
+  "send_receive": 0
+}
+```
+
+`status` is `0` accepted, `1` rejected, `2` sent or `3` received; `send_receive` is `0` send or `1` received.
 
 #### Submit Accepted Bid
 ```http
-POST /api/shop/bid/accepted/
+POST /api/shop/bid/submit/
 ```
 
-Confirms and processes an accepted bid (for webhook integration).
+Records a bid a node has already accepted (for node integration). Takes `bid_id`, `amount`, `address`, `listing`, `signature` and optional `is_buy_now`. An already-recorded `bid_id` answers `200`; a new one `201`.
 
 ## Field Descriptions
 
 ### Shop
-- `name`: Display name of the shop
-- `url`: Unique shop URL (rbx:// format)
+- `id`, `unique_id`: Explorer ID and the shop's unique identifier
+- `name`, `description`: Display name and description
+- `url`: Unique shop URL (`rbx://` format)
 - `owner_address`: VFX address of the shop owner
-- `is_verified`: Whether the shop is officially verified
-- `is_third_party`: Whether it's integrated from external platforms
-- `collections_count`: Number of collections in the shop
-- `total_sales`: Total sales volume in VFX
+- `is_third_party`: Whether the shop was created through this API rather than hosted by a node
+- `is_published`: Whether the shop is published
+- `is_online`: Whether the shop's node is online
 
 ### Collection
-- `shop_id`: ID of the parent shop
-- `nft_count`: Number of NFTs in the collection
-- `floor_price`: Lowest listing price in the collection
-- `total_volume`: Total trading volume for the collection
+- `shop`: The parent shop
+- `name`, `description`: Collection name and description
+- `is_live`: Whether the collection is live
 
 ### Listing
-- `smart_contract_uid`: NFT identifier being listed
-- `floor_price`: Minimum acceptable price (for auctions)
-- `buy_now_price`: Fixed purchase price
-- `is_auction`: Whether auction bidding is enabled
-- `is_buy_now`: Whether immediate purchase is enabled
-- `current_bid`: Highest current bid amount
-- `bid_count`: Number of bids received
-- `is_sale_complete`: Whether the item has been sold
+- `smart_contract_uid`, `nft`: The listed NFT's identifier and its NFT record
+- `buy_now_price`: Fixed purchase price (`null` when buy now is off)
+- `floor_price`, `reserve_price`: Auction starting price and reserve (`null` when there is no auction)
+- `start_date`, `end_date`, `has_started`, `has_ended`: The listing window
+- `final_price`, `winning_address`, `is_sale_complete`, `is_sale_pending`: Sale outcome
+- `thumbnails`, `thumbnail_previews`: Image URLs for display
+- `auction`: Current bid, increment, reserve status and leading address, or `null`
+- `bids`: Bids recorded on the listing
 
 ### Bid
 - `listing`: ID of the listing being bid on
 - `amount`: Bid amount in VFX
-- `signature`: Cryptographic signature for bid verification
+- `signature`: Signature for bid verification
 - `is_buy_now`: Whether this is a buy-now purchase
-- `from_third_party`: Whether bid originates from external platform
+- `from_third_party`: Whether the bid comes through this API; other bids are only checked and answer "Bid Accepted"
 
 ## Listing Types
 
-- **Auction Only**: `is_auction: true, is_buy_now: false`
-- **Buy Now Only**: `is_auction: false, is_buy_now: true`
-- **Auction + Buy Now**: `is_auction: true, is_buy_now: true`
+- **Auction Only**: `floor_price` set, `buy_now_price` null
+- **Buy Now Only**: `buy_now_price` set, `floor_price` null
+- **Auction + Buy Now**: both set
 
 ## Notes
 
-- Shop URLs must be unique and follow rbx:// format
-- All monetary amounts are in VFX tokens
-- Bids require cryptographic signatures for security
-- Third-party shops integrate with external NFT platforms
-- Auction timers are enforced by smart contracts
-- Shop verification is manually reviewed for authenticity
+- Shop URLs must be unique and follow the `rbx://` format
+- All monetary amounts are in VFX, as JSON numbers
+- Thumbnails are served from the explorer's asset bucket (see [Media](/build/web-api/media/))

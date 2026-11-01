@@ -38,7 +38,7 @@ This document provides an overview of the different API namespaces and their pur
   - Bitcoin address management
   - Transaction creation and broadcasting
   - UTXO management
-  - Bitcoin tokenization operations
+  - BTC domain names (`.btc` ADNR)
   - Wallet Bitcoin data through Electrum servers (consensus verifies vault Bitcoin on its own; see [Bitcoin Integration](/learn/bitcoin-integration/))
 
 ### 4. **Smart Contract API** (`scapi/`)
@@ -77,7 +77,7 @@ This document provides an overview of the different API namespaces and their pur
 ### 7. **Validator API** (`valapi/`)
 - **Base Route**: `valapi/validator`
 - **Controller**: ValidatorController
-- **Purpose**: Validator node operations and consensus mechanisms
+- **Purpose**: Validator-to-validator consensus calls. This controller is not served on the wallet API port: it runs on the validator host (`ValAPIPort`, 7294 on mainnet, 17294 on testnet) and does not use the `ActionFilterController` filter
 - **Key Features**:
   - Validator status and heartbeat
   - Block validation and approval
@@ -98,72 +98,113 @@ This document provides an overview of the different API namespaces and their pur
 ### 9. **Reserve API** (`rsapi/`)
 - **Base Route**: `rsapi/rsv1`
 - **Controller**: RSV1Controller
-- **Purpose**: Reserve block operations and special blockchain functions
+- **Purpose**: Reserve (vault) accounts: `xRBX…` addresses whose outgoing transactions wait out a delay and can be called back or recovered
 - **Key Features**:
-  - Reserve block management
-  - Special transaction handling
-  - Network reserve operations
-  - Advanced blockchain utilities
+  - Create, restore and publish reserve accounts
+  - Delayed sends and NFT transfers from a reserve account
+  - Callback and recovery of pending reserve transactions
+  - Reserve account info and transaction lists
 
 ### 10. **Adjudicator API** (`adjapi/`)
 - **Base Route**: `adjapi/adjv1`
 - **Controller**: ADJV1Controller
-- **Purpose**: Dispute resolution and adjudication services
+- **Purpose**: Diagnostic reads of the node's consensus state
 - **Key Features**:
-  - Dispute handling
-  - Adjudication processes
-  - Conflict resolution
-  - Network arbitration
+  - Duplicate validator broadcasts
+  - Consensus and Fortis pool broadcast transactions
+  - Masternode (validator) lists seen by the node
+  - Adjudicator info
 
-### 11. **Data Store API** (`dstapi/`)
+### 11. **Decentralized Shop API** (`dstapi/`)
 - **Base Route**: `dstapi/dstv1`
 - **Controller**: DSTV1Controller
-- **Purpose**: Decentralized data storage and retrieval
+- **Purpose**: Decentralized Shops (DST): the node-hosted NFT marketplace
 - **Key Features**:
-  - Data storage operations
-  - File management
-  - Content addressing
-  - Distributed storage coordination
+  - Shop creation, publishing, update and deletion
+  - Collections and listings
+  - Auctions, bids and buy-now purchases
+  - Buyer and seller chat
 
 ### 12. **Web Shop API** (`wsapi/`)
 - **Base Route**: `wsapi/webshopv1`
 - **Controller**: WebShopV1Controller
-- **Purpose**: E-commerce and marketplace functionality
+- **Purpose**: Connecting to another node's Decentralized Shop and trading on it
 - **Key Features**:
-  - Product listings
-  - Order management
-  - Payment processing
-  - Marketplace operations
+  - Connect to and ping a remote shop
+  - Read a remote shop's data, auctions and bids
+  - Send bids and buy-now bids
+  - Chat with the shop owner
 
 ### 13. **Integrations API** (`iapi/`)
 - **Base Route**: `iapi/integrationsv1`
 - **Controller**: IntegrationsV1Controller
-- **Purpose**: Third-party service integrations
+- **Purpose**: Minimal chain reads for third-party integrations (exchanges, listing sites)
 - **Key Features**:
-  - External service connectivity
-  - API bridging
-  - Integration management
-  - Cross-platform operations
+  - `Network`: height, last block hash and time, block version, CLI and GitHub versions, network age, total supply
+  - `Height`: current block height
+  - `LastBlock`: the latest block
+
+### 14. **Privacy API** (`privacyapi/`)
+- **Base Route**: `privacyapi/privacyv1`
+- **Controller**: PrivacyV1Controller
+- **Purpose**: Prism privacy layer (PLONK proofs)
+- **Key Features**:
+  - Shielded addresses and balances
+  - Shield, unshield and private transfers of VFX and vBTC
+  - Shielded pool state and wallet scans
+  - PLONK parameter status
+
+### 15. **vBTC API** (`vbtcapi/`)
+- **Base Route**: `vbtcapi/vbtc`
+- **Controller**: VBTCController
+- **Purpose**: vBTC V2: FROST vaults, watched-vault deposits, transfers and withdrawals
+- **Key Features**:
+  - vBTC validator registration and DKG ceremonies
+  - Vault contract creation
+  - vBTC transfers, including multi-vault transfers
+  - Withdrawal request, completion, fee bump, release and cancellation
+  - Bridge to Base (vBTC.b)
+
+### 16. **Browser Wallet API** (`wallet/`)
+- **Base Route**: `wallet`
+- **Controller**: WalletController
+- **Purpose**: JSON routes behind the node's built-in browser wallet page (`/wallet`)
+- **Key Features**:
+  - Accounts, transactions and NFTs
+  - VFX and vBTC sends, vBTC withdrawals and the Base bridge
+  - Shielded (Prism) operations
+
+### 17. **Explorer API** (`explorer/`)
+- **Base Route**: `explorer`
+- **Controller**: ExplorerController
+- **Purpose**: The node's built-in read-only block explorer page and its JSON routes
+- **Key Features**:
+  - Stats, blocks, transactions, addresses, mempool and search (`explorer/api/...`)
+  - Served without the API token or the enable-API switch
 
 ## Common Features Across All APIs
 
 ### Authentication
-All API controllers implement password-based authentication through the `{somePassword?}` route parameter and use the `ActionFilterController` attribute for request filtering.
+Every controller on the wallet API port except the Explorer controller uses the `ActionFilterController` attribute for request filtering:
+
+- **API token**: when the node is started with `apitoken=<value>`, every request must send the header `apitoken: <value>`, or it gets `403`. A few status reads (`CheckStatus`, `GetCLIVersion`, `GetWalletInfo`, `NetworkMetrics`, `SyncBalances`, `Mother`, `Egg`) answer without it.
+- **API password**: with `AlwaysRequireAPIPassword=true` in the config, the password goes in the optional `{somePassword?}` route segment (for example `api/V1/{somePassword}/GetWalletInfo`); without it the request gets `403`. The Integrations controller has no password segment.
+- **Locked wallet**: while an encrypted wallet is locked, actions that are not reads, raw relays of externally signed transactions or unlock calls return `401` with "You must type in your encryption password first!".
+- **Network access**: the API listens on loopback only and refuses non-loopback `Host` headers and cross-origin browser requests. The `openapi` launch argument (or `OpenAPI=true`) opens it on all interfaces, and the node refuses `openapi` unless an API token (or an API password with `AlwaysRequireAPIPassword=true`) is set.
 
 ### Response Format
 APIs typically return JSON responses with consistent error handling and status reporting.
 
 ### Swagger Documentation
-All endpoints are documented with Swagger/OpenAPI specifications for interactive testing and documentation. These can be found while running a cli with then `enableapi` flag enabled and visiting `http://localhost:7292` (or `http://localhost:17292` on testnet).
+All endpoints are documented with Swagger/OpenAPI specifications for interactive testing and documentation. On a machine running the CLI, visit `http://localhost:7292/swagger` (or `http://localhost:17292/swagger` on testnet). The API calls themselves answer only after the API is enabled with the `enableapi` launch argument or option `10` on the main menu. See [Swagger](/build/node-api/swagger/).
 
 
 ## Usage Notes
 
 1. **Version Control**: APIs use versioning (V1, V2) to maintain backward compatibility
-2. **Route Structure**: All routes follow the pattern `{namespace}api/[controller]/{action}`
-3. **Security**: All APIs require appropriate authentication and authorization
-4. **Rate Limiting**: Some endpoints may have rate limiting implemented
-5. **Async Operations**: Most operations are asynchronous for better performance
+2. **Route Structure**: Most routes follow the pattern `{namespace}api/{controller}/{action}`, for example `txapi/TXV1/GetTimestamp`; the browser wallet (`wallet/api/...`) and explorer (`explorer/api/...`) routes are the exceptions
+3. **Security**: See [Authentication](#authentication) above
+4. **Async Operations**: Most operations are asynchronous for better performance
 
 This structure provides a comprehensive REST API surface for all VFX Core functionality, organized by domain-specific concerns.
 

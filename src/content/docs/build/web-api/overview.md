@@ -19,11 +19,11 @@ The following API namespaces are available (excluding applications, auth, and ga
 6. **[CMC Price](/build/web-api/cmc-price/)** - CoinMarketCap price data integration
 7. **[Faucet](/build/web-api/faucet/)** - Testnet faucet functionality
 8. **[Fungible Token](/build/web-api/fungible-token/)** - Fungible token information and operations
-9. **[Master Node](/build/web-api/master-node/)** - Master node data and statistics
+9. **[Master Node](/build/web-api/master-node/)** - Validators (master nodes): status, location and blocks produced
 10. **[Media](/build/web-api/media/)** - Media file storage and retrieval
-11. **[Metrics](/build/web-api/metrics/)** - Network metrics and analytics
+11. **[Metrics](/build/web-api/metrics/)** - Network totals, block cadence, and circulation and burn figures
 12. **[NFT](/build/web-api/nft/)** - Non-fungible token data and operations
-13. **[Price](/build/web-api/price/)** - Price data and market information
+13. **[Price](/build/web-api/price/)** - VFX exchange price and recorded price history
 14. **[Raw](/build/web-api/raw/)** - Raw blockchain operations and utilities
 15. **[Shop](/build/web-api/shop/)** - NFT marketplace and shop functionality
 16. **[Transaction](/build/web-api/transaction/)** - Transaction data and operations
@@ -43,12 +43,21 @@ Mainnet: https://data.verifiedx.io/docs/
 Testnet: https://data-testnet.verifiedx.io/docs/
 ```
 
-
-
 ## Authentication
 
-Most endpoints are publicly accessible. Authentication requirements are noted in individual endpoint documentation where applicable.
+Most endpoints are publicly accessible. Updating or deleting a shop, collection or listing needs the owner's token; the [Shop](/build/web-api/shop/#authentication) page explains how to get one.
 
 ## Response Format
 
-All API responses follow a consistent JSON format with appropriate HTTP status codes. Paginated endpoints include standard pagination metadata.
+Responses are JSON with standard HTTP status codes. Amounts are JSON numbers. Paginated endpoints take `page` and `limit` (default 30, max 500) and answer in this envelope:
+
+```json
+{
+  "count": 7624911,
+  "page": 1,
+  "num_pages": 254164,
+  "results": []
+}
+```
+
+There are no `next` or `previous` links; request the next `page` instead.

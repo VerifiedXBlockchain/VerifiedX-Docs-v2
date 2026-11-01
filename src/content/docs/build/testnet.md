@@ -7,11 +7,19 @@ sidebar:
 
 ## CLI
 
-You can access testnet by running the CLI with the `testnet` flag.
+You can access testnet by running the CLI with the `testnet` flag, for example `dotnet VerifiedXCore.dll testnet enableapi`. The flag is the only way to select testnet: a mainnet start whose `config.txt` sets `TestNet=true` exits with an error.
 
-Testnet database files are stored as a sibling file to your mainnet db files with the suffix `test`.
+Testnet data lives in its own folder next to the mainnet one, with the suffix `Test` or `TestNet`. `RBX` is a legacy folder name the code still uses.
 
-All ports are one digit longer, prefixed with a `1`:
+| OS | Mainnet data | Testnet data |
+|---|---|---|
+| Linux | `~/.local/share/RBX/` | `~/.local/share/RBXTest/` |
+| macOS | `~/rbx/` | `~/rbxtest/` |
+| Windows | `%LOCALAPPDATA%\RBX\` | `%LOCALAPPDATA%\RBXTest\` |
+
+Inside it, databases are in `DatabasesTestNet` and the config file is `ConfigTestNet/config.txt`.
+
+Most ports are one digit longer, prefixed with a `1`:
 
 | | Mainnet | Testnet |
 |---|---|---|
@@ -20,17 +28,18 @@ All ports are one digit longer, prefixed with a `1`:
 | Validator (FROST) | `7295` | `17295` |
 | Validator (FROST) over TLS | `7296` | `17296` |
 | Wallet API | `7292` | `17292` |
+| Beacon (HTTP) | `23339` | `33339` |
 
-Thus, you would access swagger through this link: `http://localhost:17292/swagger`.
+Thus, you would access swagger through this link: `http://localhost:17292/swagger`. A node started with `openapi` serves it only to callers that send its `apitoken` header.
 
 
 ## GUI
 
 You can launch the GUI in testnet mode by appending the `--testnet` flag through the command line when launching.
 
-### MacOS
+### macOS
 
-On MacOS, use this terminal command to launch into testnet:
+On macOS, use this terminal command to launch into testnet:
 ```shell
 /Applications/VFXWallet.app/Contents/MacOS/VFX\ Switchblade --testnet
 ```
@@ -73,7 +82,7 @@ The [testnet faucet](https://spyglass-testnet.verifiedx.io/faucet) pays both tes
 2. Enter your address (a VFX address starting with `x`, or a signet address starting with `tb1`), the amount and your phone number.
 3. Enter the code you receive by SMS. The faucet sends the funds and shows the transaction.
 
-Each phone number can receive up to the limits shown on the faucet page (currently 1,000 VFX and 0.01 BTC in total). Signet BTC confirms in the next signet block, about 10 minutes. For more, ask in the `Testnet Faucet` channel on Discord.
+Each phone number can receive up to the limits shown on the faucet page (currently 1,000 VFX and 0.01 BTC in total). Signet BTC confirms in the next signet block, about 10 minutes. For more, ask in the `Testnet Faucet` channel on [Discord](https://discord.gg/7cd5ebDQCj).
 
 The same faucet is available as an API: see [Web API: Faucet](/build/web-api/faucet/).
 
@@ -88,4 +97,4 @@ Both come with [Partner API access](/build/signet/#partner-api-access), which ex
 
 ---
 
-The developers will welcome your questions in the Discord.
+The developers will welcome your questions in the [Discord](https://discord.gg/7cd5ebDQCj).

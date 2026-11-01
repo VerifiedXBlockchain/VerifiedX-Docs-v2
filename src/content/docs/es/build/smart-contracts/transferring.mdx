@@ -1,5 +1,5 @@
 ---
-sourceHash: e600e190a793
+sourceHash: "9edab822b396"
 title: Transferir NFTs
 description: Transfiere un contrato inteligente NFT a otra dirección de VFX con la API del CLI de Core.
 sidebar:
@@ -12,13 +12,13 @@ Endpoints de la API:
 
 Transferir sin URL de respaldo para los archivos multimedia:
 
-```
+```text
 GET http://localhost:7292/scapi/scv1/TransferNFT/{id}/{address}
 ```
 
 Transferir con URL de respaldo para los archivos multimedia:
 
-```
+```text
 GET http://localhost:7292/scapi/scv1/TransferNFT/{id}/{address}/{backupUrl}
 ```
 
@@ -38,6 +38,8 @@ GET http://localhost:7292/scapi/scv1/TransferNFT/{id}/{address}/{backupUrl}
   "Message": "NFT Transfer has been started."
 }
 ```
+
+La transferencia se ejecuta en segundo plano después de esta respuesta. El nodo necesita un beacon almacenado para subir los archivos multimedia para un destinatario que no está en su propia billetera; de lo contrario, responde `{"Result": "Fail", "Message": "You do not have any beacons stored."}`. Otros errores también vuelven con `"Result": "Fail"` y un `Message`.
 
 #### Ejemplo de código
 

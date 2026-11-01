@@ -15,38 +15,45 @@ The Transaction API provides endpoints for retrieving transaction information, i
 
 ## Endpoints
 
+Every endpoint returns transactions in the format shown under Get Transaction Details. The list endpoints are paginated with `count`, `page`, `num_pages` and `results`, newest first.
+
+**Query Parameters (all list endpoints):**
+- `search`: Search by transaction hash, sender or recipient address
+- `ordering`: `date_crafted` or `-date_crafted` (default)
+- `reverse`: `true` reverses the order
+- `page` (integer): Page number
+- `limit` (integer): Results per page (default 30, max 500)
+
 ### List Transactions
 ```http
 GET /api/transaction/
 ```
 
-Returns a paginated list of transactions, ordered by most recent first.
-
-**Query Parameters:**
-- `search`: Search by transaction hash or addresses
-- `ordering`: Order results (e.g., `-height`, `timestamp`)
-- `type`: Filter by transaction type
-- `from_address`: Filter by sender address
-- `to_address`: Filter by recipient address
+Returns a paginated list of all transactions.
 
 **Response:**
 ```json
 {
-  "count": 1250000,
-  "next": "http://localhost:8000/api/transaction/?page=2",
-  "previous": null,
+  "count": 67095,
+  "page": 1,
+  "num_pages": 2237,
   "results": [
     {
-      "hash": "tx123456789abcdef...",
-      "type": "TRANSFER",
-      "from_address": "R9Ng1rDS2YgB7R2bJMU3RKzVXSriXLRsBR",
-      "to_address": "RNiQrW3aBUWZhfadqKxPuN46iGaR13ox7P",
-      "total_amount": "100.0",
-      "total_fee": "0.001",
-      "timestamp": "2024-01-01T12:00:00Z",
-      "height": 12345,
-      "confirmations": 6,
-      "status": "confirmed"
+      "hash": "a66687be178fa4fe670738fdcaf3a1ffef066b3926ee2824eefe3268a94d4dd1",
+      "height": 65095,
+      "type": 0,
+      "type_label": "Tx",
+      "to_address": "x8NemQSjMUKXaLqbpVU6YNq4P2d6Jbcrra",
+      "from_address": "xSSy9Zh3ojDFoGuo2VNFxffMCYPM94xv2V",
+      "total_amount": 0.1,
+      "total_fee": 0.00000604,
+      "data": "null",
+      "date_crafted": "2026-11-01T12:05:25Z",
+      "signature": "MEQCID2AN8Z4foT2Lu1LR9MM7dMitfavinZAfDhanC2lej77AiA8AYePQ0Fs83NOs8xobAcPRyuV8k5j6EECUQ3kRNoXmw==.3qHA89AEGdWsnEVdmqykUg3rr2yuRipvBXD4za193M9hiCEhPYDSkY86xc1NBrC6DU181NSddJx3xyo2rQR7MyYw",
+      "nft": null,
+      "unlock_time": null,
+      "callback_details": null,
+      "recovery_details": null
     }
   ]
 }
@@ -57,7 +64,7 @@ Returns a paginated list of transactions, ordered by most recent first.
 GET /api/transaction/{hash}/
 ```
 
-Returns detailed information about a specific transaction.
+Returns one transaction. An unknown hash answers `404` with `{"detail": "Not found."}`.
 
 **Parameters:**
 - `hash` (string): Transaction hash
@@ -65,39 +72,21 @@ Returns detailed information about a specific transaction.
 **Response:**
 ```json
 {
-  "hash": "tx123456789abcdef...",
-  "type": "TRANSFER",
-  "from_address": "R9Ng1rDS2YgB7R2bJMU3RKzVXSriXLRsBR",
-  "to_address": "RNiQrW3aBUWZhfadqKxPuN46iGaR13ox7P",
-  "total_amount": "100.0",
-  "total_fee": "0.001",
-  "timestamp": "2024-01-01T12:00:00Z",
-  "height": 12345,
-  "block_hash": "block123...",
-  "confirmations": 6,
-  "status": "confirmed",
-  "size": 256,
-  "nonce": 42,
-  "data": null,
-  "signature": "sig123...",
-  "inputs": [
-    {
-      "address": "R9Ng1rDS2YgB7R2bJMU3RKzVXSriXLRsBR",
-      "amount": "100.001"
-    }
-  ],
-  "outputs": [
-    {
-      "address": "RNiQrW3aBUWZhfadqKxPuN46iGaR13ox7P",
-      "amount": "100.0"
-    },
-    {
-      "address": "R9Ng1rDS2YgB7R2bJMU3RKzVXSriXLRsBR",
-      "amount": "0.0",
-      "type": "fee"
-    }
-  ],
-  "smart_contract_data": null
+  "hash": "a66687be178fa4fe670738fdcaf3a1ffef066b3926ee2824eefe3268a94d4dd1",
+  "height": 65095,
+  "type": 0,
+  "type_label": "Tx",
+  "to_address": "x8NemQSjMUKXaLqbpVU6YNq4P2d6Jbcrra",
+  "from_address": "xSSy9Zh3ojDFoGuo2VNFxffMCYPM94xv2V",
+  "total_amount": 0.1,
+  "total_fee": 0.00000604,
+  "data": "null",
+  "date_crafted": "2026-11-01T12:05:25Z",
+  "signature": "MEQCID2AN8Z4foT2Lu1LR9MM7dMitfavinZAfDhanC2lej77AiA8AYePQ0Fs83NOs8xobAcPRyuV8k5j6EECUQ3kRNoXmw==.3qHA89AEGdWsnEVdmqykUg3rr2yuRipvBXD4za193M9hiCEhPYDSkY86xc1NBrC6DU181NSddJx3xyo2rQR7MyYw",
+  "nft": null,
+  "unlock_time": null,
+  "callback_details": null,
+  "recovery_details": null
 }
 ```
 
@@ -106,41 +95,17 @@ Returns detailed information about a specific transaction.
 GET /api/transaction/address/{address}/
 ```
 
-Returns transactions involving a specific address (as sender or recipient).
+Returns a paginated list of the transactions an address sent or received.
 
 **Parameters:**
 - `address` (string): VFX address
-
-**Query Parameters:**
-- `type`: Filter by transaction type
-- `direction`: Filter by direction (`sent`, `received`, `all`) - default: `all`
-
-**Response:**
-```json
-{
-  "count": 150,
-  "results": [
-    {
-      "hash": "tx123456789abcdef...",
-      "type": "TRANSFER",
-      "direction": "sent",
-      "counterparty_address": "RNiQrW3aBUWZhfadqKxPuN46iGaR13ox7P",
-      "amount": "100.0",
-      "fee": "0.001",
-      "timestamp": "2024-01-01T12:00:00Z",
-      "height": 12345,
-      "status": "confirmed"
-    }
-  ]
-}
-```
 
 ### Get Transactions by Multiple Addresses
 ```http
 GET /api/transaction/addresses/{addresses}/
 ```
 
-Returns transactions involving any of the specified addresses.
+Returns a paginated list of the transactions that any of the addresses sent or received.
 
 **Parameters:**
 - `addresses` (string): Comma-separated list of VFX addresses
@@ -150,93 +115,80 @@ Returns transactions involving any of the specified addresses.
 GET /api/transaction/block/{height}/
 ```
 
-Returns all transactions in a specific block.
+Returns a paginated list of the transactions in a block.
 
 **Parameters:**
 - `height` (integer): Block height
 
-**Response:**
-```json
-{
-  "block_height": 12345,
-  "block_hash": "block123...",
-  "timestamp": "2024-01-01T12:00:00Z",
-  "transaction_count": 15,
-  "transactions": [
-    {
-      "hash": "tx123456789abcdef...",
-      "type": "TRANSFER",
-      "from_address": "R9Ng1rDS2YgB7R2bJMU3RKzVXSriXLRsBR",
-      "to_address": "RNiQrW3aBUWZhfadqKxPuN46iGaR13ox7P",
-      "total_amount": "100.0",
-      "total_fee": "0.001",
-      "position_in_block": 1
-    }
-  ]
-}
-```
-
 ## Transaction Types
 
-### Basic Types
-- **TRANSFER**: Basic VFX token transfer
-- **SMART_CONTRACT**: Smart contract deployment or execution
-- **NFT**: NFT minting, transfer, or burn operations
-- **RESERVE**: Reserve account operations
-- **STAKING**: Validator staking operations
-- **VOTE**: Governance voting transactions
+| `type` | `type_label` | Meaning |
+|---|---|---|
+| 0 | Tx | VFX transfer |
+| 1 | Node | Node registration |
+| 2 | Nft Mint | NFT mint |
+| 3 | NFT Tx | NFT transfer |
+| 4 | NFT Burn | NFT burn |
+| 5 | NFT Sale | NFT sale |
+| 6 | Address | ADNR domain create, transfer or delete |
+| 7 | DST Registration | Decentralized shop registration |
+| 8 | Vote Topic | Governance topic |
+| 9 | Vote | Governance vote |
+| 10 | Reserve | Reserve (vault) account register, callback or recover |
+| 11 | Smart Contract Mint | Smart contract mint |
+| 12 | Smart Contract Tx | Smart contract transaction |
+| 13 | Smart Contract Burn | Smart contract burn |
+| 14 | Fungible Token Mint | Fungible token contract mint |
+| 15 | Fungible Token Tx | Fungible token operations: transfer, mint, burn, pause, ban, ownership change, vote topic and vote (the `Function` in `data` names it) |
+| 16 | Fungible Token Burn | Fungible token burn |
+| 17 | Tokenization Mint | Fungible token deploy (`TokenDeploy()` in `data`) |
+| 22 | Validator Registration | vBTC validator registration |
+| 23 | Validator Heartbeat | vBTC validator heartbeat |
+| 24 | Validator Exit | vBTC validator exit |
+| 25 | vBTC V2 Mint | vBTC V2 vault contract create |
+| 26 | vBTC V2 Transfer | vBTC V2 transfer |
+| 27 | vBTC V2 Withdrawal Request | vBTC V2 withdrawal request |
+| 28 | vBTC V2 Withdrawal Complete | vBTC V2 withdrawal complete |
+| 29 | vBTC Withdrawal Cancel | vBTC V2 withdrawal cancel |
+| 30 | vBTC Withdrawal Vote | vBTC V2 cancellation vote |
+| 31 | VFX Shield | VFX shield (Prism) |
+| 32 | VFX Unshield | VFX unshield (Prism) |
+| 33 | VFX Private Transfer | VFX private transfer (Prism) |
+| 34 | vBTC Shield | vBTC shield (Prism) |
+| 35 | vBTC Unshield | vBTC unshield (Prism) |
+| 36 | vBTC Private Transfer | vBTC private transfer (Prism) |
+| 37 | vBTC Bridge Lock | vBTC.b bridge lock |
+| 38 | vBTC Bridge Unlock | vBTC.b bridge unlock |
+| 39 | vBTC Bridge Pool Unlock | vBTC.b bridge pool unlock |
+| 40 | vBTC Bridge Exit to BTC | vBTC.b exit to Bitcoin |
+| 41 | vBTC Bridge Exit to BTC Complete | vBTC.b exit to Bitcoin complete |
+| 42 | vBTC Bridge Exit to BTC Failed | vBTC.b exit to Bitcoin failed |
+| 43 | vBTC Bitcoin Report | Bitcoin report entering consensus (no sender) |
+| 44 | vBTC Withdrawal Fee Bump | Withdrawal coin pin (fee raise) |
+| 45 | vBTC Bitcoin Rewind | Bitcoin reorg report (no sender) |
+| 46 | vBTC Vault Rekey | Vault key renewal |
 
-### NFT Subtypes
-- **NFT_MINT**: Creating a new NFT
-- **NFT_TRANSFER**: Transferring NFT ownership
-- **NFT_BURN**: Destroying an NFT
-- **NFT_EVOLVE**: Upgrading/evolving an NFT
-
-### Smart Contract Subtypes
-- **CONTRACT_DEPLOY**: Deploying new smart contract
-- **CONTRACT_CALL**: Calling smart contract function
-- **TOKEN_CREATE**: Creating fungible token
+Numbers 18 to 21 belong to retired transaction types and are not listed.
 
 ## Field Descriptions
 
-### Basic Transaction Data
 - `hash`: Unique transaction identifier
-- `type`: Category of transaction
-- `from_address`: Sender's VFX address
-- `to_address`: Recipient's VFX address  
-- `total_amount`: Amount transferred (excluding fees)
-- `total_fee`: Transaction processing fee
-- `timestamp`: When the transaction was created
 - `height`: Block height containing this transaction
-- `confirmations`: Number of blocks confirming this transaction
-- `status`: Current transaction status
-
-### Technical Details
-- `size`: Transaction size in bytes
-- `nonce`: Sequence number for sender's transactions
-- `data`: Additional transaction data (for smart contracts)
-- `signature`: Cryptographic signature proving authenticity
-- `inputs`: Transaction inputs with amounts
-- `outputs`: Transaction outputs and destinations
-
-### Address Query Fields
-- `direction`: Whether address was sender or recipient
-- `counterparty_address`: The other party in the transaction
-- `amount`: Amount relevant to the queried address
-- `fee`: Fee paid (only for sent transactions)
-
-## Transaction Status
-
-- `pending`: Transaction submitted but not yet confirmed
-- `confirmed`: Transaction included in a block
-- `failed`: Transaction failed to execute properly
-- `rejected`: Transaction rejected by network
+- `type`, `type_label`: Transaction type number and its label (see the table above)
+- `from_address`: Sender's address, or a system name such as `Coinbase_BlkRwd` for block reward records
+- `to_address`: Recipient's address, or a base address such as `Adnr_Base`, `Reserve_Base` or `Token_Base`
+- `total_amount`: Amount transferred in VFX (excluding fees)
+- `total_fee`: Network fee in VFX, which is burned
+- `data`: The transaction's data field as a JSON string (smart contract calls, ADNR, vBTC operations)
+- `date_crafted`: When the transaction was created (ISO 8601, UTC)
+- `signature`: The sender's signature
+- `nft`: The NFT the transaction concerns, in the format described on the [NFT](/build/web-api/nft/) page, or `null`
+- `unlock_time`: For a reserve account send, when it unlocks; otherwise `null`
+- `callback_details`: For a reserve account callback, the transaction it called back (same fields as this one, without `callback_details` and `recovery_details`), or `null`
+- `recovery_details`: For a reserve account recover, `original_address`, `new_address`, `amount` and `outstanding_transactions`, or `null`
 
 ## Notes
 
-- All monetary amounts are returned as strings to preserve precision
-- Confirmations increase as new blocks are added after the transaction
-- Smart contract transactions may include additional data fields
-- NFT transactions reference specific token identifiers
-- Fee calculations depend on transaction complexity and network congestion
+- Only transactions included in blocks are indexed; there are no pending, confirmations or status fields
+- All monetary amounts are JSON numbers
 - Large result sets are paginated for performance

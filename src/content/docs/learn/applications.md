@@ -13,9 +13,11 @@ Access VerifiedX applications and wallet downloads.
 
 Download the SwitchBlade desktop wallet for your platform:
 
-- [MacOS (Apple Silicon)](https://github.com/VerifiedXBlockchain/VerifiedX-GUI/releases/download/9.0.1/VFX-OSX-ARM-Installer.dmg)
-- [MacOS (Intel)](https://github.com/VerifiedXBlockchain/VerifiedX-GUI/releases/download/9.0.1/VFX-OSX-Intel-Installer.dmg)
+- [macOS (Apple Silicon)](https://github.com/VerifiedXBlockchain/VerifiedX-GUI/releases/download/9.0.1/VFX-OSX-ARM-Installer.dmg)
+- [macOS (Intel)](https://github.com/VerifiedXBlockchain/VerifiedX-GUI/releases/download/9.0.1/VFX-OSX-Intel-Installer.dmg)
 - [Windows](https://github.com/VerifiedXBlockchain/VerifiedX-GUI/releases/download/9.0.1/VFXWalletSetup-64.exe)
+
+These links point at the SwitchBlade 9.0.1 release. Every version, including any newer one, is on the [SwitchBlade releases page](https://github.com/VerifiedXBlockchain/VerifiedX-GUI/releases).
 
 For setup instructions, see the [Installation Guide](/wallet/installation/).
 
@@ -47,6 +49,6 @@ Sync your node quickly using the latest blockchain snapshot.
 
 ## Bfly
 
-Launch the Bfly decentralized marketplace.
+Launch Bfly, the payments and financial access app on VerifiedX.
 
-- [Open Bfly](https://www.befree.io)
+- [Open Bfly](https://befree.io)

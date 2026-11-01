@@ -11,11 +11,13 @@ import { Tabs, TabItem } from '@astrojs/starlight/components';
 
 Compiling and Minting a smart contract is fairly straightforward. The first step is to compile the smart contract based on a JSON payload which will return the information needed for the second step, minting the smart contract. Then you hit an endpoint to mint it which will broadcast the transaction.
 
+Trillium has no gas and no execution metering, but the mint transaction still pays the normal size-based VFX network fee, which is burned. The `Transaction` object in the compile response shows the `Fee` the mint will pay.
+
 ## Compiling
 
-#### API Enpoint:
+#### API Endpoint:
 
-```
+```text
 POST http://localhost:7292/scapi/scv1/CreateSmartContract
 ```
 
@@ -144,7 +146,7 @@ def compile_nft():
 
     url = f"{CLI_BASE_URL}/scapi/scv1/CreateSmartContract"
     headers = {"Content-Type": "application/json"}
-    response = await requests.post(url, headers=headers, data=json.dumps(payload))
+    response = requests.post(url, headers=headers, data=json.dumps(payload))
 
     data = response.json()
 
@@ -159,15 +161,15 @@ def compile_nft():
 
 ## Minting
 
-#### API Enpoint:
+#### API Endpoint:
 
-```
+```text
 GET http://localhost:7292/scapi/scv1/MintSmartContract/{SMART_CONTRACT_UID}
 ```
 
 Response Example:
 
-```
+```text
 "Smart contract has been published to mempool"
 ```
 
@@ -213,9 +215,9 @@ def mint_nft(smart_contract_uid):
 ## Adding Features
 
 You can add features to your smart contract by just including them in the `Features: []` array.
-There are three types of features currently supported, each with a different `FeatureName` enum:
+There are three NFT feature types you can set through this payload, each with a different `FeatureName` enum value:
 
-```
+```text
 0: Evolving
 1: Royalty
 2: Multi Asset
@@ -245,23 +247,11 @@ You can combine all three features into a single smart contract, but you can not
 }
 ```
 
-#### Flat
+`RoyaltyAmount` is a fraction and must be below 1 (0.99 at most).
 
-```json
-{
-    ...
-    "Features": [
-        {
-            "FeatureName": 1,
-            "FeatureFeatures":{
-                "RoyaltyAmount": 5, // 5 VFX
-                "RoyaltyPayToAddress": "Rabc123...",
-                "RoyaltyType": 0
-            }
-        },
-    ]
-}
-```
+:::caution[Flat royalties]
+Flat royalties (`RoyaltyType: 0`) are no longer accepted. `CreateSmartContract` refuses them with "Flat rates may no longer be used." Use a percent royalty (`RoyaltyType: 1`).
+:::
 
 ### Multi Asset
 
@@ -379,6 +369,8 @@ You can combine all three features into a single smart contract, but you can not
 
 #### DateTime Evolution
 
+`EvolveDate` is an ISO 8601 date-time string, not a Unix timestamp.
+
 ```json
 {
     ...
@@ -400,7 +392,7 @@ You can combine all three features into a single smart contract, but you can not
                         "FileSize": 1024,
                         "FileName": "asset1.jpg"
                     },
-                    "EvolveDate": 1679505579,
+                    "EvolveDate": "2023-03-22T17:19:39Z",
                     "EvolveBlockHeight": null
                 },
             ]
@@ -411,11 +403,11 @@ You can combine all three features into a single smart contract, but you can not
 
 ### Retrieving Data
 
-Once the smart contract is compile and minted, it will be available to read back through the API
+Once the smart contract is compiled and minted, it will be available to read back through the API. These endpoints return only contracts owned by accounts in this node's wallet, nine per page.
 
 #### Listing
 
-```
+```text
 GET http://localhost:7292/scapi/scv1/GetAllSmartContracts/{PAGE}
 ```
 
@@ -470,9 +462,11 @@ def list_nfts(page=1):
 
 #### Searching
 
+```text
+GET http://localhost:7292/scapi/scv1/GetAllSmartContracts/{PAGE}/false/false/{QUERY}
 ```
-GET http://localhost:7292/scapi/scv1/GetAllSmartContracts/{PAGE}/{QUERY}
-```
+
+The two `false` segments are `excludeToken` and `tokensOnly`. A two-segment path such as `GetAllSmartContracts/1/{QUERY}` is read as `excludeToken` and fails with a 400 validation error.
 
 #### Code Example
 
@@ -481,7 +475,7 @@ GET http://localhost:7292/scapi/scv1/GetAllSmartContracts/{PAGE}/{QUERY}
 
 ```js
 const searchNfts = async (query, page = 1) => {
-  const url = `${CLI_BASE_URL}/scapi/scv1/GetAllSmartContracts/${page}/${query}`;
+  const url = `${CLI_BASE_URL}/scapi/scv1/GetAllSmartContracts/${page}/false/false/${query}`;
   const request = await fetch(url);
 
   const data = await request.json();
@@ -505,7 +499,7 @@ const searchNfts = async (query, page = 1) => {
 
 ```python
 def search_nfts(query, page=1):
-    url = f"{CLI_BASE_URL}/scapi/scv1/GetAllSmartContracts/{page}/{query}"
+    url = f"{CLI_BASE_URL}/scapi/scv1/GetAllSmartContracts/{page}/false/false/{query}"
     response = requests.get(url)
     data = response.json()
 
@@ -525,7 +519,7 @@ def search_nfts(query, page=1):
 
 #### Retrieve
 
-```
+```text
 GET http://localhost:7292/scapi/scv1/GetSingleSmartContract/{SMART_CONTRACT_UID}
 ```
 
@@ -540,7 +534,7 @@ const retrieveNft = async (smartContractUid) => {
   const request = await fetch(url);
 
   const data = await request.json();
-  if (data.length < 1) return null;
+  if (!data || data.length < 1) return null;
   return data[0];
 };
 ```
@@ -555,7 +549,7 @@ def retrieve_nft(smart_contract_uid):
     response = requests.get(url)
     data = response.json()
 
-    if len(data) < 1:
+    if not data:
         return None
 
     return data[0]

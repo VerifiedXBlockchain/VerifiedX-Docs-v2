@@ -11,9 +11,9 @@ The purpose of this document is to teach you how a VFX address is
 created. This will walk you through from the starting step to the very
 end which is a human readable address.
 
-## How to create an VFX Address
+## How to create a VFX Address
 
-**The correct way to create a VFX address is to use well tested, opensource, peer reviewed wallet software.** The manually handling keys can and has resulted in fund loss over and over again. Unlike other centralized systems, losses in VFX are usually unrecoverable. Please proceed at your own risk.
+**The correct way to create a VFX address is to use well tested, opensource, peer reviewed wallet software.** Handling keys manually can and has resulted in fund loss over and over again. Unlike other centralized systems, losses in VFX are usually unrecoverable. Please proceed at your own risk.
 
 Here is a brief overview of how address generation works, for
 informational purposes:
@@ -22,34 +22,37 @@ informational purposes:
 
   `18e14a7b6a307f426a94f8114701e7c8e774e7f9a47e2c2035db29a206321725`
 
-1.  Take the corresponding public key generated with it and add '04' hex
-    identifier. VFX private keys are created from Ecdsa multiplication of
+1.  Take the corresponding uncompressed public key and add the '04' hex
+    identifier. VFX keys use the secp256k1 curve, and the public key is
+    created from Ecdsa multiplication of
     `(curve.G, secret, curve.N, curve.A, curve.P)`. In code it appears as
     this:
 
-        multiply(Point p, BigInteger n, BigInteger N, BigInteger A, BigIntegerP)
+    ```csharp
+    multiply(Point p, BigInteger n, BigInteger N, BigInteger A, BigInteger P)
+    ```
 
-    Fast way to multiply point and scalar in elliptic curves
+    Scalar multiplication of an elliptic curve point:
 
-    - param p: First Point to multiply
+    - param p: Point on the curve to multiply
 
-    - param n: Scalar to multiply
+    - param n: Scalar multiplier
 
     - param N: Order of the elliptic curve
 
-    - param P:` Prime number in the module of the equation Y\^2 = X \^ 3 + A \* X + B(mod p)`
+    - param A: Coefficient of the first-order term of the equation `Y^2 = X^3 + A*X + B (mod p)`
 
-    - param A: `Coefficient of the first-order term of the equation Y \^ 2 = X \^ 3 + A \* X + B(mod p)`
+    - param P: Prime number in the modulus of the equation `Y^2 = X^3 + A*X + B (mod p)`
 
-    - return: **Point that represents the sum of First and Second Point**
+    - return: **The resulting point n·p**
 
-    This can be seen in code under EllipticCurve-\>Math
+    This can be seen in code under `VerifiedXCore/EllipticCurve/Math.cs`
 
     > Please note many ECDSA libraries out there handle public keys this
     > way, so you may not have to do the above jacobian math.
 
-    ```
-    \[04\*\*added\]50863ad64a87ae8a2fe83c1af1a8403cb53f53e486d8511dad8a04887e5b23522cd470243453a299fa9e77237716103abc11a1df38855ed6f2ee187e9c582ba6 =
+    ```text
+    [04 added]50863ad64a87ae8a2fe83c1af1a8403cb53f53e486d8511dad8a04887e5b23522cd470243453a299fa9e77237716103abc11a1df38855ed6f2ee187e9c582ba6 =
     0450863ad64a87ae8a2fe83c1af1a8403cb53f53e486d8511dad8a04887e5b23522cd470243453a299fa9e77237716103abc11a1df38855ed6f2ee187e9c582ba6
     ```
 
@@ -61,8 +64,9 @@ informational purposes:
 
     `010966776006953d5567439e5e39f86a0d273bee`
 
-1.  Add version byte in front of RIPEMD-160 hash (0x3C for Main Network)
-    from step 3.
+1.  Add version byte in front of RIPEMD-160 hash from step 3 (0x3C for
+    mainnet, which gives addresses starting with `R`; 0x89 for testnet,
+    which gives addresses starting with `x`).
 
     `3c010966776006953d5567439e5e39f86a0d273bee`
 
@@ -92,3 +96,7 @@ informational purposes:
     Base58Check encoding from step 8.
 
     `R9Ng1rDS2YgB7R2bJMU3RKzVXSriXLRsBR`
+
+    With the testnet version byte 0x89, the same key gives
+    `x8Q7qDAchSMe5nmGBf7akyx4zHhMMLp9gD`. A node refuses an address that
+    carries the other network's version byte as a recipient.

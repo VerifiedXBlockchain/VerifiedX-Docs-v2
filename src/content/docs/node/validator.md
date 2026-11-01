@@ -16,7 +16,7 @@ Callouts like this one mark what changes when targeting **testnet** instead of m
 ## What you'll need
 
 - **5,000 VFX.** From the validator bond height (`ValidatorBondHeight`; block 7,568,349 on mainnet; block 399 on testnet since its October 2026 restart), the 5,000 VFX is bonded: it cannot be sent while you are a registered validator, and it unlocks 1,200 blocks after your validator exit transaction is mined (see [Stopping and updating](#10-stopping-and-updating)). Anything above 5,000 VFX stays spendable. There is no penalty. Before that height your VFX stays fully liquid. Send 5,001 VFX so a transaction fee never dips you below the 5,000 floor.
-- **A server.** Ubuntu 22.04 LTS, 2 vCPU, 4 GB RAM, 40 GB+ SSD, with a static public IP. Both x64 and ARM64 work. The mainnet chain is roughly 15 GB as of mid-2026 and growing, so leave disk headroom, plus about 300 MB for recent Bitcoin blocks and about 400 MB for the PLONK parameters.
+- **A server.** Ubuntu 22.04 LTS, 2 vCPU, 4 GB RAM, 40 GB+ SSD, with a static public IP. Both x64 and ARM64 work. The mainnet chain is about 19 GB as of October 2026 (the size of the latest snapshot) and growing, so leave disk headroom, plus about 300 MB for recent Bitcoin blocks and about 400 MB for the PLONK parameters.
 - **Open ports.** See the table below.
 - **Outbound access to the Bitcoin network.** A validator follows Bitcoin itself (see [What a validator does](#what-a-validator-does)), so it needs to reach Bitcoin peers on port `8333` and, as a fallback, `mempool.space` and `blockstream.info` over HTTPS. Most servers allow outbound traffic by default.
 - **A wallet holding your VFX** (for example [Switchblade](/wallet/installation/)) to fund the validator address from.
@@ -31,7 +31,7 @@ Callouts like this one mark what changes when targeting **testnet** instead of m
 | `7295` | Validator (FROST) port | Open to the world — **required for validating** |
 | `7296` | Validator (FROST) port over TLS | Optional — opened by the node next to `7295` with a self-signed certificate; not checked at activation |
 | `7292` | Wallet API (HTTP) | Keep closed — call it from the server itself |
-| `7293` | Wallet API (HTTPS, with `openapi`) | Keep closed |
+| `7293` | Wallet API (HTTPS, self-signed certificate) | Keep closed |
 | `22` | SSH | Restrict to your own IP if possible |
 
 The CLI verifies its own ports `3339`, `7294` and `7295` when you activate a validator and keeps checking them while it validates. If any of them is not reachable from the outside, activation fails even though the CLI is listening — a missing firewall rule is the most common cause. `3338` is not checked, but without it your node has no inbound peers.
@@ -103,10 +103,10 @@ The build should complete with 0 errors. Then publish a release build for your a
 
 ```bash
 # x64
-dotnet publish -c Release -r linux-x64 --self-contained false --output ./published
+dotnet publish VerifiedXCore/VerifiedXCore.csproj -c Release -r linux-x64 --self-contained false --output ./published
 
 # ARM64 (Graviton, Ampere, Raspberry Pi 5, ...)
-dotnet publish -c Release -r linux-arm64 --self-contained false --output ./published
+dotnet publish VerifiedXCore/VerifiedXCore.csproj -c Release -r linux-arm64 --self-contained false --output ./published
 ```
 
 The node now lives at `~/vfx-cli/published/VerifiedXCore.dll`.
@@ -160,7 +160,7 @@ screen -dmS vfx bash -lc "dotnet VerifiedXCore.dll enableapi openapi apitoken=YO
 What the startup flags do:
 
 - `enableapi` — turns on the local wallet API on port `7292`. It is off by default, and this guide relies on it.
-- `openapi` — binds the API on all interfaces instead of localhost only. With `7292` closed in your firewall this changes nothing day to day, but it lets you open the port later for remote management without restarting the node. Drop it if you will only ever call the API from the server itself.
+- `openapi` — binds the API on all interfaces instead of localhost only. With `7292` closed in your firewall this changes nothing day to day, but it lets you open the port later for remote management without restarting the node. The node refuses `openapi` and stays on localhost unless `apitoken=` is also given, and the Swagger page at `/swagger` then requires the `apitoken` header. Drop it if you will only ever call the API from the server itself.
 - `apitoken=...` — requires the `apitoken` header on every API call.
 
 From Core 9.0 the values of `apitoken=` and `encpass=` are taken exactly as you type them: mixed case is kept, and so is any `=` inside the value (`apitoken=AbC123==` gives the token `AbC123==`). Earlier releases lowercased them and cut them at a second `=`. If you started an older node with a mixed-case or `=`-containing token, your API calls must now send the token exactly as given. A token from `openssl rand -hex 16` is lowercase with no `=`, so nothing changes for it.
@@ -392,7 +392,7 @@ cd ~/vfx-cli
 git fetch origin && git reset --hard origin/main
 
 # Build the new version alongside the running one (use linux-arm64 on ARM)
-dotnet publish -c Release -r linux-x64 --self-contained false --output ./published_next
+dotnet publish VerifiedXCore/VerifiedXCore.csproj -c Release -r linux-x64 --self-contained false --output ./published_next
 test -f ./published_next/VerifiedXCore.dll && echo "BUILD OK" || echo "BUILD FAILED - old version untouched"
 
 # Swap and restart

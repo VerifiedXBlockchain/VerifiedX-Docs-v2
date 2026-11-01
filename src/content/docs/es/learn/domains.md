@@ -1,5 +1,5 @@
 ---
-sourceHash: 377e93adaf35
+sourceHash: "2d2a9d859a82"
 title: "Servicios de dominio de VFX"
 description: Los servicios de dominio de VFX (ADNR), que asocian direcciones de Bitcoin y de VFX con nombres legibles .btc y .vfx.
 sidebar:
@@ -28,26 +28,29 @@ Los servicios de dominio de VFX ofrecen una forma práctica de crear un alias pe
 
 ### Cómo funciona
 
-El núcleo de los servicios de dominio de VFX es el **modelo ADNR (Address Name Resolution)**, que almacena las asociaciones entre las direcciones públicas y los nombres legibles por personas. El modelo ADNR está definido en el archivo `Adnr.cs` dentro del proyecto VerifiedX-Core.
+El núcleo de los servicios de dominio de VFX es el **modelo ADNR (Address Name Resolution)**, que almacena las asociaciones entre las direcciones públicas y los nombres legibles por personas. Los nombres `.vfx` están definidos en `Models/Adnr.cs` y los nombres `.btc` en `Bitcoin/Models/BitcoinAdnr.cs` dentro del proyecto VerifiedX-Core.
 
 #### Modelo ADNR (`Adnr.cs`)
 El modelo ADNR se encarga de la creación, la gestión y la resolución de los nombres de dominio legibles por personas a sus direcciones de blockchain correspondientes.
 
 Las propiedades clave del modelo ADNR incluyen:
 - **Id**: un identificador único para cada entrada ADNR.
-- **Address**: la dirección pública de blockchain (de VFX o de BTC) que se asocia con el nombre legible.
+- **Address**: la dirección de VFX a la que apunta el nombre `.vfx`. Un registro `.btc`, en cambio, guarda **BTCAddress** (la dirección de Bitcoin a la que apunta el nombre) y **RBXAddress** (la dirección de VFX propietaria del nombre; un nombre de campo heredado).
 - **Name**: el alias legible por personas (por ejemplo, `myaddress.vfx` o `example.btc`).
-- **DateCreated**: la marca de tiempo del momento en que se creó la asociación.
-- **Signature**: una firma digital que garantiza la autenticidad de la entrada ADNR.
+- **TxHash**: el hash de la transacción que creó el nombre o lo movió por última vez.
+- **Timestamp**: cuándo se hizo esa transacción.
 
 #### Métodos clave
-- **CreateAdnr()**: este método permite a los usuarios crear una nueva entrada ADNR que vincula una dirección pública de blockchain con un nombre de dominio personalizado.
-- **ResolveAdnr()**: este método resuelve el dominio legible de vuelta a su dirección de blockchain original, lo que permite buscar direcciones sin complicaciones durante las transacciones.
-- **DeleteAdnr()**: los usuarios también pueden eliminar entradas ADNR si ya no quieren un dominio asociado a una dirección determinada.
+- **CreateAdnrTx()**: construye la transacción que crea un nuevo nombre y le vincula una dirección.
+- **TransferAdnrTx()**: construye la transacción que mueve un nombre a otro propietario.
+- **DeleteAdnrTx()**: construye la transacción que elimina un nombre.
+- **GetAddress()**: resuelve un nombre de vuelta a su dirección, lo que permite buscar direcciones durante las transacciones. En la API del nodo es `api/V2/ResolveAdnr/{name}`.
+
+Cada creación, transferencia y eliminación es una transacción ADNR (tipo 6) enviada a `Adnr_Base` con un monto de 5 VFX, más la comisión normal de la red. Una cuenta de reserva no puede crear, transferir ni eliminar un nombre. Las rutas de la API del nodo son `txapi/TXV1/CreateAdnr`, `TransferAdnr` y `DeleteAdnr` para los nombres `.vfx`, y `btcapi/BTCV2/CreateAdnr`, `TransferAdnr` y `DeleteAdnr` para los nombres `.btc` (consulta la [referencia de la API del CLI](/es/build/node-api/details/)).
 
 #### Reglas de nombres (Core 9.0.1)
 
-A partir de la altura de reglas del libro mayor de Core 9.0.1 (bloque 7,575,250 en mainnet, bloque 7,400 en testnet), un nuevo nombre `.vfx` se compone de letras minúsculas, dígitos y `-`, tiene de 1 a 65 caracteres y se envía sin sufijo. No se puede tomar una etiqueta cuyo nombre `.rbx` heredado exista. Una dirección de Bitcoin tiene como máximo un nombre `.btc`, y una eliminación o transferencia actúa solo sobre el propio registro del remitente en esa dirección.
+A partir de la altura de reglas del libro mayor de Core 9.0.1 (bloque 7,575,250 en mainnet, bloque 7,400 en testnet), un nuevo nombre `.vfx` se compone de letras minúsculas, dígitos y `-`, tiene de 1 a 65 caracteres y se envía sin sufijo; la cadena agrega `.vfx`. No se puede tomar una etiqueta cuyo nombre `.rbx` heredado exista. Una dirección de Bitcoin tiene como máximo un nombre `.btc`, y una eliminación o transferencia actúa solo sobre el propio registro del remitente en esa dirección.
 
 #### Crear un nombre `.btc`
 
@@ -88,4 +91,4 @@ Cuando ambas direcciones de Bitcoin están en la misma billetera, el nodo firma 
 
 Los servicios de dominio de VFX ofrecen una solución potente y fácil de usar para simplificar el intercambio y la gestión de direcciones de blockchain. Con la posibilidad de crear nombres de dominio personalizados para direcciones de Bitcoin y de VFX, los usuarios disfrutan de una experiencia de transacción más intuitiva y confiable.
 
-Para más detalles técnicos y de implementación, puedes consultar el **modelo ADNR** y las clases relacionadas en el [repositorio de VerifiedX-Core en GitHub](https://github.com/VerifiedXBlockchain/VerifiedX-Core/blob/testnet/ReserveBlockCore/Models/Adnr.cs).
+Para más detalles técnicos y de implementación, puedes consultar el **modelo ADNR** y las clases relacionadas en el [repositorio de VerifiedX-Core en GitHub](https://github.com/VerifiedXBlockchain/VerifiedX-Core/blob/main/VerifiedXCore/Models/Adnr.cs).

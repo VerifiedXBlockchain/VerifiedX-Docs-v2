@@ -1,5 +1,5 @@
 ---
-sourceHash: 652e43229e9a
+sourceHash: "aa2659821727"
 title: "Servicio de contratos de tokens de VerifiedX"
 description: El servicio de contratos de tokens para crear, gestionar y transferir tokens fungibles escritos en Trillium.
 sidebar:
@@ -9,7 +9,7 @@ sidebar:
 
 El **servicio de contratos de tokens** (Token Contract Service) de la **blockchain VerifiedX** se encarga de gestionar los contratos inteligentes basados en tokens e interactuar con ellos. Estos contratos son clave para crear tokens fungibles, como monedas personalizadas, que se pueden emitir, transferir y rastrear en la **blockchain VerifiedX**.
 
-El servicio facilita la creación de tokens fungibles mediante el lenguaje de contratos inteligentes **Trillium**, lo que permite a los usuarios desplegar tokens en la blockchain y definir sus propias reglas personalizadas para ellos. La red VerifiedX ofrece una experiencia sin gas, lo que significa que los usuarios no necesitan pagar comisiones de gas para desplegar estos contratos de tokens ni para interactuar con ellos.
+El servicio facilita la creación de tokens fungibles mediante el lenguaje de contratos inteligentes **Trillium**, lo que permite a los usuarios desplegar tokens en la blockchain y definir sus propias reglas personalizadas para ellos. La red VerifiedX ofrece una experiencia sin gas: los contratos de tokens no se miden y no necesitan gas. Desplegar un token y cada transacción de tokens siguen pagando la comisión normal de la red VFX según el tamaño, que se quema.
 
 ## Funciones clave
 
@@ -20,7 +20,7 @@ El **servicio de contratos de tokens** permite a los desarrolladores crear token
 Con el **servicio de contratos de tokens**, los desarrolladores pueden controlar la oferta total del token, gestionar los procesos de emisión y quema, y definir reglas para la transferencia y la propiedad del token. Esto ofrece un marco flexible para diversos casos de uso de tokenización.
 
 ### 3. **Operaciones con tokens sin gas**
-Una característica única de la blockchain VerifiedX es que el **servicio de contratos de tokens** funciona sin requerir pagos de gas. Este entorno sin gas hace que las operaciones con tokens (por ejemplo, transferir tokens o crearlos) sean más eficientes y económicas para usuarios y desarrolladores.
+Una característica única de la blockchain VerifiedX es que el **servicio de contratos de tokens** funciona sin gas. Las operaciones con tokens (por ejemplo, transferir tokens o crearlos) solo pagan la comisión normal de la red VFX según el tamaño, que se quema, así que siguen siendo eficientes y económicas para usuarios y desarrolladores.
 
 ### 4. **Compatibilidad con lógica de tokens personalizada**
 El **servicio de contratos de tokens** ofrece flexibilidad en el comportamiento de los tokens. Los desarrolladores pueden definir lógica personalizada para las transferencias de tokens, las condiciones en las que se emiten o se queman, y otras funcionalidades especiales como el staking o las recompensas.
@@ -29,7 +29,7 @@ El **servicio de contratos de tokens** ofrece flexibilidad en el comportamiento 
 El servicio de contratos de tokens lleva el registro de las transacciones de tokens en la blockchain, lo que garantiza que todas las transferencias y los cambios en los saldos de tokens queden registrados de forma segura e inmutable.
 
 ### 6. **Votación**
-Los tokens también tienen un mecanismo de votación único que les permite realizar votaciones verdaderamente on-chain. 
+Los tokens también tienen un mecanismo de votación único que les permite realizar votaciones verdaderamente on-chain.
 
 ## Código de Trillium para crear tokens
 

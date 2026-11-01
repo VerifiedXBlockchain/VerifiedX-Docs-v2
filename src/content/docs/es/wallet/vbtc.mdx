@@ -1,5 +1,5 @@
 ---
-sourceHash: aa31343f8236
+sourceHash: "8131939e0a45"
 title: "Bitcoin verificado (vBTC)"
 description: Crea, financia, transfiere y retira vBTC en la billetera de VerifiedX, y sigue un retiro hasta que se complete.
 sidebar:
@@ -31,13 +31,13 @@ Cuando la solicitud ya está en un bloque, el diálogo de retiro muestra en qué
 - **`Retiro en curso` con una transacción de Bitcoin.** La cadena ya fijó la transacción de Bitcoin que lo paga, y los firmantes de la bóveda la transmiten por su cuenta, normalmente en unos minutos. `Abrir en el explorador BTC` la muestra. Si no se confirma, ingresa una tasa de comisión más alta y elige `Subir comisión` (la comisión más alta se descuenta del retiro), o `Liberar` para renunciar a ella: su Bitcoin vuelve a la bóveda y se te reembolsa el vBTC, menos la comisión de Bitcoin de la liberación. Si la transacción original se confirma primero, el retiro queda pagado por ella.
 - **`Retiro completado`.** Bitcoin confirmó el pago. El diálogo indica la transacción de Bitcoin que lo pagó.
 
-Puedes cerrar el diálogo en cualquier momento y volver a abrir el retiro desde el historial del token. La lista de transacciones de VFX etiqueta estos pasos como `Solicitud retiro vBTC`, `Aumento de comisión de retiro vBTC` y `Liberación de retiro vBTC`, y muestra las transacciones `Informe de Bitcoin` de la red.
+Puedes cerrar el diálogo en cualquier momento y volver a abrir el retiro desde el historial del token. La lista de transacciones de VFX etiqueta estos pasos como `Solicitud retiro vBTC`, `Aumento de comisión de retiro vBTC` y `Liberación de retiro vBTC`. Los informes de Bitcoin de la red no provienen de ninguna cuenta, así que no aparecen en el historial de una billetera; el explorador los muestra.
 
 ## Bóvedas antiguas
-Un token vBTC creado antes de la altura de certificación de Bitcoin de la red es una bóveda antigua. Queda congelada a partir de la altura de aplicación de la red: desde entonces su vBTC no se puede transferir ni retirar, y el Bitcoin que se le envíe no se acredita. Antes de esa altura, mueve tu vBTC a un token nuevo o retíralo. Los detalles del token indican si una bóveda es antigua.
+Un token vBTC creado antes de la altura de certificación de Bitcoin de la red es una bóveda antigua. Queda congelada a partir de la altura de aplicación de la red: desde entonces su vBTC no se puede transferir ni retirar, y el Bitcoin que se le envíe no se acredita. Antes de esa altura, mueve tu vBTC a un token nuevo o retíralo. En mainnet, todo token creado antes del bloque 7,568,350 es una bóveda antigua, y se congela en el bloque 7,658,350.
 
 ## Cuentas de reserva
-vBTC se puede guardar en una cuenta de reserva (bóveda) por su protección con bloqueo de tiempo y recuperación. Una transferencia desde una cuenta de reserva queda retenida durante 24 horas y se puede devolver hasta entonces. vBTC no se puede retirar a Bitcoin directamente desde una cuenta de reserva: primero muévelo a una dirección de VFX normal.
+vBTC se puede guardar en una cuenta de reserva (bóveda) por su protección con bloqueo de tiempo y recuperación. Una transferencia desde una cuenta de reserva queda retenida durante el retraso de desbloqueo de la cuenta, de al menos 24 horas, y se puede devolver hasta entonces. vBTC no se puede retirar a Bitcoin directamente desde una cuenta de reserva: primero muévelo a una dirección de VFX normal.
 
 ## Diagrama de flujo de vBTC
 

@@ -38,7 +38,7 @@ The VerifiedX (VFX) coin is the native coin of the VerifiedX network. It pays fo
 
 - **Fees**: VFX is the only coin used for fees on the VerifiedX network. The network fee is 0.00002 VFX per KB of transaction, with a minimum of 0.000003 VFX. Bitcoin-side fees for vBTC withdrawals are paid in BTC.
 
-- **Gasless**: VerifiedX smart contracts do not run on an EVM and do not need gas. They have built-in recursion protection, so execution costs no gas fees.
+- **Gasless**: VerifiedX smart contracts do not run on an EVM and do not need gas. Trillium has built-in recursion protection, so execution is not metered and costs no gas. Every smart contract transaction (deploy, mint, transfer, burn, evolve, sale) still pays the normal size-based VFX network fee, which is burned.
 
 ## Coin Details
 

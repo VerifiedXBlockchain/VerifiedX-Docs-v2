@@ -1,5 +1,5 @@
 ---
-sourceHash: af83c78157df
+sourceHash: "429c9885383e"
 title: "Enviar y recibir fondos"
 description: Envía y recibe fondos con la billetera de VerifiedX.
 sidebar:
@@ -19,5 +19,5 @@ sidebar:
 ## Recibir fondos
 1. **Comparte tu dirección**:
    - Copia tu dirección o tu dominio de billetera y envíaselo a quien te va a pagar.
-2. **Genera enlaces de pago**:
-   - Crea un enlace o un código QR para compartir y recibir pagos rápidamente.
+2. **Solicita fondos**:
+   - En la pantalla Recibir, ingresa un monto y haz clic en “Generar enlace”; luego copia el enlace o muéstralo como código QR para recibir pagos rápidamente.

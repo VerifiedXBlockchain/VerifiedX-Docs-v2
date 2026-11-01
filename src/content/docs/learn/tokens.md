@@ -8,7 +8,7 @@ sidebar:
 
 The **Token Contract Service** in the **VerifiedX blockchain** is responsible for managing and interacting with token-based smart contracts. These contracts are crucial for creating fungible tokens, such as custom currencies, that can be issued, transferred, and tracked on the **VerifiedX blockchain**.
 
-The service facilitates the creation of fungible tokens through the **Trillium** smart contract language, allowing users to deploy tokens on the blockchain and define their own custom token rules. The VerifiedX network provides a gasless experience, meaning users do not need to pay gas fees for deploying or interacting with these token contracts.
+The service facilitates the creation of fungible tokens through the **Trillium** smart contract language, allowing users to deploy tokens on the blockchain and define their own custom token rules. The VerifiedX network provides a gasless experience: token contracts are not metered and need no gas. Deploying a token and every token transaction still pay the normal size-based VFX network fee, which is burned.
 
 ## Key Features
 
@@ -19,7 +19,7 @@ The **Token Contract Service** allows developers to create custom tokens by writ
 With the **Token Contract Service**, developers can control the total supply of the token, manage minting and burning processes, and define rules for token transfer and ownership. This provides a flexible framework for various tokenization use cases.
 
 ### 3. **Gasless Token Operations**
-A unique feature of the VerifiedX blockchain is that the **Token Contract Service** operates without requiring gas payments. This gasless environment allows token operations (e.g., transferring tokens, creating tokens) to be more efficient and cost-effective for users and developers.
+A unique feature of the VerifiedX blockchain is that the **Token Contract Service** operates without gas. Token operations (e.g., transferring tokens, creating tokens) pay only the normal size-based VFX network fee, which is burned, so they stay efficient and cost-effective for users and developers.
 
 ### 4. **Support for Custom Token Logic**
 The **Token Contract Service** provides flexibility in how tokens behave. Developers can define custom logic for token transfers, conditions under which tokens are minted or burned, and other special functionalities such as staking or rewards.
@@ -28,7 +28,7 @@ The **Token Contract Service** provides flexibility in how tokens behave. Develo
 The Token Contract Service keeps track of token transactions on the blockchain, ensuring that all transfers and changes to token balances are recorded in a secure and immutable manner.
 
 ### 6. **Voting**
-Tokens also have a unique voting mechanism allowing them to perform true on chain voting. 
+Tokens also have a unique voting mechanism allowing them to perform true on-chain voting.
 
 ## Trillium Code for Token Creation
 

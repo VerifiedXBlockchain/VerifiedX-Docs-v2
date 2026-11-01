@@ -7,9 +7,9 @@ sidebar:
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 
-#### API Enpoint:
+#### API Endpoint:
 
-```
+```text
 GET http://localhost:7292/scapi/scv1/Burn/{id}
 ```
 
@@ -18,6 +18,8 @@ GET http://localhost:7292/scapi/scv1/Burn/{id}
 `id`: The smart contract identifier
 
 #### Response:
+
+The node returns the signed burn transaction (type `4`, `NFT_BURN`). It returns an empty body when the contract is not in this node's wallet or has not been minted.
 
 ```json
 {

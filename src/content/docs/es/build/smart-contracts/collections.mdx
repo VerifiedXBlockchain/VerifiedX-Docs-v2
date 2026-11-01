@@ -1,5 +1,5 @@
 ---
-sourceHash: 88a8b6dac6c4
+sourceHash: "eccabbdb37ab"
 title: "Colecciones"
 description: Crea, actualiza, lista, consulta y elimina colecciones de la casa de subastas con la API del CLI de Core.
 sidebar:
@@ -12,7 +12,7 @@ import { Tabs, TabItem } from '@astrojs/starlight/components';
 
 #### Endpoint de la API:
 
-```
+```text
 POST http://localhost:7292/dstapi/DSTV1/SaveCollection
 ```
 
@@ -29,6 +29,19 @@ Parámetros:
 ```
 
 > Usa el ID `0` si es una colección nueva. Para actualizarla, usa el ID existente de esa colección.
+
+Las colecciones viven en la base de datos local de la tienda del nodo; no se envía ninguna transacción. `Name` tiene un límite de 64 caracteres y `Description` de 200 palabras y 1,200 caracteres.
+
+#### Respuesta:
+
+```json
+{
+  "Success": true,
+  "Message": "Collection saved."
+}
+```
+
+Una actualización responde `"Collection updated."`.
 
 #### Ejemplo de código
 
@@ -89,7 +102,7 @@ def save_collection(id=0):
 
 #### Endpoint de la API:
 
-```
+```text
 GET http://localhost:7292/dstapi/DSTV1/GetAllCollections
 ```
 
@@ -98,9 +111,10 @@ GET http://localhost:7292/dstapi/DSTV1/GetAllCollections
 ```json
 {
     "Success": true,
+    "Message": "Collections Found",
     "Collections": [
         {
-           "Id": 1,
+            "Id": 1,
             "Name": "My Collection",
             "Description": "My description goes here...",
             "CollectionLive": true,
@@ -162,7 +176,7 @@ def list_collections():
 
 #### Endpoint de la API:
 
-```
+```text
 GET http://localhost:7292/dstapi/DSTV1/GetCollection/{id}
 ```
 
@@ -175,6 +189,7 @@ GET http://localhost:7292/dstapi/DSTV1/GetCollection/{id}
 ```json
 {
   "Success": true,
+  "Message": "Collection Found",
   "Collection": {
     "Id": 1,
     "Name": "My Collection",
@@ -236,7 +251,7 @@ def retrieve_collection(collection_id):
 
 #### Endpoint de la API:
 
-```
+```text
 GET http://localhost:7292/dstapi/DSTV1/DeleteCollection/{id}
 ```
 
@@ -244,11 +259,14 @@ GET http://localhost:7292/dstapi/DSTV1/DeleteCollection/{id}
 
 `id`: el ID de la colección
 
+Eliminar una colección también elimina sus publicaciones, subastas y ofertas en este nodo. La colección predeterminada no se puede eliminar; primero cambia la predeterminada con `GET /dstapi/DSTV1/GetDefaultCollectionChange/{id}`.
+
 #### Respuesta:
 
 ```json
 {
-  "Success": true
+  "Success": true,
+  "Message": "Collection deleted."
 }
 ```
 

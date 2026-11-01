@@ -10,40 +10,46 @@ The Fungible Token API provides endpoints for retrieving information about fungi
 
 ## Base URL
 ```
-/api/fungible-token/
+/api/fungible-tokens/
 ```
 
 ## Endpoints
 
 ### List Fungible Tokens
 ```http
-GET /api/fungible-token/
+GET /api/fungible-tokens/
 ```
 
-Returns a paginated list of all fungible tokens on the VFX blockchain.
+Returns a paginated list of all fungible tokens on the VFX blockchain, newest first.
 
 **Query Parameters:**
-- `search`: Search by token name, symbol, or smart contract identifier
-- `ordering`: Order results (e.g., `name`, `-created_at`)
+- `page` (integer): Page number
+- `limit` (integer): Results per page (default 30, max 500)
 
 **Response:**
 ```json
 {
-  "count": 150,
-  "next": "http://localhost:8000/api/fungible-token/?page=2",
-  "previous": null,
+  "count": 400,
+  "page": 1,
+  "num_pages": 14,
   "results": [
     {
-      "id": 1,
-      "smart_contract_uid": "SC123...",
-      "name": "VFX Utility Token",
-      "symbol": "VUT",
-      "total_supply": "1000000.0",
-      "decimals": 18,
-      "creator_address": "R9Ng1rDS2YgB7R2bJMU3RKzVXSriXLRsBR",
-      "created_at": "2024-01-01T12:00:00Z",
-      "is_voting_enabled": true,
-      "description": "A utility token for the VFX ecosystem"
+      "sc_identifier": "9541c645d3ae4d15886885d4627278b3:1792822131",
+      "name": "QA Token W2",
+      "ticker": "LR24AW2",
+      "description": "Two-decimal test token",
+      "owner_address": "xXVdgxHRzmr5WnSsi3c2v9wEjsFdk7jnkf",
+      "can_mint": true,
+      "can_burn": true,
+      "can_vote": false,
+      "created_at": "2026-10-24T06:08:57Z",
+      "initial_supply": 0.0,
+      "circulating_supply": 501.0,
+      "decimal_places": 2,
+      "image_url": "https://rbx-nft-web-assets-testnet.s3.amazonaws.com/9541c645d3ae4d15886885d4627278b31792822131/tmpol_eqhuk.png",
+      "is_paused": false,
+      "banned_addresses": [],
+      "nsfw": false
     }
   ]
 }
@@ -51,10 +57,10 @@ Returns a paginated list of all fungible tokens on the VFX blockchain.
 
 ### Get Fungible Token Details
 ```http
-GET /api/fungible-token/{sc_identifier}/
+GET /api/fungible-tokens/{sc_identifier}/
 ```
 
-Returns detailed information about a specific fungible token.
+Returns a token and the balance of every address that has held it.
 
 **Parameters:**
 - `sc_identifier` (string): The smart contract identifier
@@ -62,32 +68,37 @@ Returns detailed information about a specific fungible token.
 **Response:**
 ```json
 {
-  "id": 1,
-  "smart_contract_uid": "SC123...",
-  "name": "VFX Utility Token",
-  "symbol": "VUT",
-  "total_supply": "1000000.0",
-  "decimals": 18,
-  "creator_address": "R9Ng1rDS2YgB7R2bJMU3RKzVXSriXLRsBR",
-  "created_at": "2024-01-01T12:00:00Z",
-  "is_voting_enabled": true,
-  "description": "A utility token for the VFX ecosystem",
-  "metadata": {
-    "website": "https://example.com",
-    "logo": "https://example.com/logo.png",
-    "whitepaper": "https://example.com/whitepaper.pdf"
+  "token": {
+    "sc_identifier": "9541c645d3ae4d15886885d4627278b3:1792822131",
+    "name": "QA Token W2",
+    "ticker": "LR24AW2",
+    "description": "Two-decimal test token",
+    "owner_address": "xXVdgxHRzmr5WnSsi3c2v9wEjsFdk7jnkf",
+    "can_mint": true,
+    "can_burn": true,
+    "can_vote": false,
+    "created_at": "2026-10-24T06:08:57Z",
+    "initial_supply": 0.0,
+    "circulating_supply": 501.0,
+    "decimal_places": 2,
+    "image_url": "https://rbx-nft-web-assets-testnet.s3.amazonaws.com/9541c645d3ae4d15886885d4627278b31792822131/tmpol_eqhuk.png",
+    "is_paused": false,
+    "banned_addresses": [],
+    "nsfw": false
   },
-  "holders_count": 500,
-  "transfer_count": 1250
+  "holders": {
+    "xVWNbcBXTtiiL7ZHCqxRP1q12tcgUTQA4m": 399.5,
+    "xXVdgxHRzmr5WnSsi3c2v9wEjsFdk7jnkf": 101.5
+  }
 }
 ```
 
 ### List Token Voting Topics
 ```http
-GET /api/fungible-token/{sc_identifier}/voting-topics/
+GET /api/fungible-tokens/{sc_identifier}/voting-topics/
 ```
 
-Returns voting topics associated with a specific fungible token.
+Returns a paginated list of the voting topics of a token.
 
 **Parameters:**
 - `sc_identifier` (string): The smart contract identifier
@@ -95,20 +106,30 @@ Returns voting topics associated with a specific fungible token.
 **Response:**
 ```json
 {
-  "count": 5,
+  "count": 2,
+  "page": 1,
+  "num_pages": 1,
   "results": [
     {
-      "topic_id": "topic_123",
-      "title": "Proposal to Increase Token Supply",
-      "description": "Vote on whether to increase the total token supply by 20%",
-      "status": "active",
-      "created_by": "R9Ng1rDS2YgB7R2bJMU3RKzVXSriXLRsBR",
-      "start_time": "2024-01-01T12:00:00Z",
-      "end_time": "2024-01-08T12:00:00Z",
-      "votes_for": 1500,
-      "votes_against": 800,
-      "total_votes": 2300,
-      "participation_rate": "46%"
+      "sc_identifier": "39685758c457473686504b4c16516a5b:1793534071",
+      "token": { "sc_identifier": "39685758c457473686504b4c16516a5b:1793534071", "name": "...", "ticker": "..." },
+      "from_address": "xWhMdq5TPzdXCib68kSHVUBhgdxdAZ1G2s",
+      "topic_id": "u9GGgZ0R1793534287",
+      "name": "Distribute Q3",
+      "description": "Pay out the Q3 distribution",
+      "vote_requirement": 51.0,
+      "created_at": "2026-11-01T11:58:07Z",
+      "voting_ends_at": "2026-11-08T11:58:07Z",
+      "vote_data": {
+        "votes": [
+          { "address": "xWhMdq5TPzdXCib68kSHVUBhgdxdAZ1G2s", "value": true, "created_at": "2026-11-01T12:10:00Z" }
+        ],
+        "vote_yes": 1,
+        "vote_no": 0,
+        "total_votes": 1,
+        "percent_yes": 1.0,
+        "percent_no": 0.0
+      }
     }
   ]
 }
@@ -116,78 +137,48 @@ Returns voting topics associated with a specific fungible token.
 
 ### Get Voting Topic Details
 ```http
-GET /api/fungible-token/voting-topics/{topic_id}/
+GET /api/fungible-tokens/voting-topics/{topic_id}/
 ```
 
-Returns detailed information about a specific voting topic.
+Returns one voting topic, in the same format as a list result.
 
 **Parameters:**
-- `topic_id` (string): The voting topic identifier
-
-**Response:**
-```json
-{
-  "topic_id": "topic_123",
-  "token": {
-    "smart_contract_uid": "SC123...",
-    "name": "VFX Utility Token",
-    "symbol": "VUT"
-  },
-  "title": "Proposal to Increase Token Supply",
-  "description": "Vote on whether to increase the total token supply by 20%",
-  "full_description": "This proposal suggests increasing the total supply...",
-  "status": "active",
-  "created_by": "R9Ng1rDS2YgB7R2bJMU3RKzVXSriXLRsBR",
-  "start_time": "2024-01-01T12:00:00Z",
-  "end_time": "2024-01-08T12:00:00Z",
-  "votes_for": 1500,
-  "votes_against": 800,
-  "abstain": 100,
-  "total_votes": 2400,
-  "participation_rate": "48%",
-  "quorum_required": "25%",
-  "quorum_met": true,
-  "voting_options": ["For", "Against", "Abstain"]
-}
-```
+- `topic_id` (string): The voting topic identifier, for example `u9GGgZ0R1793534287`
 
 ## Field Descriptions
 
 ### Fungible Token
-- `smart_contract_uid`: Unique identifier for the token's smart contract
+- `sc_identifier`: Unique identifier for the token's smart contract
 - `name`: Full name of the token
-- `symbol`: Trading symbol/ticker for the token
-- `total_supply`: Total number of tokens in circulation
-- `decimals`: Number of decimal places supported
-- `creator_address`: Address that created the token
-- `is_voting_enabled`: Whether governance voting is enabled
-- `holders_count`: Number of addresses holding the token
-- `transfer_count`: Total number of transfers
+- `ticker`: Trading symbol of the token
+- `description`: Token description
+- `owner_address`: Current owner of the token contract
+- `can_mint`, `can_burn`, `can_vote`: Whether the token allows minting, burning and voting topics
+- `created_at`: When the token was deployed
+- `initial_supply`: Supply minted at deployment
+- `circulating_supply`: Current supply
+- `decimal_places`: Number of decimal places supported
+- `image_url`: Token image
+- `is_paused`: Whether the owner has paused the token
+- `banned_addresses`: Addresses the owner has banned from the token
+- `nsfw`: Whether the token is flagged as not safe for work
+- `holders` (detail only): Balance per address
 
 ### Voting Topic
 - `topic_id`: Unique identifier for the voting topic
-- `title`: Short title of the proposal
-- `description`: Brief description of the proposal
-- `status`: Current status (active, completed, cancelled)
-- `start_time`: When voting begins
-- `end_time`: When voting ends
-- `votes_for/against`: Vote counts for each option
-- `participation_rate`: Percentage of eligible voters who participated
-- `quorum_required`: Minimum participation needed for validity
-- `quorum_met`: Whether the quorum requirement was satisfied
-
-## Voting Status Values
-
-- `pending`: Voting has not yet started
-- `active`: Voting is currently open
-- `completed`: Voting has ended successfully
-- `cancelled`: Voting was cancelled before completion
-- `failed`: Voting failed to meet quorum requirements
+- `sc_identifier`, `token`: The token the topic belongs to
+- `from_address`: Address that created the topic
+- `name`: Short title of the proposal
+- `description`: Description of the proposal
+- `vote_requirement`: Minimum token balance a holder needs to vote
+- `created_at`: When the topic was created
+- `voting_ends_at`: When voting ends
+- `vote_data.votes`: Each vote cast, with the voter's `address`, its `value` (`true` = yes) and `created_at`
+- `vote_data.vote_yes`, `vote_data.vote_no`, `vote_data.total_votes`: Vote counts
+- `vote_data.percent_yes`, `vote_data.percent_no`: Shares of the votes cast, as fractions from 0 to 1
 
 ## Notes
 
-- Token amounts are returned as strings to preserve decimal precision
-- Voting is only available for tokens with `is_voting_enabled: true`
-- Voting power is typically based on token holdings at a snapshot block
-- Topics may have different voting mechanisms (simple majority, supermajority, etc.)
-- Historical voting data is preserved for transparency and auditing
+- Token amounts are JSON numbers
+- Voting topics exist only for tokens with `can_vote: true`
+- The explorer counts each recorded vote once; `vote_data` does not weight votes by token balance
