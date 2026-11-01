@@ -1,5 +1,5 @@
 ---
-sourceHash: 02262e7bc1a5
+sourceHash: 1d3e7f55add2
 title: "Configuración del CLI"
 description: "Cada opción del archivo de configuración del Core CLI, con su tipo, su valor predeterminado y un ejemplo."
 sidebar:
@@ -52,7 +52,7 @@ Es necesario reiniciar el CLI después de hacer cambios. Escribe un `Key=Value` 
 6.	AlwaysRequireAPIPassword (predeterminado: false)
 	+ a.	Tipo boolean
 	+ b.	Ej.: AlwaysRequireAPIPassword=true
-	+ c.	Si se establece en true, debes incluir la contraseña en todas las solicitudes a la API, como último segmento de la ruta (`/api/V1/<Action>/{password}`). Si falta la contraseña o es incorrecta, se devuelve 403.
+	+ c.	Si se establece en true, debes incluir la contraseña en todas las solicitudes a la API, como el segmento anterior a la acción (`/api/V1/{password}/<Action>`, por ejemplo `/api/V1/{password}/GetWalletInfo`). Si falta la contraseña o es incorrecta, se devuelve 403.
 
 7.	APICallURL (predeterminado: null)
 	+ a.	Tipo string

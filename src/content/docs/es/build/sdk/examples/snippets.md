@@ -1,5 +1,5 @@
 ---
-sourceHash: 8f2e6e0807e1
+sourceHash: eb579c1e2275
 title: "Fragmentos de código"
 description: Fragmentos de código listos para copiar y pegar para tareas comunes con el VerifiedX Web SDK en VFX, Bitcoin, multicadena, React, Node.js y pruebas.
 sidebar:
@@ -344,7 +344,10 @@ function signOnBothChains(vfxClient, btcClient, message, vfxPrivateKey, btcWif) 
 // The SDK's exported isOtherNetworksAddress(address, network) checks the version byte and checksum.
 function isValidVfxAddress(address, network = 'testnet') {
   if (!address || typeof address !== 'string') return false;
-  return network === 'mainnet' ? address.startsWith('R') : address.startsWith('x');
+  // Mainnet: R… addresses and xRBX… reserve (vault) accounts. Testnet: x… addresses, including xRBX… reserve accounts.
+  return network === 'mainnet'
+    ? address.startsWith('R') || address.startsWith('xRBX')
+    : address.startsWith('x');
 }
 
 function isValidBitcoinAddress(address, network = 'testnet') {

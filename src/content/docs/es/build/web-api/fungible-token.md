@@ -1,5 +1,5 @@
 ---
-sourceHash: bf86b565dc5e
+sourceHash: 661d04801b92
 title: "Web API: Fungible Token"
 description: Endpoints de la API del explorador para los detalles de tokens fungibles y sus temas de votación.
 sidebar:
@@ -171,7 +171,7 @@ Devuelve un tema de votación, con el mismo formato que un resultado de la lista
 - `from_address`: dirección que creó el tema
 - `name`: título corto de la propuesta
 - `description`: descripción de la propuesta
-- `vote_requirement`: porcentaje de votos a favor que pide el tema
+- `vote_requirement`: saldo mínimo de tokens que necesita un tenedor para votar
 - `created_at`: cuándo se creó el tema
 - `voting_ends_at`: cuándo termina la votación
 - `vote_data.votes`: cada voto emitido, con la `address` del votante, su `value` (`true` = sí) y `created_at`

@@ -1,5 +1,5 @@
 ---
-sourceHash: 1ba24544a468
+sourceHash: 0e52612df220
 title: "Configuración de la integración con VFX"
 description: "Configura el CLI de Core para una integración de terceros: billeteras, compilación, configuración, la interfaz RPC, testnet y prácticas recomendadas para exchanges."
 sidebar:
@@ -143,7 +143,7 @@ El objetivo de esta sección es describir la configuración del archivo de confi
 
    - Tipo `boolean`
    - Ej.: `AlwaysRequireAPIPassword=true`
-   - Si se establece en true, debes incluir la contraseña en todas las solicitudes a la API, como último segmento de la ruta (`/api/V1/<Action>/{password}`).
+   - Si se establece en true, debes incluir la contraseña en todas las solicitudes a la API, como el segmento anterior a la acción (`/api/V1/{password}/<Action>`, por ejemplo `/api/V1/{password}/GetWalletInfo`).
 
 7. APICallURL (el valor predeterminado es null)
 
@@ -547,7 +547,7 @@ Estas son las opciones de configuración más relevantes:
 
    - Tipo boolean
    - Ej.: `AlwaysRequireAPIPassword=true`
-   - Si se establece en true, debes incluir la contraseña en todas las solicitudes a la API, como último segmento de la ruta (`/api/V1/<Action>/{password}`).
+   - Si se establece en true, debes incluir la contraseña en todas las solicitudes a la API, como el segmento anterior a la acción (`/api/V1/{password}/<Action>`, por ejemplo `/api/V1/{password}/GetWalletInfo`).
 
 7. APICallURL (el valor predeterminado es null)
 
