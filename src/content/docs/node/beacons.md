@@ -7,7 +7,7 @@ sidebar:
 
 ## Summary
 
-The purpose of this document is to teach you how to create a beacon from within the VFX CLI. Please note with this process you are never needed to expose your private key to the wallet or anywhere outside your own building application.
+The purpose of this document is to teach you how to create a beacon from within the VFX CLI. With this process you never need to expose your private key to the wallet or anywhere outside your own building application.
 
 Creating a beacon is a rather easy process and by the end of this document you will have all the necessary information to become your own beacon.
 
@@ -17,7 +17,7 @@ A beacon is the underlying tool in the VFX network that is used to help relay th
 
 1. The file may only be up to 150 MB
 2. You may only have 26 assets total plus the main asset.
-3. Your file extension type must not be on the ignore list of both the sender, beacon, and the receiver. (This is to help prevent the spread of malicious files)
+3. Your file extension type must not be on the reject list of the sender, the beacon, or the receiver (the `RejectAssetExtensionTypes` config key). (This is to help prevent the spread of malicious files)
 
 Should an NFT not follow these rules, your beacon will reject the media and that media will not associate to the NFT on your beacon.
 
@@ -51,7 +51,7 @@ The transaction is populated with what's called a Locator. This locator when dis
 
 Below you find the steps to set up a beacon.
 
-To start the beacon creation process please type /beacon and press enter in the CLI.
+To start the beacon creation process, type `/beacon` and press enter in the CLI.
 
 1. <ins>Please give your beacon a name</ins>
 
@@ -73,16 +73,16 @@ If this process is done correctly at the end you will see “Beacon Inserted. Pl
 
 ## Can I disable my own beacon?
 
-Yes. Please type the command `/switchbeacon` and press enter. This will turn your local beacon on and off.
+Yes. Type the command `/switchbeacon` and press enter. This turns your local beacon on and off. The CLI prints "Beacon has been turned on" or "off"; restart the wallet for the change to take effect.
 
 ## Do any ports need to be opened and forwarded?
 
-Yes. For a beacon to operate you will want to ensure the following ports are both open, and forwarded to the machine.
+Yes. For a beacon to operate, ensure the following ports are both open and forwarded to the machine.
 
 Ports:
 
-- <ins>3338</ins>
-- <ins>23338</ins>
+- <ins>3338</ins> (P2P; testnet 13338)
+- <ins>23339</ins> (beacon HTTP server; testnet 33339)
 
 You can easily check this by going to any online port checker, typing in your IP, and then the port with the wallet running after a beacon setup and restart. If the port shows open then your beacon is running. If it does not that means one of 3 problems:
 
@@ -93,13 +93,13 @@ You can easily check this by going to any online port checker, typing in your IP
 ## How can I tell if my beacon is running?
 
 1. Perform a port check with an online tool to ensure the ports are open.
-2. Type /beacon and press enter. If your beacon is running and setup it will print out the beacon's information. If it isn’t it will have you run the setup process again.
+2. Type `/beacon` and press enter. If your beacon is set up, the CLI prints "You are already a beacon!" and the beacon's information, including whether it is active. If it isn’t, it runs the setup process again. `/testbeacon` tests the connection to the network beacons.
 
-If you feel at any point you have messed up your beacon, other added beacons, or the network public beacons and want to start over you can simply delete the two beacon files. A screenshot is provided below.  
+If you feel at any point you have messed up your beacon, other added beacons, or the network public beacons and want to start over you can stop the wallet and delete the two beacon files (`rsrvbeacon.db` and its log file) in the `Databases` folder of the data directory. A screenshot is provided below.  
 ![The two beacon files in the data folder](../../../assets/media/core/beacon-files.png)  
-There is also a complete API to support the beacons where you can easily integrate and perform more complex tasks. You can see this at `http://localhost:7292/swagger`
+There is also a complete API to support the beacons where you can easily integrate and perform more complex tasks. You can see it at `http://localhost:7292/swagger` (testnet `http://localhost:17292/swagger`) on the node itself, with the API enabled (`enableapi`). A node started with `openapi` serves the Swagger page only to callers that send its `apitoken` header.
 ![Beacon endpoints in the CLI Swagger page](../../../assets/media/core/swagger-screenshot.png)
 
 ## How do I get help if needed?
 
-If any of the above instructions are not working or if you are having issues it is recommended to reach out to the community discord. There are numerous devs and community members who would be happy to help. Link is above on the first page.
+If any of the above instructions are not working or if you are having issues reach out to the [community Discord](https://discord.gg/7cd5ebDQCj). There are numerous devs and community members who would be happy to help.

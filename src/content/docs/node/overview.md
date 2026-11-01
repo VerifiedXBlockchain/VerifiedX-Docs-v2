@@ -1,11 +1,11 @@
 ---
 title: "Core CLI Overview"
-description: "Overview of the VerifiedX Core CLI for Windows, MacOS and Linux, with links to its build, configuration, validator and related guides."
+description: "Overview of the VerifiedX Core CLI for Windows, macOS and Linux, with links to its build, configuration, validator and related guides."
 sidebar:
   order: 1
 ---
 
-Use the Core CLI on Windows, MacOS, or Linux to interact with the network.
+Use the Core CLI on Windows, macOS, or Linux to interact with the network.
 
 
 ## Table of Contents
@@ -32,4 +32,4 @@ Use the Core CLI on Windows, MacOS, or Linux to interact with the network.
 
 11. [Coinomics](/learn/coinomics/)
 
-12. [Trilliam Web IDE](/build/trillium/web-ide/)
+12. [Trillium Web IDE](/build/trillium/web-ide/)
