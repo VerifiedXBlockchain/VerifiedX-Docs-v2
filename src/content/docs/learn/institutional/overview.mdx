@@ -274,11 +274,11 @@ End-user and institutional interfaces built on top of VerifiedX.
 
 ### Cross-Ecosystem Deployment Flow
 
-1. vBTC is locked in VerifiedX lockbox
-2. Proof is published to external chain
-3. Canonical representation is minted on destination chain
+1. vBTC is locked on VerifiedX (transaction type 37)
+2. Once the lock is 30 VFX blocks deep, the bridge's validators sign attestations of it
+3. The owner's node submits those signatures to the vBTC.b contract on Base, which mints vBTC.b one to one
 4. Capital is deployed into external liquidity venues
-5. Redemption reverses the process with full verification
+5. Redemption burns vBTC.b on Base, back to a VFX address or straight to Bitcoin ([vBTC.b on Base](/learn/vbtc-protocol/#vbtcb-on-base))
 
 ---
 

@@ -30,7 +30,7 @@ Nothing else about the vault changes. Consensus still verifies the vault's Bitco
 
 On each pool validator, add this line to `config.txt` (`~/.local/share/RBX/Config/config.txt` on Linux mainnet):
 
-```
+```ini
 S3CValidator=true
 ```
 
@@ -42,7 +42,7 @@ Restart the node and start validating (step 9 of the validator guide). The valid
 
 On the minting node, list the pool in `config.txt`, one `IP:ValidatorAddress` entry per validator, separated by commas:
 
-```
+```ini
 S3C=203.0.113.10:xVALIDATOR_ADDRESS_1,203.0.113.11:xVALIDATOR_ADDRESS_2,203.0.113.12:xVALIDATOR_ADDRESS_3
 ```
 
