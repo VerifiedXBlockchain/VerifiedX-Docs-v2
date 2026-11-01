@@ -1,5 +1,5 @@
 ---
-sourceHash: 3bb4e27180e0
+sourceHash: 4a40ce5f49e9
 title: "Conceptos básicos de Bitcoin: primeros pasos con la integración de Bitcoin"
 description: Genera billeteras de Bitcoin, consulta saldos y tarifas de comisión, envía transacciones y firma mensajes con el cliente de Bitcoin del VerifiedX Web SDK.
 sidebar:
@@ -7,7 +7,7 @@ sidebar:
   order: 2
 ---
 
-Esta guía explica cómo usar el VerifiedX Web SDK para operaciones de Bitcoin. El SDK ofrece un cliente de Bitcoin completo que admite la gestión de billeteras, las transacciones y la interacción con la mempool a través de la API de Mempool.space.
+Esta guía explica cómo usar el VerifiedX Web SDK para operaciones de Bitcoin. El SDK ofrece un cliente de Bitcoin completo que admite la gestión de billeteras, las transacciones y la interacción con la mempool a través de una API al estilo de mempool.space: mempool.space en mainnet y la API del propio explorador de la signet de VerifiedX en testnet.
 
 ## Requisitos previos
 
@@ -17,10 +17,14 @@ Esta guía explica cómo usar el VerifiedX Web SDK para operaciones de Bitcoin. 
 
 ## Las redes de Bitcoin
 
-El SDK admite las dos redes de Bitcoin:
+El SDK admite dos redes de Bitcoin:
 
 - **Mainnet**: la red de producción de Bitcoin, con BTC reales
-- **Testnet**: la red de prueba, con BTC de prueba (recomendada para desarrollar)
+- **Testnet**: para el desarrollo en VerifiedX es la [signet de VerifiedX](/es/build/signet/), la red de prueba privada de Bitcoin que vigila la testnet de VFX. Usa los formatos de dirección de testnet (`tb1…`, `m…`/`n…`, `2…`) y BTC de signet del faucet de testnet
+
+:::caution[Apunta testnet a la signet de VerifiedX]
+En `vfx-web-sdk` 9.0.3, `new btc.BtcClient('testnet')` todavía usa por defecto la API pública de testnet4 de Bitcoin (`https://mempool.space/testnet4/api`). Las claves y las direcciones son las mismas en ambas redes, pero los saldos, los UTXO y las transmisiones no. Pasa `apiBaseUrl: 'https://signet.verifiedx.io/api'` para que el cliente lea y transmita en la signet de VerifiedX.
+:::
 
 ## Paso 1: inicializa el cliente de Bitcoin
 
@@ -29,8 +33,8 @@ El SDK admite las dos redes de Bitcoin:
 ```typescript
 import { btc } from 'vfx-web-sdk';
 
-// Initialize for testnet (recommended for development)
-const client = new btc.BtcClient('testnet');
+// Initialize for the VerifiedX signet (recommended for development)
+const client = new btc.BtcClient('testnet', { apiBaseUrl: 'https://signet.verifiedx.io/api' });
 
 // For mainnet (production)
 // const client = new btc.BtcClient('mainnet');
@@ -55,6 +59,8 @@ console.log('- Default Address:', keypair.address);
 console.log('- WIF:', keypair.wif);
 ```
 
+El valor predeterminado de `address` es la dirección native SegWit (`bech32`), que también es la dirección desde la que gasta `sendBtc`.
+
 ### Método 2: genera a partir de una frase de recuperación
 
 ```typescript
@@ -67,12 +73,14 @@ console.log('- Address:', mnemonicWallet.address);
 console.log('- WIF:', mnemonicWallet.wif);
 ```
 
+`generateMnemonic()` devuelve un par de claves cuyo `mnemonic` es una frase de 24 palabras.
+
 ### Método 3: restaura a partir de una frase de recuperación
 
 ```typescript
 // Restore an existing wallet from mnemonic
 const restoredWallet = client.privateKeyFromMnemonic(
-  'your twelve word mnemonic phrase goes here like this example',
+  'your mnemonic phrase goes here',
   0 // account index
 );
 
@@ -131,6 +139,8 @@ const wallet = client.generatePrivateKey();
 await getAccountInfo(wallet.address);
 ```
 
+Las cifras cuentan solo las transacciones confirmadas (el `chain_stats` de la API); un pago sin confirmar aparece después de su bloque. Pasa `false` como segundo argumento para obtener BTC en lugar de satoshis.
+
 ## Paso 4: obtén el historial de transacciones
 
 Recupera el historial de transacciones de cualquier dirección:
@@ -159,6 +169,8 @@ async function getTransactionHistory(address: string) {
 
 await getTransactionHistory(wallet.address);
 ```
+
+`getTransactions` devuelve la primera página de la API para la dirección (las transacciones más recientes, primero las sin confirmar). En 9.0.3 sus parámetros `limit` y `before` se aceptan pero no se envían, así que no tienen efecto.
 
 ## Paso 5: consulta las tarifas de comisión actuales
 
@@ -194,49 +206,55 @@ await getCurrentFees();
 La forma más sencilla de enviar Bitcoin:
 
 ```typescript
-async function sendBitcoin(senderWif: string, recipientAddress: string, amountSats: number) {
+async function sendBitcoin(senderWif: string, recipientAddress: string, amountBtc: number) {
   try {
-    console.log(`Sending ${amountSats} satoshis to ${recipientAddress}`);
+    console.log(`Sending ${amountBtc} BTC to ${recipientAddress}`);
 
     // This method handles transaction creation and broadcasting
     const txId = await client.sendBtc(
       senderWif,
       recipientAddress,
-      amountSats,
-      20 // fee rate in sat/vB (optional)
+      amountBtc, // in BTC, not satoshis
+      2 // fee rate in sat/vB (optional; 1 sat/vB is enough on the signet)
     );
 
-    console.log('Transaction sent successfully!');
-    console.log('Transaction ID:', txId);
+    if (!txId) {
+      console.error('Nothing was sent');
+      return null;
+    }
 
+    console.log('Transaction ID:', txId);
     return txId;
   } catch (error) {
+    // BtcBroadcastUnknownError: the broadcast went out but no answer came back
     console.error('Transaction failed:', error.message);
   }
 }
 
-// Send 50,000 satoshis (0.0005 BTC)
+// Send 0.0005 BTC (50,000 satoshis)
 const wallet = client.generatePrivateKey();
 await sendBitcoin(
   wallet.wif,
   'recipient-bitcoin-address',
-  50000
+  0.0005
 );
 ```
+
+`sendBtc` recibe el monto en **BTC**. Gasta los UTXO de la dirección native SegWit (`bech32`) del WIF, devuelve el cambio a esa dirección y elige la tasa de comisión económica de la API cuando `feeRate` es 0. Se resuelve con el txid, o con `null` cuando no se envió nada (no se pudo construir la transacción o la red la rechazó). Lanza `BtcBroadcastUnknownError` cuando la transmisión salió pero no llegó una respuesta definitiva: no vuelvas a llamar a `sendBtc`, verifica con `checkBroadcast(error.signedTxHex)` y vuelve a transmitir ese mismo hex si no aparece.
 
 ### Envío avanzado (control manual)
 
 Para tener más control sobre el proceso de la transacción:
 
 ```typescript
-async function advancedSend(senderWif: string, recipientAddress: string, amountSats: number) {
+async function advancedSend(senderWif: string, recipientAddress: string, amountBtc: number) {
   try {
-    // Step 1: Create the transaction
+    // Step 1: Create the transaction (amount in BTC)
     const createResult = await client.createTransaction(
       senderWif,
       recipientAddress,
-      amountSats,
-      15 // custom fee rate
+      amountBtc,
+      15 // custom fee rate in sat/vB
     );
 
     if (!createResult.success) {
@@ -300,7 +318,10 @@ class BitcoinWalletManager {
   private client: btc.BtcClient;
 
   constructor(network: 'mainnet' | 'testnet' = 'testnet') {
-    this.client = new btc.BtcClient(network);
+    // On testnet, read and broadcast on the VerifiedX signet
+    this.client = network === 'testnet'
+      ? new btc.BtcClient('testnet', { apiBaseUrl: 'https://signet.verifiedx.io/api' })
+      : new btc.BtcClient('mainnet');
   }
 
   // Create new wallet
@@ -335,9 +356,9 @@ class BitcoinWalletManager {
     };
   }
 
-  // Send Bitcoin
-  async sendBitcoin(fromWif: string, toAddress: string, amountSats: number, feeRate?: number) {
-    return await this.client.sendBtc(fromWif, toAddress, amountSats, feeRate);
+  // Send Bitcoin (amount in BTC)
+  async sendBitcoin(fromWif: string, toAddress: string, amountBtc: number, feeRate?: number) {
+    return await this.client.sendBtc(fromWif, toAddress, amountBtc, feeRate);
   }
 
   // Get current network fees
@@ -396,22 +417,22 @@ main().catch(console.error);
 
 El SDK genera varios tipos de direcciones para lograr la máxima compatibilidad:
 
-### Legacy (P2PKH): las direcciones empiezan con '1'
+### Legacy (P2PKH): las direcciones empiezan con '1' (mainnet) o 'm'/'n' (testnet y signet)
 - El formato de dirección más antiguo
 - Las comisiones más altas
 - La máxima compatibilidad
 
-### Nested SegWit (P2SH): las direcciones empiezan con '3'
+### Nested SegWit (P2SH): las direcciones empiezan con '3' (mainnet) o '2' (testnet y signet)
 - Comisiones intermedias
 - Buena compatibilidad
 - Transacciones SegWit envueltas (wrapped)
 
-### Native SegWit (Bech32): las direcciones empiezan con 'bc1' (mainnet) o 'tb1' (testnet)
+### Native SegWit (Bech32): las direcciones empiezan con 'bc1q' (mainnet) o 'tb1q' (testnet y signet)
 - Comisiones más bajas
 - El estándar moderno
 - La mejor opción para la mayoría de los casos
 
-### Taproot (Bech32m): las direcciones empiezan con 'bc1p' (mainnet) o 'tb1p' (testnet)
+### Taproot (Bech32m): las direcciones empiezan con 'bc1p' (mainnet) o 'tb1p' (testnet y signet)
 - Las comisiones más bajas
 - La actualización más reciente de Bitcoin
 - Funciones de privacidad avanzadas
@@ -426,7 +447,7 @@ El SDK genera varios tipos de direcciones para lograr la máxima compatibilidad:
 ### Rendimiento
 - **Guarda en caché las tarifas de comisión**: no consultes las comisiones en cada transacción
 - **Agrupa las operaciones**: combina varias llamadas a la API cuando sea posible
-- **Maneja los límites de solicitudes**: Mempool.space tiene límites de solicitudes en su API
+- **Maneja los límites de solicitudes**: mempool.space (el valor predeterminado en mainnet) tiene límites de solicitudes en su API
 
 ### Manejo de errores
 - **Consulta los saldos**: asegúrate de tener saldo suficiente antes de enviar
@@ -438,7 +459,7 @@ El SDK genera varios tipos de direcciones para lograr la máxima compatibilidad:
 Ahora que conoces los conceptos básicos de Bitcoin:
 
 1. **Aprende sobre multicadena**: explora la [integración multicadena](/es/build/sdk/cross-chain/)
-2. **Crea aplicaciones**: revisa las [aplicaciones completas](/es/build/sdk/examples/applications/)
+2. **Mira ejemplos**: explora los [fragmentos de código](/es/build/sdk/examples/snippets/)
 3. **Referencia de la API**: explora la [API de BtcClient](/es/build/sdk/reference/btc-client/)
 
 ## Problemas comunes
@@ -447,13 +468,13 @@ Ahora que conoces los conceptos básicos de Bitcoin:
 Asegúrate de que tu billetera tenga suficiente Bitcoin. En testnet, obtén BTC de signet en el [faucet de testnet](https://spyglass-testnet.verifiedx.io/faucet) (pestaña Signet BTC).
 
 ### La comisión de la transacción es demasiado baja
-Aumenta la tasa de comisión si las transacciones se quedan atascadas en la mempool.
+Aumenta la tasa de comisión si las transacciones se quedan atascadas en la mempool. En la signet de VerifiedX basta con 1 sat/vB y llega un bloque más o menos cada 10 minutos (consulta [Signet](/es/build/signet/)).
 
 ### Formato de dirección no válido
 Asegúrate de usar el formato de dirección correcto para la billetera del destinatario.
 
 ### Problemas de conexión a la red
-Revisa tu conexión a internet e inténtalo de nuevo. El SDK reintenta automáticamente las solicitudes fallidas.
+Revisa tu conexión a internet e inténtalo de nuevo. El SDK no reintenta por su cuenta las solicitudes fallidas. Una transmisión que no recibe respuesta en 30 segundos lanza `BtcBroadcastUnknownError` en lugar de fallar, así que verifícala con `checkBroadcast` antes de volver a enviar.
 
 ## Obtén ayuda
 

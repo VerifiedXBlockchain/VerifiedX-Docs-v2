@@ -1,5 +1,5 @@
 ---
-sourceHash: 18c75b35ea2d
+sourceHash: 22edc0e2c5e6
 title: "Firma institucional (S3C)"
 description: Cómo una institución usa S3C para restringir la ceremonia de claves y la firma de Bitcoin de sus bóvedas de vBTC a tres o más validadores que opera.
 sidebar:
@@ -31,7 +31,7 @@ Nada más cambia en la bóveda. El consenso sigue verificando los depósitos y g
 
 En cada validador del pool, agrega esta línea a `config.txt` (`~/.local/share/RBX/Config/config.txt` en Linux mainnet):
 
-```
+```ini
 S3CValidator=true
 ```
 
@@ -43,7 +43,7 @@ Reinicia el nodo y empieza a validar (paso 9 de la guía del validador). El regi
 
 En el nodo de emisión, enumera el pool en `config.txt`, con una entrada `IP:ValidatorAddress` por validador, separadas por comas:
 
-```
+```ini
 S3C=203.0.113.10:xVALIDATOR_ADDRESS_1,203.0.113.11:xVALIDATOR_ADDRESS_2,203.0.113.12:xVALIDATOR_ADDRESS_3
 ```
 

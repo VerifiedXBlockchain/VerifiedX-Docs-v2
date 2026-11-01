@@ -1,5 +1,5 @@
 ---
-sourceHash: 891635f85b79
+sourceHash: 5eaf9fb832b4
 title: "Descripción general de la GUI"
 description: Descripción general de la billetera GUI de VerifiedX para Windows y macOS, con enlaces a todas las guías de la billetera.
 sidebar:
@@ -8,7 +8,7 @@ sidebar:
 
 ### La interfaz gráfica de usuario
 
-Usa la GUI en Windows o MacOS para interactuar con la red.
+Usa la GUI en Windows o macOS para interactuar con la red.
 
 
 ## Documentación
@@ -17,7 +17,7 @@ Usa la GUI en Windows o MacOS para interactuar con la red.
 
 #### Descarga e instalación
 
-Descarga e instala la aplicación para tu sistema operativo (Windows o MacOS).
+Descarga e instala la aplicación para tu sistema operativo (Windows o macOS).
 
 [Instrucciones de instalación](/es/wallet/installation/)
 

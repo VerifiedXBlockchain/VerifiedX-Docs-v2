@@ -1,5 +1,5 @@
 ---
-sourceHash: 0456bb1fd308
+sourceHash: 47fa08679f5a
 title: "Web API: Chat"
 description: Endpoints de la API del explorador para hilos de chat y mensajes entre usuarios en el contexto del marketplace y las tiendas.
 sidebar:
@@ -16,52 +16,75 @@ La API de Chat ofrece endpoints para gestionar hilos de chat y mensajes dentro d
 
 ## Endpoints
 
+Un hilo une una dirección de comprador con una tienda. Cada mensaje registra si lo envió el comprador (`is_from_buyer`); la otra parte es la tienda.
+
 ### Listar o crear hilos de chat
 ```http
 GET /api/chat/
 POST /api/chat/
 ```
 
-**GET** - Devuelve una lista paginada de hilos de chat.
+**GET** - Devuelve una lista paginada de hilos de chat de un comprador o de una tienda.
+
+**Parámetros de consulta (se requiere uno):**
+- `address`: la dirección de VFX del comprador
+- `shop_url`: la URL de la tienda, por ejemplo `rbx://myshop`
+
+Sin ninguno de los dos parámetros, la llamada responde `400` con ``{"detail": "Param `address` or `shop_url` is required."}``.
 
 **Respuesta:**
 ```json
 {
-  "count": 50,
-  "next": "http://localhost:8000/api/chat/?page=2",
-  "previous": null,
+  "count": 1,
+  "page": 1,
+  "num_pages": 1,
   "results": [
     {
-      "uuid": "123e4567-e89b-12d3-a456-426614174000",
-      "participants": ["R9Ng1rDS2YgB7R2bJMU3RKzVXSriXLRsBR", "RNiQrW3aBUWZhfadqKxPuN46iGaR13ox7P"],
+      "uuid": "4a3f65a8-a361-434d-a120-b4341a55cea7",
       "shop": {
-        "id": 1,
-        "name": "My Shop",
-        "url": "rbx://myshop"
-      },
+          "id": 923,
+          "unique_id": "lTRSoDPluH1752177270",
+          "name": "My Shop",
+          "description": "Digital collectibles",
+          "url": "rbx://myshop",
+          "owner_address": "R9Ng1rDS2YgB7R2bJMU3RKzVXSriXLRsBR",
+          "is_published": true,
+          "is_third_party": true,
+          "is_online": false
+        },
+      "is_third_party": true,
+      "buyer_address": "RNiQrW3aBUWZhfadqKxPuN46iGaR13ox7P",
       "created_at": "2024-01-01T12:00:00Z",
-      "updated_at": "2024-01-01T13:00:00Z",
-      "last_message": "Hello, is this item still available?"
+      "latest_message": {
+        "uuid": "6f1c2d3e-4b5a-4c7d-8e9f-0a1b2c3d4e5f",
+        "is_from_buyer": true,
+        "body": "Hello, is this item still available?",
+        "is_delivered": true,
+        "created_at": "2024-01-01T12:00:00Z"
+      }
     }
   ]
 }
 ```
 
-**POST** - Crea un nuevo hilo de chat.
+`latest_message` es `null` cuando el hilo no tiene mensajes.
+
+**POST** - Crea un hilo de chat, o devuelve el existente para la misma tienda y el mismo comprador.
 
 **Solicitud:**
 ```json
 {
-  "participants": ["R9Ng1rDS2YgB7R2bJMU3RKzVXSriXLRsBR", "RNiQrW3aBUWZhfadqKxPuN46iGaR13ox7P"],
-  "shop_id": 1,
-  "initial_message": "I'm interested in your NFT collection"
+  "shop_url": "rbx://myshop",
+  "buyer_address": "RNiQrW3aBUWZhfadqKxPuN46iGaR13ox7P",
+  "is_third_party": true
 }
 ```
 
-### Obtener, actualizar o eliminar un hilo de chat
+La respuesta es el hilo en el formato de Obtener un hilo de chat.
+
+### Obtener o eliminar un hilo de chat
 ```http
 GET /api/chat/{uuid}/
-PATCH /api/chat/{uuid}/
 DELETE /api/chat/{uuid}/
 ```
 
@@ -71,48 +94,47 @@ DELETE /api/chat/{uuid}/
 **Respuesta de GET:**
 ```json
 {
-  "uuid": "123e4567-e89b-12d3-a456-426614174000",
-  "participants": ["R9Ng1rDS2YgB7R2bJMU3RKzVXSriXLRsBR", "RNiQrW3aBUWZhfadqKxPuN46iGaR13ox7P"],
+  "uuid": "4a3f65a8-a361-434d-a120-b4341a55cea7",
   "shop": {
-    "id": 1,
-    "name": "My Shop",
-    "url": "rbx://myshop"
-  },
+      "id": 923,
+      "unique_id": "lTRSoDPluH1752177270",
+      "name": "My Shop",
+      "description": "Digital collectibles",
+      "url": "rbx://myshop",
+      "owner_address": "R9Ng1rDS2YgB7R2bJMU3RKzVXSriXLRsBR",
+      "is_published": true,
+      "is_third_party": true,
+      "is_online": false
+    },
+  "is_third_party": true,
+  "buyer_address": "RNiQrW3aBUWZhfadqKxPuN46iGaR13ox7P",
+  "created_at": "2024-01-01T12:00:00Z",
   "messages": [
     {
-      "id": 1,
-      "sender": "R9Ng1rDS2YgB7R2bJMU3RKzVXSriXLRsBR",
-      "content": "Hello, is this item available?",
-      "timestamp": "2024-01-01T12:00:00Z",
-      "is_read": false
+      "uuid": "6f1c2d3e-4b5a-4c7d-8e9f-0a1b2c3d4e5f",
+      "is_from_buyer": true,
+      "body": "Hello, is this item still available?",
+      "is_delivered": true,
+      "created_at": "2024-01-01T12:00:00Z"
     }
-  ],
-  "created_at": "2024-01-01T12:00:00Z",
-  "updated_at": "2024-01-01T13:00:00Z"
+  ]
 }
 ```
+
+**DELETE** elimina el hilo y responde `204`.
 
 ### Buscar un hilo de chat
 ```http
 GET /api/chat/lookup/
 ```
 
-Encuentra hilos de chat existentes entre participantes.
+Encuentra el hilo entre una tienda y un comprador.
 
 **Parámetros de consulta:**
-- `participants`: lista de direcciones de los participantes separadas por comas
-- `shop_id`: ID de tienda opcional para filtrar
+- `url` (requerido): la URL de la tienda; se agrega `rbx://` cuando falta
+- `buyer_address` (requerido): la dirección de VFX del comprador
 
-**Respuesta:**
-```json
-{
-  "thread": {
-    "uuid": "123e4567-e89b-12d3-a456-426614174000",
-    "participants": ["R9Ng1rDS2YgB7R2bJMU3RKzVXSriXLRsBR", "RNiQrW3aBUWZhfadqKxPuN46iGaR13ox7P"],
-    "shop_id": 1
-  }
-}
-```
+**Respuesta:** el hilo en el formato de Obtener un hilo de chat. Un parámetro faltante o un hilo desconocido responde `400` con un mensaje `detail`.
 
 ### Listar o crear mensajes en un hilo
 ```http
@@ -123,31 +145,30 @@ POST /api/chat/{thread_uuid}/message/
 **Parámetros:**
 - `thread_uuid` (string): el UUID del hilo de chat
 
-**GET** - Devuelve los mensajes del hilo.
+**GET** - Devuelve los mensajes del hilo, paginados.
 
-**Respuesta:**
-```json
-{
-  "count": 10,
-  "results": [
-    {
-      "id": 1,
-      "sender": "R9Ng1rDS2YgB7R2bJMU3RKzVXSriXLRsBR",
-      "content": "Hello, is this item available?",
-      "timestamp": "2024-01-01T12:00:00Z",
-      "is_read": false
-    }
-  ]
-}
-```
+:::caution
+El 2026-11-01 la forma GET respondió `500` en ambas redes. Lee los mensajes de un hilo desde `GET /api/chat/{uuid}/` en su lugar.
+:::
 
-**POST** - Crea un nuevo mensaje en el hilo.
+**POST** - Agrega un mensaje al hilo y responde `201` con el mensaje.
 
 **Solicitud:**
 ```json
 {
-  "sender": "R9Ng1rDS2YgB7R2bJMU3RKzVXSriXLRsBR",
-  "content": "Yes, it's still available. Would you like to make an offer?"
+  "body": "Yes, it's still available. Would you like to make an offer?",
+  "is_from_buyer": false
+}
+```
+
+**Respuesta:**
+```json
+{
+  "uuid": "6f1c2d3e-4b5a-4c7d-8e9f-0a1b2c3d4e5f",
+  "is_from_buyer": true,
+  "body": "Hello, is this item still available?",
+  "is_delivered": true,
+  "created_at": "2024-01-01T12:00:00Z"
 }
 ```
 
@@ -156,26 +177,11 @@ POST /api/chat/{thread_uuid}/message/
 GET /api/chat/new-messages/
 ```
 
-Devuelve los mensajes más recientes de todos los hilos de un usuario.
+Reservado para consultar periódicamente si hay mensajes nuevos. Por ahora siempre devuelve una lista vacía:
 
-**Parámetros de consulta:**
-- `address`: dirección del usuario cuyos mensajes quieres obtener
-- `since`: marca de tiempo desde la cual obtener mensajes (formato ISO)
-
-**Respuesta:**
 ```json
 {
-  "count": 5,
-  "results": [
-    {
-      "id": 1,
-      "thread_uuid": "123e4567-e89b-12d3-a456-426614174000",
-      "sender": "RNiQrW3aBUWZhfadqKxPuN46iGaR13ox7P",
-      "content": "I'd like to buy this NFT",
-      "timestamp": "2024-01-01T14:00:00Z",
-      "is_read": false
-    }
-  ]
+  "results": []
 }
 ```
 
@@ -183,22 +189,20 @@ Devuelve los mensajes más recientes de todos los hilos de un usuario.
 
 ### Hilo de chat
 - `uuid`: identificador único del hilo de chat
-- `participants`: arreglo de direcciones de VFX que participan en el chat
-- `shop`: información de la tienda asociada (si corresponde)
+- `shop`: la tienda del hilo, en el formato descrito en la página [Shop](/es/build/web-api/shop/)
+- `is_third_party`: si la tienda es una tienda de terceros
+- `buyer_address`: dirección de VFX del comprador
 - `created_at`: cuándo se creó el hilo
-- `updated_at`: cuándo se actualizó el hilo por última vez
-- `last_message`: vista previa del mensaje más reciente
+- `latest_message` (lista) / `messages` (detalle): el mensaje más reciente, o todos los mensajes
 
 ### Mensaje de chat
-- `id`: identificador único del mensaje
-- `sender`: dirección de VFX del remitente del mensaje
-- `content`: contenido de texto del mensaje
-- `timestamp`: cuándo se envió el mensaje
-- `is_read`: si los destinatarios ya leyeron el mensaje
+- `uuid`: identificador único del mensaje
+- `is_from_buyer`: `true` cuando el comprador envió el mensaje, `false` cuando lo envió la tienda
+- `body`: texto del mensaje
+- `is_delivered`: si el mensaje se entregó
+- `created_at`: cuándo se envió el mensaje
 
 ## Notas
 
-- Los hilos de chat suelen estar asociados a interacciones con tiendas o el marketplace
-- Todos los participantes deben tener direcciones de VFX válidas
-- Los mensajes admiten contenido de texto, con posible soporte multimedia en el futuro
-- Los hilos se identifican por UUID por privacidad y seguridad
+- Los hilos de chat están asociados a interacciones con tiendas: un hilo por tienda y comprador
+- Los hilos se identifican por UUID
