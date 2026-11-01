@@ -6,14 +6,14 @@ sidebar:
   label: Smart contracts and Trillium
 ---
 
-The VerifiedX (VFX) blockchain supports a versatile, gasless smart contract system powered by the **Trillium** language. This system enables a wide range of decentralized applications and digital asset management functionalities. VerifiedX contracts have a broad set of potential use cases, all running with no gas fees, making them more efficient and accessible.
+The VerifiedX (VFX) blockchain supports a versatile, gasless smart contract system powered by the **Trillium** language. This system enables a wide range of decentralized applications and digital asset management functionalities. VerifiedX contracts have a broad set of potential use cases, all running with no gas: each contract transaction pays only the normal size-based VFX network fee, which is burned.
 
 ## Trillium Smart Contract Language
 
 **Trillium** is the custom language used for developing and executing smart contracts on the VerifiedX blockchain. Its key features include:
 
-- **Gasless Execution**: No transaction fees are required for executing or interacting with contracts.
-- **Security**: Contracts are designed with advanced security features to prevent vulnerabilities like re-entrance, and infinite looping/recursion. 
+- **Gasless Execution**: Trillium has no gas and no execution metering. Each contract transaction (deploy, mint, transfer, burn, evolve, sale) pays the normal size-based VFX network fee, which is burned.
+- **Security**: Contracts are designed with advanced security features to prevent vulnerabilities like re-entrance and infinite looping or recursion. Nodes parse every contract body with loops and recursion banned.
 - **Customizability**: Allows for flexible and scalable contracts suited to a wide range of use cases.
 
 ## Use Cases for VerifiedX Smart Contracts
@@ -67,10 +67,10 @@ VerifiedX smart contracts facilitate the **tokenization** of real-world assets, 
 
 ## Smart Contract Execution
 
-All VerifiedX smart contracts are gasless, meaning users are not required to pay any transaction fees to interact with or deploy contracts. This significantly reduces barriers for developers and users alike, allowing for scalable, cost-effective decentralized applications. These can be referred to as SENs (Self-Executing Nodes). This is our replacement for EVMs and how we can do this without gas. 
+All VerifiedX smart contracts are gasless: there is no gas and no execution metering. Deploying or interacting with a contract costs only the normal size-based VFX network fee, which is burned. This significantly reduces barriers for developers and users alike, allowing for scalable, cost-effective decentralized applications. These can be referred to as SENs (Self-Executing Nodes). SENs are the VerifiedX replacement for EVMs and the reason the network can run contracts without gas. 
 
 ### Key Points About VerifiedX Smart Contracts:
-- **Gasless**: No transaction fees required for any operations.
+- **Gasless**: No gas for any operation; each transaction pays only the normal size-based network fee.
 - **Secure**: Designed with top-tier security to prevent contract vulnerabilities.
 - **Flexible**: Supports a wide range of use cases, from NFTs to DeFi to identity management.
 - **Infinite Potential**: While current use cases are outlined, the flexibility of the system allows for limitless contract creation possibilities.
@@ -79,4 +79,4 @@ All VerifiedX smart contracts are gasless, meaning users are not required to pay
 
 The **VerifiedX Smart Contract System** offers a gasless, scalable, and highly flexible environment for building decentralized applications using the **Trillium** language. With support for NFTs, fungible tokens, voting, asset tokenization, and more, VerifiedX enables developers and users to engage in a wide range of decentralized use cases, from digital art to governance and finance.
 
-To explore more technical details and review the smart contract models, visit the [VerifiedX-Core GitHub repository](https://github.com/VerifiedXBlockchain/VerifiedX-Core/tree/testnet/ReserveBlockCore/Models/SmartContracts).
+To explore more technical details and review the smart contract models, visit the [VerifiedX-Core GitHub repository](https://github.com/VerifiedXBlockchain/VerifiedX-Core/tree/main/VerifiedXCore/Models/SmartContracts).

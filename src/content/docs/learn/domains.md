@@ -27,26 +27,29 @@ VFX Domain Services provide a convenient way to create a personalized and readab
 
 ### How It Works
 
-The core of the VFX Domain Services is powered by the **ADNR (Address Name Resolution) model**, which stores the mappings between public addresses and the human-readable names. The ADNR model is defined in the `Adnr.cs` file within the VerifiedX-Core project.
+The core of the VFX Domain Services is powered by the **ADNR (Address Name Resolution) model**, which stores the mappings between public addresses and the human-readable names. `.vfx` names are defined in `Models/Adnr.cs` and `.btc` names in `Bitcoin/Models/BitcoinAdnr.cs` within the VerifiedX-Core project.
 
 #### ADNR Model (`Adnr.cs`)
 The ADNR model is responsible for handling the creation, management, and resolution of human-readable domain names to their corresponding blockchain addresses.
 
 Key properties of the ADNR model include:
 - **Id**: A unique identifier for each ADNR entry.
-- **Address**: The public blockchain address (either VFX or BTC) being mapped to the human-readable name.
+- **Address**: The VFX address the `.vfx` name points at. A `.btc` record instead holds **BTCAddress** (the Bitcoin address the name points at) and **RBXAddress** (the VFX address that owns the name; a legacy field name).
 - **Name**: The human-readable alias (e.g., `myaddress.vfx` or `example.btc`).
-- **DateCreated**: The timestamp of when the mapping was created.
-- **Signature**: A digital signature that ensures the authenticity of the ADNR entry.
+- **TxHash**: The hash of the transaction that created or last moved the name.
+- **Timestamp**: When that transaction was made.
 
 #### Key Methods
-- **CreateAdnr()**: This method allows users to create a new ADNR entry, linking a public blockchain address to a custom domain name.
-- **ResolveAdnr()**: This method resolves the human-readable domain back to its original blockchain address, enabling seamless address lookup during transactions.
-- **DeleteAdnr()**: Users can also delete ADNR entries if they no longer want a domain associated with a particular address.
+- **CreateAdnrTx()**: Builds the transaction that creates a new name, linking an address to it.
+- **TransferAdnrTx()**: Builds the transaction that moves a name to another owner.
+- **DeleteAdnrTx()**: Builds the transaction that deletes a name.
+- **GetAddress()**: Resolves a name back to its address, enabling address lookup during transactions. Over the node API this is `api/V2/ResolveAdnr/{name}`.
+
+Each create, transfer and delete is an ADNR transaction (type 6) sent to `Adnr_Base` with an amount of 5 VFX, plus the normal network fee. A reserve account cannot create, transfer or delete a name. The node API routes are `txapi/TXV1/CreateAdnr`, `TransferAdnr` and `DeleteAdnr` for `.vfx` names, and `btcapi/BTCV2/CreateAdnr`, `TransferAdnr` and `DeleteAdnr` for `.btc` names (see the [CLI API reference](/build/node-api/details/)).
 
 #### Naming rules (Core 9.0.1)
 
-From Core 9.0.1's ledger-rules height (block 7,575,250 on mainnet, block 7,400 on testnet), a new `.vfx` name is lowercase letters, digits and `-`, 1 to 65 characters, sent with no suffix. A label whose legacy `.rbx` name exists cannot be taken. A Bitcoin address holds at most one `.btc` name, and a delete or transfer acts only on the sender's own record at that address.
+From Core 9.0.1's ledger-rules height (block 7,575,250 on mainnet, block 7,400 on testnet), a new `.vfx` name is lowercase letters, digits and `-`, 1 to 65 characters, sent with no suffix; the chain appends `.vfx`. A label whose legacy `.rbx` name exists cannot be taken. A Bitcoin address holds at most one `.btc` name, and a delete or transfer acts only on the sender's own record at that address.
 
 #### Creating a `.btc` name
 
@@ -87,4 +90,4 @@ When both Bitcoin addresses are in the same wallet, the node signs the acceptanc
 
 VFX Domain Services offer a powerful and user-friendly solution for simplifying the sharing and management of blockchain addresses. With the ability to create custom domain names for both Bitcoin and VFX addresses, users can enjoy a more intuitive and trustworthy transaction experience.
 
-For more technical details and implementation, you can view the **ADNR model** and related classes in the [VerifiedX-Core GitHub repository](https://github.com/VerifiedXBlockchain/VerifiedX-Core/blob/testnet/ReserveBlockCore/Models/Adnr.cs).
+For more technical details and implementation, you can view the **ADNR model** and related classes in the [VerifiedX-Core GitHub repository](https://github.com/VerifiedXBlockchain/VerifiedX-Core/blob/main/VerifiedXCore/Models/Adnr.cs).

@@ -24,7 +24,7 @@ The one Bitcoin rule deliberately not checked is "no more than two hours in the 
 
 Validators turn Bitcoin blocks into **Bitcoin reports** (transaction type 43). A report carries the new headers and every vault event in a Bitcoin block: a deposit to a vault's deposit script, or a spend of a coin the chain holds for a vault. Each event comes with the Bitcoin transaction and its Merkle branch to the block header.
 
-A report is valid only when it is signed by two thirds of the current validator signer set and every node can verify it on its own:
+A report is valid only when it is signed by two thirds of the current validator signer set and by at least three of its members, and every node can verify it on its own:
 
 - the headers pass the header rules above and extend the stored chain;
 - each transaction's Merkle branch leads to the header it claims;
@@ -55,7 +55,7 @@ A signing validator runs a built-in Bitcoin light client, with no second process
 - It keeps a handful of Bitcoin peers found through the Bitcoin DNS seeds, chosen from different networks so that no single hosting provider supplies all of them.
 - It follows the header chain those peers serve from the checkpoint and fetches recent blocks of that chain. Every fetched block is checked against its header before it is kept. About 300 MB of recent blocks are kept on disk on mainnet.
 - It also asks a few other active validators for their headers each round.
-- Public Esplora explorers (mempool.space and blockstream.info on mainnet) are asked only when no peer delivers a block, and what they return is checked like any other source.
+- Public Esplora explorers (mempool.space and blockstream.info on mainnet) are asked only when no peer delivers a block or no new header has arrived for 90 minutes, and what they return is checked like any other source.
 
 A validator that cannot fetch a block of the heaviest chain waits; it does not sign a report it cannot build. The validator needs outbound access to the Bitcoin peer-to-peer network (port 8333 on mainnet). See [Run a Validator](/node/validator/).
 
@@ -63,7 +63,7 @@ A validator that cannot fetch a block of the heaviest chain waits; it does not s
 
 The node's Bitcoin wallet features (BTC accounts, balances, unspent outputs and broadcasting Bitcoin transactions) use Electrum servers. A default list of public servers is built in; set your own in `config.txt` with a comma-separated list, using `https://` for a TLS connection:
 
-```
+```ini
 ElectrumServers=https://electrum.example.com:50002,http://10.0.0.5:50001
 ```
 

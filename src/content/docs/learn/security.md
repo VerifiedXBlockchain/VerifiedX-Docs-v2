@@ -10,19 +10,19 @@ VerifiedX Blockchain (VFX) employs a comprehensive suite of security measures to
 
 ## 1. Decentralization
 
-VFX operates on a decentralized network, distributing control across multiple nodes. This structure reduces the risk of single points of failure and enhances the network's resilience against attacks. Decentralization ensures that no single entity has complete control, promoting transparency and trust among participants. 
+VFX operates on a decentralized network, distributing control across multiple nodes. This structure reduces the risk of single points of failure and enhances the network's resilience against attacks. Decentralization ensures that no single entity has complete control, promoting transparency and trust among participants.
 
 ## 2. Consensus Mechanism
 
-The network utilizes a consensus mechanism to validate transactions and maintain the integrity of the blockchain. This process ensures that all participants agree on the state of the ledger, preventing fraudulent activities and double-spending. The consensus mechanism is designed to be robust against various attack vectors, including Sybil and 51% attacks. 
+The network utilizes a consensus mechanism to validate transactions and maintain the integrity of the blockchain. This process ensures that all participants agree on the state of the ledger, preventing fraudulent activities and double-spending. The consensus mechanism is designed to be robust against various attack vectors, including Sybil and 51% attacks.
 
 ## 3. Cryptographic Security
 
-VFX employs advanced cryptographic techniques to secure data transmission and storage. Public-key cryptography ensures that only authorized parties can access sensitive information, while hashing algorithms maintain data integrity by producing unique identifiers for each piece of data. These cryptographic measures are fundamental in protecting user assets and transaction details. 
+VFX employs advanced cryptographic techniques to secure data transmission and storage. Public-key cryptography ensures that only authorized parties can access sensitive information, while hashing algorithms maintain data integrity by producing unique identifiers for each piece of data. These cryptographic measures are fundamental in protecting user assets and transaction details.
 
 ## 4. Smart Contract Audits
 
-Smart contracts within the VFX ecosystem undergo rigorous audits to identify and mitigate potential vulnerabilities. Regular audits ensure that the code governing transactions and asset management is secure, reducing the risk of exploits and unauthorized access. This proactive approach to security helps maintain trust in the platform's operations. 
+Smart contracts within the VFX ecosystem undergo rigorous audits to identify and mitigate potential vulnerabilities. Regular audits ensure that the code governing transactions and asset management is secure, reducing the risk of exploits and unauthorized access. This proactive approach to security helps maintain trust in the platform's operations.
 
 ## 5. Secure Asset Custody
 
@@ -30,19 +30,19 @@ VFX offers a secure method for users to tokenize and move Bitcoin (vBTC) within 
 
 ## 6. All Open Source
 
-The VFX Network is and always be completely open source. This provides the needed transparency into the project to provide peace of mind and to ensure no bad actors ever exist and put something into the network they should not. 
+The VFX Network is and always will be completely open source. This provides the needed transparency into the project to provide peace of mind and to ensure no bad actors ever exist and put something into the network they should not.
 
 ## 7. Regular Security Updates
 
-VFX commits to regular security updates and patches to address emerging threats and vulnerabilities. By staying current with the latest security developments, the platform ensures that its defenses remain effective against new attack methods. This proactive approach to security helps maintain the integrity and trustworthiness of the network. ([source]
+VFX commits to regular security updates and patches to address emerging threats and vulnerabilities. By staying current with the latest security developments, the platform ensures that its defenses remain effective against new attack methods. This proactive approach to security helps maintain the integrity and trustworthiness of the network.
 
 ## 8. Data Privacy Measures
 
-The platform incorporates data privacy measures to protect user information. This includes data encryption and anonymization techniques that ensure user data is handled securely and in compliance with privacy regulations. By safeguarding user privacy, VFX fosters trust and confidence among its users. 
+The platform incorporates data privacy measures to protect user information. This includes data encryption and anonymization techniques that ensure user data is handled securely and in compliance with privacy regulations. By safeguarding user privacy, VFX fosters trust and confidence among its users.
 
 ## 9. Continuous Monitoring
 
-VFX employs continuous monitoring to detect and respond to potential security incidents promptly. 
+VFX employs continuous monitoring to detect and respond to potential security incidents promptly.
 
 ## 10. Community Engagement and Transparency
 

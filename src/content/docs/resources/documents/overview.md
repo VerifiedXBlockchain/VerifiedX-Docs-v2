@@ -11,6 +11,8 @@ sidebar:
 
 [Whitepaper](/resources/documents/whitepaper/)
 
+[MiCA White Paper](/resources/documents/mica-whitepaper/)
+
 [vBTC Hero Doc](/resources/documents/vbtc-hero-doc/)
 
 [vBTC Flow](/resources/documents/vbtc-flow/)

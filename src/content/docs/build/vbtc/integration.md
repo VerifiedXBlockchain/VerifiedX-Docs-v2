@@ -59,26 +59,26 @@ If the node was started with `apitoken=...`, send the token in the `apitoken` he
 
 ## Transaction types
 
-| Type | Name | Sent by | Explorer label |
-| --- | --- | --- | --- |
-| 25 | `VBTC_V2_CONTRACT_CREATE` | Owner | vBTC V2 Mint |
-| 26 | `VBTC_V2_TRANSFER` | Owner or holder | vBTC V2 Transfer |
-| 27 | `VBTC_V2_WITHDRAWAL_REQUEST` | Requester | vBTC V2 Withdrawal Request |
-| 28 | `VBTC_V2_WITHDRAWAL_COMPLETE` | Legacy vaults only, until the enforcement height | vBTC V2 Withdrawal Complete |
-| 29 | `VBTC_V2_WITHDRAWAL_CANCEL` | Requester | vBTC V2 Withdrawal Cancel |
-| 30 | `VBTC_V2_WITHDRAWAL_VOTE` | Validators, legacy vaults only, until the enforcement height | vBTC V2 Withdrawal Vote |
-| 43 | `VBTC_V2_BTC_REPORT` | Validators (no sender) | Bitcoin Report |
-| 44 | `VBTC_V2_COIN_PIN` | Requester | vBTC Withdrawal Fee Raise (data `Function` `VBTCWithdrawalFeeBump()`) or vBTC Withdrawal Release (`VBTCWithdrawalRelease()`); vBTC Withdrawal Pin when the data can't be read |
-| 45 | `VBTC_V2_BTC_REORG` | Validators (no sender) | Bitcoin Reorg |
-| 46 | `VBTC_V2_VAULT_REKEY` | Validators (no sender) | vBTC Vault Rekey |
+| Type | Name | Sent by | Explorer label | Wallet label |
+| --- | --- | --- | --- | --- |
+| 25 | `VBTC_V2_CONTRACT_CREATE` | Owner | vBTC V2 Mint | vBTC Contract Mint |
+| 26 | `VBTC_V2_TRANSFER` | Owner or holder | vBTC V2 Transfer | vBTC Transfer, or vBTC Bulk Transfer for several vaults |
+| 27 | `VBTC_V2_WITHDRAWAL_REQUEST` | Requester | vBTC V2 Withdrawal Request | vBTC Withdrawal Request |
+| 28 | `VBTC_V2_WITHDRAWAL_COMPLETE` | Legacy vaults only, until the enforcement height | vBTC V2 Withdrawal Complete | vBTC Withdrawal Complete |
+| 29 | `VBTC_V2_WITHDRAWAL_CANCEL` | Requester | vBTC Withdrawal Cancel | vBTC Withdrawal Cancel |
+| 30 | `VBTC_V2_WITHDRAWAL_VOTE` | Validators, legacy vaults only, until the enforcement height | vBTC Withdrawal Vote | vBTC Withdrawal Vote |
+| 43 | `VBTC_V2_BTC_REPORT` | Validators (no sender) | vBTC Bitcoin Report | Bitcoin Report |
+| 44 | `VBTC_V2_COIN_PIN` | Requester | vBTC Withdrawal Fee Bump | vBTC Withdrawal Fee Raise (data `Function` `VBTCWithdrawalFeeBump()`) or vBTC Withdrawal Release (`VBTCWithdrawalRelease()`); vBTC Withdrawal Pin when the data can't be read |
+| 45 | `VBTC_V2_BTC_REORG` | Validators (no sender) | vBTC Bitcoin Rewind | Bitcoin Reorg |
+| 46 | `VBTC_V2_VAULT_REKEY` | Validators (no sender) | vBTC Vault Rekey | vBTC Vault Rekey |
 
-The VerifiedX wallets use the same labels for types 43 to 46, and label a type 27 vBTC Withdrawal Request.
+The explorer labels a type 44 vBTC Withdrawal Fee Bump whether it raises the fee or releases the withdrawal; the wallets tell the two apart from its data.
 
 Types 43, 45 and 46 have `From` and `To` set to `BTC_Attestation`, no amount and no fee; their authority is the validator signatures inside their data. A type 43 report carries Bitcoin headers and the vault transactions of reported Bitcoin blocks. A type 45 takes back reported events after a Bitcoin reorganisation. A type 46 moves a vault to a new key made by the current validators when too many holders of its old key have left; the vault's coins are then moved to the new key by transactions the chain fixes and the old key's holders sign (shown as a `Sweep` in the vault's withdrawals). The full list of types is in [Transaction Creation](/build/node-api/transaction-creation/).
 
 ## API status
 
-```
+```text
 GET /vbtcapi/VBTC
 ```
 
@@ -88,7 +88,7 @@ Returns `["VFX/vBTC-V2", "vBTC API V2 - MPC Based"]`.
 
 ### 1. Start the key ceremony
 
-```
+```text
 POST /vbtcapi/VBTC/InitiateMPCCeremony/{ownerAddress}
 ```
 
@@ -108,7 +108,7 @@ Errors: `You already have an active MPC ceremony in progress. Complete or cancel
 
 ### 2. Follow the ceremony
 
-```
+```text
 GET /vbtcapi/VBTC/GetCeremonyStatus/{ceremonyId}
 ```
 
@@ -138,13 +138,13 @@ GET /vbtcapi/VBTC/GetCeremonyStatus/{ceremonyId}
 
 To abandon a ceremony:
 
-```
+```text
 POST /vbtcapi/VBTC/CancelCeremony/{ceremonyId}/{ownerAddress}
 ```
 
 ### 3. Create the vault
 
-```
+```text
 POST /vbtcapi/VBTC/CreateVBTCContract
 ```
 
@@ -183,7 +183,7 @@ Errors: `Ceremony is not complete. Current status: …`, `Owner address does not
 
 ### 4. Get the deposit address
 
-```
+```text
 GET /vbtcapi/VBTC/GetMPCDepositAddress/{scUID}
 ```
 
@@ -224,7 +224,7 @@ These read routes answer from chain state, so any node gives the same answer for
 
 ### Balance on one vault
 
-```
+```text
 GET /vbtcapi/VBTC/GetVBTCBalance/{address}/{scUID}
 ```
 
@@ -255,11 +255,11 @@ GET /vbtcapi/VBTC/GetVBTCBalance/{address}/{scUID}
 
 - For the owner, `Balance` is the vault's Bitcoin (`DepositAddressBalance`; on a watched vault, as the chain records it) plus `LedgerBalance` (negative for vBTC it has sent to holders). For a holder, `Balance` is `LedgerBalance`.
 - An open withdrawal's amount is already out of `Balance`: it is debited when the request is mined and listed under `EscrowedWithdrawals`.
-- `AvailableBalance` also subtracts reserve sends still in their 24-hour window.
+- `AvailableBalance` also subtracts reserve sends still waiting for their unlock time.
 
 ### Balances on every vault
 
-```
+```text
 GET /vbtcapi/VBTC/GetAllVBTCBalances/{address}
 ```
 
@@ -267,7 +267,7 @@ Returns `TotalBalance`, `ContractCount` and `Contracts`: one entry per vault the
 
 ### Vault details, list and health
 
-```
+```text
 GET /vbtcapi/VBTC/GetContractDetails/{scUID}
 GET /vbtcapi/VBTC/GetContractList/{ownerAddress?}
 GET /vbtcapi/VBTC/GetContractHealth/{scUID}
@@ -277,7 +277,7 @@ GET /vbtcapi/VBTC/GetContractHealth/{scUID}
 
 ### A watched vault's Bitcoin
 
-```
+```text
 GET /vbtcapi/VBTC/GetVaultBitcoin/{scUID}
 ```
 
@@ -314,7 +314,7 @@ For a legacy vault, `Success` is `false`, `Bitcoin` is `null` and `Message` expl
 
 ### Attestation status
 
-```
+```text
 GET /vbtcapi/VBTC/GetBitcoinAttestationStatus
 ```
 
@@ -348,7 +348,7 @@ A height that is not set yet is `null`. `BitcoinTipHeight` moves only when a rep
 
 ### From one vault
 
-```
+```text
 POST /vbtcapi/VBTC/TransferVBTC
 ```
 
@@ -373,11 +373,11 @@ POST /vbtcapi/VBTC/TransferVBTC
 }
 ```
 
-Errors: `Amount must be greater than zero`, `Insufficient balance. Available: …, Requested: …`, `Account not found: …` (the sender is not in this wallet), and for a frozen vault `Vault … was created before Bitcoin attestation and has been frozen since block …. Its vBTC can no longer be transferred, withdrawn or bridged.` A reserve (`xRBX`) sender's transfer is held for 24 hours and can be called back until then; it cannot go to another reserve address.
+Errors: `Amount must be greater than zero`, `Insufficient balance. Available: …, Requested: …`, `Account not found: …` (the sender is not in this wallet), and for a frozen vault `Vault … was created before Bitcoin attestation and has been frozen since block …. Its vBTC can no longer be transferred, withdrawn or bridged.` A reserve (`xRBX`) sender's transfer is held for the reserve account's unlock delay, at least 24 hours, and can be called back until then; it cannot go to another reserve address.
 
 ### From several vaults at once
 
-```
+```text
 POST /vbtcapi/VBTC/TransferVBTCMulti
 ```
 
@@ -393,7 +393,7 @@ The node splits `TotalAmount` across the vaults the sender holds vBTC on and sen
 
 ## Transferring ownership
 
-```
+```text
 GET /vbtcapi/VBTC/TransferOwnership/{scUID}/{toAddress}
 ```
 
@@ -407,7 +407,7 @@ Signed by the current owner's account on this node. It moves the vault to `toAdd
 
 ### Request a withdrawal
 
-```
+```text
 POST /vbtcapi/VBTC/RequestWithdrawal
 ```
 
@@ -446,7 +446,7 @@ POST /vbtcapi/VBTC/RequestWithdrawal
 
 ### Follow a withdrawal
 
-```
+```text
 GET /vbtcapi/VBTC/GetWithdrawalPin/{scUID}/{withdrawalRequestHash}
 ```
 
@@ -519,7 +519,7 @@ Answered from chain state by any node. A withdrawal moves through these states:
 
 ### Cancel a waiting withdrawal
 
-```
+```text
 POST /vbtcapi/VBTC/CancelWithdrawal
 ```
 
@@ -546,7 +546,7 @@ Only a `Waiting` withdrawal can be cancelled (`CanCancel: true`). Once it is pin
 
 ### Raise the fee of a pinned withdrawal
 
-```
+```text
 POST /vbtcapi/VBTC/BumpWithdrawalFee
 ```
 
@@ -577,7 +577,7 @@ Rules: `FeeRate` must be above the rate the newest transaction pays, and at most
 
 ### Release a pinned withdrawal
 
-```
+```text
 POST /vbtcapi/VBTC/ReleaseWithdrawal
 ```
 
@@ -599,7 +599,7 @@ Rules: `FeeRate` must be above the rate the newest transaction pays, the release
 
 ### What the completion route returns on a watched vault
 
-```
+```text
 POST /vbtcapi/VBTC/CompleteWithdrawal
 ```
 
@@ -642,7 +642,7 @@ A holder with vBTC on several vaults, such as an exchange, withdraws a total amo
 
 ### Request
 
-```
+```text
 POST /vbtcapi/VBTC/RequestWithdrawalMulti
 ```
 
@@ -679,7 +679,7 @@ Each share pays its own fee, so check the destination receives what you expect: 
 
 ### Follow each share
 
-```
+```text
 GET /vbtcapi/VBTC/GetWithdrawalRequestShares/{withdrawalRequestHash}
 ```
 
@@ -715,7 +715,7 @@ Every share is a withdrawal of its own vault under the shared request hash. Pass
 
 ### CompleteWithdrawalMulti
 
-```
+```text
 POST /vbtcapi/VBTC/CompleteWithdrawalMulti
 ```
 
@@ -791,7 +791,7 @@ vBTC.b is vBTC on Base, an ERC-20 (`vBTCb`, symbol `vBTC.b`, 8 decimals) minted 
 
 The owner's node runs the whole flow: it broadcasts the lock (type 37), collects the bridge validators' mint attestations once the lock is 30 VFX blocks deep, and submits `mintWithProof` on Base from a Base address derived from the owner's VFX key. That address pays the Base gas, so fund it with a little ETH first.
 
-```
+```text
 GET  /wallet/api/base-address/{vfxAddress}
 GET  /wallet/api/vbtc/bridge/preflight/{ownerAddress}/{scUID}
 POST /wallet/api/vbtc/bridge/toBase
@@ -853,10 +853,10 @@ On testnet, legacy vaults no longer exist: the chain restarted in October 2026 a
 
 ## S3C vaults
 
-S3C (self-custodial smart contracts) lets an owner have a vault's key held only by validators the owner runs, instead of by the public validator set.
+S3C (Self-Custodial Smart Contracts) lets an owner have a vault's key held only by validators the owner runs, instead of by the public validator set.
 
 - **Validators.** Each S3C validator runs with `S3CValidator=true` in `config.txt`, which flags it as S3C on chain when it registers. An S3C validator takes part only in S3C ceremonies; public vaults never use it. Like any validator it must be registered, active, and hold its 5,000 VFX bond.
-- **The minting node** lists the pool in `config.txt` as `S3C=IP:ValidatorAddress,IP:ValidatorAddress,IP:ValidatorAddress`: at least three entries, public IP addresses only, valid VFX addresses. Every vault this node creates is then an S3C vault. The configured IP is the one contacted.
+- **The minting node** lists the pool in `config.txt` as `S3C=IP:ValidatorAddress,IP:ValidatorAddress,IP:ValidatorAddress`: at least three entries, public IPv4 addresses only (no IPv6 addresses or host names), valid VFX addresses. Every vault this node creates is then an S3C vault. The configured IP is the one contacted.
 - **All or nothing.** Every configured validator must be registered, active, flagged S3C, funded and bonded long enough, and all of them take part in the key ceremony. If any is unusable, the ceremony fails and names it. If the `S3C=` value is invalid, the node refuses to create vaults rather than fall back to the public pool.
 - **Check before minting:** `GET /vbtcapi/VBTC/GetS3CStatus` returns `Enabled`, `ConfigInvalid`, `IsS3CValidator` and, per configured validator, `RegisteredOnChain`, `Reachable` and `ConfigIPMismatch`.
 - **Keys.** The chain never moves an S3C vault to a new key: who holds its key is its owner's matter.
@@ -880,8 +880,4 @@ A node started with its browser wallet serves the same operations, signed by the
 
 ## Other vBTC routes
 
-These are in the same controller and not covered on this page: the shielded vBTC pool (`ShieldVBTC`, `UnshieldVBTC`, `PrivateTransferVBTC`, `GetShieldedVBTCBalance`, `GetShieldedVBTCPoolState/{scUID}`), the bridge to Base (`BridgeToBase`, `GetBridgeLockStatus/{lockId}`, `GetBridgeLocks/{scUID}`, `GetBridgeLocksByOwner/{ownerAddress}`, `GetBaseBalance/{evmAddress}`, `GetBridgeStatus`, `GetBridgeConfig`, `GetBridgeExit/{baseBurnTxHash}`), validator routes (`GetValidatorList`, `GetValidatorStatus/{address}`, `GetValidatorBond/{address}`, `ExitValidator/{address}`, see [Run a Validator](/node/validator/)) and operator routes.
-
-## V1 vBTC is retired
-
-V1 vBTC (arbiter tokenization under `btcapi/BTCV2`: `TokenizeBitcoin`, `TransferCoin`, `TransferCoinMulti`, `WithdrawalCoin`, `WithdrawalCoinRawTX`, transaction types 17 to 21) was retired at block 7,400,500 on mainnet. From that height the network accepts no new V1 token, transfer or withdrawal, and no transaction may touch an existing V1 contract, so V1 balances are frozen as they stand. On the testnet, which restarted in October 2026, V1 has been retired since block 1. The Bitcoin wallet routes of `btcapi/BTCV2` (accounts, sends, fees, `.btc` names) are unaffected and are listed in [CLI API Details](/build/node-api/details/#3-bitcoin-integration-api).
+These are in the same controller and not covered on this page: the shielded vBTC pool (`ShieldVBTC`, `UnshieldVBTC`, `PrivateTransferVBTC`, `GetShieldedVBTCBalance`, `GetShieldedVBTCPoolState/{scUID}`; consensus refuses vBTC privacy transactions on both networks, on mainnet from block 7,281,000), the bridge to Base (`BridgeToBase`, `GetBridgeLockStatus/{lockId}`, `GetBridgeLocks/{scUID}`, `GetBridgeLocksByOwner/{ownerAddress}`, `GetBaseBalance/{evmAddress}`, `GetBridgeStatus`, `GetBridgeConfig`, `GetBridgeExit/{baseBurnTxHash}`), validator routes (`GetValidatorList`, `GetValidatorStatus/{address}`, `GetValidatorBond/{address}`, `ExitValidator/{address}`, see [Run a Validator](/node/validator/)) and operator routes.

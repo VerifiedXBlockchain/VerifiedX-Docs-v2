@@ -5,30 +5,34 @@ sidebar:
   order: 1
 ---
 
-This section covers integrating the VFX network as a third-party.
+This section covers integrating the VFX network as a third party.
 
 1. [Initial Setup](/build/setup/)
 
-2. [Creating Addresses](/build/node-api/address-creation/)
+2. [JavaScript SDK](/build/sdk/overview/)
 
-3. [Creating Transactions](/build/node-api/transaction-creation/)
+3. [Creating Addresses](/build/node-api/address-creation/)
 
-4. [Smart Contracts](/build/smart-contracts/overview/)
+4. [Creating Transactions](/build/node-api/transaction-creation/)
 
-5. [Trillium](/build/trillium/overview/)
+5. [Smart Contracts](/build/smart-contracts/overview/)
 
-6. [Fungible Tokens](/build/node-api/fungible-tokens/)
+6. [Trillium](/build/trillium/overview/)
 
-7. [vBTC](/build/vbtc/integration/)
+7. [Fungible Tokens](/build/node-api/fungible-tokens/)
 
-8. [vBTC Raw](/build/vbtc/raw-integration/)
+8. [vBTC](/build/vbtc/integration/)
 
-9. [Testnet](/build/testnet/)
+9. [vBTC Raw](/build/vbtc/raw-integration/)
 
-10. [Swagger Docs](/build/node-api/swagger/)
+10. [Testnet](/build/testnet/)
 
-11. [CLI API Overview](/build/node-api/overview/)
+11. [Signet](/build/signet/)
 
-12. [Example Transactions](/build/node-api/example-transactions/)
+12. [Swagger Docs](/build/node-api/swagger/)
 
-13. [Web API](/build/web-api/overview/)
+13. [CLI API Overview](/build/node-api/overview/)
+
+14. [Example Transactions](/build/node-api/example-transactions/)
+
+15. [Web API](/build/web-api/overview/)

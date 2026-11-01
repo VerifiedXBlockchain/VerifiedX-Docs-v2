@@ -8,7 +8,7 @@ sidebar:
 
 The **VerifiedX Trillium Web IDE** is an integrated development environment designed for building, deploying, and testing **Trillium** smart contracts on the **VerifiedX blockchain**. This tool aims to simplify the process for developers by providing a browser-based interface for creating, editing, and interacting with smart contracts in a user-friendly environment. 
 
-The Web IDE is tailored for the **Trillium** language, which is used to build gasless smart contracts on the **VerifiedX blockchain**. This platform eliminates the need for complex local setups or installations and provides an efficient way to work with smart contracts directly from the web browser.
+The Web IDE is tailored for the **Trillium** language, which is used to build gasless smart contracts on the **VerifiedX blockchain**: Trillium has no gas and no execution metering. This platform eliminates the need for complex local setups or installations and provides an efficient way to work with smart contracts directly from the web browser.
 
 ## Key Features
 
@@ -20,10 +20,10 @@ The **Trillium Web IDE** enables developers to write, edit, and deploy **Trilliu
 - **Instant Validation**: Helps developers quickly spot syntax and logical issues in the smart contract code.
 
 ### 2. **Gasless Smart Contract Execution**
-One of the unique features of the **VerifiedX blockchain** is the **gasless** nature of its smart contracts. The **Trillium Web IDE** allows users to deploy and execute smart contracts without the need to pay transaction fees (gas). This is particularly valuable for developers who want to test and deploy contracts in a more efficient and cost-effective manner.
+One of the unique features of the **VerifiedX blockchain** is the **gasless** nature of its smart contracts: Trillium has no gas and no execution metering. Every smart contract transaction on chain (deploy, mint, transfer, burn, evolve, sale) still pays the normal size-based VFX network fee, which is burned.
 
-- **Gasless Deployment**: Deploy smart contracts on VerifiedX without any transaction fees.
-- **Efficient Testing**: Test contracts in the IDE without worrying about gas fees.
+- **Gasless Deployment**: Deploying a contract costs only the normal size-based VFX network fee, with no gas on top.
+- **Efficient Testing**: Code you compile and run in the IDE sends no transaction, so testing costs nothing.
 
 ### 3. **Deploying Contracts to the VerifiedX Blockchain**
 The Web IDE simplifies the process of deploying **Trillium** smart contracts to the **VerifiedX blockchain**. Once a smart contract is created and tested, it can be deployed to the blockchain with just a few clicks.

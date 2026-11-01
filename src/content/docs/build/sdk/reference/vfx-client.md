@@ -9,13 +9,18 @@ The `VfxClient` is the main interface for interacting with the VerifiedX blockch
 
 ## Constructor
 
-### `new VfxClient(network, dryRun?)`
+### `new VfxClient(network, dryRunOrOptions?)`
 
-Creates a new VfxClient instance.
+Creates a new VfxClient instance. The client talks to the Spyglass data API of its network (`https://data.verifiedx.io/api` or `https://data-testnet.verifiedx.io/api`), not to a node.
 
 **Parameters:**
-- `network` (Network | string): The network to connect to (`Network.Mainnet`, `Network.Testnet`, or string equivalent)
-- `dryRun` (boolean, optional): If true, transactions will not be broadcast (default: false)
+- `network` (`Network` | `'mainnet'` | `'testnet'`): The network to connect to
+- `dryRunOrOptions` (boolean | `VfxClientOptions`, optional): `true` for a dry-run client (the historical form), or an options object (default: `false`)
+
+`VfxClientOptions`:
+- `dryRun` (boolean, optional): build, sign and have the node verify transactions, but do not broadcast them (default: `false`). vBTC methods refuse a dry-run client
+- `baseUrl` (string, optional): override the data API origin, including the `/api` suffix (for example a self-hosted data node)
+- `timeoutMs` (number, optional): per-request timeout in milliseconds (default 30000; `0` disables it)
 
 **Example:**
 ```typescript
@@ -23,6 +28,7 @@ import { VfxClient, Network } from 'vfx-web-sdk';
 
 const client = new VfxClient(Network.Testnet);
 const dryRunClient = new VfxClient('mainnet', true);
+const customClient = new VfxClient('testnet', { baseUrl: 'https://data-testnet.verifiedx.io/api', timeoutMs: 10000 });
 ```
 
 ## Keypair Management
@@ -55,9 +61,9 @@ const mnemonic24 = client.generateMnemonic(24);
 console.log(mnemonic12); // "word1 word2 word3 ..."
 ```
 
-### `privateKeyFromMneumonic(mnemonic, index)`
+### `privateKeyFromMnemonic(mnemonic, index)` / `privateKeyFromMneumonic(mnemonic, index)`
 
-Derives a private key from a mnemonic phrase.
+Derives a private key from a mnemonic phrase. `privateKeyFromMnemonic` is the correctly spelled alias of the original `privateKeyFromMneumonic`; both derive the same key.
 
 **Parameters:**
 - `mnemonic` (string): The BIP39 mnemonic phrase
@@ -68,7 +74,23 @@ Derives a private key from a mnemonic phrase.
 **Example:**
 ```typescript
 const mnemonic = "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about";
-const privateKey = client.privateKeyFromMneumonic(mnemonic, 0);
+const privateKey = client.privateKeyFromMnemonic(mnemonic, 0);
+```
+
+### `privateKeyFromEmailPassword(email, password, index?)`
+
+Derives a private key deterministically from an email and password, the same way the web wallet's email login does.
+
+**Parameters:**
+- `email` (string)
+- `password` (string)
+- `index` (number, optional): derivation index (default: 0)
+
+**Returns:** `string` - The derived private key
+
+**Example:**
+```typescript
+const privateKey = client.privateKeyFromEmailPassword('user@example.com', 'secure-password', 0);
 ```
 
 ### `publicFromPrivate(privateKey)`
@@ -99,7 +121,7 @@ Derives the VFX address from a private key.
 ```typescript
 const privateKey = client.generatePrivateKey();
 const address = client.addressFromPrivate(privateKey);
-console.log(address); // "VFX..."
+console.log(address); // "x..." on testnet, "R..." on mainnet
 ```
 
 ### `getSignature(message, privateKey)`
@@ -116,6 +138,26 @@ Signs a message with a private key.
 ```typescript
 const signature = client.getSignature("Hello, VerifiedX!", privateKey);
 ```
+
+### `verifySignature(message, signature, address)`
+
+Checks that `signature` is `address`'s signature of `message`, accepting exactly what the platform's verifier does. Never throws. The network is read from the address (`x` testnet, otherwise mainnet), not from the client. Also exported as a standalone `verifySignature` function.
+
+**Returns:** `boolean`
+
+**Example:**
+```typescript
+const ok = client.verifySignature("Hello, VerifiedX!", signature, address); // true
+```
+
+### `getHash(txData)`
+
+Asks the data API for the hash of a raw transaction object (the hash that gets signed).
+
+**Parameters:**
+- `txData` (`Record<string, unknown>`): The transaction fields
+
+**Returns:** `Promise<string>` - The transaction hash
 
 ## External Signing
 
@@ -148,38 +190,39 @@ const address = client.addressFromPublic(await hsm.getPublicKeyHex());
 
 ## Transaction Methods
 
-### `sendCoin(keypair, toAddress, amount)`
+### `sendCoin(keypair, toAddress, amount, options?)`
 
 Sends VFX tokens to another address.
 
 **Parameters:**
 - `keypair` (Keypair | Signer): A local keypair, or a Signer (see External Signing)
-- `toAddress` (string): The recipient's VFX address
+- `toAddress` (string): The recipient's VFX address, or a `.vfx` / `.btc` name, which is resolved first (the call fails if the name's lookup and its holder's record disagree)
 - `amount` (number): The amount of VFX to send
+- `options` (`ReserveSendOptions`, optional): `{ unlockHours }` for a send from a reserve account (see [Reserve (Vault) Account Methods](#reserve-vault-account-methods)); an error on an ordinary account
 
 **Returns:** `Promise<string | null>` - The transaction hash, or `null` when the transaction never reached the node. A send whose outcome is unknown (the request went out but no response came back) throws `TransactionDispatchError` carrying the hash.
 
 **Example:**
 ```typescript
 const keypair = {
-  private: privateKey,
-  public: client.publicFromPrivate(privateKey),
+  privateKey,
+  publicKey: client.publicFromPrivate(privateKey),
   address: client.addressFromPrivate(privateKey)
 };
 
-const result = await client.sendCoin(keypair, "VFX_RECIPIENT_ADDRESS", 100);
-console.log(result.txHash);
+const hash = await client.sendCoin(keypair, "xRecipientAddress...", 100);
+console.log(hash); // transaction hash, or null if nothing was sent
 ```
 
 ### `buyVfxDomain(keypair, domain)`
 
-Purchases a VFX domain name.
+Purchases a VFX domain name. Costs 5 VFX plus the fee.
 
 **Parameters:**
-- `keypair` (Keypair): The buyer's keypair
-- `domain` (string): The domain name to purchase (e.g., "myapp.vfx")
+- `keypair` (Keypair | Signer): The buyer
+- `domain` (string): The domain name to purchase (e.g., "myapp.vfx"; it is lowercased and the suffix is added when missing, before the availability check)
 
-**Returns:** `Promise<any>` - Transaction result object
+**Returns:** `Promise<string | null>` - The transaction hash, or `null` when nothing was sent. It throws for an invalid name, a taken name, a buyer that already has a domain, or a reserve-account buyer; availability is checked strictly, so an API outage fails the purchase
 
 **Example:**
 ```typescript
@@ -191,6 +234,23 @@ const result = await client.buyVfxDomain(keypair, "myawesomeapp.vfx");
 - Address must not already own a domain
 - Sufficient VFX balance for domain cost
 
+### `buyBtcDomain(keypair, domain, btcPrivateKey)`
+
+Registers a `.btc` name for the Bitcoin address of `btcPrivateKey`, managed by the signer's VFX account. Costs 5 VFX plus the fee. The Bitcoin key signs the claim: from the network's `BtcNameSignerOwnsAddressHeight` (testnet block 7,400, mainnet block 7,575,250, exported as `BTC_NAME_SIGNED_MESSAGE_HEIGHT_TESTNET` / `_MAINNET`) over `<unix seconds>:<VFX owner>:<name>.btc`, before it over the bare timestamp. The SDK reads the latest block height to choose, and throws when it cannot.
+
+**Parameters:**
+- `keypair` (Keypair | Signer): The VFX account that will manage the name (not a reserve account)
+- `domain` (string): The name, e.g. `"myname.btc"` (letters and digits only; the suffix is added when missing)
+- `btcPrivateKey` (string): Hex private key of the Bitcoin address the name points to
+
+**Returns:** `Promise<string | null>` - The transaction hash
+
+**Example:**
+```typescript
+const hash = await client.buyBtcDomain(keypair, 'myname.btc', btcKeypair.privateKey);
+// later: await client.lookupBtcDomain('myname.btc') -> btcKeypair.address
+```
+
 ### `transferVfxDomain(keypair, toAddress)`
 
 Hands the signer's .vfx domain to `toAddress`. Costs 5 VFX. The owned name is
@@ -201,18 +261,40 @@ strictly: an API outage fails the call rather than reading as "no domain".
 
 Releases the signer's .vfx domain. Costs 5 VFX.
 
-### `transferBtcDomain(keypair, { btcFromAddress, btcToAddress, vfxToAddress })`
+### `transferBtcDomain(keypair, { btcFromAddress, btcToAddress, vfxToAddress, btcToMessage?, btcToSignature? })`
 
 Moves a .btc domain to another Bitcoin address, managed by `vfxToAddress`
 from then on. Costs 5 VFX. The signer must be the VFX account that currently
 manages the domain for `btcFromAddress`; the node checks that pairing and that
-`btcToAddress` has no domain. No Bitcoin signature is needed.
+`btcToAddress` has no domain.
+
+From `BtcNameSignerOwnsAddressHeight` (see `buyBtcDomain`) the receiving
+Bitcoin address must accept the name: pass the `btcToMessage` and
+`btcToSignature` the receiver made with `signBtcNameTransferAcceptance` (or
+parsed from their acceptance code with `parseBtcNameAcceptanceCode`). The
+acceptance must name `vfxToAddress` and be under 24 hours old. Pass both or
+neither; before that height the node ignores them.
+
+### `signBtcNameTransferAcceptance({ btcPrivateKey, name, newOwner, timestamp? })`
+
+The receiving side of a .btc name transfer: the key of the Bitcoin address the
+name moves to signs that it accepts `name` for `newOwner` (the VFX address that
+will manage it). Hand `code` to the sender, who passes its `message` and
+`signature` to `transferBtcDomain`. Good for 24 hours. No network call.
+
+**Returns:** `{ message: string; signature: string; code: string }`
+
+The helpers `btcNameAcceptanceMessage`, `buildBtcNameAcceptanceCode`,
+`parseBtcNameAcceptanceCode` (→ `{ message, timestamp, owner, name, signature }`),
+`btcNameSignedMessageHeight(network)` and
+`btcNameSignedMessagesActive(network, latestBlockHeight)` are exported for
+callers that build the messages themselves.
 
 ### `deleteBtcDomain(keypair, { btcFromAddress })`
 
 Releases the .btc domain on `btcFromAddress`, managed by the signer. Costs 5 VFX.
 
-The network refuses every domain operation from a reserve (xRBX) account.
+The network refuses every domain operation from a reserve (xRBX) account, and the SDK throws before building one.
 
 ## vBTC V2
 
@@ -503,9 +585,11 @@ node accepts the recovery signature for ten minutes.
 
 ### Not available from a vault
 
-`deployToken`, `buyVfxDomain` and `buyBtcDomain` throw when signed by a
-vault: the network only allows those transaction types from an ordinary
-account.
+`deployToken`, every domain method (`buyVfxDomain`, `buyBtcDomain`,
+`transferVfxDomain`, `deleteVfxDomain`, `transferBtcDomain`,
+`deleteBtcDomain`), `transferVbtcMulti` and `requestWithdrawalMulti` throw
+when signed by a vault: the network only allows those transactions from an
+ordinary account.
 
 ### Reading vault state
 
@@ -516,39 +600,30 @@ shows each pending send's `unlock_time` and any `callback_details`.
 
 ## Address Operations
 
-### `getAddressDetails(address)`
+### `getAddressDetails(address, options?)`
 
 Retrieves detailed information about a VFX address.
 
 **Parameters:**
 - `address` (string): The VFX address to query
+- `options` (`{ strict?: boolean }`, optional): By default any failure, including the API being unreachable, resolves to a zero-balance record. With `strict: true` only a 404 does, and other errors are thrown
 
-**Returns:** `Promise<VfxAddress>` - Address details object
-
-**Response Object:**
-```typescript
-{
-  address: string;
-  balance: number;
-  txCount: number;
-  adnr?: string; // Domain name if owned
-}
-```
+**Returns:** `Promise<VfxAddress | null>` - Address details (see [VfxAddress](#vfxaddress))
 
 **Example:**
 ```typescript
-const details = await client.getAddressDetails("VFX_ADDRESS");
-console.log(`Balance: ${details.balance} VFX`);
-console.log(`Transactions: ${details.txCount}`);
+const details = await client.getAddressDetails("xAddress...", { strict: true });
+console.log(`Balance: ${details.balance} VFX (locked: ${details.balanceLocked})`);
 console.log(`Domain: ${details.adnr || 'None'}`);
 ```
 
-### `domainAvailable(domain)`
+### `domainAvailable(domain, options?)`
 
 Checks if a domain name is available for purchase.
 
 **Parameters:**
-- `domain` (string): The domain name to check
+- `domain` (string): The full name to check, lowercase, with its `.vfx` or `.btc` suffix. The name is sent as given: an uppercase or suffix-less form of a taken name reads as available
+- `options` (`{ strict?: boolean }`, optional): By default any failure reads as "available". With `strict: true` only a 404 does and other errors are thrown; use it before a purchase decision
 
 **Returns:** `Promise<boolean>` - True if available, false if taken
 
@@ -562,42 +637,45 @@ if (isAvailable) {
 }
 ```
 
-### `lookupDomain(domain)`
+### `lookupDomain(domain, options?)`
 
-Resolves a domain name to its VFX address.
+Resolves a `.vfx` name to its VFX address.
 
 **Parameters:**
-- `domain` (string): The domain name to resolve
+- `domain` (string): The full name, lowercase, with its `.vfx` suffix (a bare or uppercase name does not resolve)
+- `options` (`{ strict?: boolean }`, optional): With `strict: true`, errors other than a 404 are thrown instead of read as "not found"
 
-**Returns:** `Promise<string>` - The VFX address associated with the domain
+**Returns:** `Promise<string | null>` - The VFX address, or `null` when the name does not exist
 
 **Example:**
 ```typescript
-try {
-  const address = await client.lookupDomain("example.vfx");
-  console.log(`example.vfx resolves to: ${address}`);
-} catch (error) {
-  console.log("Domain not found");
-}
+const address = await client.lookupDomain("example.vfx");
+console.log(address ? `example.vfx resolves to: ${address}` : "Domain not found");
 ```
 
 ### `lookupBtcDomain(domain)`
 
-Resolves a domain name to its associated Bitcoin address.
+Resolves a `.btc` name to its Bitcoin address.
 
 **Parameters:**
-- `domain` (string): The domain name to resolve
+- `domain` (string): The full name, lowercase, with its `.btc` suffix
 
-**Returns:** `Promise<string>` - The Bitcoin address associated with the domain
+**Returns:** `Promise<string | null>` - The Bitcoin address, or `null` when the name does not exist (also for a `.vfx` name). It never throws
 
 **Example:**
 ```typescript
-try {
-  const btcAddress = await client.lookupBtcDomain("example.vfx");
-  console.log(`Bitcoin address: ${btcAddress}`);
-} catch (error) {
-  console.log("No Bitcoin address associated with domain");
-}
+const btcAddress = await client.lookupBtcDomain("example.btc");
+console.log(btcAddress ?? "No such .btc name");
+```
+
+### `lookupBtcDomainFromBtcAddress(address)`
+
+The reverse lookup: the `.btc` name registered for a Bitcoin address.
+
+**Returns:** `Promise<string | null>` - The name (e.g. `"example.btc"`), or `null`
+
+```typescript
+const name = await client.lookupBtcDomainFromBtcAddress("tb1q...");
 ```
 
 ### `listTransactionsForAddress(address, page?, limit?)`
@@ -609,20 +687,41 @@ Retrieves transaction history for an address.
 - `page` (number, optional): Page number for pagination (default: 1)
 - `limit` (number, optional): Number of transactions per page (default: 10)
 
-**Returns:** `Promise<PaginatedResponse<Transaction>>` - Paginated transaction list
+**Returns:** `Promise<PaginatedResponse<Transaction> | null>` - Paginated transaction list, newest first
 
 **Example:**
 ```typescript
 const transactions = await client.listTransactionsForAddress(
-  "VFX_ADDRESS",
+  "xAddress...",
   1,  // page
   20  // limit
 );
 
-console.log(`Found ${transactions.data.length} transactions`);
-transactions.data.forEach(tx => {
-  console.log(`TX: ${tx.hash}, Amount: ${tx.amount}`);
+console.log(`Found ${transactions.count} transactions`);
+transactions.results.forEach(tx => {
+  console.log(`TX: ${tx.hash}, ${tx.type_label}, Amount: ${tx.total_amount}`);
 });
+```
+
+## Media Uploads
+
+### `new MediaApiClient(network, options?)` and `uploadAsset(file, metadata?)`
+
+A separate exported client for the Spyglass media endpoint (`/api/media/`), used to host an image before referencing it, for example as a token's `image.url`. `options` takes `baseUrl` like `VfxClient`; uploads have no timeout.
+
+**Parameters:**
+- `file` (`File`): The file to upload (a browser `File`, or `new File([buffer], name, { type })` in Node.js 20+)
+- `metadata` (`Record<string, string>`, optional): extra form fields
+
+**Returns:** The parsed response, `{ url: string }`, or `null` when the upload failed. The type declares `Promise<string | null>`, so read `url` from the object.
+
+**Example:**
+```typescript
+import { MediaApiClient, Network } from 'vfx-web-sdk';
+
+const media = new MediaApiClient(Network.Testnet);
+const uploaded: any = await media.uploadAsset(new File([pngBytes], 'logo.png', { type: 'image/png' }));
+console.log(uploaded?.url); // https://…s3.amazonaws.com/…/logo.png
 ```
 
 ## Types
@@ -631,8 +730,8 @@ transactions.data.forEach(tx => {
 
 ```typescript
 interface Keypair {
-  private: string;
-  public: string;
+  privateKey: string;
+  publicKey: string;
   address: string;
 }
 ```
@@ -686,9 +785,12 @@ interface FungibleToken {
 ```typescript
 interface VfxAddress {
   address: string;
-  balance: number;
-  txCount: number;
-  adnr?: string;
+  balance: number;        // spendable
+  balanceTotal: number;   // including locked
+  balanceLocked: number;  // reserve-account sends waiting to settle
+  adnr: string | null;    // .vfx name, if any
+  activated: boolean;     // reserve accounts: Register() sent
+  deactivated?: boolean;  // reserve accounts: Recover() sent
 }
 ```
 
@@ -697,13 +799,20 @@ interface VfxAddress {
 ```typescript
 interface Transaction {
   hash: string;
-  from: string;
-  to: string;
-  amount: number;
-  fee: number;
-  timestamp: number;
-  blockHeight?: number;
-  status: 'pending' | 'confirmed' | 'failed';
+  height: number;
+  type: number;
+  type_label: string;
+  to_address: string;
+  from_address: string;
+  total_amount: number;
+  total_fee: number;
+  data: string | null;
+  date_crafted: string; // ISO string
+  signature: string;
+  nft: unknown;
+  unlock_time: string | null;
+  callback_details: unknown;
+  recovery_details: unknown;
 }
 ```
 
@@ -711,37 +820,49 @@ interface Transaction {
 
 ```typescript
 interface PaginatedResponse<T> {
-  data: T[];
-  total: number;
+  count: number;      // total items
   page: number;
-  limit: number;
-  hasNext: boolean;
-  hasPrev: boolean;
+  num_pages: number;
+  results: T[];
 }
 ```
 
+See [Types & Interfaces](/build/sdk/reference/types/) for every exported type.
+
 ## Error Handling
 
-All async methods can throw errors. Common error scenarios:
+Reads and writes report failure differently:
+
+- Read methods throw `VfxApiError` (with `status`, `url` and `body`) for a non-2xx answer, and the runtime's `fetch` error (a `TypeError` in Node.js) when the API cannot be reached or the request times out, except where a method documents a default (`getAddressDetails`, `domainAvailable` and `lookupDomain` swallow errors unless `strict: true`; `lookupBtcDomain`, `lookupBtcDomainFromBtcAddress` and `listTransactionsForAddress` return `null` on any error).
+- Send methods (`sendCoin`, domain and token methods) resolve to `null` when the transaction failed before it reached the node, for example when the node refused it for an insufficient balance; the reason is logged, not thrown. They throw `TransactionDispatchError` when the request went out but no answer came back (check the hash on the explorer before resending), and `PreSignCheckError` or `TransactionRefusedError` where a method says so.
 
 ### Network Errors
 ```typescript
+import { VfxApiError } from 'vfx-web-sdk';
+
 try {
-  const details = await client.getAddressDetails(address);
+  const details = await client.getAddressDetails(address, { strict: true });
 } catch (error) {
-  if (error.message.includes('Network')) {
-    console.log('Network connectivity issue');
+  if (error instanceof VfxApiError) {
+    console.log('Data API error', error.status);
+  } else {
+    console.log('Data API unreachable', error.message); // e.g. "fetch failed"
   }
 }
 ```
 
-### Insufficient Balance
+### Send Not Accepted
 ```typescript
+import { TransactionDispatchError } from 'vfx-web-sdk';
+
 try {
-  await client.sendCoin(keypair, toAddress, amount);
+  const hash = await client.sendCoin(keypair, toAddress, amount);
+  if (!hash) {
+    console.log('Not sent: check the balance and the recipient');
+  }
 } catch (error) {
-  if (error.message.includes('insufficient')) {
-    console.log('Not enough VFX balance');
+  if (error instanceof TransactionDispatchError) {
+    console.log('Outcome unknown, look up', error.hash);
   }
 }
 ```
@@ -772,12 +893,33 @@ enum Network {
 
 ### Transaction Types
 
+`TxType` holds the transaction types the SDK builds (numeric, matching Core's `TransactionType`):
+
 ```typescript
 enum TxType {
-  Transfer = 'transfer',
-  Adnr = 'adnr'
+  RbxTransfer = 0,   // VFX transfer (legacy identifier)
+  Node = 1,
+  NftMint = 2,
+  NftTx = 3,
+  NftBurn = 4,
+  NftSale = 5,
+  Adnr = 6,
+  DstShop = 7,
+  VoteTopic = 8,
+  Vote = 9,
+  Reserve = 10,
+  TokenTx = 15,
+  TokenDeploy = 17,
+  VbtcV2ContractCreate = 25,
+  VbtcV2Transfer = 26,
+  VbtcV2WithdrawalRequest = 27,
+  VbtcV2WithdrawalComplete = 28,
+  VbtcV2WithdrawalCancel = 29,
+  VbtcV2CoinPin = 44
 }
 ```
+
+Other exported constants: `TOKEN_BASE_ADDRESS` (`'Token_Base'`), `RESERVE_BASE_ADDRESS` (`'Reserve_Base'`), `RESERVE_ACTIVATION_COST` (4), `RESERVE_MIN_UNLOCK_HOURS` (24), `VBTC_MULTI_MAX_INPUTS` (25), `VBTC_MULTI_WITHDRAWAL_MAX_INPUTS` (10), `VBTC_WITHDRAWAL_DUST_SATS` (546).
 
 ## Best Practices
 
@@ -794,13 +936,16 @@ enum TxType {
 ### Error Handling
 - Always wrap async calls in try-catch
 - Provide meaningful error messages to users
-- Retry failed requests with exponential backoff
+- Retry failed reads with exponential backoff; never resend a transaction after `TransactionDispatchError` without looking its hash up first
 
 ## Examples
 
 ### Complete Wallet Implementation
 
 ```typescript
+import { VfxClient, Network } from 'vfx-web-sdk';
+import type { Keypair } from 'vfx-web-sdk';
+
 class VfxWallet {
   private client: VfxClient;
   private keypair: Keypair | null = null;
@@ -811,11 +956,11 @@ class VfxWallet {
 
   async createWallet(): Promise<{ mnemonic: string; address: string }> {
     const mnemonic = this.client.generateMnemonic(12);
-    const privateKey = this.client.privateKeyFromMneumonic(mnemonic, 0);
+    const privateKey = this.client.privateKeyFromMnemonic(mnemonic, 0);
 
     this.keypair = {
-      private: privateKey,
-      public: this.client.publicFromPrivate(privateKey),
+      privateKey,
+      publicKey: this.client.publicFromPrivate(privateKey),
       address: this.client.addressFromPrivate(privateKey)
     };
 
@@ -828,8 +973,8 @@ class VfxWallet {
   async getBalance(): Promise<number> {
     if (!this.keypair) throw new Error('Wallet not initialized');
 
-    const details = await this.client.getAddressDetails(this.keypair.address);
-    return details.balance;
+    const details = await this.client.getAddressDetails(this.keypair.address, { strict: true });
+    return details?.balance ?? 0;
   }
 
   async send(toAddress: string, amount: number) {
@@ -840,11 +985,3 @@ class VfxWallet {
 }
 ```
 
-## Migration Notes
-
-### From v1.x to v2.x
-
-- Constructor now requires explicit network parameter
-- `btc` namespace added for Bitcoin functionality
-- New transaction list method with pagination
-- Enhanced error messages and types

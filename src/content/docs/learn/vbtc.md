@@ -35,7 +35,7 @@ vBTC transforms Bitcoin from a passive store of value into a trustless, programm
 ## Speed, Cost & Settlement
 
 - **Instant Finality:** Near-instant settlement vs Bitcoin L1 latency.
-- **Low, Predictable Fees:** Fixed, minimal transaction costs.
+- **Low, Predictable Fees:** Small VFX network fees, set by transaction size and burned.
 - **Always-On:** 24/7 global availability (no batch/cutoff constraints).
 
 ## Programmable Bitcoin
@@ -74,8 +74,8 @@ vBTC transforms Bitcoin from a passive store of value into a trustless, programm
 
 ## Technical
 
-- [vBTC Core](/learn/vbtc-protocol/)
-- [vBTC GUI](/wallet/vbtc/)
+- [vBTC Protocol](/learn/vbtc-protocol/)
+- [vBTC in the Wallet](/wallet/vbtc/)
 - [vBTC Integration](/build/vbtc/integration/)
 - [vBTC Raw Integration](/build/vbtc/raw-integration/)
 - [Bitcoin Integration in VerifiedX Core](/learn/bitcoin-integration/)

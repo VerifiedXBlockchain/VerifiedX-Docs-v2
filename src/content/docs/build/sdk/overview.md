@@ -8,6 +8,8 @@ sidebar:
 
 Welcome to the VerifiedX Web SDK documentation. This SDK provides a unified interface for interacting with both the VerifiedX blockchain and Bitcoin network, enabling powerful cross-chain applications.
 
+The SDK talks to the Spyglass data API (`https://data.verifiedx.io/api` on mainnet, `https://data-testnet.verifiedx.io/api` on testnet), not to a node directly. Bitcoin reads and broadcasts go to a mempool.space-style API. VerifiedX testnet watches the VerifiedX signet, so point the Bitcoin client at `https://signet.verifiedx.io/api` when working on testnet.
+
 ## SDK Overview
 
 The VerifiedX Web SDK is designed with simplicity and power in mind:
@@ -18,8 +20,8 @@ import { VfxClient, btc, Network } from 'vfx-web-sdk';
 // VerifiedX operations
 const vfxClient = new VfxClient(Network.Testnet);
 
-// Bitcoin operations
-const btcClient = new btc.BtcClient('testnet');
+// Bitcoin operations on the VerifiedX signet (tb1 addresses)
+const btcClient = new btc.BtcClient('testnet', { apiBaseUrl: 'https://signet.verifiedx.io/api' });
 ```
 
 ## Key Features
@@ -57,7 +59,7 @@ import { VfxClient, btc, Network } from 'vfx-web-sdk';
 function quickStart() {
   // Initialize clients
   const vfxClient = new VfxClient(Network.Testnet);
-  const btcClient = new btc.BtcClient('testnet');
+  const btcClient = new btc.BtcClient('testnet', { apiBaseUrl: 'https://signet.verifiedx.io/api' });
 
   // Generate VFX wallet
   const vfxPrivateKey = vfxClient.generatePrivateKey();
@@ -95,8 +97,9 @@ This documentation is organized into several sections:
 ## Community and Support
 
 - **GitHub**: [VerifiedX WebSDK Repository](https://github.com/VerifiedXBlockchain/VerifiedX-WebSdk)
-- **Issues**: Report bugs and request features
-- **Discussions**: Join the community discussions
+- **Examples**: [VerifiedX WebSDK Examples](https://github.com/VerifiedXBlockchain/VerifiedX-WebSdkExamples)
+- **Issues**: [Report bugs and request features](https://github.com/VerifiedXBlockchain/VerifiedX-WebSdk/issues)
+- **Discord**: [Join the community](https://discord.gg/7cd5ebDQCj)
 
 ## Next Steps
 
@@ -106,6 +109,6 @@ Ready to start building? Choose your path:
 2. **Bitcoin Developer?** Jump to [Bitcoin Basics](/build/sdk/bitcoin-basics/)
 3. **Building Cross-Chain?** Explore [Cross-Chain Guide](/build/sdk/cross-chain/)
 4. **Issuing a token?** Read [Fungible Tokens](/build/sdk/fungible-tokens/) and [External Signing](/build/sdk/external-signing/)
-4. **Need Examples?** Browse [Complete Applications](/build/sdk/examples/applications/)
+5. **Need Examples?** Browse [Code Snippets](/build/sdk/examples/snippets/)
 
-Let's build the future of cross-chain applications together!
+Start building cross-chain applications on VerifiedX.

@@ -6,12 +6,12 @@ sidebar:
 ---
 
 ## Selling Assets
-1. **Create a Store**:
-   - Register on the VerifiedX network for 10 VFX.
+1. **Create an Auction House**:
+   - In **P2P Auctions**, click **Create Auction House** and register it on the VerifiedX network for 10 VFX.
    - Set up your store with custom URLs for promotion.
 2. **List Items**:
    - Upload tokens or NFTs to create auction listings.
-   - Specify minimum bids, end dates, and "Buy Now" prices.
+   - Specify a floor price, an optional reserve price, start and end dates, and an optional "Buy Now" price.
 
 ## Bidding and Sales
 - All bids are verified through wallet fund checks.

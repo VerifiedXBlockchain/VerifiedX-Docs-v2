@@ -43,7 +43,7 @@ The build is kept on that node for about 65 minutes. Submit it to the same node.
 
 Never sign a hash you have not checked. The hash is:
 
-```
+```text
 Hash = SHA-256( lowercase hex of SHA-256( HashPreimage as UTF-8 ) ), as lowercase hex
 HashPreimage = Timestamp + FromAddress + ToAddress + Amount + Fee + Nonce + TransactionType + Data
 ```
@@ -161,7 +161,7 @@ A vault is created by its owner in two parts: a key ceremony among the validator
    { "SmartContractUID": "<contract UID>", "FromAddress": "<sender>", "ToAddress": "<recipient>", "Amount": 0.00003 }
    ```
 
-2. **Check:** `TransactionType` is `VBTC_V2_TRANSFER`, `Amount` (the VFX amount) is 0, and `Data` is `{"Function":"TransferVBTCV2()","ContractUID":…,"FromAddress":<sender>,"ToAddress":<recipient>,"Amount":<vBTC amount>}`. For a reserve (`xRBX`) sender, `IsReserveSend` is `true` and `UnlockTime` is part of the hash: the transfer is held for 24 hours and can be called back until then.
+2. **Check:** `TransactionType` is `VBTC_V2_TRANSFER`, `Amount` (the VFX amount) is 0, and `Data` is `{"Function":"TransferVBTCV2()","ContractUID":…,"FromAddress":<sender>,"ToAddress":<recipient>,"Amount":<vBTC amount>}`. For a reserve (`xRBX`) sender, `IsReserveSend` is `true` and `UnlockTime` is part of the hash: the transfer is held for the reserve account's unlock delay, at least 24 hours, and can be called back until then.
 3. Sign and submit with `POST SendRawTransferVBTCTx`.
 
 Refusals at build: `Insufficient balance. Available: …, Requested: …`, `Reserve accounts cannot send vBTC to another Reserve Account.`
@@ -352,7 +352,3 @@ On a vault created before the attestation recording height, until the enforcemen
 4. Record the completion: `POST GetRawCompleteWithdrawalTxData` (`SmartContractUID`, `FromAddress`, `WithdrawalRequestHash`, `BTCTransactionHash`, `Amount`, `BTCDestination`), sign, and `POST SendRawCompleteWithdrawalTx` (type 28, no fee).
 
 A cancel on a legacy vault is the same type 29 transaction, after which the vault's validators vote (type 30). From the enforcement height a legacy vault is frozen: transfers, withdrawals and cancels on it are refused, and types 28 and 30 are refused for every vault.
-
-## V1 vBTC is retired
-
-The raw V1 flow (`btcapi/BTCV2/GetTokenizationDetails`, `TokenizeBitcoin`, `WithdrawalCoinRawTX`, transaction types 17 to 21) was retired at block 7,400,500 on mainnet. The network no longer accepts V1 tokens, transfers or withdrawals, and V1 balances are frozen as they stand.

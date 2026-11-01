@@ -18,5 +18,5 @@ sidebar:
 ## Receiving Funds
 1. **Share Address**:
    - Copy and send your wallet address or domain to the sender.
-2. **Generate Payment Links**:
-   - Create a sharable link or QR code for quick payments.
+2. **Request Funds**:
+   - On the Receive screen, enter an amount and click “Generate Link”, then copy the link or show it as a QR code for quick payments.

@@ -10,7 +10,7 @@ sidebar:
    - CLI restart capability
    - Address printing
    - Database folder access
-   - Snapshot import
+   - Snapshot import (account, key and vault databases stay in place; a copy is saved to `SnapshotBackups/snapshot-import-{timestamp}` in your data folder first)
 
 2. Network Management:
    - Sync status monitoring
@@ -44,6 +44,11 @@ sidebar:
    - Protocol compliance
 
 ## Validator Management
+
+:::note
+In wallet 9.0.1 the Validator screen is hidden: there is no Validator item in the side menu and no Validator section on Operations, so validator status, proposals and voting are not reachable from the wallet. Validator Pool search is still under **Operations**, **General**. To validate, run the Core CLI as described in [Run a Validator](/node/validator/).
+:::
+
 1. Status Tools:
    - Validator status verification
    - Pool search functionality

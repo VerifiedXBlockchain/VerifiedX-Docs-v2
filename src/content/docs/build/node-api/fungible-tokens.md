@@ -9,9 +9,9 @@ sidebar:
 
 Deploying a fungible token smart contract follows the same process as any smart contract. Please review this [documentation](/build/smart-contracts/compiling-and-minting/).
 
-Adding a feature type with the token details to the payload.
+Adding a feature type with the token details to the payload. `FeatureName` 13 is the `Token` feature.
 
-```json
+```jsonc
 
 {
     ...
@@ -36,7 +36,7 @@ Adding a feature type with the token details to the payload.
 
 After compiling, the token smart contract still needs to be minted, following the same approach as any smart contract.
 
-```
+```text
 GET http://localhost:7292/scapi/scv1/MintSmartContract/{SMART_CONTRACT_UID}
 ```
 
@@ -46,12 +46,12 @@ Note: The base token's smart contract must be of infinite supply in order to min
 
 ### API Endpoint
 
-```
-GET http://localhost:7292/tkapi/TKV2/TokenMint/{id}/{fromAddress}/{amount}
+```text
+GET http://localhost:7292/tkapi/TKV2/TokenMint/{scUID}/{fromAddress}/{amount}
 ```
 
 ### URL Params:
-`id`: The token's smart contract identifier.
+`scUID`: The token's smart contract identifier.
 
 `fromAddress`: The smart contract owner's address.
 
@@ -61,22 +61,22 @@ GET http://localhost:7292/tkapi/TKV2/TokenMint/{id}/{fromAddress}/{amount}
 ```json
 {
     "Success": true,
-    "Message": "TX Success. SCUID: ..."
+    "Message": "Result: TX Success. SCUID: ..."
 }
 ```
-> Note: all token action methods will return a similar response structure. If `Success` is `false` the `Message` param will include details.
+> Note: all token action methods will return a similar response structure. If `Success` is `false` the `Message` param will include details. Every action is sent from an account held by the node's wallet, and an encrypted wallet must be unlocked first.
 
 ## Transferring Tokens
 
 ### API Endpoint
 
-```
-GET http://localhost:7292/tkapi/TKV2/TransferToken/{id}/{fromAddress}/{toAddress}/{amount}
+```text
+GET http://localhost:7292/tkapi/TKV2/TransferToken/{scUID}/{fromAddress}/{toAddress}/{amount}
 ```
 
 ### URL Params:
 
-`id`: The token's smart contract identifier.
+`scUID`: The token's smart contract identifier.
 
 `fromAddress`: The sender's address
 
@@ -88,13 +88,13 @@ GET http://localhost:7292/tkapi/TKV2/TransferToken/{id}/{fromAddress}/{toAddress
 
 ### API Endpoint
 
-```
-GET http://localhost:7292/tkapi/TKV2/BurnToken/{id}/{fromAddress}/{amount}
+```text
+GET http://localhost:7292/tkapi/TKV2/BurnToken/{scUID}/{fromAddress}/{amount}
 ```
 
 ### URL Params:
 
-`id`: The token's smart contract identifier.
+`scUID`: The token's smart contract identifier.
 
 `fromAddress`: The address of the token owner to burn from.
 
@@ -104,69 +104,97 @@ GET http://localhost:7292/tkapi/TKV2/BurnToken/{id}/{fromAddress}/{amount}
 
 ### API Endpoint
 
-```
-GET http://localhost:7292/tkapi/TKV2/PauseTokenContract/{id}/{fromAddress}
+```text
+GET http://localhost:7292/tkapi/TKV2/PauseTokenContract/{scUID}/{fromAddress}
 ```
 
 ### URL Params:
 
-`id`: The token's smart contract identifier.
+`scUID`: The token's smart contract identifier.
 
 `fromAddress`: The address of the token owner.
+
+The same call toggles: on a paused contract it unpauses.
+
+## Banning an Address
+
+### API Endpoint
+
+```text
+GET http://localhost:7292/tkapi/TKV2/BanAddress/{scUID}/{fromAddress}/{banAddress}
+```
+
+### URL Params:
+
+`scUID`: The token's smart contract identifier.
+
+`fromAddress`: The address of the token owner.
+
+`banAddress`: The address to ban from the token.
 
 ## Change Ownership
 
 ### API Endpoint
 
-```
-GET http://localhost:7292/tkapi/TKV2/ChangeTokenContractOwnership/{id}/{fromAddress}/{toAddress}
+```text
+GET http://localhost:7292/tkapi/TKV2/ChangeTokenContractOwnership/{scUID}/{fromAddress}/{toAddress}
 ```
 
 ### URL Params:
 
-`id`: The token's smart contract identifier.
+`scUID`: The token's smart contract identifier.
 
 `fromAddress`: The sender's address
 
 `toAddress`: The recipient's address
 
-## Create Voting Topic Ownership
+## Create Voting Topic
 
 ### API Endpoint
 
-```
+```text
 POST http://localhost:7292/tkapi/TKV2/CreateTokenTopic
 ```
 
 ### POST Data Params:
 
 ```json
-    {
-        "TopicName": "",
-        "TopicDescription": "",
-        "SmartContractUID": "",
-        "MinimumVoteRequirement": "",
-        "FromAddress": "",
-        "VotingEndDays": "",
-    }
-
+{
+    "TopicName": "Raise the supply",
+    "TopicDescription": "Mint 1,000 more tokens for the community fund.",
+    "SmartContractUID": "<token smart contract UID>",
+    "MinimumVoteRequirement": 10,
+    "FromAddress": "<token owner address>",
+    "VotingEndDays": 30
+}
 ```
+
+`TopicName` is at most 128 characters and `TopicDescription` at most 1,600. `MinimumVoteRequirement` is a whole number. `VotingEndDays` is one of `30`, `60`, `90` or `180`. `FromAddress` must be the token contract's owner.
 
 ## Cast Vote
 
 ### API Endpoint
 
-```
-GET http://localhost:7292/tkapi/TKV2/CastTokenTopicVote/{id}/{fromAddress}/{topicUid}/{vote}
+```text
+GET http://localhost:7292/tkapi/TKV2/CastTokenTopicVote/{scUID}/{fromAddress}/{topicUID}/{voteType}
 ```
 
 ### URL Params:
 
-`id`: The token's smart contract identifier.
+`scUID`: The token's smart contract identifier.
 
 `fromAddress`: The voter's address
 
-`topicUid`: The topic's unique identifier
+`topicUID`: The topic's unique identifier
 
-`vote`: `1` == YES; `0` == NO
+`voteType`: `1` == YES; `0` == NO
+
+## Reading Tokens and Votes
+
+- `GET /tkapi/TKV2/GetTokens/{scUID}/{getAll}`: the tokens held by the wallet's accounts (`getAll=true`), or one token's details.
+- `GET /tkapi/TKV2/GetTokensUpdate`: rebuilds the wallet's in-memory token list.
+- `GET /tkapi/TKV2/GetVoteBySmartContractUID/{scUID}`: the wallet's votes on a token's topics.
+- `GET /tkapi/TKV2/GetVoteByTopic/{topicUID}`: the votes recorded for one topic.
+- `GET /tkapi/TKV2/GetVotesByAddress/{fromAddress}`: every token vote cast by an address.
+- `GET /tkapi/TKV2/GetTokenOwnerVoteList/{tUID}`: the vote list the token owner sees for a topic.
 
