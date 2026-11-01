@@ -1,5 +1,5 @@
 ---
-sourceHash: dbf3a0072b3f
+sourceHash: 2e26e77b4c3b
 title: "Compilar y emitir"
 description: Compila un contrato inteligente a partir de un payload JSON y emítelo con la API del CLI de Core, agrega funciones de regalía, multiarchivo y evolución, y lista, busca y consulta contratos.
 sidebar:
@@ -12,11 +12,13 @@ import { Tabs, TabItem } from '@astrojs/starlight/components';
 
 Compilar y emitir un contrato inteligente es bastante sencillo. El primer paso es compilar el contrato inteligente a partir de un payload JSON, que devuelve la información necesaria para el segundo paso: emitir el contrato inteligente. Luego llamas a un endpoint para emitirlo, que transmite la transacción.
 
+Trillium no tiene gas ni medición de ejecución, pero la transacción de emisión igual paga la comisión normal de la red VFX según su tamaño, que se quema. El objeto `Transaction` de la respuesta de compilación muestra la `Fee` que pagará la emisión.
+
 ## Compilación
 
 #### Endpoint de la API:
 
-```
+```text
 POST http://localhost:7292/scapi/scv1/CreateSmartContract
 ```
 
@@ -145,7 +147,7 @@ def compile_nft():
 
     url = f"{CLI_BASE_URL}/scapi/scv1/CreateSmartContract"
     headers = {"Content-Type": "application/json"}
-    response = await requests.post(url, headers=headers, data=json.dumps(payload))
+    response = requests.post(url, headers=headers, data=json.dumps(payload))
 
     data = response.json()
 
@@ -162,13 +164,13 @@ def compile_nft():
 
 #### Endpoint de la API:
 
-```
+```text
 GET http://localhost:7292/scapi/scv1/MintSmartContract/{SMART_CONTRACT_UID}
 ```
 
 Ejemplo de respuesta:
 
-```
+```text
 "Smart contract has been published to mempool"
 ```
 
@@ -214,9 +216,9 @@ def mint_nft(smart_contract_uid):
 ## Agregar funciones
 
 Puedes agregar funciones a tu contrato inteligente con solo incluirlas en el arreglo `Features: []`.
-Actualmente se admiten tres tipos de funciones, cada una con un valor distinto del enum `FeatureName`:
+Hay tres tipos de funciones de NFT que puedes definir con este payload, cada una con un valor distinto del enum `FeatureName`:
 
-```
+```text
 0: Evolving
 1: Royalty
 2: Multi Asset
@@ -246,23 +248,11 @@ Puedes combinar las tres funciones en un solo contrato inteligente, pero no pued
 }
 ```
 
-#### Monto fijo
+`RoyaltyAmount` es una fracción y debe ser menor que 1 (0.99 como máximo).
 
-```json
-{
-    ...
-    "Features": [
-        {
-            "FeatureName": 1,
-            "FeatureFeatures":{
-                "RoyaltyAmount": 5, // 5 VFX
-                "RoyaltyPayToAddress": "Rabc123...",
-                "RoyaltyType": 0
-            }
-        },
-    ]
-}
-```
+:::caution[Regalías fijas]
+Las regalías fijas (`RoyaltyType: 0`) ya no se aceptan. `CreateSmartContract` las rechaza con "Flat rates may no longer be used." Usa una regalía porcentual (`RoyaltyType: 1`).
+:::
 
 ### Multiarchivo
 
@@ -380,6 +370,8 @@ Puedes combinar las tres funciones en un solo contrato inteligente, pero no pued
 
 #### Evolución por fecha y hora
 
+`EvolveDate` es una cadena de fecha y hora ISO 8601, no una marca de tiempo Unix.
+
 ```json
 {
     ...
@@ -401,7 +393,7 @@ Puedes combinar las tres funciones en un solo contrato inteligente, pero no pued
                         "FileSize": 1024,
                         "FileName": "asset1.jpg"
                     },
-                    "EvolveDate": 1679505579,
+                    "EvolveDate": "2023-03-22T17:19:39Z",
                     "EvolveBlockHeight": null
                 },
             ]
@@ -412,11 +404,11 @@ Puedes combinar las tres funciones en un solo contrato inteligente, pero no pued
 
 ### Consultar los datos
 
-Una vez que el contrato inteligente se compila y se emite, puedes volver a leerlo a través de la API
+Una vez que el contrato inteligente se compila y se emite, puedes volver a leerlo a través de la API. Estos endpoints devuelven solo contratos de cuentas de la billetera de este nodo, nueve por página.
 
 #### Listar
 
-```
+```text
 GET http://localhost:7292/scapi/scv1/GetAllSmartContracts/{PAGE}
 ```
 
@@ -471,9 +463,11 @@ def list_nfts(page=1):
 
 #### Buscar
 
+```text
+GET http://localhost:7292/scapi/scv1/GetAllSmartContracts/{PAGE}/false/false/{QUERY}
 ```
-GET http://localhost:7292/scapi/scv1/GetAllSmartContracts/{PAGE}/{QUERY}
-```
+
+Los dos segmentos `false` son `excludeToken` y `tokensOnly`. Una ruta de dos segmentos como `GetAllSmartContracts/1/{QUERY}` se interpreta como `excludeToken` y falla con un error de validación 400.
 
 #### Ejemplo de código
 
@@ -482,7 +476,7 @@ GET http://localhost:7292/scapi/scv1/GetAllSmartContracts/{PAGE}/{QUERY}
 
 ```js
 const searchNfts = async (query, page = 1) => {
-  const url = `${CLI_BASE_URL}/scapi/scv1/GetAllSmartContracts/${page}/${query}`;
+  const url = `${CLI_BASE_URL}/scapi/scv1/GetAllSmartContracts/${page}/false/false/${query}`;
   const request = await fetch(url);
 
   const data = await request.json();
@@ -506,7 +500,7 @@ const searchNfts = async (query, page = 1) => {
 
 ```python
 def search_nfts(query, page=1):
-    url = f"{CLI_BASE_URL}/scapi/scv1/GetAllSmartContracts/{page}/{query}"
+    url = f"{CLI_BASE_URL}/scapi/scv1/GetAllSmartContracts/{page}/false/false/{query}"
     response = requests.get(url)
     data = response.json()
 
@@ -526,7 +520,7 @@ def search_nfts(query, page=1):
 
 #### Consultar
 
-```
+```text
 GET http://localhost:7292/scapi/scv1/GetSingleSmartContract/{SMART_CONTRACT_UID}
 ```
 
@@ -541,7 +535,7 @@ const retrieveNft = async (smartContractUid) => {
   const request = await fetch(url);
 
   const data = await request.json();
-  if (data.length < 1) return null;
+  if (!data || data.length < 1) return null;
   return data[0];
 };
 ```
@@ -556,7 +550,7 @@ def retrieve_nft(smart_contract_uid):
     response = requests.get(url)
     data = response.json()
 
-    if len(data) < 1:
+    if not data:
         return None
 
     return data[0]
