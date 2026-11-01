@@ -11,13 +11,13 @@ API Endpoints:
 
 Transfer without media backup URL:
 
-```
+```text
 GET http://localhost:7292/scapi/scv1/TransferNFT/{id}/{address}
 ```
 
 Transfer with media backup URL:
 
-```
+```text
 GET http://localhost:7292/scapi/scv1/TransferNFT/{id}/{address}/{backupUrl}
 ```
 
@@ -37,6 +37,8 @@ GET http://localhost:7292/scapi/scv1/TransferNFT/{id}/{address}/{backupUrl}
   "Message": "NFT Transfer has been started."
 }
 ```
+
+The transfer runs in the background after this response. The node needs a stored beacon to upload the media for a recipient outside its own wallet; otherwise it answers `{"Result": "Fail", "Message": "You do not have any beacons stored."}`. Other failures also come back with `"Result": "Fail"` and a `Message`.
 
 #### Code Example
 

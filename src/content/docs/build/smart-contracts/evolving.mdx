@@ -9,13 +9,13 @@ import { Tabs, TabItem } from '@astrojs/starlight/components';
 
 For NFTs that have the minter-controlled evolution feature enabled, they can be evolved by the minter even if they are no longer the owner.
 
-#### API Enpoint:
+#### API Endpoint:
 
-```
+```text
 GET http://localhost:7292/scapi/scv1/EvolveSpecific/{id}/{address}/{stage}
 ```
 
-URL Params
+#### URL Params:
 
 `id`: The smart contract identifier
 
@@ -25,10 +25,24 @@ URL Params
 
 #### Response:
 
+The node returns the evolve transaction. The minter's account signs it and pays the network fee. The node returns the text `Failed to Change State - TX` when the minter's address is not in this node's wallet, `address` is not the current owner, the stage does not exist, or the minter's balance cannot cover the fee.
+
 ```json
 {
-  "Result": "Success",
-  "Message": "NFT Evolve transaction has been sent."
+  "Hash": "abcdfg...",
+  "ToAddress": "Rabc123...",
+  "FromAddress": "Rabc123...",
+  "Amount": 0.0,
+  "Nonce": 12,
+  "Fee": 0.00000883,
+  "Timestamp": 0000000000,
+  "Data": "[{\"Function\":\"ChangeEvolveStateSpecific()\",\"ContractUID\":\"…\",\"FromAddress\":\"Rabc123...\",\"ToAddress\":\"Rabc123...\",\"NewEvoState\":1,\"Data\":\"…\"}]",
+  "UnlockTime": null,
+  "Signature": "AbCdF...",
+  "Height": 0,
+  "TransactionType": 3,
+  "TransactionRating": null,
+  "TransactionStatus": 0
 }
 ```
 
@@ -64,3 +78,24 @@ def evolve_nft(smart_contract_uid, address, stage):
 
 </TabItem>
 </Tabs>
+
+## Next and Previous Stage
+
+The node can also move an NFT one stage forward or back. The same rules apply: the minter's account must be in this node's wallet, `address` must be the current owner, and the minter signs and pays the network fee.
+
+#### API Endpoints:
+
+```text
+GET http://localhost:7292/scapi/scv1/Evolve/{id}/{address}
+GET http://localhost:7292/scapi/scv1/Devolve/{id}/{address}
+```
+
+#### URL Params:
+
+`id`: The smart contract identifier
+
+`address`: The current owner's VFX address
+
+#### Response:
+
+The signed transaction, in the same shape as above. On failure the node returns the text `Failed to Evolve - TX` or `Failed to Devolve - TX`.
