@@ -18,8 +18,8 @@ sidebar:
    - Enable advanced utilities like royalties or evolving functionality.
 
 ### Deployment
-- Use the integrated Trillium IDE to customize and deploy your smart contract.
-- Combine multiple smart contracts into a collection.
+- Click **Launch IDE** to open the online [Trillium IDE](https://trillium.verifiedx.io) and write your own Trillium code for your smart contract.
+- Use **Mint NFT Collection** to create multiple smart contracts as a collection.
 
 ## NFTs
 
