@@ -1,5 +1,5 @@
 ---
-sourceHash: 237b2a634989
+sourceHash: 9edc9da15a18
 title: "Web API: Raw"
 description: Endpoints de la API del explorador que construyen, comprueban y transmiten transacciones de VFX firmadas en el cliente, sin ejecutar un nodo Core CLI.
 sidebar:
@@ -194,22 +194,6 @@ Le pide al nodo que obtenga los recursos del contrato desde el beacon; luego el 
 **Respuesta:**
 ```json
 {"success": true}
-```
-
-### Retirar vBTC (raw)
-```http
-POST /api/raw/withdraw-vbtc/
-```
-
-Cuerpo: la carga útil de retiro prefirmada que acepta el endpoint `btcapi/BTCV2/WithdrawalCoinRawTX` del nodo.
-
-:::caution
-Este es un retiro de vBTC V1. vBTC V1 se retiró en el bloque 7,400,500 en mainnet (desde el bloque 1 en la testnet, desde su reinicio de octubre de 2026), y la red rechaza los retiros V1 a partir de esa altura. Para retiros de vBTC V2, consulta la [integración de vBTC sin SDK](/es/build/vbtc/raw-integration/).
-:::
-
-**Respuesta:**
-```json
-{"success": true, "result": { "...": "node response" }}
 ```
 
 ## Notas

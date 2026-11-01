@@ -1,5 +1,5 @@
 ---
-sourceHash: 78f047be55b4
+sourceHash: 1ba24544a468
 title: "Configuración de la integración con VFX"
 description: "Configura el CLI de Core para una integración de terceros: billeteras, compilación, configuración, la interfaz RPC, testnet y prácticas recomendadas para exchanges."
 sidebar:
@@ -30,7 +30,7 @@ CLI - [https://github.com/VerifiedXBlockchain/VerifiedX-Core/releases](https://g
 GUI - [https://github.com/VerifiedXBlockchain/VerifiedX-GUI/releases](https://github.com/VerifiedXBlockchain/VerifiedX-GUI/releases)
 
 Si quieres compilar desde el código fuente, elige el repositorio correcto aquí:
-**https://github.com/ReserveBlockIO**
+**https://github.com/VerifiedXBlockchain**
 
 La billetera de VFX genera direcciones basadas en la curva ECDSA.
 
@@ -39,7 +39,7 @@ Las direcciones de testnet empiezan con una `x`.
 
 Para la capa P2P de VFX, la billetera usa SignalR. Puedes encontrar más información sobre SignalR aquí: **https://dotnet.microsoft.com/en-us/apps/aspnet/signalr**
 
-Para los beacons y la transferencia de archivos, la billetera usa su propia versión modificada de un listener TCP con un manejador de sockets. Esto permite que ambas funciones trabajen juntas sin interferir entre sí al mismo tiempo.
+Para los beacons y la transferencia de archivos, la billetera ejecuta un servidor HTTP aparte en el puerto 23339 (testnet 33339), así que las transferencias de archivos nunca interfieren con la capa P2P. Consulta [Beacons](/es/node/beacons/).
 
 La billetera es una aplicación multihilo. El rendimiento normal ha sido estable con 2 núcleos de CPU y 2 GB de RAM. Usar menos de lo recomendado puede ralentizar el rendimiento. Una configuración ideal es de 3 o más núcleos de CPU y 4 GB de RAM. Tu sistema operativo también influye en esto. Por ejemplo, como Windows necesita más recursos, quizás quieras más; en cambio, un Linux sin interfaz gráfica requiere menos.
 
@@ -56,58 +56,57 @@ Instalación en Linux para Ubuntu 22.04:
 
 1. `sudo apt-get update && sudo apt-get install -y dotnet-sdk-6.0`
 2. `sudo apt-get update && sudo apt-get install -y aspnetcore-runtime-6.0`
-3. ejecuta `dotnet --version`. Deberías ver un número de versión 6.0.xxx
+3. Ejecuta `dotnet --version`. Deberías ver un número de versión 6.0.xxx
 4. `mkdir vfx`: crea un directorio para VFX
-5. cd vfx
+5. `cd vfx`
 6. - Clona el repositorio con git. `git clone https://github.com/VerifiedXBlockchain/VerifiedX-Core.git`
-   - Descarga la versión ya empaquetada https://github.com/VerifiedXBlockchain/VerifiedX-Core/releases/. Si haces esto, ve a la carpeta donde descargaste los binarios y salta al paso 12.
+   - O descarga la versión empaquetada (`verifiedx-core-linux-x64.zip` o `verifiedx-core-linux-arm64.zip`) desde https://github.com/VerifiedXBlockchain/VerifiedX-Core/releases/. Si haces esto, descomprímela, ve a esa carpeta y salta al paso 11, pero ejecuta `./VerifiedXCore` en su lugar. Las versiones publicadas son autocontenidas y no necesitan .NET.
 7. `cd VerifiedX-Core`
 8. `dotnet build`: debería haber 0 (cero) errores.
-9. `dotnet publish -c Release -r linux-x64 --output ./rbxpublished`
-   > Ten en cuenta que puedes cambiar `linux-x64` si usas otra arquitectura, como arm o x86.
-10. `cd rbxpublished`
+9. `dotnet publish VerifiedXCore/VerifiedXCore.csproj -c Release -r linux-x64 --output ./vfxpublished`
+   > Ten en cuenta que puedes cambiar `linux-x64` si usas otra arquitectura, por ejemplo `linux-arm64`.
+10. `cd vfxpublished`
 11. `dotnet VerifiedXCore.dll`
 
-Con esto terminaste. La billetera estará en ejecución. Para activar la API, simplemente escribe ‘10’ y presiona Enter, o pásalo como argumento del comando.
+Con esto terminaste. La billetera estará en ejecución. Para activar la API, simplemente escribe `10` y presiona Enter, o pásalo como argumento del comando.
 
 `dotnet VerifiedXCore.dll enableapi`
 
-¡Listo! Ahora deberías ver una billetera en ejecución. Algunos errores comunes suelen estar relacionados con los permisos de archivos. Asegúrate de haber dado los permisos adecuados a la carpeta RBX recién creada
+¡Listo! Ahora deberías ver una billetera en ejecución. Algunos errores comunes suelen estar relacionados con los permisos de archivos. Asegúrate de haber dado los permisos adecuados a la carpeta de datos recién creada (`~/.local/share/RBX`, un nombre de carpeta heredado que el código todavía usa).
 
 ### Windows
 
-1. Instala el SDK de dotnet más reciente desde aquí: **https://dotnet.microsoft.com/en-us/download/dotnet/6.0** Cuando esté instalado, sigue los pasos de abajo.
-
-2. Crea un directorio para RBX y luego abre el símbolo del sistema como administrador y ve a ese directorio.
+1. Instala el SDK de .NET 6 más reciente desde aquí: **https://dotnet.microsoft.com/en-us/download/dotnet/6.0** Cuando esté instalado, sigue los pasos de abajo.
+2. Crea un directorio para VFX y luego abre el símbolo del sistema como administrador y ve a ese directorio.
 3. Asegúrate de tener instalada una versión funcional de git.
 4. - Clona el repositorio con git. `git clone https://github.com/VerifiedXBlockchain/VerifiedX-Core.git`
-   - Descarga la versión ya empaquetada https://github.com/VerifiedXBlockchain/VerifiedX-Core/releases/. Si haces esto, ve a la carpeta donde descargaste los binarios y salta al paso 8.
+   - O descarga la versión empaquetada `verifiedx-core-win-x64.zip` desde https://github.com/VerifiedXBlockchain/VerifiedX-Core/releases/. Si haces esto, descomprímela, ve a esa carpeta y salta al paso 9, pero ejecuta `VerifiedXCore.exe` en su lugar.
 5. `cd VerifiedX-Core`
 6. `dotnet build`: debería haber 0 (cero) errores.
-7. `dotnet publish -c Release -r win-x64 --output ./rbxpublished`
+7. `dotnet publish VerifiedXCore/VerifiedXCore.csproj -c Release -r win-x64 --output ./vfxpublished`
    > ten en cuenta que puedes cambiar `win-x64` si usas otra arquitectura
-8. `cd rbxpublished`
-9. `dotnet VerifiedXCore.exe`
+8. `cd vfxpublished`
+9. `dotnet VerifiedXCore.dll` (o ejecuta `VerifiedXCore.exe`)
 
-### Mac OS X
+### macOS
 
-1. Instala el SDK de dotnet más reciente desde aquí: **https://dotnet.microsoft.com/en-us/download/dotnet/6.0** Cuando esté instalado, sigue los pasos de abajo.
-2. Crea un directorio para RBX y luego abre el símbolo del sistema como administrador y ve a ese directorio.
+1. Instala el SDK de .NET 6 más reciente desde aquí: **https://dotnet.microsoft.com/en-us/download/dotnet/6.0** Cuando esté instalado, sigue los pasos de abajo.
+2. Crea un directorio para VFX, luego abre una terminal y ve a ese directorio.
 3. Asegúrate de tener instalada una versión funcional de git.
 4. - Clona el repositorio con git. `git clone https://github.com/VerifiedXBlockchain/VerifiedX-Core.git`
-   - Descarga la versión ya empaquetada **https://github.com/VerifiedXBlockchain/VerifiedX-Core/releases/**. Si haces esto, ve a la carpeta donde descargaste los binarios y salta al paso 8.
+   - O descarga la versión empaquetada (`verifiedx-core-osx-arm64.zip` para Apple silicon, `verifiedx-core-osx-x64.zip` para Intel) desde **https://github.com/VerifiedXBlockchain/VerifiedX-Core/releases/**. Si haces esto, descomprímela, ve a esa carpeta y salta al paso 9, pero ejecuta `./VerifiedXCore` en su lugar.
 5. `cd VerifiedX-Core`
 6. `dotnet build`: debería haber 0 (cero) errores.
-7. `dotnet publish -c Release -r osx-x64 --output ./rbxpublished`
-   > ten en cuenta que puedes cambiar 'osx-x64' si usas otra arquitectura, como arm.
-8. `cd rbxpublished`
-9. `dotnet VerifiedXCore`, a veces dotnet VerifiedXCore.dll. Depende de la configuración actual del entorno.
+7. `dotnet publish VerifiedXCore/VerifiedXCore.csproj -c Release -r osx-x64 --output ./vfxpublished`
+   > ten en cuenta que `osx-x64` debe ser `osx-arm64` en Apple silicon.
+8. `cd vfxpublished`
+9. `dotnet VerifiedXCore.dll`
 
 ## Configuración de la billetera
 
 ### Resumen
 
-El objetivo de este documento es describir la configuración del archivo de configuración y las opciones que tiene.
+El objetivo de esta sección es describir la configuración del archivo de configuración y las opciones que tiene. El archivo es `config.txt`: `~/rbx/Config/` en macOS, `~/.local/share/RBX/Config/` en Linux y `%LOCALAPPDATA%\RBX\Config\` en Windows. En testnet las carpetas son `RBXTest` (en macOS, `rbxtest`) y `ConfigTestNet`. `RBX` es un nombre de carpeta heredado que el código todavía usa. Escribe un `Key=Value` por línea, sin líneas en blanco: el CLI deja de leer en la primera línea vacía. Consulta [Configuración del CLI](/es/node/configuration/) para ver todas las claves.
 
 1. Port (el valor predeterminado es 3338)
 
@@ -138,13 +137,13 @@ El objetivo de este documento es describir la configuración del archivo de conf
    - Tipo `string`
    - Ej.: `APIPassword=SomePassword1234!`
    - Es una contraseña que restringe el control de la API. Hay que ingresarla para llamar a cualquier función de la API.
-   - Tienes que llamar a UnlockWallet para desbloquear la API con esta contraseña.
+   - Tienes que llamar a `/api/V1/UnlockWallet/{password}` para desbloquear la API con esta contraseña.
 
 6. AlwaysRequireAPIPassword (el valor predeterminado es false)
 
    - Tipo `boolean`
    - Ej.: `AlwaysRequireAPIPassword=true`
-   - Si se establece en true, debes incluir la contraseña en todas las solicitudes a la API.
+   - Si se establece en true, debes incluir la contraseña en todas las solicitudes a la API, como último segmento de la ruta (`/api/V1/<Action>/{password}`).
 
 7. APICallURL (el valor predeterminado es null)
 
@@ -164,11 +163,12 @@ El objetivo de este documento es describir la configuración del archivo de conf
    - Ej.: ChainCheckPoint=true
    - Esta opción activa los puntos de control de la cadena. Crea una copia COMPLETA del estado de la cadena, la respalda y crea un punto de control al que puedes volver si tu estructura actual se corrompe.
 
-10. ChainCheckPointInterval (el valor predeterminado es 12)
+10. ChainCheckPointInternal (el valor predeterminado es 12)
 
     - Tipo `int`
-    - Ej.: `ChainCheckPointInterval=4`
-    - Este intervalo está en horas y significa que el punto de control se ejecuta cada X horas; el mínimo permitido es 1.
+    - Ej.: `ChainCheckPointInternal=4`
+    - Este intervalo está en horas y significa que el punto de control se ejecuta cada X horas. Usa 1 o más.
+    - La clave se escribe `ChainCheckPointInternal`, que es lo que lee el CLI. Material más antiguo la escribe `ChainCheckPointInterval`; esa forma se ignora.
 
 11. ChainCheckPointRetain (el valor predeterminado es 2)
 
@@ -176,10 +176,10 @@ El objetivo de este documento es describir la configuración del archivo de conf
     - Ej.: `ChainCheckPointRetain=4`
     - Retain determina cuántos respaldos se conservan antes de empezar a eliminar el más antiguo para dejar espacio al nuevo.
 
-12. ChainCheckPointLocation (el valor predeterminado es la ruta predeterminada)
+12. ChainCheckpointLocation (el valor predeterminado es la carpeta Checkpoint del directorio de datos)
 
     - Tipo `string`
-    - Ej.: `ChainCheckPointLocation=C:\somelocation\otherthan\default\`
+    - Ej.: `ChainCheckpointLocation=C:\somelocation\otherthan\default\`
     - Si no quieres usar la ruta predeterminada, puedes configurar una nueva ubicación para los respaldos.
 
 13. APICallURLLogging (el valor predeterminado es false)
@@ -192,7 +192,7 @@ El objetivo de este documento es describir la configuración del archivo de conf
 
     - Tipo `string`
     - Ej.: `ValidatorAddress=RBcHyS2AF4Z4jgzTLZNBVLvtxQ6MtB2vUN`
-    - Puedes ingresar una dirección de validador (validator) predeterminada para empezar a validar de inmediato. Ten en cuenta que también debes importar la dirección de la billetera con los comandos de inicio. Ej.: VerifiedXCore.exe privKey=MyPrivateKey.
+    - Puedes ingresar una dirección de validador (validator) predeterminada para empezar a validar de inmediato. Ten en cuenta que también debes importar la dirección de la billetera con los comandos de inicio. Ej.: `VerifiedXCore.exe privkey=MyPrivateKey` (Linux y macOS: `dotnet VerifiedXCore.dll privkey=MyPrivateKey`).
 
 15. ValidatorName (el valor predeterminado es un guid nuevo)
 
@@ -212,7 +212,8 @@ El objetivo de este documento es describir la configuración del archivo de conf
     - Ej.: `PasswordClearTime=5`
     - Controla el tiempo tras el cual se borra la contraseña de una billetera cifrada
 
-18. AutoDownloadNFTAsset (el valor predeterminado es true)
+18. AutoDownloadNFTAsset (el valor predeterminado es true en el archivo que se escribe en el primer inicio; false si falta la clave)
+
     - Tipo `Boolean`
     - Ej.: `AutoDownloadNFTAsset=false`
     - Controla si el archivo de un NFT se descarga automáticamente
@@ -225,19 +226,19 @@ El objetivo de este documento es describir la configuración del archivo de conf
 20. RejectAssetExtensionTypes (el valor predeterminado es una lista de archivos rechazados)
 
     - Tipo `List of string`
-    - Ej.: `RejectAssetExtensionTypes=exe,zip,pdf...` (asegúrate de que no haya espacios entre los tipos)
-      --Agrega tipos de extensión a la lista ya definida y rechaza cualquier archivo de NFT con esas extensiones
+    - Ej.: `RejectAssetExtensionTypes=.iso,.apk,.pdf` (incluye el punto inicial y no dejes espacios entre los tipos; las entradas sin el punto no coinciden con nada)
+    - Agrega tipos de extensión a la lista ya definida y rechaza cualquier archivo de NFT con esas extensiones
 
 21. AllowedExtensionsTypes (el valor predeterminado es null)
+
     - Tipo `List of string`
-    - Ej.: `AllowedExtensionsTypes=pdf,doc,xls`
+    - Ej.: `AllowedExtensionsTypes=.doc,.xls` (incluye el punto inicial)
     - Quita tipos de extensión de la lista ya definida y permite descargar cualquier archivo de NFT con esas extensiones
 
 Un ejemplo de configuración podría verse así:
 ![Ejemplo de config.txt](../../../../assets/media/integration/config-example.png)
 
-> Esta información se actualiza cada vez que se agregan funciones nuevas y está disponible aquí:
-> **https://github.com/VerifiedXBlockchain/VerifiedX-Core/blob/main/ConfigSetup.md**
+> La lista completa de claves, incluidas las que se agregaron después, está en [Configuración del CLI](/es/node/configuration/).
 
 ## Conexión a la interfaz RPC
 
@@ -256,13 +257,20 @@ Los puertos predeterminados son:
 Mainnet : 7292
 Testnet : 17292
 
-El CLI de Core tiene cinco endpoints de API en total. Son los siguientes:
+La API se activa con el argumento de inicio `enableapi` (o la opción `10` del menú); está desactivada de forma predeterminada. El CLI de Core agrupa sus endpoints por controlador. Los principales son:
 
-1. Beacons - /bcapi/BCV1
-2. Contratos inteligentes - /scapi/SCV1
-3. Transacciones - /txapi/TXV1
-4. General - /api/V1
-5. Votación - /voapi/VOV1
+1. General - /api/V1 y /api/V2
+2. Transacciones - /txapi/TXV1
+3. Contratos inteligentes - /scapi/SCV1
+4. Tokens - /tkapi/TKV2
+5. Beacons - /bcapi/BCV1
+6. Votación - /voapi/VOV1
+7. Cuentas de reserva (bóveda) - /rsapi/RSV1
+8. Bitcoin - /btcapi/BTCV2
+9. vBTC - /vbtcapi/VBTC
+10. Tiendas y subastas descentralizadas - /dstapi/DSTV1 y /wsapi/WebShopV1
+
+Consulta la [referencia de la API del nodo](/es/build/node-api/overview/) para ver los endpoints.
 
 ## Configuración de la interfaz RPC
 
@@ -284,11 +292,11 @@ Las principales opciones de configuración son las siguientes:
    - `APICallURL=http://somecustomurl.com/api/`
 5. WalletUnlockTime
    - Define, en minutos, el tiempo que una contraseña mantiene desbloqueada la billetera después de ingresarla
-   - `WaleltUnlockTime=5`
+   - `WalletUnlockTime=5`
 
 ## Interfaz RPC
 
-El CLI de Core de RBX usa una interfaz basada en json. Tienes que crear algún tipo de solicitud de cliente Http y enviar “application/json” a la interfaz. Luego tienes que esperar un resultado (post) del cliente.
+El CLI de VerifiedX Core usa una interfaz basada en json. Tienes que crear algún tipo de solicitud de cliente Http y enviar “application/json” a la interfaz. Luego tienes que esperar un resultado (post) del cliente.
 
 La mejor forma de probar la interfaz es usar Swagger.
 
@@ -296,9 +304,11 @@ Swagger está en esta ubicación:
 
 Mainnet: http://localhost:7292/swagger/index.html
 Testnet: http://localhost:17292/swagger/index.html
+
+Un nodo iniciado con `openapi` solo sirve Swagger a quienes envían su encabezado `apitoken`.
 Cada endpoint de la API tiene una lista de métodos con una descripción. Algunos de los endpoints más usados son los siguientes:
 
-```
+```text
 /api/V1/
     CheckStatus
     CheckPasswordNeeded
@@ -311,8 +321,7 @@ Cada endpoint de la API tiene una lista de métodos con una descripción. Alguno
     GetWalletInfo
     GetAllAddresses
     GetValidatorAddresses
-    getgenesisblock
-    ImportPrivateKey
+    ImportPrivateKey/{key}/{scan?}
     GetNewAddress
     SendTransaction/{from}/{to}/{amount}
     StartValidating/{address}/{username}
@@ -344,10 +353,10 @@ Cada endpoint de la API tiene una lista de métodos con una descripción. Alguno
 
 ===================
 
-/scapi/scv1/
-    GetAllSmartContracts
-    GetAllSmartContracts/{page}/{search}
-    GetMintedSmartContracts/{page}/{search}
+/scapi/SCV1/
+    GetAllSmartContracts/{pageNumber}
+    GetAllSmartContracts/{pageNumber}/{excludeToken?}
+    GetMintedSmartContracts/{pageNumber}
     GetSingleSmartContract/{id}
     ChangeNFTPublicState/{id}
     GetSmartContractData/{id}
@@ -358,7 +367,6 @@ Cada endpoint de la API tiene una lista de métodos con una descripción. Alguno
     EvolveSpecific/{id}/{address}/{stage}
     Burn/{id}
     AssociateNFTAsset/{id}/{path}
-    DownloadNftAssets/{id}
     GetNFTAssetLocation/{id}/{filename}
 
 
@@ -367,14 +375,14 @@ Cada endpoint de la API tiene una lista de métodos con una descripción. Alguno
 /bcapi/BCV1/
     GetBeacons
     AddBeacon/{name}/{port}/{ip}
-    CreateBeacon/{name}/{port}
+    CreateBeacon/{name}/{isPrivate}/{autoDelete}/{fileCachePeriod}/{port}
     DeleteBeacon/{id}
 
 ====
 
-/txapi/txV1/
+/txapi/TXV1/
     CreateAdnr/{address}/{name}
-    TransferAdnr/{from}/{to}/
+    TransferAdnr/{from}/{to}
     DeleteAdnr/{address}
 ```
 
@@ -384,9 +392,8 @@ Un ejemplo corto sería el siguiente (C#)
 
 ```csharp
 HttpClient client = new HttpClient();
-string json = JsonConvert.SerializeObject(mainSc).Dump();
-var httpContent = new StringContent(json, Encoding.UTF8, "application/json");
-var httpResponse = await client.PostAsync("http://localhost:7292/api/V1/CheckStatus", httpContent);
+client.DefaultRequestHeaders.Add("apitoken", "YOUR_API_TOKEN"); // only if the node was started with apitoken=
+var httpResponse = await client.GetAsync("http://localhost:7292/api/V1/CheckStatus");
 
 var responseString = await httpResponse.Content.ReadAsStringAsync();
 ```
@@ -396,7 +403,7 @@ El resultado es el siguiente: un cuerpo de respuesta `Online`
 
 El ejemplo con curl es el siguiente:
 
-```
+```bash
 curl -X 'GET' \
   'http://localhost:7292/api/V1/CheckStatus' \
   -H 'accept: text/plain'
@@ -435,7 +442,7 @@ func main() {
 
 Inicia el nodo con el argumento `testnet` para ejecutarlo en testnet:
 
-- Ej.: `reserveblockcore.exe testnet`
+- Ej.: `VerifiedXCore.exe testnet` (Linux y macOS: `dotnet VerifiedXCore.dll testnet`, o `./VerifiedXCore testnet` para una versión publicada)
 
 El argumento de inicio `testnet` es la única forma de seleccionar testnet. No configures `TestNet=true` ni `TestNetName` en `config.txt` por tu cuenta: un nodo que se inicia sin el argumento `testnet` y cuyo `config.txt` selecciona testnet se cierra al arrancar con un error que te indica usar el argumento.
 
@@ -468,12 +475,14 @@ Una vez que el CLI está iniciado, puedes escribir comandos en cualquier momento
 La billetera debe quedar abierta para que todo siga funcionando. Si usas Linux y SSH, se recomienda usar screen u otra herramienta para mantenerla en ejecución.
 
 Ejemplo con screen:
-screen dotnet VerifiedXCore.dll
 
-> `ctrl A & ctrl D`
-> para desconectarte de la sesión de screen.
+```bash
+screen dotnet VerifiedXCore.dll enableapi
+```
 
-> para volver, escribe `screen -r` y presiona Enter.
+> Presiona `Ctrl+A` y luego `D` para desconectarte de la sesión de screen.
+
+> Para volver, escribe `screen -r` y presiona Enter.
 
 ## Integración de terceros para exchanges y otras entidades
 
@@ -487,17 +496,17 @@ La arquitectura de VFX sigue muy de cerca las filosofías y los principios de Bi
 
 ### Compila el proyecto
 
-Según tu entorno, encontrarás instrucciones de compilación para Windows, Linux y Mac aquí: **https://github.com/VerifiedXBlockchain/VerifiedX-Core/blob/main/RBXBuildInstructions.md**
+Según tu entorno, encontrarás instrucciones de compilación para Windows, Linux y Mac aquí: [Instrucciones de compilación del CLI](/es/node/build-from-source/)
 
-Sigue las instrucciones: puedes compilar el proyecto desde el código fuente para asegurarte de recibir una versión limpia del programa, o puedes usar un binario publicado en la sección de versiones aquí: **https://github.com/VerifiedXBlockchain/VerifiedX-Core/releases**
+Sigue las instrucciones: puedes compilar el proyecto desde el código fuente para asegurarte de recibir una versión limpia del programa, o puedes ejecutar un binario publicado en la sección de versiones aquí: **https://github.com/VerifiedXBlockchain/VerifiedX-Core/releases**
 
 ### Configuración del archivo de configuración (Config.txt)
 
-Puedes ver la lista completa de opciones de configuración aquí: **https://github.com/VerifiedXBlockchain/VerifiedX-Core/blob/main/ConfigSetup.md**
+Puedes ver la lista completa de opciones de configuración aquí: [Configuración del CLI](/es/node/configuration/)
 
-Primero, inicia la billetera para generar un archivo de configuración predeterminado. Según tu entorno, estará en la misma carpeta que la carpeta de la base de datos.
+Primero, inicia la billetera para generar un archivo de configuración predeterminado. Se crea en la carpeta `Config`, junto a la carpeta `Databases`: `~/rbx/Config/config.txt` en macOS, `~/.local/share/RBX/Config/config.txt` en Linux, `%LOCALAPPDATA%\RBX\Config\config.txt` en Windows (testnet: `RBXTest/ConfigTestNet`).
 
-Lo primero es cambiar el APIPort y definir una APIPassword. Puedes elegir que la contraseña de la API se pida siempre; si no, la API queda desbloqueada durante 15 minutos de forma predeterminada. Puedes cambiar eso con el comando WalletUnlockTime.
+Lo primero es cambiar el APIPort y definir una APIPassword. Puedes elegir que la contraseña de la API se pida siempre; si no, la API queda desbloqueada durante 15 minutos de forma predeterminada. Puedes cambiar eso con la opción WalletUnlockTime.
 
 Aquí también puedes configurar una contraseña de billetera si planeas enviar comandos directamente al CLI. Un ejemplo podría verse así:
 ![Ejemplo de config.txt](../../../../assets/media/integration/config-example.png)
@@ -538,7 +547,7 @@ Estas son las opciones de configuración más relevantes:
 
    - Tipo boolean
    - Ej.: `AlwaysRequireAPIPassword=true`
-   - Si se establece en true, debes incluir la contraseña en todas las solicitudes a la API.
+   - Si se establece en true, debes incluir la contraseña en todas las solicitudes a la API, como último segmento de la ruta (`/api/V1/<Action>/{password}`).
 
 7. APICallURL (el valor predeterminado es null)
 
@@ -562,7 +571,7 @@ Puedes configurar una billetera simplemente abriendo la billetera de VFX. Desde 
 
 Se recomienda respaldar tu frase fuera de línea o crearla en un entorno aislado (air gapped).
 Se recomienda encarecidamente cifrar tus claves privadas. Esto te protege: si roban los archivos de tu base de datos, no podrán acceder a los fondos porque las claves privadas estarán cifradas.
-Para cifrar tus claves privadas, simplemente llama a /encrypt en la billetera y sigue las instrucciones. Te pedirá escribir una contraseña dos veces para confirmar que es correcta. Al inicio se generarán automáticamente 1000 direcciones. Si necesitas más, no hay problema.
+Para cifrar tus claves privadas, simplemente escribe `/encrypt` en la billetera y sigue las instrucciones. Te pedirá escribir una contraseña dos veces para confirmar que es correcta. La contraseña puede tener como máximo 32 caracteres y no puede contener `=`. El cifrado todavía no admite billeteras HD. Al inicio se generarán automáticamente 1000 direcciones. Si necesitas más, no hay problema.
 
 Solo necesitas escribir una contraseña cuando quieras hacer algo con una clave privada. Las dos funciones principales son enviar una transacción o firmar un mensaje. Este proceso es muy parecido al de Bitcoin y, si ya lo haces, no notarás ninguna diferencia.
 Cuando escribes tu contraseña, se guarda como SecureString durante 10 minutos, salvo que se indique otra cosa. Después de 10 minutos se ejecuta el recolector de basura (garbage collection) y la contraseña se borra tanto de la aplicación como de la RAM del sistema.
@@ -583,7 +592,7 @@ El ejemplo anterior es un caso de uso simple para procesar depósitos entrantes.
 
 Puedes intentar usar la APICallURL, que envía una nueva transacción cada vez que se detecta una, pero solo desde la perspectiva de los depósitos, ya que para un retiro no tendría sentido.
 
-Si tienes alguna necesidad o pregunta específica, se recomienda contactar por discord o por la herramienta de chat que uses actualmente, como telegram, skype, email, etc.
+Si tienes alguna necesidad o pregunta específica, se recomienda contactar por [Discord](https://discord.gg/7cd5ebDQCj) o por la herramienta de chat que uses actualmente, como telegram, skype, email, etc.
 
 ## Conclusión
 

@@ -1,5 +1,5 @@
 ---
-sourceHash: cf19192509fa
+sourceHash: 143b3a17badc
 title: "Conceptos básicos de VFX: primeros pasos con VerifiedX"
 description: Crea billeteras, consulta saldos, envía VFX y trabaja con dominios con el VerifiedX Web SDK.
 sidebar:
@@ -44,7 +44,7 @@ const client = new VfxClient(Network.Testnet);
 
 ## Paso 2: genera una billetera
 
-Hay varias formas de crear una billetera de VFX. Veamos las más comunes:
+Hay varias formas de crear una billetera de VFX. Las más comunes:
 
 ### Método 1: genera una clave privada aleatoria
 
@@ -69,21 +69,25 @@ const mnemonic = client.generateMnemonic(12);
 console.log('Mnemonic:', mnemonic);
 
 // Derive a private key from the mnemonic
-const privateKey = client.privateKeyFromMneumonic(mnemonic, 0); // index 0
+const privateKey = client.privateKeyFromMnemonic(mnemonic, 0); // index 0
 const address = client.addressFromPrivate(privateKey);
 
 console.log('Address from mnemonic:', address);
 ```
 
+`privateKeyFromMnemonic` es el alias con la ortografía correcta del `privateKeyFromMneumonic` original. Ambos existen y derivan la misma clave.
+
 ### Crea un objeto de par de claves
 
-Para las transacciones necesitas un objeto de par de claves completo:
+Para las transacciones necesitas un objeto de par de claves completo. Sus campos son `privateKey`, `publicKey` y `address` (el tipo `Keypair`):
 
 ```typescript
-function createKeypair(privateKey: string) {
+import type { Keypair } from 'vfx-web-sdk';
+
+function createKeypair(privateKey: string): Keypair {
   return {
-    private: privateKey,
-    public: client.publicFromPrivate(privateKey),
+    privateKey,
+    publicKey: client.publicFromPrivate(privateKey),
     address: client.addressFromPrivate(privateKey)
   };
 }
@@ -93,7 +97,7 @@ const keypair = createKeypair(privateKey);
 
 ## Paso 3: consulta los detalles de una dirección
 
-Antes de enviar transacciones, consultemos el saldo y la información de una dirección:
+Antes de enviar transacciones, consulta el saldo y la información de una dirección:
 
 ```typescript
 async function checkBalance(address: string) {
@@ -102,7 +106,7 @@ async function checkBalance(address: string) {
 
     console.log('Address Details:');
     console.log('- Balance:', addressDetails.balance, 'VFX');
-    console.log('- Transaction Count:', addressDetails.txCount);
+    console.log('- Locked:', addressDetails.balanceLocked, 'VFX');
     console.log('- Domain:', addressDetails.adnr || 'None');
 
     return addressDetails;
@@ -115,22 +119,26 @@ async function checkBalance(address: string) {
 await checkBalance(keypair.address);
 ```
 
+`getAddressDetails` devuelve un `VfxAddress` (`address`, `balance`, `balanceTotal`, `balanceLocked`, `adnr`, `activated`, `deactivated`). Una dirección que el explorador nunca ha visto vuelve con saldo cero, y lo mismo ocurre si la API no está disponible, a menos que pases `{ strict: true }`, que vuelve a lanzar cualquier error que no sea un 404.
+
 ## Paso 4: envía tu primera transacción
 
-Ahora enviemos tokens VFX a otra dirección:
+Ahora envía tokens VFX a otra dirección:
 
 ```typescript
-async function sendVfx(fromKeypair: any, toAddress: string, amount: number) {
+async function sendVfx(fromKeypair: Keypair, toAddress: string, amount: number) {
   try {
     console.log(`Sending ${amount} VFX from ${fromKeypair.address} to ${toAddress}`);
 
-    const result = await client.sendCoin(fromKeypair, toAddress, amount);
+    const hash = await client.sendCoin(fromKeypair, toAddress, amount);
 
-    console.log('Transaction successful!');
-    console.log('Transaction Hash:', result.txHash);
-    console.log('Status:', result.status);
+    if (!hash) {
+      console.log('Transaction was not sent');
+      return null;
+    }
 
-    return result;
+    console.log('Transaction Hash:', hash);
+    return hash;
   } catch (error) {
     console.error('Transaction failed:', error.message);
   }
@@ -138,8 +146,10 @@ async function sendVfx(fromKeypair: any, toAddress: string, amount: number) {
 
 // Example usage (make sure you have sufficient balance)
 const recipientAddress = 'VFX_RECIPIENT_ADDRESS_HERE';
-await sendVfx(keypair, recipientAddress, 100); // Send 100 VFX
+await sendVfx(keypair, recipientAddress, 1); // Send 1 VFX
 ```
+
+`sendCoin` se resuelve con el hash de la transacción, o con `null` cuando la transacción falló antes de llegar al nodo (no se envió nada). Lanza `TransactionDispatchError` cuando la solicitud salió pero no llegó respuesta: busca el hash en el explorador antes de volver a enviar. El destinatario también puede ser un nombre `.vfx` o `.btc`.
 
 ## Paso 5: trabaja con los dominios de VFX
 
@@ -159,8 +169,10 @@ await checkDomain('myawesomeapp.vfx');
 
 ### Compra un dominio
 
+Un nombre `.vfx` cuesta 5 VFX más la comisión de red, y una dirección solo puede tener uno.
+
 ```typescript
-async function buyDomain(keypair: any, domain: string) {
+async function buyDomain(keypair: Keypair, domain: string) {
   try {
     // Check if domain is available first
     const available = await client.domainAvailable(domain);
@@ -185,6 +197,8 @@ await buyDomain(keypair, 'myapp.vfx');
 
 ### Busca un dominio
 
+Pasa el nombre completo, en minúsculas, con su sufijo `.vfx`. `lookupDomain` y `domainAvailable` envían el nombre tal como se lo pasas, así que la forma en mayúsculas o sin sufijo de un nombre ocupado aparece como inexistente o disponible; `buyVfxDomain` pasa el nombre a minúsculas y le agrega el sufijo por su cuenta. `lookupDomain` se resuelve con `null` para un nombre que no existe.
+
 ```typescript
 async function lookupDomain(domain: string) {
   try {
@@ -205,6 +219,7 @@ Este es un ejemplo completo que reúne todo lo anterior:
 
 ```typescript title="wallet-manager.ts"
 import { VfxClient, Network } from 'vfx-web-sdk';
+import type { Keypair } from 'vfx-web-sdk';
 
 class VfxWalletManager {
   private client: VfxClient;
@@ -216,13 +231,13 @@ class VfxWalletManager {
   // Create a new wallet
   createWallet() {
     const mnemonic = this.client.generateMnemonic(12);
-    const privateKey = this.client.privateKeyFromMneumonic(mnemonic, 0);
+    const privateKey = this.client.privateKeyFromMnemonic(mnemonic, 0);
 
     return {
       mnemonic,
       keypair: {
-        private: privateKey,
-        public: this.client.publicFromPrivate(privateKey),
+        privateKey,
+        publicKey: this.client.publicFromPrivate(privateKey),
         address: this.client.addressFromPrivate(privateKey)
       }
     };
@@ -230,11 +245,11 @@ class VfxWalletManager {
 
   // Restore wallet from mnemonic
   restoreWallet(mnemonic: string, index: number = 0) {
-    const privateKey = this.client.privateKeyFromMneumonic(mnemonic, index);
+    const privateKey = this.client.privateKeyFromMnemonic(mnemonic, index);
 
     return {
-      private: privateKey,
-      public: this.client.publicFromPrivate(privateKey),
+      privateKey,
+      publicKey: this.client.publicFromPrivate(privateKey),
       address: this.client.addressFromPrivate(privateKey)
     };
   }
@@ -245,7 +260,7 @@ class VfxWalletManager {
   }
 
   // Send transaction
-  async sendTransaction(fromKeypair: any, toAddress: string, amount: number) {
+  async sendTransaction(fromKeypair: Keypair, toAddress: string, amount: number) {
     return await this.client.sendCoin(fromKeypair, toAddress, amount);
   }
 }
@@ -265,7 +280,7 @@ async function main() {
   console.log('Wallet balance:', info.balance, 'VFX');
 
   // Note: You'll need testnet VFX to send transactions
-  // You can get testnet VFX from a faucet or by mining
+  // Get testnet VFX from the testnet faucet
 }
 
 main().catch(console.error);
@@ -294,18 +309,18 @@ Ahora que conoces los conceptos básicos de VFX, puedes:
 
 1. **Explorar la integración con Bitcoin**: aprende sobre los [conceptos básicos de Bitcoin](/es/build/sdk/bitcoin-basics/)
 2. **Crear apps multicadena**: revisa la [guía multicadena](/es/build/sdk/cross-chain/)
-3. **Ver ejemplos**: explora las [aplicaciones completas](/es/build/sdk/examples/applications/)
+3. **Ver ejemplos**: explora los [fragmentos de código](/es/build/sdk/examples/snippets/)
 
 ## Problemas comunes
 
 ### La transacción falla por saldo insuficiente
-Asegúrate de que tu billetera tenga suficientes tokens VFX. En testnet, quizás necesites obtener tokens de un faucet.
+Asegúrate de que tu billetera tenga suficientes tokens VFX. En testnet, obtén tokens del faucet (consulta [Testnet](/es/build/testnet/#obtén-fondos-de-prueba)).
 
 ### La compra de un dominio falla
-Los dominios cuestan tokens VFX. Asegúrate de tener saldo suficiente y de que el dominio esté disponible.
+Un nombre `.vfx` cuesta 5 VFX más la comisión. Asegúrate de tener saldo suficiente, de que el nombre esté disponible y de que la dirección no tenga ya un nombre. Los nombres no se pueden comprar desde una cuenta de reserva.
 
 ### Problemas de conexión a la red
-Revisa tu conexión a internet e inténtalo de nuevo. El SDK reintenta automáticamente las solicitudes fallidas.
+Revisa tu conexión a internet e inténtalo de nuevo. El SDK no reintenta por su cuenta las solicitudes fallidas; cada solicitud vence a los 30 segundos de forma predeterminada (define `timeoutMs` en las opciones del cliente para cambiarlo).
 
 ## Obtén ayuda
 

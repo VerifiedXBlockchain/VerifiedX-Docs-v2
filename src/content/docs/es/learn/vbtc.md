@@ -1,5 +1,5 @@
 ---
-sourceHash: 6a4d398e9dd5
+sourceHash: 996309901114
 title: Acerca de vBTC
 description: vBTC es la propiedad programable, no sintética y sin intermediarios de confianza de Bitcoin, verificada por el consenso de VerifiedX.
 sidebar:
@@ -36,7 +36,7 @@ vBTC transforma Bitcoin de una reserva de valor pasiva en un activo de liquidaci
 ## Velocidad, costo y liquidación
 
 - **Finalidad instantánea:** liquidación casi instantánea frente a la latencia de Bitcoin L1.
-- **Comisiones bajas y predecibles:** costos de transacción fijos y mínimos.
+- **Comisiones bajas y predecibles:** pequeñas comisiones de red en VFX, fijadas por el tamaño de la transacción y quemadas.
 - **Siempre activo:** disponibilidad global 24/7 (sin lotes ni horarios de corte).
 
 ## Bitcoin programable
@@ -75,8 +75,8 @@ vBTC transforma Bitcoin de una reserva de valor pasiva en un activo de liquidaci
 
 ## Técnico
 
-- [vBTC en Core](/es/learn/vbtc-protocol/)
-- [vBTC en la GUI](/es/wallet/vbtc/)
+- [Protocolo vBTC](/es/learn/vbtc-protocol/)
+- [vBTC en la billetera](/es/wallet/vbtc/)
 - [Integración de vBTC](/es/build/vbtc/integration/)
 - [Integración de vBTC sin SDK](/es/build/vbtc/raw-integration/)
 - [Integración con Bitcoin en VerifiedX Core](/es/learn/bitcoin-integration/)

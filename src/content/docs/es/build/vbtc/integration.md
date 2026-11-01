@@ -1,5 +1,5 @@
 ---
-sourceHash: 5a12527df5d1
+sourceHash: 5d2939a24013
 title: "vBTC"
 description: Crea bóvedas de vBTC V2, deposita, transfiere, retira a Bitcoin y lleva vBTC a Base por puente con la API del nodo cuando la billetera del nodo tiene las claves.
 sidebar:
@@ -60,26 +60,26 @@ Si el nodo se inició con `apitoken=...`, envía el token en el encabezado `apit
 
 ## Tipos de transacción
 
-| Tipo | Nombre | Enviada por | Etiqueta en el explorador |
-| --- | --- | --- | --- |
-| 25 | `VBTC_V2_CONTRACT_CREATE` | Propietario | vBTC V2 Mint |
-| 26 | `VBTC_V2_TRANSFER` | Propietario o tenedor | vBTC V2 Transfer |
-| 27 | `VBTC_V2_WITHDRAWAL_REQUEST` | Solicitante | vBTC V2 Withdrawal Request |
-| 28 | `VBTC_V2_WITHDRAWAL_COMPLETE` | Solo bóvedas heredadas, hasta la altura de aplicación | vBTC V2 Withdrawal Complete |
-| 29 | `VBTC_V2_WITHDRAWAL_CANCEL` | Solicitante | vBTC V2 Withdrawal Cancel |
-| 30 | `VBTC_V2_WITHDRAWAL_VOTE` | Validadores, solo bóvedas heredadas, hasta la altura de aplicación | vBTC V2 Withdrawal Vote |
-| 43 | `VBTC_V2_BTC_REPORT` | Validadores (sin remitente) | Bitcoin Report |
-| 44 | `VBTC_V2_COIN_PIN` | Solicitante | vBTC Withdrawal Fee Raise (`Function` de los datos `VBTCWithdrawalFeeBump()`) o vBTC Withdrawal Release (`VBTCWithdrawalRelease()`); vBTC Withdrawal Pin cuando los datos no se pueden leer |
-| 45 | `VBTC_V2_BTC_REORG` | Validadores (sin remitente) | Bitcoin Reorg |
-| 46 | `VBTC_V2_VAULT_REKEY` | Validadores (sin remitente) | vBTC Vault Rekey |
+| Tipo | Nombre | Enviada por | Etiqueta en el explorador | Etiqueta en la billetera |
+| --- | --- | --- | --- | --- |
+| 25 | `VBTC_V2_CONTRACT_CREATE` | Propietario | vBTC V2 Mint | Emitir contrato vBTC |
+| 26 | `VBTC_V2_TRANSFER` | Propietario o tenedor | vBTC V2 Transfer | Transferir vBTC, o Transf. masiva vBTC para varias bóvedas |
+| 27 | `VBTC_V2_WITHDRAWAL_REQUEST` | Solicitante | vBTC V2 Withdrawal Request | Solicitud retiro vBTC |
+| 28 | `VBTC_V2_WITHDRAWAL_COMPLETE` | Solo bóvedas heredadas, hasta la altura de aplicación | vBTC V2 Withdrawal Complete | Retiro vBTC completo |
+| 29 | `VBTC_V2_WITHDRAWAL_CANCEL` | Solicitante | vBTC Withdrawal Cancel | Cancelar retiro vBTC |
+| 30 | `VBTC_V2_WITHDRAWAL_VOTE` | Validadores, solo bóvedas heredadas, hasta la altura de aplicación | vBTC Withdrawal Vote | Votar retiro vBTC |
+| 43 | `VBTC_V2_BTC_REPORT` | Validadores (sin remitente) | vBTC Bitcoin Report | Informe de Bitcoin |
+| 44 | `VBTC_V2_COIN_PIN` | Solicitante | vBTC Withdrawal Fee Bump | Aumento de comisión de retiro vBTC (`Function` de los datos `VBTCWithdrawalFeeBump()`) o Liberación de retiro vBTC (`VBTCWithdrawalRelease()`); Fijación de retiro vBTC cuando los datos no se pueden leer |
+| 45 | `VBTC_V2_BTC_REORG` | Validadores (sin remitente) | vBTC Bitcoin Rewind | Reorganización de Bitcoin |
+| 46 | `VBTC_V2_VAULT_REKEY` | Validadores (sin remitente) | vBTC Vault Rekey | Cambio de clave de bóveda vBTC |
 
-Las billeteras de VerifiedX usan las mismas etiquetas para los tipos 43 a 46, y etiquetan un tipo 27 como vBTC Withdrawal Request.
+El explorador etiqueta un tipo 44 como vBTC Withdrawal Fee Bump tanto si sube la comisión como si libera el retiro; las billeteras distinguen los dos casos por sus datos.
 
 Los tipos 43, 45 y 46 tienen `From` y `To` con el valor `BTC_Attestation`, sin monto y sin comisión; su autoridad son las firmas de los validadores que van en sus datos. Un informe de tipo 43 lleva encabezados de Bitcoin y las transacciones de bóvedas de los bloques de Bitcoin informados. Un tipo 45 revierte eventos informados después de una reorganización de Bitcoin. Un tipo 46 pasa una bóveda a una clave nueva creada por los validadores actuales cuando se han ido demasiados poseedores de partes de su clave anterior; las monedas de la bóveda se pasan luego a la clave nueva con transacciones que fija la cadena y que firman los poseedores de la clave anterior (se muestran como un `Sweep` en los retiros de la bóveda). La lista completa de tipos está en [Creación de transacciones](/es/build/node-api/transaction-creation/).
 
 ## Estado de la API
 
-```
+```text
 GET /vbtcapi/VBTC
 ```
 
@@ -89,7 +89,7 @@ Devuelve `["VFX/vBTC-V2", "vBTC API V2 - MPC Based"]`.
 
 ### 1. Inicia la ceremonia de claves
 
-```
+```text
 POST /vbtcapi/VBTC/InitiateMPCCeremony/{ownerAddress}
 ```
 
@@ -109,7 +109,7 @@ Errores: `You already have an active MPC ceremony in progress. Complete or cance
 
 ### 2. Sigue la ceremonia
 
-```
+```text
 GET /vbtcapi/VBTC/GetCeremonyStatus/{ceremonyId}
 ```
 
@@ -139,13 +139,13 @@ Aquí `DepositAddress` siempre es `null`: la dirección solo se entrega cuando l
 
 Para abandonar una ceremonia:
 
-```
+```text
 POST /vbtcapi/VBTC/CancelCeremony/{ceremonyId}/{ownerAddress}
 ```
 
 ### 3. Crea la bóveda
 
-```
+```text
 POST /vbtcapi/VBTC/CreateVBTCContract
 ```
 
@@ -184,7 +184,7 @@ Errores: `Ceremony is not complete. Current status: …`, `Owner address does no
 
 ### 4. Obtén la dirección de depósito
 
-```
+```text
 GET /vbtcapi/VBTC/GetMPCDepositAddress/{scUID}
 ```
 
@@ -225,7 +225,7 @@ Estas rutas de lectura responden a partir del estado de la cadena, así que cual
 
 ### Saldo en una bóveda
 
-```
+```text
 GET /vbtcapi/VBTC/GetVBTCBalance/{address}/{scUID}
 ```
 
@@ -256,11 +256,11 @@ GET /vbtcapi/VBTC/GetVBTCBalance/{address}/{scUID}
 
 - Para el propietario, `Balance` es el Bitcoin de la bóveda (`DepositAddressBalance`; en una bóveda vigilada, tal como lo registra la cadena) más `LedgerBalance` (negativo por el vBTC que ha enviado a tenedores). Para un tenedor, `Balance` es `LedgerBalance`.
 - El monto de un retiro abierto ya está fuera de `Balance`: se debita cuando se mina la solicitud y aparece en `EscrowedWithdrawals`.
-- `AvailableBalance` también resta los envíos de reserva que siguen dentro de su ventana de 24 horas.
+- `AvailableBalance` también resta los envíos de reserva que siguen esperando su hora de desbloqueo.
 
 ### Saldos en todas las bóvedas
 
-```
+```text
 GET /vbtcapi/VBTC/GetAllVBTCBalances/{address}
 ```
 
@@ -268,7 +268,7 @@ Devuelve `TotalBalance`, `ContractCount` y `Contracts`: una entrada por cada bó
 
 ### Detalles, lista y salud de las bóvedas
 
-```
+```text
 GET /vbtcapi/VBTC/GetContractDetails/{scUID}
 GET /vbtcapi/VBTC/GetContractList/{ownerAddress?}
 GET /vbtcapi/VBTC/GetContractHealth/{scUID}
@@ -278,7 +278,7 @@ GET /vbtcapi/VBTC/GetContractHealth/{scUID}
 
 ### El Bitcoin de una bóveda vigilada
 
-```
+```text
 GET /vbtcapi/VBTC/GetVaultBitcoin/{scUID}
 ```
 
@@ -315,7 +315,7 @@ Para una bóveda heredada, `Success` es `false`, `Bitcoin` es `null` y `Message`
 
 ### Estado de la certificación
 
-```
+```text
 GET /vbtcapi/VBTC/GetBitcoinAttestationStatus
 ```
 
@@ -349,7 +349,7 @@ Una altura que todavía no está definida es `null`. `BitcoinTipHeight` solo ava
 
 ### Desde una bóveda
 
-```
+```text
 POST /vbtcapi/VBTC/TransferVBTC
 ```
 
@@ -374,11 +374,11 @@ POST /vbtcapi/VBTC/TransferVBTC
 }
 ```
 
-Errores: `Amount must be greater than zero`, `Insufficient balance. Available: …, Requested: …`, `Account not found: …` (el remitente no está en esta billetera) y, para una bóveda congelada, `Vault … was created before Bitcoin attestation and has been frozen since block …. Its vBTC can no longer be transferred, withdrawn or bridged.` La transferencia de un remitente de reserva (`xRBX`) queda retenida durante 24 horas y se puede revertir hasta entonces; no puede ir a otra dirección de reserva.
+Errores: `Amount must be greater than zero`, `Insufficient balance. Available: …, Requested: …`, `Account not found: …` (el remitente no está en esta billetera) y, para una bóveda congelada, `Vault … was created before Bitcoin attestation and has been frozen since block …. Its vBTC can no longer be transferred, withdrawn or bridged.` La transferencia de un remitente de reserva (`xRBX`) queda retenida durante el retraso de desbloqueo de la cuenta de reserva, de al menos 24 horas, y se puede devolver (call back) hasta entonces; no puede ir a otra dirección de reserva.
 
 ### Desde varias bóvedas a la vez
 
-```
+```text
 POST /vbtcapi/VBTC/TransferVBTCMulti
 ```
 
@@ -394,7 +394,7 @@ El nodo reparte `TotalAmount` entre las bóvedas en las que el remitente tiene v
 
 ## Transferir la propiedad
 
-```
+```text
 GET /vbtcapi/VBTC/TransferOwnership/{scUID}/{toAddress}
 ```
 
@@ -408,7 +408,7 @@ La firma la cuenta del propietario actual en este nodo. Pasa la bóveda a `toAdd
 
 ### Solicita un retiro
 
-```
+```text
 POST /vbtcapi/VBTC/RequestWithdrawal
 ```
 
@@ -447,7 +447,7 @@ POST /vbtcapi/VBTC/RequestWithdrawal
 
 ### Sigue un retiro
 
-```
+```text
 GET /vbtcapi/VBTC/GetWithdrawalPin/{scUID}/{withdrawalRequestHash}
 ```
 
@@ -520,7 +520,7 @@ Cualquier nodo lo responde a partir del estado de la cadena. Un retiro pasa por 
 
 ### Cancela un retiro en espera
 
-```
+```text
 POST /vbtcapi/VBTC/CancelWithdrawal
 ```
 
@@ -547,7 +547,7 @@ Solo se puede cancelar un retiro `Waiting` (`CanCancel: true`). Una vez fijado: 
 
 ### Sube la comisión de un retiro fijado
 
-```
+```text
 POST /vbtcapi/VBTC/BumpWithdrawalFee
 ```
 
@@ -578,7 +578,7 @@ Reglas: `FeeRate` debe ser mayor que la tasa que paga la transacción más recie
 
 ### Libera un retiro fijado
 
-```
+```text
 POST /vbtcapi/VBTC/ReleaseWithdrawal
 ```
 
@@ -600,7 +600,7 @@ Reglas: `FeeRate` debe ser mayor que la tasa que paga la transacción más recie
 
 ### Qué devuelve la ruta de finalización en una bóveda vigilada
 
-```
+```text
 POST /vbtcapi/VBTC/CompleteWithdrawal
 ```
 
@@ -643,7 +643,7 @@ Un tenedor con vBTC en varias bóvedas, como un exchange, retira un monto total 
 
 ### Solicitud
 
-```
+```text
 POST /vbtcapi/VBTC/RequestWithdrawalMulti
 ```
 
@@ -680,7 +680,7 @@ Cada porción paga su propia comisión, así que comprueba que el destino reciba
 
 ### Sigue cada porción
 
-```
+```text
 GET /vbtcapi/VBTC/GetWithdrawalRequestShares/{withdrawalRequestHash}
 ```
 
@@ -716,7 +716,7 @@ Cada porción es un retiro de su propia bóveda bajo el hash de solicitud compar
 
 ### CompleteWithdrawalMulti
 
-```
+```text
 POST /vbtcapi/VBTC/CompleteWithdrawalMulti
 ```
 
@@ -792,7 +792,7 @@ vBTC.b es vBTC en Base, un ERC-20 (`vBTCb`, símbolo `vBTC.b`, 8 decimales) emit
 
 El nodo del propietario ejecuta todo el flujo: transmite el bloqueo (tipo 37), reúne las certificaciones de emisión de los validadores del puente cuando el bloqueo tiene 30 bloques de VFX de profundidad, y envía `mintWithProof` en Base desde una dirección de Base derivada de la clave de VFX del propietario. Esa dirección paga el gas de Base, así que antes fóndeala con un poco de ETH.
 
-```
+```text
 GET  /wallet/api/base-address/{vfxAddress}
 GET  /wallet/api/vbtc/bridge/preflight/{ownerAddress}/{scUID}
 POST /wallet/api/vbtc/bridge/toBase
@@ -854,10 +854,10 @@ En testnet ya no existen bóvedas heredadas: la cadena se reinició en octubre d
 
 ## Bóvedas S3C
 
-S3C (contratos inteligentes autocustodiados) permite que un propietario haga que la clave de una bóveda la tengan solo validadores que opera ese mismo propietario, en lugar del conjunto público de validadores.
+S3C (Self-Custodial Smart Contracts, contratos inteligentes autocustodiados) permite que un propietario haga que la clave de una bóveda la tengan solo validadores que opera ese mismo propietario, en lugar del conjunto público de validadores.
 
 - **Validadores.** Cada validador S3C funciona con `S3CValidator=true` en `config.txt`, lo que lo marca como S3C en la cadena cuando se registra. Un validador S3C solo participa en ceremonias S3C; las bóvedas públicas nunca lo usan. Como cualquier validador, debe estar registrado, activo y tener su fianza de 5,000 VFX.
-- **El nodo emisor** lista el grupo en `config.txt` como `S3C=IP:ValidatorAddress,IP:ValidatorAddress,IP:ValidatorAddress`: al menos tres entradas, solo direcciones IP públicas y direcciones de VFX válidas. Entonces todas las bóvedas que crea este nodo son bóvedas S3C. Se contacta la IP configurada.
+- **El nodo emisor** lista el grupo en `config.txt` como `S3C=IP:ValidatorAddress,IP:ValidatorAddress,IP:ValidatorAddress`: al menos tres entradas, solo direcciones IPv4 públicas (no direcciones IPv6 ni nombres de host) y direcciones de VFX válidas. Entonces todas las bóvedas que crea este nodo son bóvedas S3C. Se contacta la IP configurada.
 - **Todo o nada.** Cada validador configurado debe estar registrado, activo, marcado como S3C, con fondos y con la garantía durante el tiempo suficiente, y todos participan en la ceremonia de claves. Si alguno no se puede usar, la ceremonia falla y lo nombra. Si el valor de `S3C=` no es válido, el nodo se niega a crear bóvedas en lugar de recurrir al grupo público.
 - **Comprueba antes de emitir:** `GET /vbtcapi/VBTC/GetS3CStatus` devuelve `Enabled`, `ConfigInvalid`, `IsS3CValidator` y, por cada validador configurado, `RegisteredOnChain`, `Reachable` y `ConfigIPMismatch`.
 - **Claves.** La cadena nunca pasa una bóveda S3C a una clave nueva: quién tiene su clave es asunto de su propietario.
@@ -881,8 +881,4 @@ Un nodo iniciado con su billetera de navegador ofrece las mismas operaciones, fi
 
 ## Otras rutas de vBTC
 
-Están en el mismo controlador y no se tratan en esta página: el fondo blindado de vBTC (`ShieldVBTC`, `UnshieldVBTC`, `PrivateTransferVBTC`, `GetShieldedVBTCBalance`, `GetShieldedVBTCPoolState/{scUID}`), el puente a Base (`BridgeToBase`, `GetBridgeLockStatus/{lockId}`, `GetBridgeLocks/{scUID}`, `GetBridgeLocksByOwner/{ownerAddress}`, `GetBaseBalance/{evmAddress}`, `GetBridgeStatus`, `GetBridgeConfig`, `GetBridgeExit/{baseBurnTxHash}`), las rutas de validadores (`GetValidatorList`, `GetValidatorStatus/{address}`, `GetValidatorBond/{address}`, `ExitValidator/{address}`; consulta [Ejecutar un validador](/es/node/validator/)) y las rutas de operador.
-
-## vBTC V1 está retirado
-
-vBTC V1 (tokenización por árbitros en `btcapi/BTCV2`: `TokenizeBitcoin`, `TransferCoin`, `TransferCoinMulti`, `WithdrawalCoin`, `WithdrawalCoinRawTX`, tipos de transacción 17 a 21) se retiró en el bloque 7,400,500 de mainnet. Desde esa altura, la red no acepta ningún token, transferencia ni retiro nuevo de V1, y ninguna transacción puede tocar un contrato V1 existente, así que los saldos de V1 quedan congelados tal como están. En la testnet, que se reinició en octubre de 2026, V1 está retirado desde el bloque 1. Las rutas de billetera de Bitcoin de `btcapi/BTCV2` (cuentas, envíos, comisiones, nombres `.btc`) no se ven afectadas y están listadas en [Detalles de la API del CLI](/es/build/node-api/details/#3-api-de-integración-con-bitcoin).
+Están en el mismo controlador y no se tratan en esta página: el fondo blindado de vBTC (`ShieldVBTC`, `UnshieldVBTC`, `PrivateTransferVBTC`, `GetShieldedVBTCBalance`, `GetShieldedVBTCPoolState/{scUID}`; el consenso rechaza las transacciones de privacidad de vBTC en ambas redes, en mainnet desde el bloque 7,281,000), el puente a Base (`BridgeToBase`, `GetBridgeLockStatus/{lockId}`, `GetBridgeLocks/{scUID}`, `GetBridgeLocksByOwner/{ownerAddress}`, `GetBaseBalance/{evmAddress}`, `GetBridgeStatus`, `GetBridgeConfig`, `GetBridgeExit/{baseBurnTxHash}`), las rutas de validadores (`GetValidatorList`, `GetValidatorStatus/{address}`, `GetValidatorBond/{address}`, `ExitValidator/{address}`; consulta [Ejecutar un validador](/es/node/validator/)) y las rutas de operador.
