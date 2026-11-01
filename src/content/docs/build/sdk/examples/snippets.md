@@ -343,7 +343,10 @@ function signOnBothChains(vfxClient, btcClient, message, vfxPrivateKey, btcWif) 
 // The SDK's exported isOtherNetworksAddress(address, network) checks the version byte and checksum.
 function isValidVfxAddress(address, network = 'testnet') {
   if (!address || typeof address !== 'string') return false;
-  return network === 'mainnet' ? address.startsWith('R') : address.startsWith('x');
+  // Mainnet: R… addresses and xRBX… reserve (vault) accounts. Testnet: x… addresses, including xRBX… reserve accounts.
+  return network === 'mainnet'
+    ? address.startsWith('R') || address.startsWith('xRBX')
+    : address.startsWith('x');
 }
 
 function isValidBitcoinAddress(address, network = 'testnet') {

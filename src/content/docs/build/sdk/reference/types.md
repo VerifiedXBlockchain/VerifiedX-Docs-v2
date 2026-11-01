@@ -598,7 +598,9 @@ import type { Keypair } from 'vfx-web-sdk';
 
 // VFX address prefix check (use isOtherNetworksAddress for checksum and version)
 function isVfxAddress(value: unknown, network: 'mainnet' | 'testnet'): value is string {
-  return typeof value === 'string' && value.startsWith(network === 'mainnet' ? 'R' : 'x');
+  if (typeof value !== 'string') return false;
+  // Reserve (vault) accounts start with xRBX on both networks
+  return network === 'mainnet' ? value.startsWith('R') || value.startsWith('xRBX') : value.startsWith('x');
 }
 
 // Check if object is a local keypair the SDK can sign with
