@@ -239,6 +239,12 @@ interface PaginatedResponse<T> {
 }
 ```
 
+### Media Upload
+
+```typescript
+interface MediaUploadResult { url: string }   // what MediaApiClient.uploadAsset resolves to (9.0.4)
+```
+
 ### vBTC V2 Types
 
 ```typescript
@@ -545,6 +551,11 @@ class VfxApiError extends Error {          // non-2xx answer from the data API
   readonly status: number | undefined;
   readonly url: string;
   readonly body: string | undefined;
+}
+
+class VfxNetworkError extends VfxApiError {  // no HTTP response at all: DNS failure, refused or dropped connection, timeout (9.0.4)
+  readonly status: undefined;
+  readonly cause: unknown;                   // the underlying fetch TypeError or AbortError
 }
 
 class TransactionDispatchError extends Error {  // sent, but no answer came back

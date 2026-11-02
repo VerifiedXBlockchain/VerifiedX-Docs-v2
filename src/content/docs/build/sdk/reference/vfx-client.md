@@ -838,15 +838,16 @@ Reads and writes report failure differently:
 
 ### Network Errors
 ```typescript
-import { VfxApiError } from 'vfx-web-sdk';
+import { VfxApiError, VfxNetworkError } from 'vfx-web-sdk';
 
 try {
   const details = await client.getAddressDetails(address, { strict: true });
 } catch (error) {
-  if (error instanceof VfxApiError) {
+  if (error instanceof VfxNetworkError) {
+    // Test the subclass first: a VfxNetworkError is also a VfxApiError
+    console.log('Data API unreachable', error.cause); // DNS failure, refused connection, timeout
+  } else if (error instanceof VfxApiError) {
     console.log('Data API error', error.status);
-  } else {
-    console.log('Data API unreachable', error.message); // e.g. "fetch failed"
   }
 }
 ```

@@ -21,7 +21,7 @@ import { VfxClient, btc, Network } from 'vfx-web-sdk';
 const vfxClient = new VfxClient(Network.Testnet);
 
 // Bitcoin operations on the VerifiedX signet (tb1 addresses)
-const btcClient = new btc.BtcClient('testnet', { apiBaseUrl: 'https://signet.verifiedx.io/api' });
+const btcClient = new btc.BtcClient('testnet');
 ```
 
 ## Key Features
@@ -59,7 +59,7 @@ import { VfxClient, btc, Network } from 'vfx-web-sdk';
 function quickStart() {
   // Initialize clients
   const vfxClient = new VfxClient(Network.Testnet);
-  const btcClient = new btc.BtcClient('testnet', { apiBaseUrl: 'https://signet.verifiedx.io/api' });
+  const btcClient = new btc.BtcClient('testnet');
 
   // Generate VFX wallet
   const vfxPrivateKey = vfxClient.generatePrivateKey();
