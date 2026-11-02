@@ -196,11 +196,12 @@ console.log(`BTC Balance: ${addressInfo.balance / 100000000} BTC`);
 
 ### `getTransactions(address, limit?, before?)`
 
-Retrieves transaction history for an address: the API's first page, newest first, unconfirmed ones included.
+Retrieves transaction history for an address, newest first: unconfirmed transactions, then confirmed ones, up to `limit` entries.
 
 **Parameters:**
 - `address` (string): The Bitcoin address to query
-- `limit` (number, optional) and `before` (number | null, optional): accepted but not sent to the API in 9.0.3, so they have no effect
+- `limit` (number, optional): Maximum number of transactions to return (default 50)
+- `before` (string | null, optional): A txid already seen. From 9.0.4 only confirmed transactions older than it are returned (no unconfirmed ones), so pass the last confirmed txid of one call as the next call's `before` to page back through the history. 9.0.3 accepted `limit` and `before` but ignored them
 
 **Returns:** `Promise<Transaction[]>` - Array of transactions
 

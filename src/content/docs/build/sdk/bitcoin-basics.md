@@ -169,7 +169,7 @@ async function getTransactionHistory(address: string) {
 await getTransactionHistory(wallet.address);
 ```
 
-`getTransactions` returns the API's first page for the address (the newest transactions, unconfirmed ones first). In 9.0.3 its `limit` and `before` parameters are accepted but not sent, so they have no effect.
+`getTransactions(address, limit?, before?)` returns the newest transactions first, unconfirmed ones included, up to `limit` (default 50). From 9.0.4, `before` is a txid you have already seen: the call then returns only confirmed transactions older than it, so pass the last confirmed txid of one call as the next call's `before` to page back through the history. 9.0.3 accepted both parameters but ignored them.
 
 ## Step 5: Check Current Fee Rates
 

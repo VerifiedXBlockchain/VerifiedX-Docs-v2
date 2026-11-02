@@ -196,7 +196,7 @@ await buyDomain(keypair, 'myapp.vfx');
 
 ### Lookup Domain
 
-Pass the full name, lowercase, with its `.vfx` suffix. `lookupDomain` and `domainAvailable` send the name as given, so an uppercase or suffix-less form of a taken name reads as missing or available; `buyVfxDomain` lowercases the name and adds the suffix itself. `lookupDomain` resolves to `null` for a name that does not exist.
+From 9.0.4, `lookupDomain` and `domainAvailable` normalise the name the way `buyVfxDomain` does (trimmed, lowercase, `.vfx` added when no suffix is given), so `Example`, `example` and `example.vfx` all look up `example.vfx`. On 9.0.3 they sent the name as given, so pass the full lowercase name with its suffix there. `lookupDomain` resolves to `null` for a name that does not exist.
 
 ```typescript
 async function lookupDomain(domain: string) {
