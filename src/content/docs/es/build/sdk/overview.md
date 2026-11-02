@@ -1,5 +1,5 @@
 ---
-sourceHash: "736375f0a3fe"
+sourceHash: "253a7162f902"
 title: "SDK de JavaScript"
 description: Descripción general del VerifiedX Web SDK, una interfaz unificada para la blockchain de VerifiedX y la red de Bitcoin, con instalación, uso básico y un mapa de las guías.
 sidebar:
@@ -22,7 +22,7 @@ import { VfxClient, btc, Network } from 'vfx-web-sdk';
 const vfxClient = new VfxClient(Network.Testnet);
 
 // Bitcoin operations on the VerifiedX signet (tb1 addresses)
-const btcClient = new btc.BtcClient('testnet', { apiBaseUrl: 'https://signet.verifiedx.io/api' });
+const btcClient = new btc.BtcClient('testnet');
 ```
 
 ## Funciones clave
@@ -60,7 +60,7 @@ import { VfxClient, btc, Network } from 'vfx-web-sdk';
 function quickStart() {
   // Initialize clients
   const vfxClient = new VfxClient(Network.Testnet);
-  const btcClient = new btc.BtcClient('testnet', { apiBaseUrl: 'https://signet.verifiedx.io/api' });
+  const btcClient = new btc.BtcClient('testnet');
 
   // Generate VFX wallet
   const vfxPrivateKey = vfxClient.generatePrivateKey();

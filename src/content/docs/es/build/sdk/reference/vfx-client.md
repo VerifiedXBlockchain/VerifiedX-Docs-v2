@@ -1,5 +1,5 @@
 ---
-sourceHash: "a34c4a690c80"
+sourceHash: "7bb9daee1608"
 title: "Referencia de la API de VfxClient"
 description: Referencia de los métodos de VfxClient en el VerifiedX Web SDK, que abarca pares de claves, firma externa, transacciones, vBTC V2, tokens VFX20, cuentas de reserva y operaciones con direcciones.
 sidebar:
@@ -547,7 +547,7 @@ console.log(`Domain: ${details.adnr || 'None'}`);
 Verifica si un nombre de dominio está disponible para comprarse.
 
 **Parámetros:**
-- `domain` (string): el nombre completo que verificas, en minúsculas, con su sufijo `.vfx` o `.btc`. El nombre se envía tal como se da: una forma en mayúsculas o sin sufijo de un nombre ocupado aparece como disponible
+- `domain` (string): el nombre que verificas. Desde 9.0.4 se normaliza primero (se recortan los espacios, se pasa a minúsculas y se agrega `.vfx` si no tiene sufijo `.vfx` ni `.btc`), así que `Name`, `name` y `name.vfx` verifican todos `name.vfx`. 9.0.3 enviaba el nombre tal como se daba, así que ahí pasa el nombre completo en minúsculas
 - `options` (`{ strict?: boolean }`, opcional): de forma predeterminada, cualquier fallo se interpreta como "disponible". Con `strict: true`, solo un 404 lo hace y los demás errores se lanzan; úsalo antes de decidir una compra
 
 **Devuelve:** `Promise<boolean>` - True si está disponible, false si está ocupado
@@ -567,7 +567,7 @@ if (isAvailable) {
 Resuelve un nombre `.vfx` a su dirección de VFX.
 
 **Parámetros:**
-- `domain` (string): el nombre completo, en minúsculas, con su sufijo `.vfx` (un nombre sin sufijo o en mayúsculas no se resuelve)
+- `domain` (string): el nombre que resuelves, normalizado como en `domainAvailable` desde 9.0.4 (en 9.0.3 pasa el nombre completo en minúsculas con su sufijo `.vfx`)
 - `options` (`{ strict?: boolean }`, opcional): con `strict: true`, los errores distintos de un 404 se lanzan en lugar de interpretarse como "no encontrado"
 
 **Devuelve:** `Promise<string | null>` - La dirección de VFX, o `null` si el nombre no existe
@@ -583,7 +583,7 @@ console.log(address ? `example.vfx resolves to: ${address}` : "Domain not found"
 Resuelve un nombre `.btc` a su dirección de Bitcoin.
 
 **Parámetros:**
-- `domain` (string): el nombre completo, en minúsculas, con su sufijo `.btc`
+- `domain` (string): el nombre `.btc`. Desde 9.0.4, `Name`, `name` y `name.btc` buscan todos `name.btc` (en 9.0.3 pasa el nombre completo en minúsculas con su sufijo)
 
 **Devuelve:** `Promise<string | null>` - La dirección de Bitcoin, o `null` si el nombre no existe (también para un nombre `.vfx`). Nunca lanza errores
 
@@ -638,14 +638,14 @@ Un cliente exportado aparte para el endpoint de archivos multimedia de Spyglass 
 - `file` (`File`): el archivo que subes (un `File` del navegador, o `new File([buffer], name, { type })` en Node.js 20+)
 - `metadata` (`Record<string, string>`, opcional): campos de formulario adicionales
 
-**Devuelve:** La respuesta interpretada, `{ url: string }`, o `null` si la subida falló. El tipo declara `Promise<string | null>`, así que lee `url` del objeto.
+**Devuelve:** `Promise<MediaUploadResult | null>`: `{ url: string }` del archivo almacenado, o `null` si la subida falló. 9.0.3 declaraba `Promise<string | null>` aunque devolvía el mismo objeto.
 
 **Ejemplo:**
 ```typescript
 import { MediaApiClient, Network } from 'vfx-web-sdk';
 
 const media = new MediaApiClient(Network.Testnet);
-const uploaded: any = await media.uploadAsset(new File([pngBytes], 'logo.png', { type: 'image/png' }));
+const uploaded = await media.uploadAsset(new File([pngBytes], 'logo.png', { type: 'image/png' }));
 console.log(uploaded?.url); // https://…s3.amazonaws.com/…/logo.png
 ```
 
@@ -758,20 +758,21 @@ Consulta [Tipos e interfaces](/es/build/sdk/reference/types/) para ver todos los
 
 Las lecturas y las escrituras informan los fallos de forma distinta:
 
-- Los métodos de lectura lanzan `VfxApiError` (con `status`, `url` y `body`) ante una respuesta que no es 2xx, y el error de `fetch` del entorno de ejecución (un `TypeError` en Node.js) cuando no se puede llegar a la API o la solicitud agota el tiempo de espera, salvo cuando un método documenta un comportamiento predeterminado (`getAddressDetails`, `domainAvailable` y `lookupDomain` ignoran los errores salvo con `strict: true`; `lookupBtcDomain`, `lookupBtcDomainFromBtcAddress` y `listTransactionsForAddress` devuelven `null` ante cualquier error).
+- Los métodos de lectura lanzan `VfxApiError` (con `status`, `url` y `body`) ante una respuesta que no es 2xx, y desde 9.0.4 `VfxNetworkError` (un `VfxApiError` con `status` undefined, la `url` y el error subyacente como `cause`) cuando no se puede llegar a la API o la solicitud agota el tiempo de espera (9.0.3 dejaba pasar el error de `fetch` del entorno de ejecución, un `TypeError` en Node.js), salvo cuando un método documenta un comportamiento predeterminado (`getAddressDetails`, `domainAvailable` y `lookupDomain` ignoran los errores salvo con `strict: true`; `lookupBtcDomain`, `lookupBtcDomainFromBtcAddress` y `listTransactionsForAddress` devuelven `null` ante cualquier error).
 - Los métodos de envío (`sendCoin`, los métodos de dominios y de tokens) se resuelven en `null` cuando la transacción falló antes de llegar al nodo, por ejemplo cuando el nodo la rechazó por saldo insuficiente; el motivo se registra en el log, no se lanza. Lanzan `TransactionDispatchError` cuando la solicitud salió, pero no volvió ninguna respuesta (busca el hash en el explorador antes de reenviar), y `PreSignCheckError` o `TransactionRefusedError` donde un método lo indica.
 
 ### Errores de red
 ```typescript
-import { VfxApiError } from 'vfx-web-sdk';
+import { VfxApiError, VfxNetworkError } from 'vfx-web-sdk';
 
 try {
   const details = await client.getAddressDetails(address, { strict: true });
 } catch (error) {
-  if (error instanceof VfxApiError) {
+  if (error instanceof VfxNetworkError) {
+    // Test the subclass first: a VfxNetworkError is also a VfxApiError
+    console.log('Data API unreachable', error.cause); // DNS failure, refused connection, timeout
+  } else if (error instanceof VfxApiError) {
     console.log('Data API error', error.status);
-  } else {
-    console.log('Data API unreachable', error.message); // e.g. "fetch failed"
   }
 }
 ```
@@ -818,29 +819,57 @@ enum Network {
 
 ### Tipos de transacción
 
-`TxType` contiene los tipos de transacción que construye el SDK (numéricos, coinciden con `TransactionType` de Core):
+`TxType` refleja `TransactionType` de Core (numéricos, valores de 0 a 46). Está completo desde 9.0.4; 9.0.3 solo contenía los tipos que construye el SDK:
 
 ```typescript
 enum TxType {
-  RbxTransfer = 0,   // VFX transfer (legacy identifier)
+  RbxTransfer = 0,                     // TX
   Node = 1,
   NftMint = 2,
   NftTx = 3,
   NftBurn = 4,
   NftSale = 5,
   Adnr = 6,
-  DstShop = 7,
+  DstShop = 7,                         // DSTR: DST shop registration
   VoteTopic = 8,
   Vote = 9,
   Reserve = 10,
-  TokenTx = 15,
-  TokenDeploy = 17,
+  ScMint = 11,                         // SC_MINT: standard smart contract mint
+  ScTx = 12,                           // SC_TX
+  ScBurn = 13,                         // SC_BURN
+  FungibleTokenMint = 14,              // FTKN_MINT: fungible token mint
+  TokenTx = 15,                        // FTKN_TX: fungible token transfer and operations
+  FungibleTokenBurn = 16,              // FTKN_BURN
+  TokenDeploy = 17,                    // TKNZ_MINT in Core; the live fungible-token deploy type
+  TokenizationTx = 18,                 // TKNZ_TX
+  TokenizationBurn = 19,               // TKNZ_BURN
+  TokenizationWithdrawalArbiter = 20,  // TKNZ_WD_ARB
+  TokenizationWithdrawalOwner = 21,    // TKNZ_WD_OWNER
+  VbtcV2ValidatorRegister = 22,
+  VbtcV2ValidatorHeartbeat = 23,
+  VbtcV2ValidatorExit = 24,
   VbtcV2ContractCreate = 25,
   VbtcV2Transfer = 26,
   VbtcV2WithdrawalRequest = 27,
   VbtcV2WithdrawalComplete = 28,
   VbtcV2WithdrawalCancel = 29,
-  VbtcV2CoinPin = 44
+  VbtcV2WithdrawalVote = 30,           // Validator vote on a withdrawal cancellation
+  VfxShield = 31,
+  VfxUnshield = 32,
+  VfxPrivateTransfer = 33,
+  VbtcV2Shield = 34,
+  VbtcV2Unshield = 35,
+  VbtcV2PrivateTransfer = 36,
+  VbtcV2BridgeLock = 37,               // Lock vBTC for bridging to Base
+  VbtcV2BridgeUnlock = 38,             // Unlock vBTC after a burn on Base (single lock)
+  VbtcV2BridgePoolUnlock = 39,         // Credit vBTC from several locks to one VFX address
+  VbtcV2BridgeExitToBtc = 40,          // Record a Base burnForBTCExit as a Bitcoin withdrawal intent
+  VbtcV2BridgeExitToBtcComplete = 41,
+  VbtcV2BridgeExitToBtcFail = 42,
+  VbtcV2BtcReport = 43,                // Sender-less (BTC_Attestation): Bitcoin headers and vault transactions of one Bitcoin block
+  VbtcV2CoinPin = 44,                  // Raises the Bitcoin fee of, or releases, a pinned withdrawal on a watched vault.
+  VbtcV2BtcReorg = 45,                 // Sender-less (BTC_Attestation): rewinds reported events after a Bitcoin reorg
+  VbtcV2VaultRekey = 46                // Sender-less: replaces a vault's key with one made by the current validators
 }
 ```
 

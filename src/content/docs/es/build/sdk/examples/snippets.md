@@ -1,5 +1,5 @@
 ---
-sourceHash: "eb579c1e2275"
+sourceHash: "0a7c7330db50"
 title: "Fragmentos de código"
 description: Fragmentos de código listos para copiar y pegar para tareas comunes con el VerifiedX Web SDK en VFX, Bitcoin, multicadena, React, Node.js y pruebas.
 sidebar:
@@ -8,7 +8,7 @@ sidebar:
 
 Esta sección ofrece ejemplos de código puntuales para tareas comunes con el VerifiedX Web SDK. Estos fragmentos están pensados para que los copies y pegues directamente en tus aplicaciones.
 
-En testnet, los ejemplos de Bitcoin usan la [signet de VerifiedX](/es/build/signet/). `vfx-web-sdk` 9.0.3 todavía usa por defecto la API pública de testnet4 para `BtcClient('testnet')`, así que los fragmentos pasan `apiBaseUrl: 'https://signet.verifiedx.io/api'`.
+En testnet, los ejemplos de Bitcoin se ejecutan en la [signet de VerifiedX](/es/build/signet/), que `BtcClient('testnet')` usa de forma predeterminada desde `vfx-web-sdk` 9.0.4. En 9.0.3 o anterior, pasa `apiBaseUrl: 'https://signet.verifiedx.io/api'`.
 
 ## Ejemplos de VFX
 
@@ -143,8 +143,8 @@ function restoreVfxWallet(client, mnemonic, index = 0) {
 ```typescript
 import { btc } from 'vfx-web-sdk';
 
-// Create client on the VerifiedX signet
-const client = new btc.BtcClient('testnet', { apiBaseUrl: 'https://signet.verifiedx.io/api' });
+// Create a testnet client (the VerifiedX signet)
+const client = new btc.BtcClient('testnet');
 
 // Generate wallet with all address types
 const wallet = client.generatePrivateKey();
@@ -252,13 +252,11 @@ function signBitcoinMessage(client, message, wif) {
 ```typescript
 import { VfxClient, btc, Network } from 'vfx-web-sdk';
 
-function createUnifiedWallet(network = 'testnet') {
+function createUnifiedWallet(network: 'mainnet' | 'testnet' = 'testnet') {
   const vfxClient = new VfxClient(
     network === 'mainnet' ? Network.Mainnet : Network.Testnet
   );
-  const btcClient = network === 'testnet'
-    ? new btc.BtcClient('testnet', { apiBaseUrl: 'https://signet.verifiedx.io/api' })
-    : new btc.BtcClient('mainnet');
+  const btcClient = new btc.BtcClient(network);
 
   // Generate shared mnemonic
   const mnemonic = vfxClient.generateMnemonic(12);
@@ -466,7 +464,7 @@ function useVfxBalance(address, network = Network.Testnet) {
 import { useState } from 'react';
 import { btc } from 'vfx-web-sdk';
 
-function useBitcoinTransaction(network = 'testnet') {
+function useBitcoinTransaction(network: 'mainnet' | 'testnet' = 'testnet') {
   const [sending, setSending] = useState(false);
   const [error, setError] = useState(null);
 
@@ -475,9 +473,7 @@ function useBitcoinTransaction(network = 'testnet') {
     setError(null);
 
     try {
-      const client = network === 'testnet'
-        ? new btc.BtcClient('testnet', { apiBaseUrl: 'https://signet.verifiedx.io/api' })
-        : new btc.BtcClient('mainnet');
+      const client = new btc.BtcClient(network);
       const txId = await client.sendBtc(wif, toAddress, amount, feeRate); // amount in BTC
       return txId;
     } catch (err) {
@@ -507,9 +503,7 @@ const network = process.env.NODE_ENV === 'production' ? 'mainnet' : 'testnet';
 const vfxClient = new VfxClient(
   network === 'mainnet' ? Network.Mainnet : Network.Testnet
 );
-const btcClient = network === 'testnet'
-  ? new btc.BtcClient('testnet', { apiBaseUrl: 'https://signet.verifiedx.io/api' })
-  : new btc.BtcClient('mainnet');
+const btcClient = new btc.BtcClient(network);
 ```
 
 ### Almacenamiento seguro de claves
