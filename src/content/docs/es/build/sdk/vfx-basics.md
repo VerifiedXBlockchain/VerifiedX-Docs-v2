@@ -1,5 +1,5 @@
 ---
-sourceHash: "143b3a17badc"
+sourceHash: "9cd706fb955e"
 title: "Conceptos básicos de VFX: primeros pasos con VerifiedX"
 description: Crea billeteras, consulta saldos, envía VFX y trabaja con dominios con el VerifiedX Web SDK.
 sidebar:
@@ -197,7 +197,7 @@ await buyDomain(keypair, 'myapp.vfx');
 
 ### Busca un dominio
 
-Pasa el nombre completo, en minúsculas, con su sufijo `.vfx`. `lookupDomain` y `domainAvailable` envían el nombre tal como se lo pasas, así que la forma en mayúsculas o sin sufijo de un nombre ocupado aparece como inexistente o disponible; `buyVfxDomain` pasa el nombre a minúsculas y le agrega el sufijo por su cuenta. `lookupDomain` se resuelve con `null` para un nombre que no existe.
+Desde 9.0.4, `lookupDomain` y `domainAvailable` normalizan el nombre igual que `buyVfxDomain` (recortan los espacios, lo pasan a minúsculas y agregan `.vfx` si no tiene sufijo), así que `Example`, `example` y `example.vfx` buscan todos `example.vfx`. En 9.0.3 enviaban el nombre tal como se lo pasabas, así que ahí pasa el nombre completo en minúsculas con su sufijo. `lookupDomain` se resuelve con `null` para un nombre que no existe.
 
 ```typescript
 async function lookupDomain(domain: string) {

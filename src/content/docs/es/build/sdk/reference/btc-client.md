@@ -1,5 +1,5 @@
 ---
-sourceHash: "70d69b3d5eb4"
+sourceHash: "e28f75e293d7"
 title: "Referencia de la API de BtcClient"
 description: Referencia de BtcClient en el VerifiedX Web SDK, que abarca la generación de billeteras de Bitcoin, la información de direcciones, las transacciones, las tasas de comisión y la firma de mensajes.
 sidebar:
@@ -18,16 +18,18 @@ Crea una nueva instancia de BtcClient.
 - `network` ('mainnet' | 'testnet', opcional): la red de Bitcoin (predeterminada: `'mainnet'`). `'testnet'` usa los formatos de dirección de la testnet de Bitcoin (`tb1…`, `m…`/`n…`, `2…`), que comparte el signet de VerifiedX.
 - `dryRunOrOptions` (boolean | `BtcClientOptions`, opcional): `true` para un cliente de ejecución de prueba (dry run), o `{ dryRun?: boolean, apiBaseUrl?: string }`. `apiBaseUrl` sobrescribe el origen de la API de Esplora, incluido `/api`.
 
-Valores predeterminados de la API en `vfx-web-sdk` 9.0.3: `https://mempool.space/api` en mainnet y `https://mempool.space/testnet4/api` en testnet. La testnet de VerifiedX sigue el [signet de VerifiedX](/es/build/signet/), no testnet4, así que en testnet pasa `{ apiBaseUrl: 'https://signet.verifiedx.io/api' }`. Sin él, los saldos, los UTXO y las transmisiones van a testnet4.
+Valores predeterminados de la API: `https://mempool.space/api` en mainnet y, desde `vfx-web-sdk` 9.0.4, el [signet de VerifiedX](/es/build/signet/) en `https://signet.verifiedx.io/api` en testnet. 9.0.3 y anteriores usan en testnet la API pública de testnet4 de forma predeterminada, así que en esas versiones pasa `{ apiBaseUrl: 'https://signet.verifiedx.io/api' }` o los saldos, los UTXO y las transmisiones irán a testnet4.
 
 **Ejemplo:**
 ```typescript
 import { btc } from 'vfx-web-sdk';
 
-// VerifiedX signet (the Bitcoin side of the VFX testnet)
-const client = new btc.BtcClient('testnet', { apiBaseUrl: 'https://signet.verifiedx.io/api' });
+// Testnet is the VerifiedX signet (the Bitcoin side of the VFX testnet)
+const client = new btc.BtcClient('testnet');
 const mainnetClient = new btc.BtcClient('mainnet');
-const dryRunClient = new btc.BtcClient('testnet', { dryRun: true, apiBaseUrl: 'https://signet.verifiedx.io/api' });
+const dryRunClient = new btc.BtcClient('testnet', { dryRun: true });
+// A self-hosted Esplora or mempool API
+const customClient = new btc.BtcClient('mainnet', { apiBaseUrl: 'https://my-mempool.example.com/api' });
 ```
 
 ## Generación de billeteras
@@ -195,11 +197,12 @@ console.log(`BTC Balance: ${addressInfo.balance / 100000000} BTC`);
 
 ### `getTransactions(address, limit?, before?)`
 
-Obtiene el historial de transacciones de una dirección: la primera página de la API, de la más reciente a la más antigua, incluidas las no confirmadas.
+Obtiene el historial de transacciones de una dirección, de la más reciente a la más antigua: primero las no confirmadas y luego las confirmadas, hasta `limit` entradas.
 
 **Parámetros:**
 - `address` (string): la dirección de Bitcoin que consultas
-- `limit` (number, opcional) y `before` (number | null, opcional): se aceptan, pero en 9.0.3 no se envían a la API, así que no tienen efecto
+- `limit` (number, opcional): número máximo de transacciones que devuelve (50 de forma predeterminada)
+- `before` (string | null, opcional): un txid que ya viste. Desde 9.0.4 solo se devuelven transacciones confirmadas anteriores a él (ninguna sin confirmar), así que pasa el último txid confirmado de una llamada como `before` de la siguiente para recorrer el historial hacia atrás. 9.0.3 aceptaba `limit` y `before` pero los ignoraba
 
 **Devuelve:** `Promise<Transaction[]>` - Arreglo de transacciones
 
@@ -566,7 +569,7 @@ const SATOSHI_TO_BTC_MULTIPLIER = 0.00000001;
 ### Redes
 El cliente configura automáticamente la red de Bitcoin correcta según el parámetro del constructor:
 - `'mainnet'`: la mainnet de Bitcoin
-- `'testnet'`: los formatos de dirección de la testnet de Bitcoin. Para la testnet de VerifiedX, pasa `apiBaseUrl: 'https://signet.verifiedx.io/api'` para usar el [signet de VerifiedX](/es/build/signet/), un signet privado de Bitcoin con bloques de 10 minutos y direcciones `tb1…` (explorador `https://signet.verifiedx.io`); el valor predeterminado de 9.0.3 es la API pública de testnet4. Los BTC de prueba se obtienen del [faucet de testnet](https://spyglass-testnet.verifiedx.io/faucet) (pestaña Signet BTC).
+- `'testnet'`: los formatos de dirección de la testnet de Bitcoin. Desde 9.0.4 el cliente de testnet usa el [signet de VerifiedX](/es/build/signet/) de forma predeterminada: un signet privado de Bitcoin con bloques de 10 minutos y direcciones `tb1…` (explorador `https://signet.verifiedx.io`, API `https://signet.verifiedx.io/api`). En 9.0.3 o anterior, pasa `apiBaseUrl: 'https://signet.verifiedx.io/api'`. Los BTC de prueba se obtienen del [faucet de testnet](https://spyglass-testnet.verifiedx.io/faucet) (pestaña Signet BTC).
 
 ## Ejemplos
 
@@ -580,9 +583,7 @@ class BitcoinWallet {
   private keypair: btc.BtcKeypair | null = null;
 
   constructor(network: 'mainnet' | 'testnet' = 'testnet') {
-    this.client = network === 'testnet'
-      ? new btc.BtcClient('testnet', { apiBaseUrl: 'https://signet.verifiedx.io/api' })
-      : new btc.BtcClient('mainnet');
+    this.client = new btc.BtcClient(network);
   }
 
   createWallet(): { mnemonic: string; address: string } {

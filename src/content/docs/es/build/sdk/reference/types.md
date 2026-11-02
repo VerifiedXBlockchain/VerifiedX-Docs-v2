@@ -1,12 +1,12 @@
 ---
-sourceHash: "1a3909800708"
+sourceHash: "70c43b822319"
 title: "Tipos e interfaces"
 description: Definiciones de tipos de TypeScript del VerifiedX Web SDK, incluidos los tipos de VFX, de Bitcoin, utilitarios y de error, las constantes, las guardas de tipo y las exportaciones del módulo.
 sidebar:
   order: 3
 ---
 
-Esta página enumera los tipos de TypeScript que exporta el VerifiedX Web SDK (`vfx-web-sdk` 9.0.3). Impórtalos con `import type { … } from 'vfx-web-sdk'`; los tipos de Bitcoin están en el espacio de nombres `btc` (`btc.BtcKeypair`).
+Esta página enumera los tipos de TypeScript que exporta el VerifiedX Web SDK (`vfx-web-sdk` 9.0.4). Impórtalos con `import type { … } from 'vfx-web-sdk'`; los tipos de Bitcoin están en el espacio de nombres `btc` (`btc.BtcKeypair`).
 
 ## Tipos de VFX
 
@@ -19,27 +19,55 @@ enum Network {
   Testnet = 'testnet'
 }
 
-// Transaction types the SDK builds (numeric, matching Core's TransactionType)
+// Core's TransactionType, values 0 to 46 (complete from 9.0.4; 9.0.3 held only the types the SDK builds)
 enum TxType {
-  RbxTransfer = 0,   // VFX transfer (legacy identifier)
+  RbxTransfer = 0,                     // TX
   Node = 1,
   NftMint = 2,
   NftTx = 3,
   NftBurn = 4,
   NftSale = 5,
   Adnr = 6,
-  DstShop = 7,
+  DstShop = 7,                         // DSTR: DST shop registration
   VoteTopic = 8,
   Vote = 9,
   Reserve = 10,
-  TokenTx = 15,
-  TokenDeploy = 17,
+  ScMint = 11,                         // SC_MINT: standard smart contract mint
+  ScTx = 12,                           // SC_TX
+  ScBurn = 13,                         // SC_BURN
+  FungibleTokenMint = 14,              // FTKN_MINT: fungible token mint
+  TokenTx = 15,                        // FTKN_TX: fungible token transfer and operations
+  FungibleTokenBurn = 16,              // FTKN_BURN
+  TokenDeploy = 17,                    // TKNZ_MINT in Core; the live fungible-token deploy type
+  TokenizationTx = 18,                 // TKNZ_TX
+  TokenizationBurn = 19,               // TKNZ_BURN
+  TokenizationWithdrawalArbiter = 20,  // TKNZ_WD_ARB
+  TokenizationWithdrawalOwner = 21,    // TKNZ_WD_OWNER
+  VbtcV2ValidatorRegister = 22,
+  VbtcV2ValidatorHeartbeat = 23,
+  VbtcV2ValidatorExit = 24,
   VbtcV2ContractCreate = 25,
   VbtcV2Transfer = 26,
   VbtcV2WithdrawalRequest = 27,
   VbtcV2WithdrawalComplete = 28,
   VbtcV2WithdrawalCancel = 29,
-  VbtcV2CoinPin = 44
+  VbtcV2WithdrawalVote = 30,           // Validator vote on a withdrawal cancellation
+  VfxShield = 31,
+  VfxUnshield = 32,
+  VfxPrivateTransfer = 33,
+  VbtcV2Shield = 34,
+  VbtcV2Unshield = 35,
+  VbtcV2PrivateTransfer = 36,
+  VbtcV2BridgeLock = 37,               // Lock vBTC for bridging to Base
+  VbtcV2BridgeUnlock = 38,             // Unlock vBTC after a burn on Base (single lock)
+  VbtcV2BridgePoolUnlock = 39,         // Credit vBTC from several locks to one VFX address
+  VbtcV2BridgeExitToBtc = 40,          // Record a Base burnForBTCExit as a Bitcoin withdrawal intent
+  VbtcV2BridgeExitToBtcComplete = 41,
+  VbtcV2BridgeExitToBtcFail = 42,
+  VbtcV2BtcReport = 43,                // Sender-less (BTC_Attestation): Bitcoin headers and vault transactions of one Bitcoin block
+  VbtcV2CoinPin = 44,                  // Raises the Bitcoin fee of, or releases, a pinned withdrawal on a watched vault.
+  VbtcV2BtcReorg = 45,                 // Sender-less (BTC_Attestation): rewinds reported events after a Bitcoin reorg
+  VbtcV2VaultRekey = 46                // Sender-less: replaces a vault's key with one made by the current validators
 }
 
 // Second constructor argument of VfxClient (or pass a boolean dryRun)
@@ -230,6 +258,7 @@ interface VbtcV2Token {
   total_sent: number;
   tx_count: number;
   is_pending_withdrawal: boolean;
+  pending_owner_address?: string | null; // next owner while a reserve-account transfer of the vault is locked (9.0.4)
   is_watched?: boolean;               // the chain watches this vault (Core 9.0)
   addresses: Record<string, number>;  // holder → balance
   available_balances?: Record<string, number>; // balance minus open withdrawal requests
@@ -260,6 +289,8 @@ interface VbtcTransfer {
   to_address: string;
   amount: string;
   transaction_hash: string;
+  is_multi?: boolean;             // one share of a multi-vault transfer (9.0.4)
+  refused_at_maturity?: boolean;  // a reserve-account send the node refused when it fell due; nothing moved (9.0.4)
   created_at: string;
 }
 
@@ -356,7 +387,7 @@ type VbtcAllocationFailure = 'insufficientBalance' | 'tooManyInputs';
 interface VbtcAllocation { inputs: VbtcAllocationInput[]; available: number; failure?: VbtcAllocationFailure }
 ```
 
-`VbtcWithdrawalRequest` usa `VbtcWithdrawalStatus`, pero la versión 9.0.3 no lo exporta por nombre; si lo necesitas, escribe la unión tú mismo.
+`VbtcWithdrawalStatus` se exporta por nombre desde 9.0.4; 9.0.3 solo lo usaba dentro de `VbtcWithdrawalRequest`, así que ahí escribe la unión tú mismo.
 
 ### Tipos de nombres .btc
 
@@ -617,7 +648,7 @@ function isKeypair(value: any): value is Keypair {
 
 ## Exportaciones del módulo
 
-Lo que exporta `vfx-web-sdk` 9.0.3 (`src/index.ts`):
+Lo que exporta `vfx-web-sdk` 9.0.4 (`src/index.ts`):
 
 ```typescript
 // Clients
@@ -637,7 +668,7 @@ export {
 
 // Errors
 export {
-  VfxApiError, TransactionDispatchError, TransactionRefusedError, PreSignCheckError,
+  VfxApiError, VfxNetworkError, TransactionDispatchError, TransactionRefusedError, PreSignCheckError,
   VbtcWithdrawalIncompleteError, VbtcWithdrawalUnrecordedError, VbtcWithdrawalClosedError,
   VbtcNodeUnreachableError, BtcBroadcastUnknownError,
 };
@@ -655,13 +686,13 @@ export {
 export type {
   VfxClientOptions, ReserveSendOptions, Signer, KeypairOrSigner,
   Keypair, VfxAddress, Transaction, PaginatedResponse,
-  VbtcV2Token, VbtcWithdrawalRequest, VbtcTransfer, CreateVbtcResult, VbtcTransferResult,
+  VbtcV2Token, VbtcWithdrawalRequest, VbtcWithdrawalStatus, VbtcTransfer, CreateVbtcResult, VbtcTransferResult,
   VbtcMultiTransferResult, VbtcMultiWithdrawalResult, VbtcWithdrawalShare, VbtcWithdrawalShareOutcome,
   VbtcWithdrawalSharesResult, VbtcWithdrawalResult, VbtcWatchedWithdrawal,
   VbtcWatchedWithdrawalTransaction, VbtcCancelResult, VbtcProgressPhase, VbtcProgressEvent,
   VbtcAllocation, VbtcAllocationInput, VbtcAllocationFailure, BtcNameAcceptance,
   FungibleToken, FungibleTokenDetail, FungibleTokenBalance, TokenVotingTopic, TokenImage,
-  DeployTokenParams, DeployTokenResult, ReserveKeypair,
+  DeployTokenParams, DeployTokenResult, ReserveKeypair, MediaUploadResult,
 };
 ```
 
