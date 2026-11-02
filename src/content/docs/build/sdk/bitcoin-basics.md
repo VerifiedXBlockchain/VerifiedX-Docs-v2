@@ -21,8 +21,8 @@ The SDK supports two Bitcoin networks:
 - **Mainnet**: The production Bitcoin network with real BTC
 - **Testnet**: For VerifiedX development this is the [VerifiedX signet](/build/signet/), the private Bitcoin test network the VFX testnet watches. It uses testnet address formats (`tb1…`, `m…`/`n…`, `2…`) and signet BTC from the testnet faucet
 
-:::caution[Point testnet at the VerifiedX signet]
-In `vfx-web-sdk` 9.0.3, `new btc.BtcClient('testnet')` still defaults to the public Bitcoin testnet4 API (`https://mempool.space/testnet4/api`). Keys and addresses are the same on both networks, but balances, UTXOs and broadcasts are not. Pass `apiBaseUrl: 'https://signet.verifiedx.io/api'` so the client reads and broadcasts on the VerifiedX signet.
+:::note[Testnet is the VerifiedX signet]
+From `vfx-web-sdk` 9.0.4, `new btc.BtcClient('testnet')` uses the VerifiedX signet (`https://signet.verifiedx.io/api`) by default. Keys and addresses are the same on every Bitcoin test network, but balances, UTXOs and broadcasts are not, so on 9.0.3 or earlier upgrade or pass `apiBaseUrl: 'https://signet.verifiedx.io/api'`.
 :::
 
 ## Step 1: Initialize the Bitcoin Client
@@ -32,8 +32,8 @@ The `BtcClient` provides all Bitcoin functionality in a single interface:
 ```typescript
 import { btc } from 'vfx-web-sdk';
 
-// Initialize for the VerifiedX signet (recommended for development)
-const client = new btc.BtcClient('testnet', { apiBaseUrl: 'https://signet.verifiedx.io/api' });
+// Initialize for testnet, the VerifiedX signet (recommended for development)
+const client = new btc.BtcClient('testnet');
 
 // For mainnet (production)
 // const client = new btc.BtcClient('mainnet');
@@ -317,10 +317,8 @@ class BitcoinWalletManager {
   private client: btc.BtcClient;
 
   constructor(network: 'mainnet' | 'testnet' = 'testnet') {
-    // On testnet, read and broadcast on the VerifiedX signet
-    this.client = network === 'testnet'
-      ? new btc.BtcClient('testnet', { apiBaseUrl: 'https://signet.verifiedx.io/api' })
-      : new btc.BtcClient('mainnet');
+    // On testnet the client reads and broadcasts on the VerifiedX signet
+    this.client = new btc.BtcClient(network);
   }
 
   // Create new wallet

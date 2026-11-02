@@ -17,16 +17,18 @@ Creates a new BtcClient instance.
 - `network` ('mainnet' | 'testnet', optional): The Bitcoin network (default `'mainnet'`). `'testnet'` uses Bitcoin testnet address formats (`tb1…`, `m…`/`n…`, `2…`), which the VerifiedX signet shares.
 - `dryRunOrOptions` (boolean | `BtcClientOptions`, optional): `true` for a dry-run client, or `{ dryRun?: boolean, apiBaseUrl?: string }`. `apiBaseUrl` overrides the Esplora API origin, including `/api`.
 
-API defaults in `vfx-web-sdk` 9.0.3: `https://mempool.space/api` on mainnet and `https://mempool.space/testnet4/api` on testnet. The VerifiedX testnet follows the [VerifiedX signet](/build/signet/), not testnet4, so on testnet pass `{ apiBaseUrl: 'https://signet.verifiedx.io/api' }`. Without it, balances, UTXOs and broadcasts go to testnet4.
+API defaults: `https://mempool.space/api` on mainnet and, from `vfx-web-sdk` 9.0.4, the [VerifiedX signet](/build/signet/) at `https://signet.verifiedx.io/api` on testnet. 9.0.3 and earlier default testnet to the public testnet4 API, so on those versions pass `{ apiBaseUrl: 'https://signet.verifiedx.io/api' }` or balances, UTXOs and broadcasts go to testnet4.
 
 **Example:**
 ```typescript
 import { btc } from 'vfx-web-sdk';
 
-// VerifiedX signet (the Bitcoin side of the VFX testnet)
-const client = new btc.BtcClient('testnet', { apiBaseUrl: 'https://signet.verifiedx.io/api' });
+// Testnet is the VerifiedX signet (the Bitcoin side of the VFX testnet)
+const client = new btc.BtcClient('testnet');
 const mainnetClient = new btc.BtcClient('mainnet');
-const dryRunClient = new btc.BtcClient('testnet', { dryRun: true, apiBaseUrl: 'https://signet.verifiedx.io/api' });
+const dryRunClient = new btc.BtcClient('testnet', { dryRun: true });
+// A self-hosted Esplora or mempool API
+const customClient = new btc.BtcClient('mainnet', { apiBaseUrl: 'https://my-mempool.example.com/api' });
 ```
 
 ## Wallet Generation
@@ -565,7 +567,7 @@ const SATOSHI_TO_BTC_MULTIPLIER = 0.00000001;
 ### Networks
 The client automatically configures the correct Bitcoin network based on the constructor parameter:
 - `'mainnet'`: Bitcoin mainnet
-- `'testnet'`: Bitcoin testnet address formats. For the VerifiedX testnet, pass `apiBaseUrl: 'https://signet.verifiedx.io/api'` to use the [VerifiedX signet](/build/signet/), a private Bitcoin signet with 10-minute blocks and `tb1…` addresses (explorer `https://signet.verifiedx.io`); the 9.0.3 default is the public testnet4 API. Test BTC comes from the [testnet faucet](https://spyglass-testnet.verifiedx.io/faucet) (Signet BTC tab).
+- `'testnet'`: Bitcoin testnet address formats. From 9.0.4 the testnet client uses the [VerifiedX signet](/build/signet/) by default: a private Bitcoin signet with 10-minute blocks and `tb1…` addresses (explorer `https://signet.verifiedx.io`, API `https://signet.verifiedx.io/api`). On 9.0.3 or earlier, pass `apiBaseUrl: 'https://signet.verifiedx.io/api'`. Test BTC comes from the [testnet faucet](https://spyglass-testnet.verifiedx.io/faucet) (Signet BTC tab).
 
 ## Examples
 
@@ -579,9 +581,7 @@ class BitcoinWallet {
   private keypair: btc.BtcKeypair | null = null;
 
   constructor(network: 'mainnet' | 'testnet' = 'testnet') {
-    this.client = network === 'testnet'
-      ? new btc.BtcClient('testnet', { apiBaseUrl: 'https://signet.verifiedx.io/api' })
-      : new btc.BtcClient('mainnet');
+    this.client = new btc.BtcClient(network);
   }
 
   createWallet(): { mnemonic: string; address: string } {
