@@ -6,7 +6,7 @@ sidebar:
   order: 4
 ---
 
-The VerifiedX testnet does not use a public Bitcoin test network. Its Bitcoin side is the **VerifiedX signet**: a private Bitcoin network, run by the VerifiedX team, that follows Bitcoin's rules but whose blocks only the VerifiedX team can produce. Everything Bitcoin-related on the VFX testnet uses it: vBTC vault deposits and withdrawals, the wallets' Bitcoin accounts and, when its API base URL is set to the signet, the SDK's `BtcClient` on testnet.
+The VerifiedX testnet does not use a public Bitcoin test network. Its Bitcoin side is the **VerifiedX signet**: a private Bitcoin network, run by the VerifiedX team, that follows Bitcoin's rules but whose blocks only the VerifiedX team can produce. Everything Bitcoin-related on the VFX testnet uses it: vBTC vault deposits and withdrawals, the wallets' Bitcoin accounts and, from `vfx-web-sdk` 9.0.4 by default, the SDK's `BtcClient` on testnet.
 
 It replaced Bitcoin testnet4 in October 2026. Testnet4's block times swing from seconds to hours and its chain reorganises often, so vBTC deposits and withdrawals could not be confirmed on a predictable schedule. The signet gives the testnet a Bitcoin chain that behaves like mainnet and stays up.
 
@@ -53,7 +53,7 @@ curl https://signet.verifiedx.io/api/address/tb1q.../txs
 curl https://signet.verifiedx.io/api/v1/fees/recommended
 ```
 
-VerifiedX Core on testnet and the VerifiedX wallets already point at these servers. In `vfx-web-sdk` 9.0.3, `new btc.BtcClient('testnet')` still defaults to Bitcoin testnet4, so pass `{ apiBaseUrl: 'https://signet.verifiedx.io/api' }` (see [Bitcoin basics](/build/sdk/bitcoin-basics/)).
+VerifiedX Core on testnet and the VerifiedX wallets point at these servers, and from `vfx-web-sdk` 9.0.4 so does `new btc.BtcClient('testnet')` by default. On 9.0.3 or earlier, pass `{ apiBaseUrl: 'https://signet.verifiedx.io/api' }` (see [Bitcoin basics](/build/sdk/bitcoin-basics/)).
 
 ## Getting signet BTC
 

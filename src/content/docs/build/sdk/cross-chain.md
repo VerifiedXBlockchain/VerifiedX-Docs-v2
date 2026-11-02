@@ -39,7 +39,7 @@ class CrossChainClient {
     btcNetwork: 'mainnet' | 'testnet' = 'testnet'
   ) {
     this.vfxClient = new VfxClient(vfxNetwork);
-    this.btcClient = new btc.BtcClient(btcNetwork, btcNetwork === 'testnet' ? { apiBaseUrl: 'https://signet.verifiedx.io/api' } : {});
+    this.btcClient = new btc.BtcClient(btcNetwork);
   }
 
   // Access both clients
@@ -50,8 +50,8 @@ class CrossChainClient {
 const crossChain = new CrossChainClient(Network.Testnet, 'testnet');
 ```
 
-:::caution[Bitcoin testnet means the VerifiedX signet]
-The VFX testnet watches the [VerifiedX signet](/build/signet/). In `vfx-web-sdk` 9.0.3 `new btc.BtcClient('testnet')` still defaults to the public testnet4 API, so every example on this page passes `apiBaseUrl: 'https://signet.verifiedx.io/api'` on testnet.
+:::note[Bitcoin testnet means the VerifiedX signet]
+The VFX testnet watches the [VerifiedX signet](/build/signet/). From `vfx-web-sdk` 9.0.4, `new btc.BtcClient('testnet')` uses it by default, so the examples on this page need no API override. On 9.0.3 or earlier, pass `apiBaseUrl: 'https://signet.verifiedx.io/api'` on testnet.
 :::
 
 ## Cross-Platform Wallet Generation
@@ -67,7 +67,7 @@ class CrossPlatformWallet {
 
   constructor(network: 'mainnet' | 'testnet' = 'testnet') {
     this.vfxClient = new VfxClient(network === 'mainnet' ? Network.Mainnet : Network.Testnet);
-    this.btcClient = new btc.BtcClient(network, network === 'testnet' ? { apiBaseUrl: 'https://signet.verifiedx.io/api' } : {});
+    this.btcClient = new btc.BtcClient(network);
   }
 
   // Generate wallets that can be recreated on any platform
@@ -128,7 +128,7 @@ class MnemonicCrossChainWallet {
 
   constructor(network: 'mainnet' | 'testnet' = 'testnet') {
     this.vfxClient = new VfxClient(network === 'mainnet' ? Network.Mainnet : Network.Testnet);
-    this.btcClient = new btc.BtcClient(network, network === 'testnet' ? { apiBaseUrl: 'https://signet.verifiedx.io/api' } : {});
+    this.btcClient = new btc.BtcClient(network);
   }
 
   // Generate wallets using the same mnemonic
@@ -193,7 +193,7 @@ class CrossChainDashboard {
 
   constructor(vfxNetwork: Network, btcNetwork: 'mainnet' | 'testnet') {
     this.vfxClient = new VfxClient(vfxNetwork);
-    this.btcClient = new btc.BtcClient(btcNetwork, btcNetwork === 'testnet' ? { apiBaseUrl: 'https://signet.verifiedx.io/api' } : {});
+    this.btcClient = new btc.BtcClient(btcNetwork);
   }
 
   async getUnifiedAccountInfo(vfxAddress: string, btcAddress: string): Promise<CrossChainAccountInfo> {
@@ -296,7 +296,7 @@ class CrossChainTransactionCoordinator {
 
   constructor(vfxNetwork: Network, btcNetwork: 'mainnet' | 'testnet') {
     this.vfxClient = new VfxClient(vfxNetwork);
-    this.btcClient = new btc.BtcClient(btcNetwork, btcNetwork === 'testnet' ? { apiBaseUrl: 'https://signet.verifiedx.io/api' } : {});
+    this.btcClient = new btc.BtcClient(btcNetwork);
   }
 
   // Send VFX transaction
@@ -418,7 +418,7 @@ class CrossChainDomainService {
 
   constructor(vfxNetwork: Network, btcNetwork: 'mainnet' | 'testnet') {
     this.vfxClient = new VfxClient(vfxNetwork);
-    this.btcClient = new btc.BtcClient(btcNetwork, btcNetwork === 'testnet' ? { apiBaseUrl: 'https://signet.verifiedx.io/api' } : {});
+    this.btcClient = new btc.BtcClient(btcNetwork);
   }
 
   // Register name.vfx for the VFX address and name.btc for the Bitcoin address
@@ -522,7 +522,7 @@ class CrossChainWalletApp {
 
   constructor(network: 'mainnet' | 'testnet' = 'testnet') {
     this.vfxClient = new VfxClient(network === 'mainnet' ? Network.Mainnet : Network.Testnet);
-    this.btcClient = new btc.BtcClient(network, network === 'testnet' ? { apiBaseUrl: 'https://signet.verifiedx.io/api' } : {});
+    this.btcClient = new btc.BtcClient(network);
   }
 
   // Initialize wallet from credentials
