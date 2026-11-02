@@ -1,5 +1,5 @@
 ---
-sourceHash: "ad2376a4a818"
+sourceHash: "7bb9daee1608"
 title: "Referencia de la API de VfxClient"
 description: Referencia de los métodos de VfxClient en el VerifiedX Web SDK, que abarca pares de claves, firma externa, transacciones, vBTC V2, tokens VFX20, cuentas de reserva y operaciones con direcciones.
 sidebar:
@@ -763,15 +763,16 @@ Las lecturas y las escrituras informan los fallos de forma distinta:
 
 ### Errores de red
 ```typescript
-import { VfxApiError } from 'vfx-web-sdk';
+import { VfxApiError, VfxNetworkError } from 'vfx-web-sdk';
 
 try {
   const details = await client.getAddressDetails(address, { strict: true });
 } catch (error) {
-  if (error instanceof VfxApiError) {
+  if (error instanceof VfxNetworkError) {
+    // Test the subclass first: a VfxNetworkError is also a VfxApiError
+    console.log('Data API unreachable', error.cause); // DNS failure, refused connection, timeout
+  } else if (error instanceof VfxApiError) {
     console.log('Data API error', error.status);
-  } else {
-    console.log('Data API unreachable', error.message); // e.g. "fetch failed"
   }
 }
 ```

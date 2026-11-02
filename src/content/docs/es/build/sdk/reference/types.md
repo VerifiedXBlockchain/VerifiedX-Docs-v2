@@ -1,5 +1,5 @@
 ---
-sourceHash: "70c43b822319"
+sourceHash: "a85cfa3bb44a"
 title: "Tipos e interfaces"
 description: Definiciones de tipos de TypeScript del VerifiedX Web SDK, incluidos los tipos de VFX, de Bitcoin, utilitarios y de error, las constantes, las guardas de tipo y las exportaciones del módulo.
 sidebar:
@@ -238,6 +238,12 @@ interface PaginatedResponse<T> {
   num_pages: number;   // Number of pages
   results: T[];        // Items on this page
 }
+```
+
+### Subida de archivos
+
+```typescript
+interface MediaUploadResult { url: string }   // what MediaApiClient.uploadAsset resolves to (9.0.4)
 ```
 
 ### Tipos de vBTC V2
@@ -546,6 +552,11 @@ class VfxApiError extends Error {          // non-2xx answer from the data API
   readonly status: number | undefined;
   readonly url: string;
   readonly body: string | undefined;
+}
+
+class VfxNetworkError extends VfxApiError {  // no HTTP response at all: DNS failure, refused or dropped connection, timeout (9.0.4)
+  readonly status: undefined;
+  readonly cause: unknown;                   // the underlying fetch TypeError or AbortError
 }
 
 class TransactionDispatchError extends Error {  // sent, but no answer came back
