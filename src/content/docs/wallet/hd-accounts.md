@@ -21,4 +21,5 @@ Hierarchical Deterministic (HD) accounts generate multiple addresses from a sing
 ## Recovery
 - On a wallet with no accounts yet, click **Restore HD Account** in **Operations** and enter the recovery phrase.
 - Recreate previously generated addresses as needed.
+- In the desktop wallet 9.0.2 (Core 9.0.2), a phrase pasted with extra spaces restores the phrase's real wallet, the one other BIP39 wallets restore. Earlier versions restored a different wallet from the extra spaces; 9.0.2 also brings back that wallet's used addresses, so move their funds to the restored wallet.
 - In the [web wallet](/wallet/web-wallet/), sign in with **Mnemonic (HD account)** to restore from the phrase.

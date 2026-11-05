@@ -105,7 +105,7 @@ You are done! You should now see a wallet running! Some common errors are usuall
 
 ### Summary
 
-The point of this section is to outline the config file setup and features it has. The file is `config.txt`: `~/rbx/Config/` on macOS, `~/.local/share/RBX/Config/` on Linux and `%LOCALAPPDATA%\RBX\Config\` on Windows. On testnet the folders are `RBXTest` (macOS `rbxtest`) and `ConfigTestNet`. `RBX` is a legacy folder name the code still uses. Write one `Key=Value` per line with no blank lines: the CLI stops reading at the first empty line. See [CLI Configuration](/node/configuration/) for every key.
+The point of this section is to outline the config file setup and features it has. The file is `config.txt`: `~/rbx/Config/` on macOS, `~/.local/share/RBX/Config/` on Linux and `%LOCALAPPDATA%\RBX\Config\` on Windows. On testnet the folders are `RBXTest` (macOS `rbxtest`) and `ConfigTestNet`. `RBX` is a legacy folder name the code still uses. Write one `Key=Value` per line with no blank lines: the CLI stops reading at the first empty line. The value is everything after the first `=`. See [CLI Configuration](/node/configuration/) for every key.
 
 1. Port (default is 3338)
 
@@ -162,12 +162,12 @@ The point of this section is to outline the config file setup and features it ha
    - Ex: ChainCheckPoint=true
    - This is a feature that will turn on chain check points. What this will do is create a FULL copy of the chains state and back it up and create a checkpoint you can revert back to in the event your current structure becomes corrupted.
 
-10. ChainCheckPointInternal (default is 12)
+10. ChainCheckPointInterval (default is 12)
 
     - Type `int`
-    - Ex: `ChainCheckPointInternal=4`
+    - Ex: `ChainCheckPointInterval=4`
     - This interval is in hours and means it will run the checkpoint every X amount of hours. Use 1 or more.
-    - The key is spelled `ChainCheckPointInternal`, which is what the CLI reads. Older material spells it `ChainCheckPointInterval`; that spelling is ignored.
+    - Core 9.0.2 reads `ChainCheckPointInterval` and the older spelling `ChainCheckPointInternal`. Earlier versions read only `ChainCheckPointInternal`.
 
 11. ChainCheckPointRetain (default is 2)
 
@@ -175,10 +175,11 @@ The point of this section is to outline the config file setup and features it ha
     - Ex: `ChainCheckPointRetain=4`
     - Retain is what will determine how many backups to keep before it will begin to remove the oldest backup to make room for new one.
 
-12. ChainCheckpointLocation (default is the Checkpoint folder in the data directory)
+12. ChainCheckPointLocation (default is the Checkpoint folder in the data directory)
 
     - Type `string`
-    - Ex: `ChainCheckpointLocation=C:\somelocation\otherthan\default\`
+    - Ex: `ChainCheckPointLocation=C:\somelocation\otherthan\default\`
+    - Core 9.0.2 reads `ChainCheckPointLocation` and the older spelling `ChainCheckpointLocation`. Earlier versions read only `ChainCheckpointLocation`.
     - If the default path is not wanted you can setup a new location for them to go to.
 
 13. APICallURLLogging (default is false)
@@ -225,13 +226,13 @@ The point of this section is to outline the config file setup and features it ha
 20. RejectAssetExtensionTypes (default is a List of rejected assets)
 
     - Type `List of string`
-    - Ex: `RejectAssetExtensionTypes=.iso,.apk,.pdf` (include the leading dot and no spaces between types; entries without the dot match nothing)
+    - Ex: `RejectAssetExtensionTypes=.iso,.apk,.pdf` (from Core 9.0.2, `pdf` and `.pdf` are the same entry and spaces around entries are ignored; earlier versions need the leading dot and no spaces)
     - This will add extension types to the already defined list and will reject any NFT assets with these known extension types
 
 21. AllowedExtensionsTypes (default is null)
 
     - Type `List of string`
-    - Ex: `AllowedExtensionsTypes=.doc,.xls` (include the leading dot)
+    - Ex: `AllowedExtensionsTypes=.doc,.xls` (from Core 9.0.2 the leading dot is optional and the match ignores case; earlier versions need the dot and the list's exact case)
     - This will remove extension types from the already defined list and will allow any NFT assets with these known extension types to be downloaded
 
 An example config setup could appear like this:
