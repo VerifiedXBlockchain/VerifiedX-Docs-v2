@@ -45,7 +45,7 @@ This document provides comprehensive documentation for all API endpoints in the 
 - `id` (string, path) - Command identifier  
 **Supported Commands:**
 - `"getgenesisblock"` - Returns Genesis block in JSON format  
-**Returns:** Command result or "Command not recognized"
+**Returns:** The Genesis block as JSON. Any other `id` is `404 Not Found` from Core 9.0.2; earlier versions answered `200` with the text "Command not recognized".
 
 ### Wallet Management Endpoints
 
@@ -211,7 +211,7 @@ This document provides comprehensive documentation for all API endpoints in the 
 - `GET /CheckStatus`: simple status check (`Online`); answers without the API token.
 - `GET /Health`: trimmed node health for scripts and orchestration.
 - `GET /GetHDWallet/{strength}`: converts the wallet to an HD wallet with a 12 or 24 word phrase.
-- `GET /GetRestoreHDWallet/{mnemonic}`: restores an HD wallet from its phrase.
+- `GET /GetRestoreHDWallet/{mnemonic}`: restores an HD wallet from its phrase. From Core 9.0.2 the seed comes from the phrase's words only (any whitespace, any case), as in other BIP39 wallets. Earlier versions derived it from the text as typed, so a phrase with extra spaces restored a different wallet. When the phrase has extra spaces, 9.0.2 restores the real wallet and also imports the used addresses of that earlier wallet; `?exactSpacing=true` makes the earlier wallet the HD wallet instead (and imports the real wallet's used addresses). URL-encode the phrase.
 - `GET /GetLatestRelease/{runUpdate}/{**fileName}`: downloads the latest CLI release and installs it if `runUpdate` is true.
 - `GET /GetLatestReleaseFiles`: lists the files of the latest CLI release.
 - `GET /NetworkMetrics`: block timing metrics; answers without the API token.
@@ -507,7 +507,7 @@ vBTC routes are in the [vBTC V2 API](#15-vbtc-v2-api-90-additions) (`vbtcapi/VBT
 **Summary:** Get specific smart contract commands  
 **Parameters:**
 - `id` (string, path) - Command identifier  
-**Returns:** Command result
+**Returns:** No command is defined, so every `id` is `404 Not Found` from Core 9.0.2; earlier versions answered `200` with the text "Command not recognized".
 
 ### Testing Endpoints
 
@@ -1611,4 +1611,4 @@ Requests carry the `apitoken` header when the node was started with an API token
 - **404 Not Found**: Resource not found
 - **500 Internal Server Error**: Server error
 
-This documentation covers the 18 controllers of Core 9.0.1. Swagger on a running node (`/swagger`) lists every route with its parameters.
+This documentation covers the 18 controllers of Core 9.0.2. Swagger on a running node (`/swagger`) lists every route with its parameters.

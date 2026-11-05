@@ -18,7 +18,7 @@ The macOS folder is lowercase `rbx` in the code. The default macOS file system i
 On first run the CLI writes `Port`, `APIPort`, `TestNet`, `NFTTimeout=15`, `AutoDownloadNFTAsset=true`, `BitcoinAddressFormat=1` and the Base bridge keys. On testnet it writes `Port=13338` and `APIPort=17292`.
 
 :::note
-A restart of the CLI is required after making changes. Write one `Key=Value` per line with no blank lines: the CLI stops reading at the first empty line. A value cannot contain `=`, because the line is split on it.
+A restart of the CLI is required after making changes. Write one `Key=Value` per line with no blank lines: the CLI stops reading at the first empty line. The key is everything before the first `=` and the value everything after it, so a value can contain `=`. From Core 9.0.2 a line with no key or no value is skipped with a console note and its default applies (earlier versions stopped at startup), and the CLI also notes how many lines after a blank line it ignored.
 :::
 
 ```text
@@ -68,21 +68,22 @@ A restart of the CLI is required after making changes. Write one `Key=Value` per
 	+ b.	Ex: ChainCheckPoint=true
 	+ c.	This is a feature that will turn on chain check points. What this will do is create a FULL copy of the chains state and back it up and create a checkpoint you can revert back to in the event your current structure becomes corrupted. 
 
-10.	ChainCheckPointInternal (default is 12)
+10.	ChainCheckPointInterval (default is 12)
 	+ a.	Type int
-	+ b.	Ex: ChainCheckPointInternal=4
+	+ b.	Ex: ChainCheckPointInterval=4
 	+ c.	This interval is in hours and means it will run the checkpoint every X amount of hours. Use 1 or more.
-	+ d.	The key is spelled ChainCheckPointInternal, which is what the CLI reads. Older material spells it ChainCheckPointInterval; that spelling is ignored.
+	+ d.	Core 9.0.2 reads ChainCheckPointInterval and the older spelling ChainCheckPointInternal. Earlier versions read only ChainCheckPointInternal.
 
 11.	ChainCheckPointRetain (default is 2)
 	+ a.	Type int
 	+ b.	Ex: ChainCheckPointRetain=4
 	+ c.	Retain is what will determine how many backups to keep before it will begin to remove the oldest backup to make room for new one.
 
-12.	ChainCheckpointLocation (default is the Checkpoint folder in the data directory)
+12.	ChainCheckPointLocation (default is the Checkpoint folder in the data directory)
 	+ a.	Type string
-	+ b.	Ex: ChainCheckpointLocation=C:\somelocation\otherthan\default\
+	+ b.	Ex: ChainCheckPointLocation=C:\somelocation\otherthan\default\
 	+ c.	If the default path is not wanted you can setup a new location for them to go to.
+	+ d.	Core 9.0.2 reads ChainCheckPointLocation and the older spelling ChainCheckpointLocation. Earlier versions read only ChainCheckpointLocation.
 
 13.	APICallURLLogging (default is false)
 	+ a.	Type Boolean
@@ -121,12 +122,12 @@ A restart of the CLI is required after making changes. Write one `Key=Value` per
 
 20.	RejectAssetExtensionTypes (default is a List of rejected assets)
 	+ a.	Type List<string>
-	+ b.	Ex: RejectAssetExtensionTypes=.iso,.apk,.pdf (include the leading dot and no spaces between types; entries without the dot match nothing)
+	+ b.	Ex: RejectAssetExtensionTypes=.iso,.apk,.pdf (from Core 9.0.2, pdf and .pdf are the same entry and spaces around entries are ignored; earlier versions need the leading dot and no spaces)
 	+ c.	This will add extension types to the already defined list and will reject any NFT assets with these known extension types
 
 21.	AllowedExtensionsTypes (default is null)
 	+ a.	Type List<string>
-	+ b.	Ex: AllowedExtensionsTypes=.doc,.xls (include the leading dot)
+	+ b.	Ex: AllowedExtensionsTypes=.doc,.xls (from Core 9.0.2 the leading dot is optional and the match ignores case; earlier versions need the dot and the list's exact case)
 	+ c.	This will remove extension types from the already defined list and will allow any NFT assets with these known extension types to be downloaded
 	
 22.     MotherAddress (default is null)
