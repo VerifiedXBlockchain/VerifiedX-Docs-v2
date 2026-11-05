@@ -541,7 +541,7 @@ vBTC routes are in the [vBTC V2 API](#15-vbtc-v2-api-90-additions) (`vbtcapi/VBT
 - `pageNumber` (int, path) - Page number  
 - `search` (string, path, catch-all) - Search terms  
 **Returns:** Filtered smart contract list  
-**Note:** This two-segment form collides with the `{excludeToken?}` route below, so the node reads the search text as `excludeToken` and answers `400`. To search, use `GetAllSmartContracts/{pageNumber}/false/false/{search}`.
+**Note:** From Core 9.0.2 this two-segment form searches, unless the search text is `true` or `false` (that is read as `excludeToken`). Earlier versions read any search text as `excludeToken` and answered `400`. `GetAllSmartContracts/{pageNumber}/false/false/{search}` searches on every version.
 
 #### GET `/GetAllSmartContracts/{pageNumber}/{excludeToken?}`
 **Summary:** Get smart contracts excluding tokens  
