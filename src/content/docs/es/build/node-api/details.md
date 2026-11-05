@@ -1,5 +1,5 @@
 ---
-sourceHash: "beffadc3c9b5"
+sourceHash: "929be3feeaf5"
 title: "Detalles de la API del nodo de VFX CLI"
 description: "Referencia de todos los endpoints de la API de VFX Core, agrupados por espacio de nombres, con sus parámetros y valores devueltos."
 sidebar:
@@ -542,7 +542,7 @@ Las rutas de vBTC están en la [API de vBTC V2](#15-api-de-vbtc-v2-novedades-de-
 - `pageNumber` (int, ruta) - Número de página  
 - `search` (string, ruta, comodín) - Términos de búsqueda  
 **Devuelve:** Lista filtrada de contratos inteligentes  
-**Nota:** Esta forma de dos segmentos choca con la ruta `{excludeToken?}` de abajo, así que el nodo lee el texto de búsqueda como `excludeToken` y responde `400`. Para buscar, usa `GetAllSmartContracts/{pageNumber}/false/false/{search}`.
+**Nota:** Desde Core 9.0.2 esta forma de dos segmentos busca, salvo que el texto de búsqueda sea `true` o `false` (eso se lee como `excludeToken`). Las versiones anteriores leían cualquier texto de búsqueda como `excludeToken` y respondían `400`. `GetAllSmartContracts/{pageNumber}/false/false/{search}` busca en todas las versiones.
 
 #### GET `/GetAllSmartContracts/{pageNumber}/{excludeToken?}`
 **Resumen:** Obtiene contratos inteligentes excluyendo los tokens  
