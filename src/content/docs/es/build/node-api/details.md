@@ -1,5 +1,5 @@
 ---
-sourceHash: "b002cfecffec"
+sourceHash: "beffadc3c9b5"
 title: "Detalles de la API del nodo de VFX CLI"
 description: "Referencia de todos los endpoints de la API de VFX Core, agrupados por espacio de nombres, con sus parámetros y valores devueltos."
 sidebar:
@@ -46,7 +46,7 @@ Este documento ofrece una documentación completa de todos los endpoints de la A
 - `id` (string, ruta) - Identificador del comando  
 **Comandos admitidos:**
 - `"getgenesisblock"` - Devuelve el bloque génesis en formato JSON  
-**Devuelve:** Resultado del comando o "Command not recognized"
+**Devuelve:** El bloque génesis en JSON. Cualquier otro `id` es `404 Not Found` desde Core 9.0.2; las versiones anteriores respondían `200` con el texto "Command not recognized".
 
 ### Endpoints de gestión de la billetera
 
@@ -212,7 +212,7 @@ Este documento ofrece una documentación completa de todos los endpoints de la A
 - `GET /CheckStatus`: comprobación simple del estado (`Online`); responde sin el token de la API.
 - `GET /Health`: salud resumida del nodo para scripts y orquestación.
 - `GET /GetHDWallet/{strength}`: convierte la billetera en una billetera HD con una frase de 12 o 24 palabras.
-- `GET /GetRestoreHDWallet/{mnemonic}`: restaura una billetera HD a partir de su frase.
+- `GET /GetRestoreHDWallet/{mnemonic}`: restaura una billetera HD a partir de su frase. Desde Core 9.0.2 la semilla sale solo de las palabras de la frase (cualquier espacio en blanco, mayúsculas o minúsculas), como en otras billeteras BIP39. Las versiones anteriores la derivaban del texto tal como se escribió, así que una frase con espacios de más restauraba otra billetera. Cuando la frase tiene espacios de más, 9.0.2 restaura la billetera real y también importa las direcciones usadas de esa billetera anterior; `?exactSpacing=true` hace que la billetera anterior sea la billetera HD (e importa las direcciones usadas de la real). Codifica la frase para URL.
 - `GET /GetLatestRelease/{runUpdate}/{**fileName}`: descarga la última versión del CLI y la instala si `runUpdate` es true.
 - `GET /GetLatestReleaseFiles`: lista los archivos de la última versión del CLI.
 - `GET /NetworkMetrics`: métricas de tiempos de bloque; responde sin el token de la API.
@@ -508,7 +508,7 @@ Las rutas de vBTC están en la [API de vBTC V2](#15-api-de-vbtc-v2-novedades-de-
 **Resumen:** Obtiene comandos específicos de contratos inteligentes  
 **Parámetros:**
 - `id` (string, ruta) - Identificador del comando  
-**Devuelve:** Resultado del comando
+**Devuelve:** No hay ningún comando definido, así que todo `id` es `404 Not Found` desde Core 9.0.2; las versiones anteriores respondían `200` con el texto "Command not recognized".
 
 ### Endpoints de prueba
 
@@ -1612,4 +1612,4 @@ Las solicitudes llevan el encabezado `apitoken` cuando el nodo se inició con un
 - **404 Not Found**: recurso no encontrado
 - **500 Internal Server Error**: error del servidor
 
-Esta documentación cubre los 18 controladores de Core 9.0.1. Swagger en un nodo en ejecución (`/swagger`) lista cada ruta con sus parámetros.
+Esta documentación cubre los 18 controladores de Core 9.0.2. Swagger en un nodo en ejecución (`/swagger`) lista cada ruta con sus parámetros.
