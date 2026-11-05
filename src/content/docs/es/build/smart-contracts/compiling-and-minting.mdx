@@ -1,5 +1,5 @@
 ---
-sourceHash: "2e26e77b4c3b"
+sourceHash: "fbf2d8c2f488"
 title: "Compilar y emitir"
 description: Compila un contrato inteligente a partir de un payload JSON y emítelo con la API del CLI de Core, agrega funciones de regalía, multiarchivo y evolución, y lista, busca y consulta contratos.
 sidebar:
@@ -467,7 +467,7 @@ def list_nfts(page=1):
 GET http://localhost:7292/scapi/scv1/GetAllSmartContracts/{PAGE}/false/false/{QUERY}
 ```
 
-Los dos segmentos `false` son `excludeToken` y `tokensOnly`. Una ruta de dos segmentos como `GetAllSmartContracts/1/{QUERY}` se interpreta como `excludeToken` y falla con un error de validación 400.
+Los dos segmentos `false` son `excludeToken` y `tokensOnly`. Desde Core 9.0.2, `GetAllSmartContracts/{PAGE}/{QUERY}` también busca, salvo que la consulta sea `true` o `false`. Las versiones anteriores leían ese segundo segmento como `excludeToken` y respondían 400, así que la forma de cuatro segmentos funciona en todas las versiones.
 
 #### Ejemplo de código
 

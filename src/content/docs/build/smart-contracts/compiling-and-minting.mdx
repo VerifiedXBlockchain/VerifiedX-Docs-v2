@@ -466,7 +466,7 @@ def list_nfts(page=1):
 GET http://localhost:7292/scapi/scv1/GetAllSmartContracts/{PAGE}/false/false/{QUERY}
 ```
 
-The two `false` segments are `excludeToken` and `tokensOnly`. A two-segment path such as `GetAllSmartContracts/1/{QUERY}` is read as `excludeToken` and fails with a 400 validation error.
+The two `false` segments are `excludeToken` and `tokensOnly`. From Core 9.0.2, `GetAllSmartContracts/{PAGE}/{QUERY}` also searches, unless the query is `true` or `false`. Earlier versions read that second segment as `excludeToken` and answered 400, so the four-segment form works on every version.
 
 #### Code Example
 

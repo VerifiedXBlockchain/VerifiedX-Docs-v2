@@ -1,5 +1,5 @@
 ---
-sourceHash: "1d3e7f55add2"
+sourceHash: "188447a61275"
 title: "Configuración del CLI"
 description: "Cada opción del archivo de configuración del Core CLI, con su tipo, su valor predeterminado y un ejemplo."
 sidebar:
@@ -19,7 +19,7 @@ En el código, la carpeta de macOS es `rbx` en minúsculas. El sistema de archiv
 En la primera ejecución, el CLI escribe `Port`, `APIPort`, `TestNet`, `NFTTimeout=15`, `AutoDownloadNFTAsset=true`, `BitcoinAddressFormat=1` y las claves del puente de Base. En testnet escribe `Port=13338` y `APIPort=17292`.
 
 :::note
-Es necesario reiniciar el CLI después de hacer cambios. Escribe un `Key=Value` por línea, sin líneas en blanco: el CLI deja de leer en la primera línea vacía. Un valor no puede contener `=`, porque la línea se divide en ese carácter.
+Es necesario reiniciar el CLI después de hacer cambios. Escribe un `Key=Value` por línea, sin líneas en blanco: el CLI deja de leer en la primera línea vacía. La clave es todo lo que está antes del primer `=` y el valor todo lo que está después, así que un valor puede contener `=`. Desde Core 9.0.2, una línea sin clave o sin valor se omite con un aviso en la consola y se aplica su valor predeterminado (las versiones anteriores se detenían al arrancar), y el CLI también avisa cuántas líneas ignoró después de una línea en blanco.
 :::
 
 ```text
@@ -69,21 +69,22 @@ Es necesario reiniciar el CLI después de hacer cambios. Escribe un `Key=Value` 
 	+ b.	Ej.: ChainCheckPoint=true
 	+ c.	Esta función activa los puntos de control de la cadena. Crea una copia COMPLETA del estado de la cadena, la respalda y crea un punto de control al que puedes volver si tu estructura actual se corrompe. 
 
-10.	ChainCheckPointInternal (predeterminado: 12)
+10.	ChainCheckPointInterval (predeterminado: 12)
 	+ a.	Tipo int
-	+ b.	Ej.: ChainCheckPointInternal=4
+	+ b.	Ej.: ChainCheckPointInterval=4
 	+ c.	Este intervalo está en horas y significa que el punto de control se ejecuta cada X horas. Usa 1 o más.
-	+ d.	La clave se escribe ChainCheckPointInternal, que es la que lee el CLI. El material más antiguo la escribe ChainCheckPointInterval; esa forma se ignora.
+	+ d.	Core 9.0.2 lee ChainCheckPointInterval y la forma antigua ChainCheckPointInternal. Las versiones anteriores solo leen ChainCheckPointInternal.
 
 11.	ChainCheckPointRetain (predeterminado: 2)
 	+ a.	Tipo int
 	+ b.	Ej.: ChainCheckPointRetain=4
 	+ c.	Determina cuántos respaldos se conservan antes de empezar a eliminar el más antiguo para dejar espacio al nuevo.
 
-12.	ChainCheckpointLocation (predeterminado: la carpeta Checkpoint del directorio de datos)
+12.	ChainCheckPointLocation (predeterminado: la carpeta Checkpoint del directorio de datos)
 	+ a.	Tipo string
-	+ b.	Ej.: ChainCheckpointLocation=C:\somelocation\otherthan\default\
+	+ b.	Ej.: ChainCheckPointLocation=C:\somelocation\otherthan\default\
 	+ c.	Si no quieres la ruta predeterminada, puedes configurar una nueva ubicación para los respaldos.
+	+ d.	Core 9.0.2 lee ChainCheckPointLocation y la forma antigua ChainCheckpointLocation. Las versiones anteriores solo leen ChainCheckpointLocation.
 
 13.	APICallURLLogging (predeterminado: false)
 	+ a.	Tipo Boolean
@@ -122,12 +123,12 @@ Es necesario reiniciar el CLI después de hacer cambios. Escribe un `Key=Value` 
 
 20.	RejectAssetExtensionTypes (predeterminado: una lista de recursos rechazados)
 	+ a.	Tipo List<string>
-	+ b.	Ej.: RejectAssetExtensionTypes=.iso,.apk,.pdf (incluye el punto inicial y no dejes espacios entre los tipos; las entradas sin el punto no coinciden con nada)
+	+ b.	Ej.: RejectAssetExtensionTypes=.iso,.apk,.pdf (desde Core 9.0.2, pdf y .pdf son la misma entrada y se ignoran los espacios alrededor de las entradas; las versiones anteriores necesitan el punto inicial y ningún espacio)
 	+ c.	Agrega tipos de extensión a la lista ya definida y rechaza cualquier recurso de NFT con estas extensiones conocidas
 
 21.	AllowedExtensionsTypes (predeterminado: null)
 	+ a.	Tipo List<string>
-	+ b.	Ej.: AllowedExtensionsTypes=.doc,.xls (incluye el punto inicial)
+	+ b.	Ej.: AllowedExtensionsTypes=.doc,.xls (desde Core 9.0.2 el punto inicial es opcional y la comparación no distingue mayúsculas; las versiones anteriores necesitan el punto y las mayúsculas exactas de la lista)
 	+ c.	Quita tipos de extensión de la lista ya definida y permite descargar cualquier recurso de NFT con estas extensiones conocidas
 	
 22.     MotherAddress (predeterminado: null)

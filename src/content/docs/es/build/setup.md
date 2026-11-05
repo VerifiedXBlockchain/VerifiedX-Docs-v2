@@ -1,5 +1,5 @@
 ---
-sourceHash: "0e52612df220"
+sourceHash: "75c08eb04999"
 title: "Configuración de la integración con VFX"
 description: "Configura el CLI de Core para una integración de terceros: billeteras, compilación, configuración, la interfaz RPC, testnet y prácticas recomendadas para exchanges."
 sidebar:
@@ -106,7 +106,7 @@ Con esto terminaste. La billetera estará en ejecución. Para activar la API, si
 
 ### Resumen
 
-El objetivo de esta sección es describir la configuración del archivo de configuración y las opciones que tiene. El archivo es `config.txt`: `~/rbx/Config/` en macOS, `~/.local/share/RBX/Config/` en Linux y `%LOCALAPPDATA%\RBX\Config\` en Windows. En testnet las carpetas son `RBXTest` (en macOS, `rbxtest`) y `ConfigTestNet`. `RBX` es un nombre de carpeta heredado que el código todavía usa. Escribe un `Key=Value` por línea, sin líneas en blanco: el CLI deja de leer en la primera línea vacía. Consulta [Configuración del CLI](/es/node/configuration/) para ver todas las claves.
+El objetivo de esta sección es describir la configuración del archivo de configuración y las opciones que tiene. El archivo es `config.txt`: `~/rbx/Config/` en macOS, `~/.local/share/RBX/Config/` en Linux y `%LOCALAPPDATA%\RBX\Config\` en Windows. En testnet las carpetas son `RBXTest` (en macOS, `rbxtest`) y `ConfigTestNet`. `RBX` es un nombre de carpeta heredado que el código todavía usa. Escribe un `Key=Value` por línea, sin líneas en blanco: el CLI deja de leer en la primera línea vacía. El valor es todo lo que está después del primer `=`. Consulta [Configuración del CLI](/es/node/configuration/) para ver todas las claves.
 
 1. Port (el valor predeterminado es 3338)
 
@@ -163,12 +163,12 @@ El objetivo de esta sección es describir la configuración del archivo de confi
    - Ej.: ChainCheckPoint=true
    - Esta opción activa los puntos de control de la cadena. Crea una copia COMPLETA del estado de la cadena, la respalda y crea un punto de control al que puedes volver si tu estructura actual se corrompe.
 
-10. ChainCheckPointInternal (el valor predeterminado es 12)
+10. ChainCheckPointInterval (el valor predeterminado es 12)
 
     - Tipo `int`
-    - Ej.: `ChainCheckPointInternal=4`
+    - Ej.: `ChainCheckPointInterval=4`
     - Este intervalo está en horas y significa que el punto de control se ejecuta cada X horas. Usa 1 o más.
-    - La clave se escribe `ChainCheckPointInternal`, que es lo que lee el CLI. Material más antiguo la escribe `ChainCheckPointInterval`; esa forma se ignora.
+    - Core 9.0.2 lee `ChainCheckPointInterval` y la forma antigua `ChainCheckPointInternal`. Las versiones anteriores solo leen `ChainCheckPointInternal`.
 
 11. ChainCheckPointRetain (el valor predeterminado es 2)
 
@@ -176,10 +176,11 @@ El objetivo de esta sección es describir la configuración del archivo de confi
     - Ej.: `ChainCheckPointRetain=4`
     - Retain determina cuántos respaldos se conservan antes de empezar a eliminar el más antiguo para dejar espacio al nuevo.
 
-12. ChainCheckpointLocation (el valor predeterminado es la carpeta Checkpoint del directorio de datos)
+12. ChainCheckPointLocation (el valor predeterminado es la carpeta Checkpoint del directorio de datos)
 
     - Tipo `string`
-    - Ej.: `ChainCheckpointLocation=C:\somelocation\otherthan\default\`
+    - Ej.: `ChainCheckPointLocation=C:\somelocation\otherthan\default\`
+    - Core 9.0.2 lee `ChainCheckPointLocation` y la forma antigua `ChainCheckpointLocation`. Las versiones anteriores solo leen `ChainCheckpointLocation`.
     - Si no quieres usar la ruta predeterminada, puedes configurar una nueva ubicación para los respaldos.
 
 13. APICallURLLogging (el valor predeterminado es false)
@@ -226,13 +227,13 @@ El objetivo de esta sección es describir la configuración del archivo de confi
 20. RejectAssetExtensionTypes (el valor predeterminado es una lista de archivos rechazados)
 
     - Tipo `List of string`
-    - Ej.: `RejectAssetExtensionTypes=.iso,.apk,.pdf` (incluye el punto inicial y no dejes espacios entre los tipos; las entradas sin el punto no coinciden con nada)
+    - Ej.: `RejectAssetExtensionTypes=.iso,.apk,.pdf` (desde Core 9.0.2, `pdf` y `.pdf` son la misma entrada y se ignoran los espacios alrededor de las entradas; las versiones anteriores necesitan el punto inicial y ningún espacio)
     - Agrega tipos de extensión a la lista ya definida y rechaza cualquier archivo de NFT con esas extensiones
 
 21. AllowedExtensionsTypes (el valor predeterminado es null)
 
     - Tipo `List of string`
-    - Ej.: `AllowedExtensionsTypes=.doc,.xls` (incluye el punto inicial)
+    - Ej.: `AllowedExtensionsTypes=.doc,.xls` (desde Core 9.0.2 el punto inicial es opcional y la comparación no distingue mayúsculas; las versiones anteriores necesitan el punto y las mayúsculas exactas de la lista)
     - Quita tipos de extensión de la lista ya definida y permite descargar cualquier archivo de NFT con esas extensiones
 
 Un ejemplo de configuración podría verse así:
