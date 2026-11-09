@@ -1,5 +1,5 @@
 ---
-sourceHash: "fc68f29d47cb"
+sourceHash: "5858337fa360"
 title: "Aplicaciones"
 description: Dónde descargar la billetera SwitchBlade y el CLI de Core, abrir la billetera web y Bfly, y obtener el snapshot más reciente de la blockchain.
 sidebar:
