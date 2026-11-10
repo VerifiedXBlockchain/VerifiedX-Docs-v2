@@ -792,6 +792,8 @@ vBTC.b es vBTC en Base, un ERC-20 (`vBTCb`, símbolo `vBTC.b`, 8 decimales) emit
 
 El nodo del propietario ejecuta todo el flujo: transmite el bloqueo (tipo 37), reúne las certificaciones de emisión de los validadores del puente cuando el bloqueo tiene 30 bloques de VFX de profundidad, y envía `mintWithProof` en Base desde una dirección de Base derivada de la clave de VFX del propietario. Esa dirección paga el gas de Base, así que antes fóndeala con un poco de ETH.
 
+Hasta que el bloqueo tiene 30 bloques de profundidad no pasa nada visible: ningún validador firma una emisión para un bloqueo menos profundo, así que un puente que parece detenido en sus primeros 30 bloques está esperando, no atascado.
+
 ```text
 GET  /wallet/api/base-address/{vfxAddress}
 GET  /wallet/api/vbtc/bridge/preflight/{ownerAddress}/{scUID}

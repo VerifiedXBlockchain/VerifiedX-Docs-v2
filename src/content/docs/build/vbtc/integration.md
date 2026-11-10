@@ -791,6 +791,8 @@ vBTC.b is vBTC on Base, an ERC-20 (`vBTCb`, symbol `vBTC.b`, 8 decimals) minted 
 
 The owner's node runs the whole flow: it broadcasts the lock (type 37), collects the bridge validators' mint attestations once the lock is 30 VFX blocks deep, and submits `mintWithProof` on Base from a Base address derived from the owner's VFX key. That address pays the Base gas, so fund it with a little ETH first.
 
+Until the lock is 30 blocks deep, nothing visible happens: no validator signs a mint for a shallower lock, so a bridge that looks stalled in its first 30 blocks is waiting, not stuck.
+
 ```text
 GET  /wallet/api/base-address/{vfxAddress}
 GET  /wallet/api/vbtc/bridge/preflight/{ownerAddress}/{scUID}
