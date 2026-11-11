@@ -37,9 +37,15 @@ An owner can have a vault's key held only by validators the owner runs (S3C, Sel
 
 vBTC.b ("Verified Bitcoin on Base") carries vBTC to Base as an ERC-20 with 8 decimals, while the Bitcoin stays in its VerifiedX vaults and issuance stays canonical: every vBTC.b is backed by vBTC locked on VerifiedX.
 
-- **To Base.** The owner locks vBTC on VerifiedX (transaction type 37). Once the lock is 30 VFX blocks deep, the bridge's validators each sign an attestation of it, and the owner's node submits those signatures to the vBTC.b contract on Base, which mints only with at least two thirds of its validators' signatures (never fewer than two). The owner pays the Base gas from a Base address derived from the owner's VFX key.
+- **To Base.** The owner locks vBTC on VerifiedX (transaction type 37). Once the lock is 30 VFX blocks deep, the contract's signers each sign an attestation of it, and the owner's node submits those signatures to the vBTC.b contract on Base. The contract counts two groups, its validators and the bridge's casters, and mints only with two thirds of its validators (never fewer than two) and a majority of its casters. The owner pays the Base gas from a Base address derived from the owner's VFX key.
 - **Back to VerifiedX.** A holder burns vBTC.b on Base naming a VFX address. The bridge's casters see the burn, agree on it, and credit the vBTC from the locked pool (type 39).
 - **Straight to Bitcoin.** A holder burns vBTC.b on Base naming a Bitcoin address. The casters record the exit on VerifiedX (type 40), consensus fixes the Bitcoin transactions that pay it from the vaults' coins, and the vaults' signers sign them, exactly as for a withdrawal. The exit completes when Bitcoin confirms it.
+
+The contract has no owner. Every action it takes needs the same approval as a mint, from both groups: adding or removing validators or casters, proposing a code upgrade, or changing the upgrade delay. An approved upgrade waits that delay in public before anyone can execute it: 48 hours, changeable between 48 hours and 30 days. Validators or casters that went dark can be cleared with a smaller approval, but only after the same public wait, and a blocking minority of either group can cancel anything pending. Each signature is EIP-712 typed data bound to one action, the chain and the contract, so a signature for one action can never be used for another.
+
+:::note[Base mainnet runs V3]
+This describes vBTC.b V4, which runs on testnet. Base mainnet runs V3 until it is upgraded: there a mint needs only two thirds of the validators, signatures are personal-message hashes, and an approved upgrade takes effect at once.
+:::
 
 vBTC cannot be bridged directly from an S3C vault; see [Institutional Signing (S3C)](/learn/institutional/s3c-signing/#operating-the-pool). See [Bridging to Base](/build/vbtc/integration/#bridging-to-base-vbtcb) for the routes.
 
