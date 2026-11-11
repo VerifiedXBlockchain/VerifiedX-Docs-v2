@@ -1,5 +1,5 @@
 ---
-sourceHash: "2e5ef1ae4700"
+sourceHash: "b986eb360862"
 title: "vBTC: Bitcoin verificado en la red VFX"
 description: "Cómo las bóvedas de vBTC mantienen Bitcoin uno a uno: depósitos, transferencias, retiros, certificación de Bitcoin, bóvedas S3C y vBTC.b en Base."
 sidebar:
@@ -38,9 +38,15 @@ Un dueño puede hacer que la clave de una bóveda la tengan solo validadores que
 
 vBTC.b ("Verified Bitcoin on Base") lleva vBTC a Base como un ERC-20 con 8 decimales, mientras el Bitcoin permanece en sus bóvedas de VerifiedX y la emisión sigue siendo canónica: cada vBTC.b está respaldado por vBTC bloqueado en VerifiedX.
 
-- **Hacia Base.** El dueño bloquea vBTC en VerifiedX (tipo de transacción 37). Cuando el bloqueo tiene 30 bloques de VFX de profundidad, cada validador del puente firma una certificación del bloqueo, y el nodo del dueño envía esas firmas al contrato de vBTC.b en Base, que emite solo con las firmas de al menos dos tercios de sus validadores (nunca menos de dos). El dueño paga el gas de Base desde una dirección de Base derivada de su clave de VFX.
+- **Hacia Base.** El dueño bloquea vBTC en VerifiedX (tipo de transacción 37). Cuando el bloqueo tiene 30 bloques de VFX de profundidad, cada firmante del contrato firma una certificación del bloqueo, y el nodo del dueño envía esas firmas al contrato de vBTC.b en Base. El contrato cuenta dos grupos, sus validadores y los casters del puente, y emite solo con dos tercios de sus validadores (nunca menos de dos) y una mayoría de sus casters. El dueño paga el gas de Base desde una dirección de Base derivada de su clave de VFX.
 - **De vuelta a VerifiedX.** Un poseedor quema vBTC.b en Base indicando una dirección de VFX. Los casters del puente ven la quema, se ponen de acuerdo sobre ella y acreditan el vBTC desde el fondo bloqueado (tipo 39).
 - **Directo a Bitcoin.** Un poseedor quema vBTC.b en Base indicando una dirección de Bitcoin. Los casters registran la salida en VerifiedX (tipo 40), el consenso fija las transacciones de Bitcoin que la pagan a partir de las monedas de las bóvedas, y los firmantes de las bóvedas las firman, exactamente como en un retiro. La salida se completa cuando Bitcoin la confirma.
+
+El contrato no tiene dueño. Toda acción que realiza necesita la misma aprobación que una emisión, de ambos grupos: agregar o quitar validadores o casters, proponer una actualización del código o cambiar la espera de actualización. Una actualización aprobada espera ese plazo en público antes de que cualquiera pueda ejecutarla: 48 horas, ajustable entre 48 horas y 30 días. Los validadores o casters que dejaron de responder se pueden quitar con una aprobación menor, pero solo después de la misma espera pública, y una minoría de bloqueo de cualquiera de los dos grupos puede cancelar lo que esté pendiente. Cada firma es un dato tipado EIP-712 ligado a una sola acción, a la cadena y al contrato, así que una firma para una acción nunca sirve para otra.
+
+:::note[Base mainnet usa V3]
+Esto describe vBTC.b V4, que funciona en testnet. Base mainnet usa V3 hasta que se actualice: ahí una emisión solo necesita dos tercios de los validadores, las firmas son hashes de mensaje personal y una actualización aprobada se aplica de inmediato.
+:::
 
 No se puede llevar vBTC por el puente directamente desde una bóveda S3C; consulta [Firma institucional (S3C)](/es/learn/institutional/s3c-signing/#operación-del-pool). Consulta [Puente a Base](/es/build/vbtc/integration/#puente-a-base-vbtcb) para ver las rutas.
 

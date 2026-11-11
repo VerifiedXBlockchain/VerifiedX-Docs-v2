@@ -789,9 +789,9 @@ vBTC.b is vBTC on Base, an ERC-20 (`vBTCb`, symbol `vBTC.b`, 8 decimals) minted 
 
 ### To Base
 
-The owner's node runs the whole flow: it broadcasts the lock (type 37), collects the bridge validators' mint attestations once the lock is 30 VFX blocks deep, and submits `mintWithProof` on Base from a Base address derived from the owner's VFX key. That address pays the Base gas, so fund it with a little ETH first.
+The owner's node runs the whole flow: it broadcasts the lock (type 37), collects mint attestations from the contract's validators and the bridge's casters once the lock is 30 VFX blocks deep, and submits `mintWithProof` on Base from a Base address derived from the owner's VFX key. That address pays the Base gas, so fund it with a little ETH first.
 
-Until the lock is 30 blocks deep, nothing visible happens: no validator signs a mint for a shallower lock, so a bridge that looks stalled in its first 30 blocks is waiting, not stuck.
+Until the lock is 30 blocks deep, nothing visible happens: no signer signs a mint for a shallower lock, so a bridge that looks stalled in its first 30 blocks is waiting, not stuck.
 
 ```text
 GET  /wallet/api/base-address/{vfxAddress}
@@ -814,7 +814,7 @@ It is refused when the derived Base address holds no ETH. Follow it with `GET /w
 
 A lock is refused when the sender is a vault (reserve) account, the vault is S3C, the amount is not a whole number of satoshis, or `evmDestination` is not `0x` followed by 40 hex characters.
 
-`POST /vbtcapi/VBTC/BridgeToBase` (`SmartContractUID`, `OwnerAddress`, `Amount`, `EvmDestination`) broadcasts the lock only. To mint yourself, read the signatures from `GET /vbtcapi/VBTC/GetMintAttestation/{lockId}` and the contract address and ABI from `GET /vbtcapi/VBTC/GetBridgeConfig`, and call `mintWithProof` from your own EVM wallet.
+`POST /vbtcapi/VBTC/BridgeToBase` (`SmartContractUID`, `OwnerAddress`, `Amount`, `EvmDestination`) broadcasts the lock only. To mint yourself, read the signatures from `GET /vbtcapi/VBTC/GetMintAttestation/{lockId}` and the contract address and ABI from `GET /vbtcapi/VBTC/GetBridgeConfig`, and call `mintWithProof(to, amount, lockId, nonce, signatures)` from your own EVM wallet. Pass every signature the node returns: the contract needs two thirds of its validators and a majority of its casters, and skips any signature it can't use. Each signature is over the EIP-712 message `Mint(address to,uint256 amount,string lockId,uint256 nonce)` in the domain `vBTCb`, version `4`, the chain id and the contract address.
 
 ### Back to VerifiedX or out to Bitcoin
 
@@ -830,7 +830,7 @@ Exits start on Base, from the holder's own EVM wallet; the node has no burn rout
 - `GET /vbtcapi/VBTC/GetBaseBalance/{evmAddress}`: an address's vBTC.b balance.
 - `GET /vbtcapi/VBTC/GetBridgeLockStatus/{lockId}`, `GetBridgeLocks/{scUID}` and `GetBridgeLocksByOwner/{ownerAddress}` read this node's own records, so ask the node that made the lock.
 
-Mainnet uses Base (chain id 8453) and testnet uses Base Sepolia (chain id 84532). A new `config.txt` is written with the network's contract and RPC (`BaseBridgeContract`, `BaseBridgeRpcUrl`, `BaseBridgeRpcUrl2`, `BaseBridgeRpcUrl3`, `BaseBridgeChainId`); a node whose existing `config.txt` lacks them reports `BridgeEnabled: false`.
+Mainnet uses Base (chain id 8453), contract `0x09096c6eBf35F0aDAEeC02D06a0dE77E790F132D` (V3 until it is upgraded). Testnet uses Base Sepolia (chain id 84532), contract `0x3669EE313f9Aa14b9eBb787DfdB0E97Ca67A0510` (V4). A new `config.txt` is written with the network's contract and RPC (`BaseBridgeContract`, `BaseBridgeRpcUrl`, `BaseBridgeRpcUrl2`, `BaseBridgeRpcUrl3`, `BaseBridgeChainId`); a node whose existing `config.txt` lacks them reports `BridgeEnabled: false`.
 
 ## Legacy vaults
 

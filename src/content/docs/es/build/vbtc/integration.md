@@ -1,5 +1,5 @@
 ---
-sourceHash: "5d2939a24013"
+sourceHash: "286fb6845480"
 title: "vBTC"
 description: Crea bóvedas de vBTC V2, deposita, transfiere, retira a Bitcoin y lleva vBTC a Base por puente con la API del nodo cuando la billetera del nodo tiene las claves.
 sidebar:
@@ -790,9 +790,9 @@ vBTC.b es vBTC en Base, un ERC-20 (`vBTCb`, símbolo `vBTC.b`, 8 decimales) emit
 
 ### Hacia Base
 
-El nodo del propietario ejecuta todo el flujo: transmite el bloqueo (tipo 37), reúne las certificaciones de emisión de los validadores del puente cuando el bloqueo tiene 30 bloques de VFX de profundidad, y envía `mintWithProof` en Base desde una dirección de Base derivada de la clave de VFX del propietario. Esa dirección paga el gas de Base, así que antes fóndeala con un poco de ETH.
+El nodo del propietario ejecuta todo el flujo: transmite el bloqueo (tipo 37), reúne las certificaciones de emisión de los validadores del contrato y de los casters del puente cuando el bloqueo tiene 30 bloques de VFX de profundidad, y envía `mintWithProof` en Base desde una dirección de Base derivada de la clave de VFX del propietario. Esa dirección paga el gas de Base, así que antes fóndeala con un poco de ETH.
 
-Hasta que el bloqueo tiene 30 bloques de profundidad no pasa nada visible: ningún validador firma una emisión para un bloqueo menos profundo, así que un puente que parece detenido en sus primeros 30 bloques está esperando, no atascado.
+Hasta que el bloqueo tiene 30 bloques de profundidad no pasa nada visible: ningún firmante firma una emisión para un bloqueo menos profundo, así que un puente que parece detenido en sus primeros 30 bloques está esperando, no atascado.
 
 ```text
 GET  /wallet/api/base-address/{vfxAddress}
@@ -815,7 +815,7 @@ Se rechaza cuando la dirección de Base derivada no tiene ETH. Síguelo con `GET
 
 Un bloqueo se rechaza cuando el remitente es una cuenta de bóveda (reserva), la bóveda es S3C, el monto no es un número entero de satoshis o `evmDestination` no es `0x` seguido de 40 caracteres hexadecimales.
 
-`POST /vbtcapi/VBTC/BridgeToBase` (`SmartContractUID`, `OwnerAddress`, `Amount`, `EvmDestination`) solo transmite el bloqueo. Para emitir por tu cuenta, lee las firmas de `GET /vbtcapi/VBTC/GetMintAttestation/{lockId}` y la dirección y el ABI del contrato de `GET /vbtcapi/VBTC/GetBridgeConfig`, y llama a `mintWithProof` desde tu propia billetera EVM.
+`POST /vbtcapi/VBTC/BridgeToBase` (`SmartContractUID`, `OwnerAddress`, `Amount`, `EvmDestination`) solo transmite el bloqueo. Para emitir por tu cuenta, lee las firmas de `GET /vbtcapi/VBTC/GetMintAttestation/{lockId}` y la dirección y el ABI del contrato de `GET /vbtcapi/VBTC/GetBridgeConfig`, y llama a `mintWithProof(to, amount, lockId, nonce, signatures)` desde tu propia billetera EVM. Pasa todas las firmas que devuelve el nodo: el contrato necesita dos tercios de sus validadores y una mayoría de sus casters, y omite cualquier firma que no pueda usar. Cada firma es sobre el mensaje EIP-712 `Mint(address to,uint256 amount,string lockId,uint256 nonce)` en el dominio `vBTCb`, versión `4`, el chain id y la dirección del contrato.
 
 ### De vuelta a VerifiedX o hacia Bitcoin
 
@@ -831,7 +831,7 @@ Las salidas empiezan en Base, desde la propia billetera EVM del tenedor; el nodo
 - `GET /vbtcapi/VBTC/GetBaseBalance/{evmAddress}`: el saldo de vBTC.b de una dirección.
 - `GET /vbtcapi/VBTC/GetBridgeLockStatus/{lockId}`, `GetBridgeLocks/{scUID}` y `GetBridgeLocksByOwner/{ownerAddress}` leen los registros propios de este nodo, así que pregúntale al nodo que hizo el bloqueo.
 
-Mainnet usa Base (chain id 8453) y testnet usa Base Sepolia (chain id 84532). Un `config.txt` nuevo se escribe con el contrato y el RPC de la red (`BaseBridgeContract`, `BaseBridgeRpcUrl`, `BaseBridgeRpcUrl2`, `BaseBridgeRpcUrl3`, `BaseBridgeChainId`); un nodo cuyo `config.txt` existente no los tenga informa `BridgeEnabled: false`.
+Mainnet usa Base (chain id 8453), contrato `0x09096c6eBf35F0aDAEeC02D06a0dE77E790F132D` (V3 hasta que se actualice). Testnet usa Base Sepolia (chain id 84532), contrato `0x3669EE313f9Aa14b9eBb787DfdB0E97Ca67A0510` (V4). Un `config.txt` nuevo se escribe con el contrato y el RPC de la red (`BaseBridgeContract`, `BaseBridgeRpcUrl`, `BaseBridgeRpcUrl2`, `BaseBridgeRpcUrl3`, `BaseBridgeChainId`); un nodo cuyo `config.txt` existente no los tenga informa `BridgeEnabled: false`.
 
 ## Bóvedas heredadas
 
