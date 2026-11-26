@@ -47,12 +47,20 @@ HTTP 400
 {"transaction": ["This field is required."]}
 ```
 
+The explorer forwards the `transaction` text to the node as written: key order, spacing and `Data` reach the node unchanged. From Core 9.2 (testnet block 230,750; not yet on mainnet) the node hashes that text strictly, so build the transaction once and send the same text to every call:
+
+- `Amount` and `Fee` as the shortest decimal with at least one digit after the point (`1.0`, `0.0`, `0.000006`). The hash, verify and send calls add the `.0` to a whole-number top-level `Amount` or `Fee`; `1.00` or `0.00000600` is refused.
+- `Data` that is JSON (every type except a plain `TX`) as the JSON object or array itself, not as a string holding JSON. The `Data` payloads returned by the data routes below go into the body as that JSON value, unchanged.
+- `Data` left out or `null` for a plain transfer.
+
+See [Canonical raw transactions](/build/node-api/canonical-transactions/) for the rules.
+
 ## Flow
 
 1. `POST /api/raw/timestamp/` for the timestamp.
 2. `POST /api/raw/nonce/{address}/` for the sender's next nonce.
-3. Build the transaction with `Fee: 0` and `Hash: null`, then `POST /api/raw/fee/`.
-4. Set `Fee`, then `POST /api/raw/hash/`.
+3. Build the transaction with `Fee: 0.0` and `Hash: null`, then `POST /api/raw/fee/`.
+4. Set `Fee` to the value returned, then `POST /api/raw/hash/`.
 5. Sign the hash locally (the signature format is described in [Transaction Creation](/build/node-api/transaction-creation/)); set `Hash` and `Signature`.
 6. `POST /api/raw/verify/` (optional, recommended).
 7. `POST /api/raw/send/`.
@@ -91,7 +99,7 @@ Returns the next nonce for an address as a bare number. `GET` is not accepted (4
 POST /api/raw/fee/
 ```
 
-Body: the transaction object with `Fee: 0`.
+Body: the transaction object with `Fee: 0.0`.
 
 **Response** (from the node's `GetRawTxFee`):
 ```json
@@ -198,6 +206,6 @@ Asks the node to fetch the contract's assets from the beacon; the explorer then 
 ## Notes
 
 - Signing happens client-side. Never send private keys to the API.
-- The service normalizes `Amount` before forwarding hash, verify, and send calls, so `Amount` must be present.
+- The service adds `.0` to a whole-number `Amount` or `Fee` before forwarding hash, verify, and send calls, and changes nothing else; `Amount` must be present and both must be JSON numbers.
 - Node error messages are returned as-is in `Message`.
 - Transactions are irreversible once confirmed. Verify before sending.

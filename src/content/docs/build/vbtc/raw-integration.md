@@ -82,6 +82,8 @@ The withdrawal-request, cancel, completion, fee-raise and release `SendRaw…` r
 
 The builders take the sender's next nonce from chain state when they build. Build and submit one transaction at a time per address, and build the next once the previous one is in a block, unless the route lets you pass `Nonce`.
 
+These builds are not affected by the Core 9.2 rules in [Canonical raw transactions](/build/node-api/canonical-transactions/): the node keeps the `Data` it built and sends it with your signature, so a `Data` returned as a string is only for you to read. The ownership transfer below goes through the general raw routes and does follow those rules.
+
 ## Reading state without a node wallet
 
 The read routes answer from chain state, so any node answers for any address or vault:
@@ -190,8 +192,8 @@ At most 25 vaults per transfer, amounts with at most 8 decimals, no reserve send
 
 Ownership moves with a smart-contract transfer (type 18, `TKNZ_TX`) built through the general raw transaction routes.
 
-1. `GET /vbtcapi/VBTC/GetVBTCOwnershipTransferData/{scUID}/{toAddress}/NA` returns the transaction's `Data`: `[{"Function":"Transfer()","ContractUID":…,"ToAddress":<new owner>,"Data":…,"Locators":"NA","MD5List":"NA"}]`. While the network uses the default vBTC image no beacon upload is needed and the locator is `NA`.
-2. Build a transaction with `TransactionType` 18, `FromAddress` the current owner, `ToAddress` the new owner, `Amount` 0 and that `Data`, then use `txapi/TXV1/GetRawTxFee`, `GetTxHash`, sign, `VerifyRawTransaction` and `SendRawTransaction` as in [Transaction Creation](/build/node-api/transaction-creation/).
+1. `GET /vbtcapi/VBTC/GetVBTCOwnershipTransferData/{scUID}/{toAddress}/NA` returns the transaction's `Data` as JSON text: `[{"Function":"Transfer()","ContractUID":…,"ToAddress":<new owner>,"Data":…,"Locators":"NA","MD5List":"NA"}]`. While the network uses the default vBTC image no beacon upload is needed and the locator is `NA`.
+2. Build a transaction with `TransactionType` 18, `FromAddress` the current owner, `ToAddress` the new owner, `Amount` `0.0` and that `Data`, then use `txapi/TXV1/GetRawTxFee`, `GetTxHash`, sign, `VerifyRawTransaction` and `SendRawTransaction` as in [Transaction Creation](/build/node-api/transaction-creation/). Put the returned text into the request body as the JSON array itself (`"Data": [{"Function":"Transfer()",…}]`), not as a string holding it, and send the same text unchanged to all four routes: a string `Data` holding JSON is refused for this type from Core 9.2. See [Canonical raw transactions](/build/node-api/canonical-transactions/).
 
 The new owner takes over the vault's vBTC that no holder holds.
 

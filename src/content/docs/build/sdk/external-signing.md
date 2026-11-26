@@ -134,6 +134,8 @@ import { vfxSignatureFromDer } from 'vfx-web-sdk';
 const signature = vfxSignatureFromDer(derBytes, publicKey); // low-s normalised
 ```
 
+Such callers also build the transaction themselves, so they must send it in the form the node hashes: `Amount` and `Fee` as the shortest decimal with at least one digit after the point, `Data` as the JSON object or array itself, and the same `Data` text on every raw call. See [Canonical raw transactions](/build/node-api/canonical-transactions/). The SDK's own methods do this from 9.1.4: they hash `Amount` and `Fee` in that text, send `Data` as the JSON value, and by default check the node's hash against the `Data` text they sent before the signer is asked to sign.
+
 ## Common Issues
 
 ### `Signer address ... does not match its public key`
