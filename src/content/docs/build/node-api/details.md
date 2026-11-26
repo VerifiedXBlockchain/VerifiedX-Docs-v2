@@ -750,7 +750,7 @@ See [Fungible Tokens](/build/node-api/fungible-tokens/) for parameters.
 
 ### Other transaction endpoints
 
-The raw transaction flow (`GetAddressNonce`, `GetRawTxFee`, `GetTxHash`, `VerifyRawTransaction`, `SendRawTransaction`) is walked through on [Transaction creation](/build/node-api/transaction-creation/).
+The raw transaction flow (`GetAddressNonce`, `GetRawTxFee`, `GetTxHash`, `VerifyRawTransaction`, `SendRawTransaction`) is walked through on [Transaction creation](/build/node-api/transaction-creation/). From Core 9.2 (testnet block 230,750; not yet on mainnet) these routes take `Amount` and `Fee` in one spelling (`1.0`, `0.0`, `0.000006`), hash `Data` exactly as it is sent, and refuse `Data` sent as a string holding JSON for every type except a plain `TX`. The data builders below (`GetSCMintDeployData`, `GetNFTTransferData`, `GetNFTEvolveData`, `GetNFTBurnData`) return `Data` as JSON text: put it into the transaction as the JSON object or array itself, unchanged, and send the same text to every raw route. See [Canonical raw transactions](/build/node-api/canonical-transactions/).
 
 - `GET /GetAllLocalTX`, `GET /GetPendingLocalTX`, `GET /GetFailedLocalTX`: the wallet's transactions, all, pending or failed.
 - `GET /GetLocalTxByHash/{hash}`, `GET /GetLocalTxByBlock/{height}`: one local transaction by hash, or those in a block.

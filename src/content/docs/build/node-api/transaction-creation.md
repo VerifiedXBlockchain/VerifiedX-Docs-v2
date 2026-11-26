@@ -34,6 +34,8 @@ The same height also turns on: a reserve's `Recover()` reading every pending row
 
 ## How to create a VFX Transaction
 
+From Core 9.2 (testnet block 230,750; not yet on mainnet), a raw transaction's `Amount` and `Fee` have one accepted spelling (`1.0`, `0.0`, `0.000006`), `Data` is hashed exactly as it is sent, and `Data` that is JSON is sent as the object or array itself, not as a string. Send that form on both networks now: see [Canonical raw transactions](/build/node-api/canonical-transactions/).
+
 To first create a transaction you must understand how the transaction class is made. Below is the class in its full form and the enums associated with it.
 
 ```csharp
@@ -74,14 +76,14 @@ public class Transaction {
 
 - **Id** - This field is auto generated and you do not need to do anything with
 
-- **Hash** - This is created by the wallet once a full TX is prepared. The hash is computed over the plain concatenation, with no separators, of `Timestamp + FromAddress + ToAddress + Amount + Fee + Nonce + TransactionType + Data` (plus `UnlockTime` only when it is set). `TransactionType` is the enum name (`TX`, not `0`), and `Amount` and `Fee` are the decimal text (a whole amount reads `1.0`). The hash is SHA-256 of that string, then SHA-256 again over the lowercase hex text of the first result. The `GetTxHash` call below computes it for you.
+- **Hash** - This is created by the wallet once a full TX is prepared. The hash is computed over the plain concatenation, with no separators, of `Timestamp + FromAddress + ToAddress + Amount + Fee + Nonce + TransactionType + Data` (plus `UnlockTime` only when it is set). `TransactionType` is the enum name (`TX`, not `0`), and `Amount` and `Fee` are the decimal text: the shortest decimal with at least one digit after the point (a whole amount reads `1.0`, a zero fee `0.0`; see [Canonical raw transactions](/build/node-api/canonical-transactions/)). The hash is SHA-256 of that string, then SHA-256 again over the lowercase hex text of the first result. The `GetTxHash` call below computes it for you.
 - **ToAddress** - This is the VFX address in which the transaction is being sent to
 - **FromAddress** - This is the VFX address in which the transaction is being sent from.
 - **Amount** - This is the amount of VFX that is being sent in a transaction
 - **Nonce** - This is the transaction counter for a given address. As transactions are sent this counter is increased by 1
 - **Fee** - This is the near zero atomic fee that is associated with a transaction and is calculated through the wallet: the size of the transaction's JSON in bytes ÷ 1024 × 0.00002 VFX, at least 0.000003 VFX, rounded up to 8 decimal places. Fees are burned.
 - **Timestamp** - This is a unix timestamp in seconds
-- **Data** - This is the associated tx data for when a transaction is more than just a basic transfer of VFX (ex: NFTs, ADNRs, etc.). This can be left as _null_ if performing a basic VFX tx. Note that the raw transaction calls below read `"Data": null` as the text `null`, so the hash then ends in `TXnull`; leave the `Data` key out entirely to hash with empty data.
+- **Data** - This is the associated tx data for when a transaction is more than just a basic transfer of VFX (ex: NFTs, ADNRs, etc.). This can be left as _null_ if performing a basic VFX tx. The raw transaction calls below treat `"Data": null`, or no `Data` key, as no data, so the hash then ends in `TX`. Data that is JSON (every type except a plain `TX`) is sent as the JSON object or array itself, never as a string holding JSON, and the same Data text goes to every raw call: see [Canonical raw transactions](/build/node-api/canonical-transactions/#data-is-hashed-exactly-as-sent).
 - **UnlockTime** - Only used by reserve (vault) account transactions. Leave it out or _null_ for a normal transaction.
 - **Signature** - This is an ECDSA Signature where the message is always the Hash of the transaction.
 - **Height** - This is the block height a TX is associated with once crafted. This is auto populated and can be left as 0 when creating a TX.
@@ -164,7 +166,7 @@ public enum TransactionRating {
 }
 ```
 
-Now that you understand what each element is for you will learn how to craft a TX and send it to mempool for confirmation. The example below is a real testnet transaction (block 65,021), so the calls use the testnet API port `17292`; on mainnet use `7292` and `R…` addresses.
+Now that you understand what each element is for you will learn how to craft a TX and send it to mempool for confirmation. The example below is based on a real testnet transaction (block 65,021), with the hash shown as the raw calls compute it today, so the calls use the testnet API port `17292`; on mainnet use `7292` and `R…` addresses.
 
 - You must first know the To and From address
 
@@ -226,11 +228,11 @@ Now that you understand what each element is for you will learn how to craft a T
 
     Response is as follows from the **POST** Method:
 
-    `{"Result":"Success","Message":"Hash Calculated.","Hash":"f774360a86bf044b982ddcc2e6fcb1f3483177a521f9bd94733c2cfac7196a63"}`
+    `{"Result":"Success","Message":"Hash Calculated.","Hash":"ca7b3941734f544d935dae8b0290126850661e1abe485fc5d9bfb95787d760f3"}`
 
-    To check it yourself: the hashed string here is `1793533801xVQKToMgUsL7gMja2gfL9D7ahAN7iZE45sxWDAi25ybtTexeEMsLAi4TGS6TY3sZGPgQ1.00.000006040TXnull` (the `null` is the `Data` field sent as JSON null).
+    To check it yourself: the hashed string here is `1793533801xVQKToMgUsL7gMja2gfL9D7ahAN7iZE45sxWDAi25ybtTexeEMsLAi4TGS6TY3sZGPgQ1.00.000006040TX` (the `Data` field, sent as JSON null, adds nothing).
 
-- You now have an almost completed TX. Now you simply need to take the hash `("f774360a86bf044b982ddcc2e6fcb1f3483177a521f9bd94733c2cfac7196a63")` and insert it into the classes Hash field. You will have a TX Class like this:
+- You now have an almost completed TX. Now you simply need to take the hash `("ca7b3941734f544d935dae8b0290126850661e1abe485fc5d9bfb95787d760f3")` and insert it into the classes Hash field. You will have a TX Class like this:
 
 ```csharp
 Transaction tx3 = new Transaction{
@@ -242,7 +244,7 @@ Transaction tx3 = new Transaction{
    TransactionType = TransactionType.TX,
    Fee = 0.00000604M,
    Timestamp = 1793533801,
-   Hash = "f774360a86bf044b982ddcc2e6fcb1f3483177a521f9bd94733c2cfac7196a63"
+   Hash = "ca7b3941734f544d935dae8b0290126850661e1abe485fc5d9bfb95787d760f3"
 };
 ```
 
@@ -255,8 +257,8 @@ Transaction tx3 = new Transaction{
 
   You would effectively have something that looks like this:
 
-  - `MEUCIQDUv9BwYH4Gw0pzxOLH8/WQXRbCoFDCo5h1VwVWqi/3UQIgenGuQr1yVAUlU7tPG81PpBuT6lNvVjOH/XPchpqHhvo=.5E4DHQM6XsjAxxC9v72npK574LKocviirFyUaHmYDnQGb7r5Ry7VoqL2NLR1JcKPNjz1pnskQrTu5qCjxsZee7PX`
-  - `MEUCIQDUv9BwYH4Gw0pzxOLH8/WQXRbCoFDCo5h1VwVWqi/3UQIgenGuQr1yVAUlU7tPG81PpBuT6lNvVjOH/XPchpqHhvo=` - This is the Base64 (toDer) signature script
+  - `<Base64 DER signature over the hash>.5E4DHQM6XsjAxxC9v72npK574LKocviirFyUaHmYDnQGb7r5Ry7VoqL2NLR1JcKPNjz1pnskQrTu5qCjxsZee7PX`
+  - `<Base64 DER signature over the hash>` - This is the Base64 (toDer) signature script. It is shown as a placeholder because an ECDSA signature can only be made with the sender's private key.
   - `5E4DHQM6XsjAxxC9v72npK574LKocviirFyUaHmYDnQGb7r5Ry7VoqL2NLR1JcKPNjz1pnskQrTu5qCjxsZee7PX` - this is the public key with a Base58 Encoding on it minus the hex identifier of '04'
   - If you would like to see the method of signing it can be found here: **[https://github.com/VerifiedXBlockchain/VerifiedX-Core/blob/main/VerifiedXCore/EllipticCurve/Ecdsa.cs](https://github.com/VerifiedXBlockchain/VerifiedX-Core/blob/main/VerifiedXCore/EllipticCurve/Ecdsa.cs)**
 
@@ -274,17 +276,17 @@ Transaction tx4 = new Transaction{
    TransactionType = TransactionType.TX,
    Fee = 0.00000604M,
    Timestamp = 1793533801,
-   Hash = "f774360a86bf044b982ddcc2e6fcb1f3483177a521f9bd94733c2cfac7196a63",
-   Signature = "MEUCIQDUv9BwYH4Gw0pzxOLH8/WQXRbCoFDCo5h1VwVWqi/3UQIgenGuQr1yVAUlU7tPG81PpBuT6lNvVjOH/XPchpqHhvo=.5E4DHQM6XsjAxxC9v72npK574LKocviirFyUaHmYDnQGb7r5Ry7VoqL2NLR1JcKPNjz1pnskQrTu5qCjxsZee7PX"
+   Hash = "ca7b3941734f544d935dae8b0290126850661e1abe485fc5d9bfb95787d760f3",
+   Signature = "<Base64 DER signature over the hash>.5E4DHQM6XsjAxxC9v72npK574LKocviirFyUaHmYDnQGb7r5Ry7VoqL2NLR1JcKPNjz1pnskQrTu5qCjxsZee7PX"
 };
 ```
 
 - With the signature in place you are ready to verify the TX.
 
-  `{"Hash":"f774360a86bf044b982ddcc2e6fcb1f3483177a521f9bd94733c2cfac7196a63","ToAddress":"xWDAi25ybtTexeEMsLAi4TGS6TY3sZGPgQ","FromAddress":"xVQKToMgUsL7gMja2gfL9D7ahAN7iZE45s","Amount":1.0,"Nonce":0,"Fee":0.00000604,"Timestamp":1793533801,"Data":null,"Signature":"MEUCIQDUv9BwYH4Gw0pzxOLH8/WQXRbCoFDCo5h1VwVWqi/3UQIgenGuQr1yVAUlU7tPG81PpBuT6lNvVjOH/XPchpqHhvo=.5E4DHQM6XsjAxxC9v72npK574LKocviirFyUaHmYDnQGb7r5Ry7VoqL2NLR1JcKPNjz1pnskQrTu5qCjxsZee7PX","Height":0,"TransactionType":0,"TransactionRating":null,"TransactionStatus":null}`
+  `{"Hash":"ca7b3941734f544d935dae8b0290126850661e1abe485fc5d9bfb95787d760f3","ToAddress":"xWDAi25ybtTexeEMsLAi4TGS6TY3sZGPgQ","FromAddress":"xVQKToMgUsL7gMja2gfL9D7ahAN7iZE45s","Amount":1.0,"Nonce":0,"Fee":0.00000604,"Timestamp":1793533801,"Data":null,"Signature":"<Base64 DER signature over the hash>.5E4DHQM6XsjAxxC9v72npK574LKocviirFyUaHmYDnQGb7r5Ry7VoqL2NLR1JcKPNjz1pnskQrTu5qCjxsZee7PX","Height":0,"TransactionType":0,"TransactionRating":null,"TransactionStatus":null}`
   **[http://localhost:17292/txapi/TXV1/VerifyRawTransaction](http://localhost:17292/txapi/TXV1/VerifyRawTransaction)**
 
-- Passing: `{"Result":"Success","Message":"Transaction has been verified.","Hash":"f774360a86bf044b982ddcc2e6fcb1f3483177a521f9bd94733c2cfac7196a63"}`
+- Passing: `{"Result":"Success","Message":"Transaction has been verified.","Hash":"ca7b3941734f544d935dae8b0290126850661e1abe485fc5d9bfb95787d760f3"}`
 
 - Should it fail. The response will contain something like:
 
@@ -294,7 +296,7 @@ Transaction tx4 = new Transaction{
 - Once the payload above has a **"Success"** then you can send the same JSON out to be broadcasted
 
   - **[http://localhost:17292/txapi/TXV1/SendRawTransaction](http://localhost:17292/txapi/TXV1/SendRawTransaction)**
-  - `{"Result":"Success","Message":"Transaction has been broadcasted.","Hash":"f774360a86bf044b982ddcc2e6fcb1f3483177a521f9bd94733c2cfac7196a63"}`
+  - `{"Result":"Success","Message":"Transaction has been broadcasted.","Hash":"ca7b3941734f544d935dae8b0290126850661e1abe485fc5d9bfb95787d760f3"}`
 
 At this point you have successfully created a raw TX, signed it, and broadcasted it out
 

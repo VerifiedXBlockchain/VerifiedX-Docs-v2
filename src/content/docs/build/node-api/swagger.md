@@ -2,7 +2,7 @@
 title: "Swagger"
 description: "Where to find the Swagger API playgrounds for the Core CLI and for Spyglass."
 sidebar:
-  order: 7
+  order: 8
 ---
 
 ## CLI Swagger

@@ -159,6 +159,8 @@ Asks the data API for the hash of a raw transaction object (the hash that gets s
 
 **Returns:** `Promise<string>` - The transaction hash
 
+The node hashes `Data` exactly as it arrives, so put `Data` in `txData` as the JSON object or array itself (not a string holding JSON), and send the same `Data` text, unchanged, on every raw call that follows. A whole-number `Amount` or `Fee` is given its `.0` by the data API. See [Canonical raw transactions](/build/node-api/canonical-transactions/).
+
 ## External Signing
 
 Every method that signs accepts a `Keypair` or a `Signer`. A `Signer` keeps the

@@ -2,12 +2,14 @@
 title: "Example Transactions"
 description: "Real mainnet transaction examples by type, each with its hash, Spyglass link and data payload."
 sidebar:
-  order: 5
+  order: 6
 ---
 
 Below are real-world transaction examples from mainnet, organized by type. Each transaction includes the complete data payload to simplify integration testing. For additional transaction details (fees, block height, timestamps, etc.), use the provided Spyglass URLs or query the transaction hash via the Core CLI or Web API.
 
 For an exhaustive list of all transaction types, please visit the [Transaction Creation Docs](/build/node-api/transaction-creation/).
+
+The payloads below are shown as the chain recorded them, not as a request body. To build and send a transaction of one of these types through the raw routes, write `Amount` and `Fee` as the shortest decimal with at least one digit after the point and send `Data` as the JSON object or array itself, as described in [Canonical raw transactions](/build/node-api/canonical-transactions/).
 
 ## Basic
 

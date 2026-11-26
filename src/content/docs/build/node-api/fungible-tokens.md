@@ -2,7 +2,7 @@
 title: "Fungible Tokens"
 description: "Deploy a fungible token smart contract and mint, transfer, burn, pause, transfer ownership of and vote with its tokens through the Core API."
 sidebar:
-  order: 6
+  order: 7
 ---
 
 ## Deploying a Fungible Token Smart Contract
