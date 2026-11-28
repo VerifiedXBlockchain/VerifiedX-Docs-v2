@@ -1,5 +1,5 @@
 ---
-sourceHash: "4a40ce5f49e9"
+sourceHash: "8941fe9e4dce"
 title: "Conceptos básicos de Bitcoin: primeros pasos con la integración de Bitcoin"
 description: Genera billeteras de Bitcoin, consulta saldos y tarifas de comisión, envía transacciones y firma mensajes con el cliente de Bitcoin del VerifiedX Web SDK.
 sidebar:
@@ -22,8 +22,8 @@ El SDK admite dos redes de Bitcoin:
 - **Mainnet**: la red de producción de Bitcoin, con BTC reales
 - **Testnet**: para el desarrollo en VerifiedX es la [signet de VerifiedX](/es/build/signet/), la red de prueba privada de Bitcoin que vigila la testnet de VFX. Usa los formatos de dirección de testnet (`tb1…`, `m…`/`n…`, `2…`) y BTC de signet del faucet de testnet
 
-:::caution[Apunta testnet a la signet de VerifiedX]
-En `vfx-web-sdk` 9.0.3, `new btc.BtcClient('testnet')` todavía usa por defecto la API pública de testnet4 de Bitcoin (`https://mempool.space/testnet4/api`). Las claves y las direcciones son las mismas en ambas redes, pero los saldos, los UTXO y las transmisiones no. Pasa `apiBaseUrl: 'https://signet.verifiedx.io/api'` para que el cliente lea y transmita en la signet de VerifiedX.
+:::note[Testnet es la signet de VerifiedX]
+Desde `vfx-web-sdk` 9.0.4, `new btc.BtcClient('testnet')` usa la signet de VerifiedX (`https://signet.verifiedx.io/api`) de forma predeterminada. Las claves y las direcciones son las mismas en todas las redes de prueba de Bitcoin, pero los saldos, los UTXO y las transmisiones no, así que en 9.0.3 o anterior actualiza o pasa `apiBaseUrl: 'https://signet.verifiedx.io/api'`.
 :::
 
 ## Paso 1: inicializa el cliente de Bitcoin
@@ -33,8 +33,8 @@ En `vfx-web-sdk` 9.0.3, `new btc.BtcClient('testnet')` todavía usa por defecto 
 ```typescript
 import { btc } from 'vfx-web-sdk';
 
-// Initialize for the VerifiedX signet (recommended for development)
-const client = new btc.BtcClient('testnet', { apiBaseUrl: 'https://signet.verifiedx.io/api' });
+// Initialize for testnet, the VerifiedX signet (recommended for development)
+const client = new btc.BtcClient('testnet');
 
 // For mainnet (production)
 // const client = new btc.BtcClient('mainnet');
@@ -170,7 +170,7 @@ async function getTransactionHistory(address: string) {
 await getTransactionHistory(wallet.address);
 ```
 
-`getTransactions` devuelve la primera página de la API para la dirección (las transacciones más recientes, primero las sin confirmar). En 9.0.3 sus parámetros `limit` y `before` se aceptan pero no se envían, así que no tienen efecto.
+`getTransactions(address, limit?, before?)` devuelve las transacciones de la más reciente a la más antigua, incluidas las no confirmadas, hasta `limit` (50 de forma predeterminada). Desde 9.0.4, `before` es un txid que ya viste: la llamada devuelve entonces solo transacciones confirmadas anteriores a él, así que pasa el último txid confirmado de una llamada como `before` de la siguiente para recorrer el historial hacia atrás. 9.0.3 aceptaba ambos parámetros pero los ignoraba.
 
 ## Paso 5: consulta las tarifas de comisión actuales
 
@@ -318,10 +318,8 @@ class BitcoinWalletManager {
   private client: btc.BtcClient;
 
   constructor(network: 'mainnet' | 'testnet' = 'testnet') {
-    // On testnet, read and broadcast on the VerifiedX signet
-    this.client = network === 'testnet'
-      ? new btc.BtcClient('testnet', { apiBaseUrl: 'https://signet.verifiedx.io/api' })
-      : new btc.BtcClient('mainnet');
+    // On testnet the client reads and broadcasts on the VerifiedX signet
+    this.client = new btc.BtcClient(network);
   }
 
   // Create new wallet

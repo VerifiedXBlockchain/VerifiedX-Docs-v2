@@ -1,5 +1,5 @@
 ---
-sourceHash: "9659cff835f7"
+sourceHash: "4ea1c0bae0d4"
 title: "Signet de VerifiedX (Bitcoin de testnet)"
 description: "El signet de VerifiedX, la red privada de prueba de Bitcoin detrás de la testnet de VFX: cómo funciona, su explorador y sus API, el BTC de signet y el acceso a la API de socios (Partner API)."
 sidebar:
@@ -7,7 +7,7 @@ sidebar:
   order: 4
 ---
 
-La testnet de VerifiedX no usa una red pública de prueba de Bitcoin. Su lado de Bitcoin es el **signet de VerifiedX**: una red privada de Bitcoin, operada por el equipo de VerifiedX, que sigue las reglas de Bitcoin pero cuyos bloques solo puede producir el equipo de VerifiedX. Todo lo relacionado con Bitcoin en la testnet de VFX lo usa: los depósitos y retiros de las bóvedas (vaults) de vBTC, las cuentas de Bitcoin de las billeteras y, cuando su URL base de la API apunta al signet, el `BtcClient` del SDK en testnet.
+La testnet de VerifiedX no usa una red pública de prueba de Bitcoin. Su lado de Bitcoin es el **signet de VerifiedX**: una red privada de Bitcoin, operada por el equipo de VerifiedX, que sigue las reglas de Bitcoin pero cuyos bloques solo puede producir el equipo de VerifiedX. Todo lo relacionado con Bitcoin en la testnet de VFX lo usa: los depósitos y retiros de las bóvedas (vaults) de vBTC, las cuentas de Bitcoin de las billeteras y, desde `vfx-web-sdk` 9.0.4 de forma predeterminada, el `BtcClient` del SDK en testnet.
 
 Reemplazó a Bitcoin testnet4 en octubre de 2026. Los tiempos de bloque de testnet4 varían de segundos a horas y su cadena se reorganiza con frecuencia, así que los depósitos y retiros de vBTC no se podían confirmar con un calendario predecible. El signet le da a la testnet una cadena de Bitcoin que se comporta como mainnet y se mantiene en línea.
 
@@ -54,7 +54,7 @@ curl https://signet.verifiedx.io/api/address/tb1q.../txs
 curl https://signet.verifiedx.io/api/v1/fees/recommended
 ```
 
-VerifiedX Core en testnet y las billeteras de VerifiedX ya apuntan a estos servidores. En `vfx-web-sdk` 9.0.3, `new btc.BtcClient('testnet')` todavía usa Bitcoin testnet4 de forma predeterminada, así que pasa `{ apiBaseUrl: 'https://signet.verifiedx.io/api' }` (consulta [Conceptos básicos de Bitcoin](/es/build/sdk/bitcoin-basics/)).
+VerifiedX Core en testnet y las billeteras de VerifiedX apuntan a estos servidores, y desde `vfx-web-sdk` 9.0.4 también lo hace `new btc.BtcClient('testnet')` de forma predeterminada. En 9.0.3 o anterior, pasa `{ apiBaseUrl: 'https://signet.verifiedx.io/api' }` (consulta [Conceptos básicos de Bitcoin](/es/build/sdk/bitcoin-basics/)).
 
 ## Obtén BTC de signet
 
